@@ -29,7 +29,8 @@ export class HomePage implements OnInit {
         public lessonService: LessonService,
     ) {
         const d = new Date();
-        this.dateName = new Intl.DateTimeFormat('fa-IR', { dateStyle: 'full', timeStyle: 'short' }).format(d);
+        const options: Intl.DateTimeFormatOptions = <Intl.DateTimeFormatOptions>{ dateStyle: 'full' };
+        this.dateName = new Intl.DateTimeFormat('fa-IR', options).format(d);
     }
     ngOnInit(): void {
         this.lessonService.allLessons$.subscribe(books => {

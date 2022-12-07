@@ -72,6 +72,11 @@ export class ClassPage implements OnInit {
 
     }
 
+    endClass() {
+        this.globalService.endClass();
+        this.router.navigateByUrl("tabs/home");
+    }
+
     getColor(student: StudentModel) {
         return !student.present ? 'medium' : ''
     }

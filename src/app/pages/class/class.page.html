@@ -11,9 +11,12 @@
         <ion-label>
             <h3> {{lesson?.name}}</h3>
             <p>
-                {{book.name}}
+                {{book?.name}}
             </p>
         </ion-label>
+        <ion-button slot="end" (click)="endClass()" size="default" color="danger">
+            پایان
+        </ion-button>
     </ion-item>
 
     <div class="d-flex justify-content-center p-2">

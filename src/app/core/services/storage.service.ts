@@ -16,6 +16,10 @@ export class StorageService {
         localStorage.setItem(storage, value);
     }
 
+    removeStorage(storage: string) {
+        localStorage.removeItem(storage);
+    }
+
     loadStorage(storage: string) {
 
         return localStorage.getItem(storage);

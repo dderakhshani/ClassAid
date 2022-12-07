@@ -61,4 +61,9 @@ export class GlobalService {
     saveClass() {
         this.storageService.saveStorage(CLASS_STORAGE, JSON.stringify(this.currentClassTask));
     }
+
+    endClass() {
+        this.currentClassTask = undefined;
+        this.storageService.removeStorage(CLASS_STORAGE);
+    }
 }

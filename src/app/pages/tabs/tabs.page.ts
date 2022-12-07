@@ -14,7 +14,16 @@ export class TabsPage {
     startClass() {
         if (this.globalService.currentClassTask)
             this.router.navigateByUrl(`/tabs/class/0`);
-        else
-            this.router.navigateByUrl(`/tabs/lessons`);
+
+    }
+
+    startNewClass() {
+        this.router.navigateByUrl(`/tabs/lessons`);
+    }
+
+    startNextClass() {
+        //find next lesson
+        const nextLesson: any = null;
+        this.router.navigateByUrl(`/tabs/class/${nextLesson.id}`);
     }
 }
