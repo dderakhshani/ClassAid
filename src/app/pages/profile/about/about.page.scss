@@ -1,0 +1,10 @@
+ion-toolbar {
+  --background: transparent;
+  background: transparent;
+  position: fixed;
+  span,
+  ion-back-button,
+  ion-button {
+    color: #fff;
+  }
+}

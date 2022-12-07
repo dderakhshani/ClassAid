@@ -1,0 +1,26 @@
+<ion-header collapse="fade" [translucent]="true" class="ion-no-border">
+    <ion-toolbar>
+        <ion-title>انتخاب درس</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-grid fixed>
+        <ion-row>
+            <ion-col size="6" *ngFor="let item of lessons">
+                <ion-card (click)="detail(item)" class="ion-text-center">
+                    <div class="pt-2">
+                        <ion-avatar class="mx-auto">
+                            <img [src]="item.getImageUrl()">
+                        </ion-avatar>
+                    </div>
+
+                    <ion-card-content>
+                        {{item.name}}
+                    </ion-card-content>
+                </ion-card>
+            </ion-col>
+
+        </ion-row>
+    </ion-grid>
+</ion-content>

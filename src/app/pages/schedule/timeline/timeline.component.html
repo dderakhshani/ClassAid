@@ -1,0 +1,45 @@
+<div class="days d-flex justify-content-around">
+    <div *ngFor="let d of days" class="day px-2  d-flex align-items-center" [class.selected]="d.no==selectedDay.no" (click)="selectedDay=d">
+        {{d.symbol}}
+    </div>
+</div>
+<div class="timeline mt-2">
+    <div class="time-item" *ngFor="let r of rings" [class.scheduled]="getSchedule(r)">
+        <ion-card class="item_content">
+
+            <ion-card-content>
+                <ng-container *ngIf="getSchedule(r);else selectLesson">
+                    <ion-item lines="none">
+                        <ion-avatar slot="start">
+                            <img [src]="getSchedule(r).lesson.getImageUrl()">
+                        </ion-avatar>
+                        <ion-label>
+                            {{getSchedule(r).lesson.name}}
+                        </ion-label>
+                    </ion-item>
+                    <ion-button color="secondary" (click)="edit(getSchedule(r))">ویرایش</ion-button>
+                    <ion-button color="danger" fill="outline" (click)="deleteItem(getSchedule(r))">حذف</ion-button>
+                </ng-container>
+
+                <ng-template #selectLesson>
+                    <ion-item lines="none">
+                        <ion-avatar slot="start">
+                            <img src="https://ionicframework.com/docs/img/demos/thumbnail.svg">
+                        </ion-avatar>
+                        <ion-label>
+                            درسی انتخاب نشده
+                        </ion-label>
+                    </ion-item>
+                    <ion-button (click)="openPicker(r)">انتخاب</ion-button>
+                </ng-template>
+
+            </ion-card-content>
+        </ion-card>
+        <div class="duration">
+            {{r.startTime}}
+
+            <small class="text-secondary"> <br /> {{r.endTime}}</small>
+        </div>
+    </div>
+
+</div>

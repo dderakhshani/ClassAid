@@ -1,0 +1,40 @@
+<ion-content class="ion-padding bg-white">
+    <form [formGroup]="form" (ngSubmit)="signup()" class="d-flex flex-column  justify-content-center" style="height: 100%;">
+        <div class="header-bg">
+            <img src="assets/img/logo/logo_128.png" />
+            <br />
+            <label>به سوپر مارکت آنلاین خوش آمدید</label>
+            <br />
+            <br />
+            <label>لطفا نام پروفایل و شماره همراه خودتان را وارد نمایید</label>
+
+        </div>
+        <br />
+
+
+        <ion-item style="direction:rtl">
+            <ion-input formControlName="fullName" required placeholder="نام پروفایل"></ion-input>
+            <ion-icon name="person" slot="start"></ion-icon>
+        </ion-item>
+        <ion-item>
+
+            <ion-input formControlName="mobile" type="tel" required placeholder="09xx xxxxxxx">
+            </ion-input>
+            <ion-icon name="call" slot="start"></ion-icon>
+        </ion-item>
+        <ion-item>
+            <ion-label class="rules">قوانین و مقررات را خوانده و می پذیرم</ion-label>
+            <ion-checkbox slot="start" formControlName="agreement"></ion-checkbox>
+            <br>
+            <a [routerLink]="['/rules-agreement']">مشاهده قوانین</a>
+        </ion-item>
+
+
+        <ion-button shape="round" color="primary" expand="full" (click)="signup()">تایید و ادامه </ion-button>
+    </form>
+
+
+</ion-content>
+<ion-footer>
+    <img src="assets/img/footer-bg.png" width="100%" />
+</ion-footer>

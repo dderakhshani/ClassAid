@@ -1,0 +1,122 @@
+<ion-header no-border [translucent]="true" class="content-header ion-no-border">
+    <ion-toolbar>
+        <ion-title>
+
+            دستیار معلم
+        </ion-title>
+    </ion-toolbar>
+    <div class="py-3">
+        <ion-item lines="none">
+            <ion-avatar slot="start">
+                <img alt="Avatar" src="https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg?w=96" />
+            </ion-avatar>
+            <ion-label>
+                <h3>
+                    سلام! معلم عزیز
+                </h3>
+                <p>امروز یک روز خوب برای شروع هست</p>
+            </ion-label>
+
+        </ion-item>
+
+    </div>
+</ion-header>
+
+<ion-content class="shadow round-content">
+
+    <div class="p-3">
+        <ion-segment value="default">
+            <ion-segment-button value="default">
+                <ion-label>داشبورد</ion-label>
+            </ion-segment-button>
+            <ion-segment-button value="segment">
+                <ion-label>برنامه کلاسی</ion-label>
+            </ion-segment-button>
+        </ion-segment>
+
+        <ion-card color="secondary" (click)="attendance()">
+            <ion-card-header class="pb-1">
+                <ion-card-title>حضور غیاب</ion-card-title>
+                <ion-card-subtitle>
+                    <ion-icon name="today-outline" style="font-size: 24px;"></ion-icon>
+                    {{dateName}}
+                </ion-card-subtitle>
+            </ion-card-header>
+
+            <ion-card-content class="">
+                <div class=" absents">
+                    <span class="ms-3"> غیابین:</span>
+                    <ion-avatar slot="start" *ngFor="let s of absentStudents">
+                        <img alt="Avatar-Student" [src]="s.getImageUrl()" />
+
+                    </ion-avatar>
+                </div>
+
+            </ion-card-content>
+        </ion-card>
+
+        <h3>درس بعدی:</h3>
+        <ion-card class="lesson" *ngIf="nextLesson">
+            <ion-card-content>
+                <ion-grid class="ion-no-padding">
+                    <ion-row>
+                        <ion-col size="12">
+                            <ion-item>
+                                <ion-avatar slot="start">
+                                    <img alt="Avatar" [src]="nextLesson.getImageUrl()" />
+                                </ion-avatar>
+                                <ion-label>
+                                    <h3>{{nextLesson.name}} </h3>
+                                    <p>
+                                        {{nextLesson?.name}} </p>
+                                </ion-label>
+                            </ion-item>
+                        </ion-col>
+                    </ion-row>
+                    <ion-row>
+                        <ion-col size="3" class="ion-no-padding ion-justify-content-center">
+                            <div echarts [options]="lessonChartOptions" class="widget-chart" theme="roma"></div>
+                        </ion-col>
+                        <ion-col>
+                            <ion-grid class="ion-no-padding">
+                                <ion-row>
+                                    <ion-col size="6" class="ion-no-padding">
+                                        <ion-item lines="none">
+                                            <ion-icon name="book-outline" slot="start"></ion-icon>
+                                            <ion-label>5 جلسه برگزار شده</ion-label>
+                                        </ion-item>
+                                    </ion-col>
+                                    <ion-col size="6" class="ion-no-padding">
+                                        <ion-item lines="none">
+                                            <ion-icon name="stopwatch-outline" slot="start"></ion-icon>
+                                            <ion-label>50 دقیقه</ion-label>
+                                        </ion-item>
+                                    </ion-col>
+                                </ion-row>
+                                <ion-row>
+                                    <ion-col size="6" class="ion-no-padding">
+                                        <ion-item lines="none">
+                                            <ion-icon name="star" slot="start"></ion-icon>
+                                            <ion-label>5 جلسه برگزار شده</ion-label>
+                                        </ion-item>
+                                    </ion-col>
+                                    <ion-col size="6" class="ion-no-padding">
+                                        <ion-item lines="none">
+                                            <ion-icon name="star" slot="start"></ion-icon>
+                                            <ion-label>5 جلسه برگزار شده</ion-label>
+                                        </ion-item>
+                                    </ion-col>
+                                </ion-row>
+                            </ion-grid>
+                        </ion-col>
+                    </ion-row>
+                </ion-grid>
+            </ion-card-content>
+        </ion-card>
+
+        <h3>یادآور ها:</h3>
+
+        <h3>فعالیت های امروز:</h3>
+    </div>
+
+</ion-content>

@@ -1,0 +1,32 @@
+
+
+ion-content {
+  --background: #f9f9f9;
+}
+.header-bg {
+  background-image: url("/assets/imgs/stores_bg.jpg");
+  text-align: center;
+}
+
+ion-label.rules {
+  font-size: 0.75rem;
+}
+
+label h6 {
+  display: inline;
+}
+ion-item {
+  direction:rtl
+}
+.bResend{
+  text-align: center;
+}
+.f-1{
+  font-size: 14px;
+  font-weight: bold;
+  display: block;
+}
+.f-2{
+  font-size: 12px;
+  color: rgb(82, 81, 81);
+}

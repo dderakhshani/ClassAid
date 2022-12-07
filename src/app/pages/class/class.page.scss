@@ -1,0 +1,45 @@
+ion-grid {
+    display: flex;
+    flex-direction: column;
+    height: 100% !important;
+}
+
+.row1 {
+    flex: 1 !important;
+}
+
+.row2 {
+    flex: 1 !important;
+}
+
+ion-grid {
+    padding: 0;
+}
+
+ion-col {
+    padding: 0;
+
+    ion-card {
+        margin: 5px;
+    }
+}
+
+.student-card {
+    position: relative;
+    overflow: visible;
+
+    .present {
+        position: absolute;
+        right: -5px;
+        top: -5px;
+        font-size: 26px;
+    }
+
+    ion-icon {
+        font-size: 24px;
+    }
+}
+
+.action-button {
+    height: 70px;
+}

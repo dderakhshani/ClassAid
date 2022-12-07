@@ -1,0 +1,28 @@
+ion-header {
+  background-image: url("/assets/img/header.png");
+  ion-toolbar {
+    --background: transparent;
+  }
+  ion-list {
+    background: transparent;
+    ion-item {
+      --background: transparent;
+    }
+    ion-label {
+      color: #fff;
+    }
+  }
+}
+
+.avatar {
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100px !important; //any size
+  max-height: 100px !important; //any size
+}
+
+ion-list {
+  ion-label {
+    color: #273876;
+  }
+}

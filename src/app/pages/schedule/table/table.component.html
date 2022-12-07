@@ -1,0 +1,40 @@
+<table style="width: 100%;">
+    <thead>
+        <tr class="bg-light">
+            <th class="fs-5 text-center">
+                <ion-icon name="alarm-outline"></ion-icon>
+            </th>
+            <th *ngFor="let r of rings" class="text-center">
+                {{r.startTime}}
+                <br />
+                <span class="text-secondary"> {{r.endTime}}</span>
+
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let d of days">
+            <td>
+                {{d.dayName}}
+            </td>
+            <td *ngFor="let r of rings" class="text-center">
+                <ng-container *ngIf="getSchedule(r,d);else selectLesson">
+                    <ion-avatar (click)="openMenu(getSchedule(r,d))">
+                        <img [src]="getSchedule(r,d).lesson.getImageUrl()">
+                    </ion-avatar>
+                    <!-- <ion-badge color="tertiary" class="px-3">
+                        {{getSchedule(r,d).lesson.Name}}
+                    </ion-badge> -->
+                </ng-container>
+
+
+                <ng-template #selectLesson>
+                    <ion-button (click)="openLessonPicker(r,d.no)">انتخاب</ion-button>
+                </ng-template>
+
+            </td>
+        </tr>
+    </tbody>
+
+
+</table>

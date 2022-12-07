@@ -1,0 +1,61 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-button (click)="modal.dismiss()">
+                <ion-icon slot="icon-only" name="close"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+        <ion-title>یادداشت</ion-title>
+        <ion-buttons slot="end">
+            <ion-button>
+                <ion-icon slot="icon-only" name="save-outline"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+    <ion-item>
+        <ion-label position="stacked">موضوع</ion-label>
+        <ion-input placeholder="یک موضوع را وارد نمایید"></ion-input>
+    </ion-item>
+
+    <ion-item class="pt-2">
+        <ion-label position="stacked">برچسب</ion-label>
+        <div>
+            <ion-chip color="primary">
+                <ion-label>Icon Chip</ion-label>
+                <ion-icon name="close"></ion-icon>
+            </ion-chip>
+
+            <ion-chip color="success">
+                <ion-label>Icon Chip</ion-label>
+                <ion-icon name="close"></ion-icon>
+            </ion-chip>
+            <ion-chip color="secondary">
+                <ion-label>Icon Chip</ion-label>
+                <ion-icon name="close"></ion-icon>
+            </ion-chip>
+            <ion-chip color="danger">
+                <ion-label>Icon Chip</ion-label>
+                <ion-icon name="close"></ion-icon>
+            </ion-chip>
+            <ion-chip color="Tertiary">
+                <ion-label>Icon Chip</ion-label>
+                <ion-icon name="close"></ion-icon>
+            </ion-chip>
+        </div>
+    </ion-item>
+
+    <ion-item class="pt-2">
+        <ion-label position="stacked">متن یادداشت</ion-label>
+        <ion-textarea placeholder="متن خود را وارد نمایید"></ion-textarea>
+    </ion-item>
+</ion-content>
+<ion-footer class="p-2">
+    <ion-button expand="block">
+        <ion-icon name="save-outline" size="large"></ion-icon>
+        <ion-label class="mt-2"> ذخیره</ion-label>
+    </ion-button>
+</ion-footer>

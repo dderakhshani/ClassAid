@@ -1,0 +1,146 @@
+/*
+ * App Global CSS
+ * ----------------------------------------------------------------------------
+ * Put style rules here that you want to apply globally. These styles are for
+ * the entire app and not just one component. Additionally, this file can be
+ * used as an entry point to import other CSS/Sass files to be included in the
+ * output CSS.
+ * For more information on global stylesheets, visit the documentation:
+ * https://ionicframework.com/docs/layout/global-stylesheets
+ */
+
+/* Core CSS required for Ionic components to work properly */
+@import "~@ionic/angular/css/core.css";
+
+/* Basic CSS for apps built with Ionic */
+@import "~@ionic/angular/css/normalize.css";
+@import "~@ionic/angular/css/structure.css";
+@import "~@ionic/angular/css/typography.css";
+@import "~@ionic/angular/css/display.css";
+
+/* Optional CSS utils that can be commented out */
+@import "~@ionic/angular/css/padding.css";
+@import "~@ionic/angular/css/float-elements.css";
+@import "~@ionic/angular/css/text-alignment.css";
+@import "~@ionic/angular/css/text-transformation.css";
+@import "~@ionic/angular/css/flex-utils.css";
+
+:root {
+    --ion-background-color: #fff;
+}
+
+html {
+    direction: rtl;
+}
+
+ion-label {
+    font-size: 0.7rem;
+}
+
+ion-header {
+    background-image: url("/assets/img/header.png");
+    color: white;
+
+    ion-toolbar {
+        --background: transparent;
+        color: white;
+    }
+
+    ion-icon,
+    ion-back-button,
+    ion-button {
+        color: white;
+    }
+
+}
+
+ion-item {
+    ion-icon[slot="start"] {
+        margin-inline-end: 8px;
+    }
+}
+
+.horizontal-row {
+    flex-wrap: nowrap;
+    overflow-x: scroll;
+    overflow-y: hidden;
+}
+
+.rounded-top-4 {
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+}
+
+// .searchbar-input.sc-ion-searchbar-md {
+//     margin-top: 8px;
+//     margin-bottom: 8px;
+//     border-radius: 8px;
+//     background-position: left 8px center;
+//     height: auto;
+//     font-size: 1.1rem;
+//     font-weight: 400;
+//     color: #7f8490;
+//     background-color: white;
+//     -webkit-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+//     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+// }
+
+.text-gray-color {
+    color: #a5abbf;
+}
+
+.text-white-color {
+    color: #fff;
+}
+
+.bg-white {
+    background: #fff;
+    --background: #fff !important;
+}
+
+.text-size-2x {
+    font-size: 14px;
+    font-weight: bold;
+    display: block;
+}
+
+.text-size-medium {
+    font-size: 14px;
+}
+
+.text-small {
+    font-size: 12px;
+}
+
+.text-gray {
+    color: #ccc;
+}
+
+.text-secondary {
+    color: rgb(98, 102, 109);
+}
+
+.content-header {
+    min-height: 150px;
+    max-height: 200px;
+    overflow: hidden;
+}
+
+.round-content {
+    position: relative;
+    background: #FFF;
+}
+
+.round-content:before {
+    content: "";
+    position: absolute;
+    background: #FFF;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    height: 30px;
+    left: 0;
+    right: 0;
+    top: -20px;
+    box-shadow: 0px -8px 8px rgba(159, 159, 159, 0.15);
+    z-index: 100;
+}

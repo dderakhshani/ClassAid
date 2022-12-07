@@ -1,0 +1,40 @@
+.days {
+    background: #f7f7f7;
+    border-radius: 15px;
+    padding: .5rem;
+
+    .day {
+        height: 70px;
+        width: 50px;
+        background: #fff;
+        border-radius: 15px;
+        box-shadow: rgba(0, 0, 0, 0.1) -4px 9px 25px -6px;
+
+        .date {
+            border-bottom: 1px solid #4E7DF1;
+            font-weight: bold;
+        }
+
+        .symbol {
+            color: rgb(154, 154, 154);
+        }
+    }
+
+    .day.selected {
+        background: #4E7DF1;
+        color: #fff;
+        box-shadow: rgba(100, 100, 111, 0.3) 0px 7px 29px 0px;
+
+        .date {
+            border-bottom: 1px solid #eaf0ff;
+        }
+
+        .symbol {
+            color: rgb(210, 210, 210);
+        }
+    }
+}
+
+ion-footer {
+    margin-top: -120px;
+}

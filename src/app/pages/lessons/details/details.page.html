@@ -1,0 +1,70 @@
+<ion-header class="content-header ion-no-border" collapse="fade" [translucent]="true">
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button></ion-back-button>
+        </ion-buttons>
+        <ion-title>انتخاب درس</ion-title>
+    </ion-toolbar>
+    <img alt="Avatar" [src]="book?.getImageUrl()" />
+</ion-header>
+
+<ion-content class="round-content flex-fill p-2">
+
+    <div>
+        <ion-item>
+            <ion-avatar slot="start">
+                <img alt="Avatar" [src]="book?.getImageUrl()" />
+            </ion-avatar>
+            <ion-label>
+                <h3>{{book?.name}} </h3>
+                <p>آخرین درس:
+                    {{lastLesson?.name}} </p>
+            </ion-label>
+
+        </ion-item>
+        <ion-list>
+            <ion-item *ngFor="let item of lessons">
+                <ion-icon *ngIf="item.taskTime;else wait" name="checkmark-circle-outline" slot="start" class="text-success"></ion-icon>
+                <ng-template #wait>
+                    <ion-icon name="time-outline" slot="start"></ion-icon>
+                </ng-template>
+
+
+                <ion-label>{{item.name}}</ion-label>
+
+                <ion-button slot="end" fill="clear" *ngIf="item.taskTime;else start">
+                    <ion-icon name="eye-outline"></ion-icon>
+                </ion-button>
+                <ng-template #start>
+                    <ion-button slot="end" fill="clear" (click)="startClass(item)">
+                        <ion-icon name="play-outline"></ion-icon>
+                    </ion-button>
+                </ng-template>
+
+
+            </ion-item>
+        </ion-list>
+        <!--<ion-accordion-group [multiple]="true">
+            
+
+            <ion-accordion *ngFor="let item0 of lessons">
+                <ion-item slot="header" color="light">
+                    <ion-label>{{item0.Name}}</ion-label>
+                </ion-item>
+                <div class="ion-padding" slot="content" *ngFor="let item1 of lessonService.getLessonsByParentId(item0.Id) | async">
+                    <ion-item>
+                        <ion-thumbnail slot="start">
+                            <img alt="Silhouette of mountains" src="https://ionicframework.com/docs/img/demos/thumbnail.svg" />
+                        </ion-thumbnail>
+                        <ion-label>{{item1.Name}}</ion-label>
+                        <ion-button slot="end">
+                            Play
+                        </ion-button>
+                    </ion-item>
+                </div>
+            </ion-accordion> 
+
+        </ion-accordion-group>-->
+    </div>
+
+</ion-content>

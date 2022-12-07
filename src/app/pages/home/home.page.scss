@@ -1,0 +1,63 @@
+ion-header {
+    background-image: url("/assets/img/header.png");
+    color: white;
+
+    ion-toolbar {
+        --background: transparent;
+        color: white;
+    }
+
+    ion-item {
+        --background: transparent;
+        color: white;
+
+        p {
+            color: white;
+        }
+    }
+
+    ion-avatar {
+        width: 64px;
+        height: 64px;
+    }
+}
+
+.absents {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(10px, max-content));
+
+    ion-avatar {
+        margin-right: -15px;
+        box-shadow: 2px 4px 5px #00000033;
+    }
+}
+
+ion-card.lesson {
+    ion-item::part(native) {
+        padding-inline-start: 0 !important;
+        padding-right: 0 !important;
+
+    }
+
+    .widget-chart {
+        height: 90px;
+        width: 90px;
+        margin-right: -15px;
+    }
+
+
+    ion-item {
+        font-size: 10px;
+        color: rgb(133, 133, 133);
+
+
+
+        ion-icon {
+            margin-inline: 0px 5px;
+        }
+
+        ion-label {
+            margin: 0;
+        }
+    }
+}

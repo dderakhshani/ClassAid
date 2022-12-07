@@ -1,0 +1,55 @@
+<!-- <div class="multi-input">
+  <div class="label-area">
+      <label *ngIf="isRequired" style="color: red;">*</label>
+      <label class="control-label">{{label}}</label>
+  </div>
+  <div class="d-flex justify-content-start input-wrapper">
+      <input *ngFor="let input of inputs;let i=index" [type]="type" placeholder="---" [disabled]="!enabled"
+          [(ngModel)]="inputs[i]" (change)="onValueChanged()" />
+  </div>
+</div> -->
+
+
+<form class="form-container">
+  <div>
+    <ion-input name="e" #e (keydown)="keyDown($event,'')" (keyup)="moveFocus($event,'',d)" [(ngModel)]="values[4]"
+      (focus)="onfocus($event)" type="number" placeholder="0" maxlength="1" [ngClass]="{'border-danger':error}">
+    </ion-input>
+  </div>
+
+  <div>
+    <ion-input name="d" #d (keydown)="keyDown($event,e)" (keyup)="moveFocus($event,e,c)" [(ngModel)]="values[3]"
+      (focus)="onfocus($event)" type="number" placeholder="0" maxlength="1" [ngClass]="{'border-danger':error}">
+    </ion-input>
+  </div>
+
+  <div>
+    <ion-input name="c" #c (keydown)="keyDown($event,d)" (keyup)="moveFocus($event,d,b)" [(ngModel)]="values[2]"
+      (focus)="onfocus($event)" type="number" placeholder="0" maxlength="1" [ngClass]="{'border-danger':error}">
+    </ion-input>
+  </div>
+
+  <div>
+    <ion-input name="b" #b (keydown)="keyDown($event,c)" (keyup)="moveFocus($event,c,a)" [(ngModel)]="values[1]"
+      (focus)="onfocus($event)" type="number" placeholder="0" maxlength="1" [ngClass]="{'border-danger':error}">
+    </ion-input>
+  </div>
+
+  <div>
+    <ion-input name="a" #a (keydown)="keyDown($event,b)" (keyup)="moveFocus($event,b,'')" [(ngModel)]="values[0]"
+      (focus)="onfocus($event)" type="number" placeholder="0" maxlength="1" [ngClass]="{'border-danger':error}">
+    </ion-input>
+  </div>
+
+
+
+
+
+
+
+
+
+  <div>
+
+  </div>
+</form>

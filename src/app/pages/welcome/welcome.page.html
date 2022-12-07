@@ -1,0 +1,33 @@
+<ion-content fullscreen scroll-y="false">
+    <ion-slides pager="true" [options]="slideOpts">
+
+
+        <ion-slide>
+            <img src="assets/img/slider/w-3.png" />
+            <h2>شروع کنیم ؟</h2>
+            <p> پیش به سوی روش نوین کاری</p>
+            <ion-button fill="clear" (click)="openTabs()">برو بریم </ion-button>
+        </ion-slide>
+
+
+        <ion-slide>
+            <img src="assets/img/slider/w-2.png" />
+            <h2> ارتقا آموزش</h2>
+            <p>
+                آموزش به کیفیت بهتری ارائه می شود
+            </p>
+        </ion-slide>
+
+        <ion-slide>
+            <div class="slide">
+                <img src="assets/img/slider/w-1.png" />
+                <h2>قصه ما و شما</h2>
+                <p>
+                    مدرسه ای مدرن و با کیفیت
+                </p>
+                <ion-button (click)="openTabs()" fill="clear">بیخیال </ion-button>
+            </div>
+        </ion-slide>
+
+    </ion-slides>
+</ion-content>

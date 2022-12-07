@@ -1,0 +1,42 @@
+<ion-content class="ion-padding bg-white">
+  <div class="d-flex flex-column  justify-content-center" style="height: 100%;">
+
+    <div class="header-bg">
+      <img src="assets/img/verification.png" width="50%" />
+      <br />
+      <label class="f-1">کد فعالسازی</label>
+      <label class="f-2">کد فعال سازی به
+        <label class="f-2">{{ user.mobile }}</label>
+        ارسال شد</label>
+
+
+      <div class="bResend">
+        <ion-button [disabled]="countDown>0" fill="clear" style="font-size: 14px;" (click)="resendCode()">
+          ارسال مجدد کد
+
+          <span *ngIf="countDown>0">
+            {{toHHMMSS(countDown)}}
+          </span>
+
+        </ion-button>
+      </div>
+    </div>
+    <div class="ion-padding">
+      <app-multi-input [(value)]="code" [error]="codeInvalide"></app-multi-input>
+    </div>
+
+    <ion-label *ngIf="codeInvalide" class="text-size-2x text-danger text-center my-2">
+      کد وارد شده صحیح نمی باشد
+    </ion-label>
+    <div>
+
+      <ion-button shape="round" color="primary" expand="full" (click)="register()">تایید و ادامه
+      </ion-button>
+
+    </div>
+  </div>
+</ion-content>
+
+<ion-footer collapse="fade">
+  <img src="assets/img/footer-bg.png" width="100%" />
+</ion-footer>

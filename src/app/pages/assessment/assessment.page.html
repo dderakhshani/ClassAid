@@ -1,0 +1,84 @@
+<div class="avatar d-flex flex-column align-items-center">
+    <ion-card class="d-flex align-items-center justify-content-center">
+        <ion-avatar>
+            <img alt="Avatar-Student" [src]="student?.getImageUrl()" />
+        </ion-avatar>
+    </ion-card>
+</div>
+<ion-header class="content-header ion-no-border" collapse="fade">
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button></ion-back-button>
+        </ion-buttons>
+        <ion-title>ارزشیابی</ion-title>
+        <ion-buttons slot="end">
+            <ion-button>
+                <ion-icon slot="icon-only" name="save-outline"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+
+
+    </ion-toolbar>
+
+</ion-header>
+
+<ion-content class="round-content">
+    <div class="d-flex flex-column align-items-center pt-3">
+
+        <b> {{student?.fullName}}</b>
+
+    </div>
+    <div class="px-3 pb-4">
+        <hr>
+        <ion-accordion-group>
+            <ion-accordion value="first">
+                <ion-item slot="header" color="light">
+                    <ion-label> وضعیت کلی</ion-label>
+                </ion-item>
+                <div class="ion-padding" slot="content">
+                    <ion-segment value="2" mode="ios">
+                        <ion-segment-button value="1" class="text-danger" (mousedown)="$event.preventDefault();$event.stopPropagation()">
+                            <ion-label>ن.ب.ت</ion-label>
+                        </ion-segment-button>
+                        <ion-segment-button value="2" class="text-warning" (mousedown)="$event.preventDefault();$event.stopPropagation()">
+                            <ion-label>قابل قبول</ion-label>
+                        </ion-segment-button>
+                        <ion-segment-button value="3" class="text-primary">
+                            <ion-label>خوب</ion-label>
+                        </ion-segment-button>
+                        <ion-segment-button value="4" class="text-success">
+                            <ion-label>عالی</ion-label>
+                        </ion-segment-button>
+                    </ion-segment>
+                    <div echarts [options]="chartOptions" class="widget-chart" theme="roma"></div>
+                </div>
+
+            </ion-accordion>
+
+        </ion-accordion-group>
+
+        <div class="d-flex flex-column">
+            <div *ngFor="let param of paramters" class="pt-2">
+                <b>{{param.Title}}</b>
+                <ion-segment [scrollable]="true" value="home" mode="ios">
+                    <ion-segment-button value="1" class="text-danger">
+                        <ion-icon name="alert-circle-outline"></ion-icon>
+                        <ion-label>ن.ب.ت</ion-label>
+                    </ion-segment-button>
+                    <ion-segment-button value="2" class="text-warning">
+                        <ion-icon name="caret-back-circle-outline"></ion-icon>
+                        <ion-label>قابل قبول</ion-label>
+                    </ion-segment-button>
+                    <ion-segment-button value="3" class="text-primary">
+                        <ion-icon name="checkmark-circle-outline"></ion-icon>
+                        <ion-label>خوب</ion-label>
+                    </ion-segment-button>
+                    <ion-segment-button value="4" class="text-success">
+                        <ion-icon name="checkmark-done-circle-outline"></ion-icon>
+                        <ion-label>عالی</ion-label>
+                    </ion-segment-button>
+                </ion-segment>
+            </div>
+        </div>
+    </div>
+</ion-content>

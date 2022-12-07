@@ -1,0 +1,99 @@
+<ion-header>
+
+    <ion-toolbar color="primary">
+        <ion-buttons slot="start">
+            <ion-button>
+                <ion-icon slot="icon-only" name="settings-outline"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+
+        <!-- <ion-buttons slot="end">
+            <ion-button>
+                <ion-icon slot="icon-only" name="create-outline"></ion-icon>
+            </ion-button>
+        </ion-buttons> -->
+    </ion-toolbar>
+
+    <!-- Header -->
+    <div>
+        <div class=" d-flex flex-column align-items-center">
+            <ion-button (click)="onSingOut()" expand="block" shape="round" style="position:absolute; left:8px " color="light">
+                خروج
+            </ion-button>
+            <ion-avatar class="avatar">
+                <img src="assets/img/avatar.png">
+            </ion-avatar>
+            <ion-text>
+                <h3 class="text-white-color">{{user.fullName}}</h3>
+            </ion-text>
+
+        </div>
+
+        <ion-list>
+            <!-- <ion-item>
+                <ion-icon name="person-outline" slot="start" size="small" class="text-white-color"></ion-icon>
+                <ion-label class="text-white-color">
+                    {{user.username}}
+                </ion-label>
+            </ion-item> -->
+            <ion-item lines="none">
+                <ion-icon name="call-outline" slot="start" size="small" class="text-white-color"></ion-icon>
+                <ion-label class="text-white-color">
+                    {{user.mobile}}
+                </ion-label>
+            </ion-item>
+
+        </ion-list>
+
+
+    </div>
+
+</ion-header>
+<ion-content [fullscreen]="true" color="light">
+    <ion-fab vertical="top" horizontal="end" slot="fixed" edge>
+        <ion-fab-button color="tertiary" size="small">
+            <ion-icon name="pencil" size="small"></ion-icon>
+        </ion-fab-button>
+    </ion-fab>
+
+
+    <div class="px-2 shadow-sm" style="background: #FFF;">
+        <ion-list>
+            <ion-item button lines="full" (click)="support()">
+                <ion-icon name="headset-outline" slot="start" style="color:#D68665;"></ion-icon>
+                <ion-label>
+                    پشتیانی
+                </ion-label>
+            </ion-item>
+            <ion-item button lines="full" (click)="help()">
+                <ion-icon name="help-circle-outline" slot="start" style="color:#F0D03D ;"></ion-icon>
+                <ion-label>
+                    راهنما
+                </ion-label>
+            </ion-item>
+            <ion-item button lines="full" [routerLink]="['/rules-agreement']">
+                <ion-icon name="bug-outline" slot="start" style="color:#5e50b6 ;"></ion-icon>
+                <ion-label>
+                    شرایط و قوانین استفاده
+                </ion-label>
+            </ion-item>
+            <ion-item button lines="full" (click)="reportBug()">
+                <ion-icon name="bug-outline" slot="start" style="color:rgb(212, 54, 48) ;"></ion-icon>
+                <ion-label>
+                    گزارش خطا
+                </ion-label>
+            </ion-item>
+            <ion-item button lines="none" [routerLink]="['/profile/about']">
+                <ion-icon name="information-circle-outline" slot="start" style="color:#796CD3 ;"></ion-icon>
+                <ion-label>
+                    درباره ما
+                </ion-label>
+            </ion-item>
+
+        </ion-list>
+    </div>
+
+    <div class="ion-padding ion-text-center">
+        <ion-text class="text-secondary text-small"> تمامی حقوق محفوظ است</ion-text>
+    </div>
+</ion-content>

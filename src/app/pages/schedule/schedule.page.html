@@ -1,0 +1,29 @@
+<ion-header collapse="fade" class="ion-no-border">
+    <ion-toolbar>
+        <ion-title>
+            برنامه کلاسی
+        </ion-title>
+        <ion-buttons slot="end">
+            <ion-button (click)="save()">
+                <ion-icon slot="icon-only" name="save-outline"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+
+</ion-header>
+
+<ion-content>
+    <div class="p-2">
+        <ion-segment value="table" mode="ios" [(ngModel)]="displayMode">
+            <ion-segment-button value="table">
+                <ion-label>نمایش جدولی</ion-label>
+            </ion-segment-button>
+            <ion-segment-button value="timeline">
+                <ion-label>نمایش خطی</ion-label>
+            </ion-segment-button>
+        </ion-segment>
+        <br>
+        <app-table *ngIf="displayMode=='table'" [rings]="rings" [days]="days" [(schedules)]="schedules" [lessons]="lessons"></app-table>
+        <app-timeline *ngIf="displayMode=='timeline'" [rings]="rings" [days]="days" [(schedules)]="schedules" [lessons]="lessons"></app-timeline>
+    </div>
+</ion-content>
