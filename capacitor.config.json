@@ -2,5 +2,8 @@
     "appId": "io.acom.tech",
     "appName": "ClassAidApp",
     "webDir": "www",
-    "bundledWebRuntime": false
+    "bundledWebRuntime": false,
+    "server": {
+        "cleartext": true
+    }
 }

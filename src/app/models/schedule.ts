@@ -1,4 +1,4 @@
-import { ClassModel } from './class';
+import { ClassModel, ClassSessionModel } from './class';
 import { Lesson } from './lessons';
 import { DateDay } from 'src/app/models/day';
 import { Ring } from './day';
@@ -11,11 +11,12 @@ export class ScheduleModel {
 }
 
 export class ScheduleTimeModel {
-
+    id: number;
     dayNo: number;
     ringId: number;
     lessonId: number
 
     lesson?: Lesson;
     ring: Ring;
+    session?: ClassSessionModel;
 }

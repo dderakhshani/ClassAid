@@ -17,6 +17,7 @@ export class AppComponent implements OnInit {
     ngOnInit() {
         this.classService.getClassesByTeacherId(this.globalService.teacherId).then(data => {
             this.globalService.selectedClass = data[0];//will load students and rings automatically
+
         });
 
     }

@@ -1,6 +1,9 @@
+import { Subject } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { HttpService } from '../core/services/http.service';
-import { ClassModel } from '../models/class';
+import { AttendanceModel } from '../models/attendance-model';
+import { ClassModel, ClassSessionModel } from '../models/class';
+import { DaySession } from '../models/day-session';
 import { GlobalService } from '../services/global.service';
 
 @Injectable({
@@ -8,7 +11,9 @@ import { GlobalService } from '../services/global.service';
 })
 export class ClassService {
 
-    constructor(private httpService: HttpService, globalService: GlobalService) {
+    // reminders$ = new Subject<Reminder[]>();
+
+    constructor(private httpService: HttpService) {
         // this.gradeId = globalService.selectedGradeId;
         // this.schoolId = globalService.selectedSchoolId;
     }
@@ -19,6 +24,55 @@ export class ClassService {
                 return resolve(data);
             });
 
+        });
+    }
+
+    getDaySession(classId: number): Promise<DaySession> {
+        return new Promise(resolve => {
+            this.httpService.http.getDataByParam<DaySession>({ classId: classId }, "class/GetDaySession").then(data => {
+                return resolve(data);
+            });
+        });
+    }
+
+    addCallRolls(attendances: AttendanceModel[], classId: number): Promise<string> {
+        return new Promise(resolve => {
+            this.httpService.http.postJsonData<string>(attendances, `class/addCallRolls/${classId}`).then(data => {
+                return resolve(data);
+            });
+        });
+    }
+
+    getCallRolls(classId: number): Promise<AttendanceModel[]> {
+        return new Promise(resolve => {
+            this.httpService.http.getDataByParam<AttendanceModel[]>({ classId: classId }, "class/GetCallRolls").then(data => {
+                return resolve(data);
+            });
+        });
+    }
+
+
+    addTask(session: ClassSessionModel): Promise<string> {
+        return new Promise(resolve => {
+            this.httpService.http.getDataByParam<string>(session, "class/AddTask").then(data => {
+                return resolve(data);
+            });
+        });
+    }
+
+    endTask(taskId: string): Promise<string> {
+        return new Promise(resolve => {
+            this.httpService.http.getDataByParam<string>({ taskId: taskId }, "class/EndTask").then(data => {
+                return resolve(data);
+            });
+        });
+    }
+
+    getSessionsByClass(classId: number): Promise<ClassSessionModel[]> {
+        return new Promise(resolve => {
+            this.httpService.http.getDataByParam<ClassSessionModel[]>({ classId: classId }, "class/GetSessionsByClass").then(data => {
+                return resolve(data);
+            });
         });
     }
 }

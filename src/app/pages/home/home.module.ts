@@ -5,7 +5,6 @@ import { FormsModule } from '@angular/forms';
 import { HomePage } from './home.page';
 import { HomePageRoutingModule } from './home-routing.module';
 import { SharedModule } from '../../shared.module';
-import { NgxEchartsModule } from 'ngx-echarts';
 
 @NgModule({
     imports: [
@@ -13,10 +12,7 @@ import { NgxEchartsModule } from 'ngx-echarts';
         CommonModule,
         FormsModule,
         HomePageRoutingModule,
-        SharedModule,
-        NgxEchartsModule.forRoot({
-            echarts: () => import('echarts')
-        }),
+        SharedModule
     ],
     declarations: [
         HomePage,

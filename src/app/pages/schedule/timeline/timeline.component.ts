@@ -12,6 +12,9 @@ import { ScheduleTimeModel } from 'src/app/models/schedule';
 export class TimelineComponent implements OnInit {
 
     @Input()
+    singleDay: boolean = false;
+
+    @Input()
     schedules: ScheduleTimeModel[];
     @Output()
     schedulesChange = new EventEmitter<ScheduleTimeModel[]>();
@@ -19,6 +22,7 @@ export class TimelineComponent implements OnInit {
     @Input()
     lessons: Lesson[];
 
+    @Input()
     selectedDay: DateDay;
 
     @Input()
@@ -31,7 +35,9 @@ export class TimelineComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.selectedDay = this.days[0];
+        //Single day mode has no days
+        if (this.days && this.days.length > 0)
+            this.selectedDay = this.days[0];
     }
 
     getSchedule(ring: Ring) {

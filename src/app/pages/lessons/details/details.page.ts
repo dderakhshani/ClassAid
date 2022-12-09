@@ -13,11 +13,16 @@ export class DetailsPage implements OnInit {
     lessons: Lesson[];
     book: Lesson;
     lastLesson: Lesson | undefined;
+    scheduleId?: number;
 
     constructor(public lessonService: LessonService,
         private route: ActivatedRoute,
         private router: Router) {
         const bookId = Number(this.route.snapshot.paramMap.get('lessonId'));
+
+        if (this.route.snapshot.paramMap.has('scheduleId'))
+            this.scheduleId = Number(this.route.snapshot.paramMap.get('scheduleId'))
+
         lessonService.getLessonById(bookId).then(b => {
             this.book = b;
             this.lessonService.getLessonsByParentId(this.book.id).then(r => {
@@ -31,7 +36,10 @@ export class DetailsPage implements OnInit {
     }
 
     startClass(lesson: Lesson) {
-        this.router.navigateByUrl(`/tabs/class/${lesson.id}`);
+        if (this.scheduleId)
+            this.router.navigateByUrl(`/tabs/class/${lesson.id}/${this.scheduleId}`);
+        else
+            this.router.navigateByUrl(`/tabs/class/${lesson.id}`);
     }
 
 }

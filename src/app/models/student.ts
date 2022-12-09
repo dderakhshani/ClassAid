@@ -1,4 +1,5 @@
 import { environment } from "src/environments/environment";
+import { Score, StudentNotes, StudentReminder } from "./remider";
 
 export class StudentModel {
 
@@ -20,6 +21,11 @@ export class StudentModel {
     personId: number;
 
     present: boolean;
+    reminders: StudentReminder[] = [];
+    notes: StudentNotes[] = [];
+    scores: Score[] = [];
+    homeWorkIssue: boolean;
+
 
     getImageUrl() {
         return `${environment.imageUrl}/students/student_${this.id}.jpg`;

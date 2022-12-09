@@ -10,16 +10,19 @@ export interface ClassModel {
     gradeId: number;
 }
 
-export class ClassTaskModel {
+export class ClassSessionModel {
     id: string;
     daySessionId: number;
     classId: number;
     lessonId: number;
     subLessonId: number;
     startTime: Date;
-    endTime: Date;
+    endTime?: Date;
 
-    book: Lesson;
-    lesson: Lesson;
-    class: ClassModel;
+
+    book?: Lesson;
+    lesson?: Lesson;
+    class?: ClassModel;
+    scheduleId?: number;
+
 }

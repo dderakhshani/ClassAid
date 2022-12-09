@@ -15,7 +15,12 @@
 </ion-header>
 
 <ion-content>
-
+    <div *ngIf="student" class="pt-3 d-flex flex-column align-items-center justify-content-center">
+        <ion-avatar>
+            <img alt="Avatar-Student" [src]="student?.getImageUrl()" />
+        </ion-avatar>
+        <b> {{student?.fullName}}</b>
+    </div>
     <ion-item>
         <ion-label position="stacked">موضوع</ion-label>
         <ion-input placeholder="یک موضوع را وارد نمایید"></ion-input>
@@ -54,7 +59,7 @@
     </ion-item>
 </ion-content>
 <ion-footer class="p-2">
-    <ion-button expand="block">
+    <ion-button expand="block" (click)="save()">
         <ion-icon name="save-outline" size="large"></ion-icon>
         <ion-label class="mt-2"> ذخیره</ion-label>
     </ion-button>

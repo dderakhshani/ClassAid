@@ -29,6 +29,9 @@ export class LessonService {
                     const allLessons = r.map(x => Object.assign(new Lesson(), x));
                     const books = allLessons.filter(x => x.parentId == null && x.schoolId);
                     this.allLessons$.next(allLessons);
+                    books.forEach(b => {
+                        b.subLessonCount = allLessons.filter(x => x.parentId == b.id).length;
+                    })
                     this.books$.next(books);
                     return resolve(books.filter(x => x.gradeId == gradeId && x.schoolId == schoolId));
                 });

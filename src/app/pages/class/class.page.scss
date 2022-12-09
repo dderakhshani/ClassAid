@@ -43,3 +43,17 @@ ion-col {
 .action-button {
     height: 70px;
 }
+
+ion-modal#score-modal {
+    --width: fit-content;
+    --min-width: 300px;
+    --height: fit-content;
+    --border-radius: 6px;
+    --box-shadow: 0 28px 48px rgba(0, 0, 0, 0.4);
+
+}
+
+ion-badge {
+    --padding-start: 4px;
+    --padding-end: 4px;
+}

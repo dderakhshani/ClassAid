@@ -41,7 +41,7 @@ export class HttpNativeService {
     }
 
     private handleError(error: any) {
-
+        alert(error);
         // The backend returned an unsuccessful response code.
         // The response body may contain clues as to what went wrong.
         let errorMessage: string = "ارتباط با سرور میسر نیست";

@@ -19,25 +19,25 @@
         </ion-button>
     </ion-item>
 
-    <div class="d-flex justify-content-center p-2">
-        <ion-segment [scrollable]="true" value="home" mode="ios">
-            <ion-segment-button value="reminder" id="open-reminder">
-                <ion-icon name="alarm-outline" class="text-info"></ion-icon>
-                <ion-label>یادآور</ion-label>
-            </ion-segment-button>
-            <ion-segment-button value="assignment" class="text-success">
-                <ion-icon name="library-outline"></ion-icon>
-                <ion-label>تکلیف</ion-label>
-            </ion-segment-button>
-            <ion-segment-button value="test" class="text-danger">
-                <ion-icon name="bar-chart-outline"></ion-icon>
-                <ion-label>آزمون</ion-label>
-            </ion-segment-button>
-            <ion-segment-button value="note" class="text-secondary" id="open-note">
-                <ion-icon name="reader-outline"></ion-icon>
-                <ion-label>یادداشت</ion-label>
-            </ion-segment-button>
-        </ion-segment>
+    <div class="d-flex justify-content-around p-2 pb-4">
+
+        <ion-button shape="circle" (click)="onReminder()" color="secondary">
+            <ion-icon slot="icon-only" name="alarm-outline"></ion-icon>
+            <ion-label>یادآور</ion-label>
+        </ion-button>
+        <ion-button shape="circle" color="success">
+            <ion-icon slot="icon-only" name="library-outline"></ion-icon>
+            <ion-label>تکلیف</ion-label>
+        </ion-button>
+        <ion-button shape="circle" color="danger">
+            <ion-icon slot="icon-only" name="bar-chart-outline"></ion-icon>
+            <ion-label>آزمون</ion-label>
+        </ion-button>
+        <ion-button shape="circle" color="warning" (click)="onNotes()">
+            <ion-icon slot="icon-only" name="reader-outline"></ion-icon>
+            <ion-label>یادداشت</ion-label>
+        </ion-button>
+
     </div>
     <hr>
     <div>
@@ -60,9 +60,25 @@
                         </ion-card-header>
                         <ion-card-content class="p-2 pt-0 pb-0">
                             <ng-container *ngIf="student.present">
-                                <ion-icon name="alarm-outline" class="text-info pe-1"></ion-icon>
-                                <ion-icon name="book-outline" class="text-danger pe-1"></ion-icon>
-                                <ion-icon name="reader-outline" class="text-warning pe-1"></ion-icon>
+                                <ion-badge *ngIf="student.reminders.length>0" class=" me-1" color="secondary" mode="ios">
+                                    <ion-icon name="alarm-outline" size="small"></ion-icon>
+                                </ion-badge>
+                                <ion-badge *ngIf="student.homeWorkIssue" class=" me-1" color="danger" mode="ios">
+                                    <ion-icon name="book-outline" size="small"></ion-icon>
+                                </ion-badge>
+                                <ion-badge *ngIf="student.notes.length>0" class=" me-1" color="warning" mode="ios">
+                                    <ion-icon name="reader-outline" size="small"></ion-icon>
+                                </ion-badge>
+
+
+                            </ng-container>
+                            <ng-container *ngFor="let score of student.scores">
+                                <ion-badge *ngIf="score.positiveNegetive" color="success" class=" me-1" mode="ios">
+                                    <ion-icon name="add-circle-outline" size="small"></ion-icon>
+                                </ion-badge>
+                                <ion-badge *ngIf="!score.positiveNegetive" color="danger" class=" me-1" mode="ios">
+                                    <ion-icon name="remove-circle-outline" size="small"></ion-icon>
+                                </ion-badge>
                             </ng-container>
                             <ion-badge color="danger" *ngIf="!student.present">غایب</ion-badge>
 
@@ -74,27 +90,27 @@
         </ion-grid>
     </div>
 
-    <ion-modal #modal_note trigger="open-note" [presentingElement]="presentingElement">
+    <ion-modal #modal_note [isOpen]="isNotesModalOpen" (didDismiss)="isNotesModalOpen=false" [presentingElement]="presentingElement">
         <ng-template>
-            <app-note [modal]="modal_note"></app-note>
+            <app-note [modal]="modal_note" [classTask]="globalService.currentClassTask" [book]="book" [lesson]="lesson" [student]="selectedStudent"></app-note>
         </ng-template>
     </ion-modal>
 
-    <ion-modal #modal_reminder trigger="open-reminder" [presentingElement]="presentingElement">
+    <ion-modal #modal_reminder [isOpen]="isReminderModalOpen" (didDismiss)="isReminderModalOpen=false" [presentingElement]="presentingElement">
         <ng-template>
-            <app-reminder [modal]="modal_reminder"></app-reminder>
+            <app-reminder [modal]="modal_reminder" [classTask]="globalService.currentClassTask" [book]="book" [lesson]="lesson" [student]="selectedStudent"></app-reminder>
         </ng-template>
     </ion-modal>
 
 
-    <ion-modal #modal [isOpen]="isModalOpen" (didDismiss)="isModalOpen=false" [initialBreakpoint]="0.3" [breakpoints]="[0, 0.3]">
+    <ion-modal #modal [isOpen]="isStudentActionsModalOpen" (didDismiss)="isStudentActionsModalOpen=false" [initialBreakpoint]="0.3" [breakpoints]="[0, 0.3]">
         <ng-template>
 
             <ion-content class="ion-padding">
                 <ion-grid fixed>
                     <ion-row>
                         <ion-col size="6" class="p-2">
-                            <ion-button fill="outline" color="primary" expand="block" class="action-button">
+                            <ion-button fill="outline" color="primary" expand="block" class="action-button" (click)="onStudentReminder()">
                                 <div class="d-flex flex-column p-2">
                                     <ion-icon name="alarm-outline" size="large"></ion-icon>
                                     <ion-label class="mt-2"> یادآور</ion-label>
@@ -113,7 +129,7 @@
                     </ion-row>
                     <ion-row>
                         <ion-col size="6" class="p-2">
-                            <ion-button fill="outline" color="secondary" expand="block" class="action-button">
+                            <ion-button fill="outline" (click)="onScore()" color="secondary" expand="block" class="action-button">
                                 <div class="d-flex flex-column p-2">
                                     <ion-icon name="star" size="large"></ion-icon>
                                     <ion-label class="mt-2"> امتیازدهی</ion-label>
@@ -121,7 +137,7 @@
                             </ion-button>
                         </ion-col>
                         <ion-col size="6" class="p-2">
-                            <ion-button fill="outline" color="tertiary" expand="block" class="action-button">
+                            <ion-button fill="outline" color="tertiary" expand="block" (click)="onStudentNotes()" class="action-button">
                                 <div class="d-flex flex-column p-2">
                                     <ion-icon name="reader-outline" size="large"></ion-icon>
                                     <ion-label class="mt-2"> یادداشت</ion-label>
@@ -131,6 +147,35 @@
                     </ion-row>
                 </ion-grid>
             </ion-content>
+        </ng-template>
+    </ion-modal>
+
+    <ion-modal #score_modal id="score-modal" [isOpen]="isScoreModalOpen" (didDismiss)="isScoreModalOpen=false">
+        <ng-template>
+            <div class="p-3">
+                <ion-segment value="postive" mode="ios">
+                    <ion-segment-button value="postive">
+                        <ion-icon name="add-circle-outline" class="text-success"></ion-icon>
+                        <ion-label>مثبت</ion-label>
+                    </ion-segment-button>
+                    <ion-segment-button value="negative" class="text-danger">
+                        <ion-icon name="remove-circle-outline"></ion-icon>
+                        <ion-label>ناخوشایند</ion-label>
+                    </ion-segment-button>
+                </ion-segment>
+                <ion-item class="pt-2">
+                    <ion-label position="stacked"> یادداشت</ion-label>
+                    <ion-textarea placeholder="متن خود را وارد نمایید"></ion-textarea>
+                </ion-item>
+                <div>
+                    <ion-button expand="block" (click)="saveScore()">
+                        <ion-icon name="save-outline" size="large"></ion-icon>
+                        <ion-label class="me-2"> ذخیره</ion-label>
+                    </ion-button>
+                </div>
+            </div>
+
+
         </ng-template>
     </ion-modal>
 </ion-content>

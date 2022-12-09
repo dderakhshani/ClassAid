@@ -54,6 +54,7 @@ export class HttpWebService {
     }
 
     private handleError(error: HttpErrorResponse) {
+        alert(JSON.stringify(error));
         if (error.error instanceof ErrorEvent) {
             // A client-side or network error occurred. Handle it accordingly.
             console.error('HttpWebService: An error occurred:', error.error.message);
@@ -73,8 +74,7 @@ export class HttpWebService {
                 `body was: ${error?.error}`);
         }
         // Return an observable with a user-facing error message.
-        return throwError(
-            'Something bad happened; please try again later.');
+        return throwError(error);
     }
 
     async presentToast(message: string) {

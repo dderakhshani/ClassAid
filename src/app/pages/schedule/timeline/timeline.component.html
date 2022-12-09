@@ -1,4 +1,4 @@
-<div class="days d-flex justify-content-around">
+<div class="days d-flex justify-content-around" *ngIf="!singleDay">
     <div *ngFor="let d of days" class="day px-2  d-flex align-items-center" [class.selected]="d.no==selectedDay.no" (click)="selectedDay=d">
         {{d.symbol}}
     </div>
@@ -17,8 +17,17 @@
                             {{getSchedule(r).lesson.name}}
                         </ion-label>
                     </ion-item>
-                    <ion-button color="secondary" (click)="edit(getSchedule(r))">ویرایش</ion-button>
-                    <ion-button color="danger" fill="outline" (click)="deleteItem(getSchedule(r))">حذف</ion-button>
+                    <ng-container *ngIf="singleDay">
+
+                        <ion-button color="primary" (click)="edit(getSchedule(r))">
+                            <ion-icon slot="start" name="play"></ion-icon>
+                            شروع
+                        </ion-button>
+                    </ng-container>
+                    <ng-container *ngIf="!singleDay">
+                        <ion-button color="secondary" (click)="edit(getSchedule(r))">ویرایش</ion-button>
+                        <ion-button color="danger" fill="outline" (click)="deleteItem(getSchedule(r))">حذف</ion-button>
+                    </ng-container>
                 </ng-container>
 
                 <ng-template #selectLesson>
@@ -30,7 +39,7 @@
                             درسی انتخاب نشده
                         </ion-label>
                     </ion-item>
-                    <ion-button (click)="openPicker(r)">انتخاب</ion-button>
+                    <ion-button *ngIf="!singleDay" (click)="openPicker(r)">انتخاب</ion-button>
                 </ng-template>
 
             </ion-card-content>

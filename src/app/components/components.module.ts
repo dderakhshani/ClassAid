@@ -1,22 +1,22 @@
-import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+
 import { IonicModule } from '@ionic/angular';
+import { TimelineComponent } from './timeline/timeline.component';
 import { NgxEchartsModule } from 'ngx-echarts';
-import { ComponentsModule } from './components/components.module';
 
 
 @NgModule({
-    imports: [CommonModule, IonicModule,
+    imports: [
+        CommonModule,
         FormsModule,
-        ComponentsModule,
+        IonicModule,
         NgxEchartsModule.forRoot({
             echarts: () => import('echarts')
         }),
     ],
-    declarations: [],
-    exports: [ComponentsModule, NgxEchartsModule
-    ],
-
+    declarations: [TimelineComponent],
+    exports: [TimelineComponent]
 })
-export class SharedModule { }
+export class ComponentsModule { }

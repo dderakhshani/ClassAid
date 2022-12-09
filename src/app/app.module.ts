@@ -11,7 +11,6 @@ import { SignupPageModule } from './pages/signup/signup.module';
 import { WelcomePageModule } from './pages/welcome/welcome.module';
 import { HttpClientModule } from '@angular/common/http';
 import { HTTP } from '@awesome-cordova-plugins/http/ngx';
-import { NgxEchartsModule } from 'ngx-echarts';
 
 @NgModule({
     declarations: [AppComponent],
@@ -23,10 +22,7 @@ import { NgxEchartsModule } from 'ngx-echarts';
         FormsModule,
         SignupPageModule,
         HomeModule,
-        HttpClientModule,
-        NgxEchartsModule.forRoot({
-            echarts: () => import('echarts')
-        }),
+        HttpClientModule
     ],
     providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
         HTTP],

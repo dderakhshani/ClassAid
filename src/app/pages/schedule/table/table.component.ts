@@ -1,13 +1,14 @@
-import { ScheduleTimeModel } from './../../../models/schedule';
+
 import { environment } from 'src/environments/environment';
 
-import { LessonService } from './../../../api/lesson.service';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ActionSheetController, PickerColumnOption, PickerController } from '@ionic/angular';
 import { ScheduleMode } from 'src/app/core/bases/constants';
 import { DateDay, Ring } from 'src/app/models/day';
 import { Lesson } from 'src/app/models/lessons';
 import { GlobalService } from 'src/app/services/global.service';
+import { ScheduleTimeModel } from 'src/app/models/schedule';
+import { LessonService } from 'src/app/api/lesson.service';
 
 @Component({
     selector: 'app-table',
@@ -32,7 +33,6 @@ export class TableComponent implements OnInit {
     days: DateDay[];
 
     constructor(private pickerCtrl: PickerController,
-        private globalService: GlobalService,
         private actionSheetCtrl: ActionSheetController,
         public lessonService: LessonService) {
 

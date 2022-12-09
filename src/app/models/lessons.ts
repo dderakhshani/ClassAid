@@ -14,5 +14,12 @@ export class Lesson {
         return `${environment.imageUrl}/lessons_org/grade_${this.gradeId}/c_${this.id}.jpg`;
     }
 
+    static getImageUrl(id: number) {
+        return `${environment.imageUrl}/lessons_org/flat/c_${id}.jpg`;
+    }
+
     parent?: Lesson;
+    subLessonCount: number;
+    sessionsCount: number;
+    lastSessionLesson: Lesson;
 }

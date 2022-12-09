@@ -61,3 +61,10 @@ ion-card.lesson {
         }
     }
 }
+
+.reminder {
+    ion-badge {
+        position: absolute;
+        right: 60px;
+    }
+}
