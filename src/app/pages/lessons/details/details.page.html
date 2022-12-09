@@ -18,13 +18,13 @@
             <ion-label>
                 <h3>{{book?.name}} </h3>
                 <p>آخرین درس:
-                    {{lastLesson?.name}} </p>
+                    {{book?.lastSessionLesson?.name}} </p>
             </ion-label>
 
         </ion-item>
         <ion-list>
             <ion-item *ngFor="let item of lessons">
-                <ion-icon *ngIf="item.taskTime;else wait" name="checkmark-circle-outline" slot="start" class="text-success"></ion-icon>
+                <ion-icon *ngIf="item.sessionsCount>0;else wait" name="checkmark-circle-outline" slot="start" class="text-success"></ion-icon>
                 <ng-template #wait>
                     <ion-icon name="time-outline" slot="start"></ion-icon>
                 </ng-template>
@@ -32,14 +32,23 @@
 
                 <ion-label>{{item.name}}</ion-label>
 
-                <ion-button slot="end" fill="clear" *ngIf="item.taskTime;else start">
-                    <ion-icon name="eye-outline"></ion-icon>
-                </ion-button>
-                <ng-template #start>
-                    <ion-button slot="end" fill="clear" (click)="startClass(item)">
-                        <ion-icon name="play-outline"></ion-icon>
-                    </ion-button>
-                </ng-template>
+                <div class="buttons">
+                    <ng-container *ngIf="item.sessionsCount>0;else start">
+                        <ion-button slot="end" fill="clear">
+                            <ion-icon name="eye-outline" color="secondary"></ion-icon>
+                        </ion-button>
+                        <ion-button slot="end" fill="clear" (click)="startClass(item)">
+                            <ion-icon name="play-outline"></ion-icon>
+                        </ion-button>
+                    </ng-container>
+
+                    <ng-template #start>
+                        <ion-button slot="end" fill="clear" (click)="startClass(item)">
+                            <ion-icon name="play"></ion-icon>
+                        </ion-button>
+                    </ng-template>
+                </div>
+
 
 
             </ion-item>

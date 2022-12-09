@@ -6,6 +6,7 @@ import { Lesson } from 'src/app/models/lessons';
 import { ScheduleTimeModel, ScheduleModel } from 'src/app/models/schedule';
 import { GlobalService } from 'src/app/services/global.service';
 import { ChartService } from 'src/app/services/chart.service';
+import { AssessMeasures } from 'src/app/models/stats-serie';
 
 @Component({
     selector: 'app-timeline',
@@ -13,7 +14,7 @@ import { ChartService } from 'src/app/services/chart.service';
     styleUrls: ['./timeline.component.scss'],
 })
 export class TimelineComponent implements OnInit {
-
+    AssessMeasures = AssessMeasures;
 
     @Input()
     schedules: ScheduleTimeModel[];
@@ -28,64 +29,25 @@ export class TimelineComponent implements OnInit {
     rings: Ring[];
 
 
-    constructor(private router: Router,
-        private alertController: AlertController,
+    constructor(
+
         private chartService: ChartService,
         public globalService: GlobalService,) {
 
     }
 
     ngOnInit() {
-
+        this.schedules.forEach(x => {
+            const i = Math.floor(Math.random() * 4);
+            x.lesson.avgAssess = AssessMeasures[i];
+        })
     }
 
     getSchedule(ring: Ring) {
-        //Reminder: remove -1
-        const schedule = this.schedules.find(x => x.ringId == ring.id && x.dayNo == this.selectedDay - 1);
+        const schedule = this.schedules.find(x => x.ringId == ring.id && x.dayNo == this.selectedDay);
         return schedule;
     }
 
-    lessonChartOptions(schedule: ScheduleTimeModel): any {
-        return this.chartService.createPieGaugeChart(15, 0, 100, "ساعت");
-    }
 
-    openClass(schedule: ScheduleTimeModel) {
-        if (schedule.session?.endTime) {
-            //TODO: Open Report class
-        }
-        else
-            this.router.navigateByUrl(`/tabs/class/0`);
-    }
-
-    async start(schedule: ScheduleTimeModel) {
-        if (this.globalService.currentClassTask) {
-            const alert = await this.alertController.create({
-                header: 'هشدار',
-                subHeader: 'نمی توانید کلاس جدیدی را شروع کرد',
-                message: 'کلاس قبلی هنوز باز می باشد، می بایست وارد کلاس شده و کلاس را پایان دهید',
-                buttons: [
-                    {
-                        text: 'تایید',
-                        role: 'cancel',
-                        handler: () => {
-
-                        },
-                    },
-                    {
-                        text: 'رفتن به کلاس',
-                        role: 'confirm',
-                        handler: () => {
-                            this.router.navigateByUrl(`/tabs/class/0`);
-                        },
-                    },
-                ],
-            });
-
-            await alert.present();
-            return;
-        }
-        this.router.navigateByUrl(`/lessons/details/${schedule.lessonId}/${schedule.id}`);
-
-    }
 
 }

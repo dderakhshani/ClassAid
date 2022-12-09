@@ -23,9 +23,9 @@ export class AttendancePage implements OnInit {
         private navCtrl: NavController,) { }
 
     ngOnInit() {
-        this.globalService.selectedClass$.subscribe(selectedClass => {
-            if (selectedClass)
-                this.studentsService.getStudentsOfClass(selectedClass.id).then(data => {
+        this.globalService.ready$.subscribe(ready => {
+            if (ready)
+                this.studentsService.getStudentsOfClass(this.globalService.selectedClass.id).then(data => {
                     this.students = data.map(x => Object.assign(new StudentModel(), x));
                 })
         })

@@ -54,7 +54,7 @@ export class ClassService {
 
     addTask(session: ClassSessionModel): Promise<string> {
         return new Promise(resolve => {
-            this.httpService.http.getDataByParam<string>(session, "class/AddTask").then(data => {
+            this.httpService.http.postJsonData<string>(session, "class/AddTask").then(data => {
                 return resolve(data);
             });
         });
@@ -62,7 +62,7 @@ export class ClassService {
 
     endTask(taskId: string): Promise<string> {
         return new Promise(resolve => {
-            this.httpService.http.getDataByParam<string>({ taskId: taskId }, "class/EndTask").then(data => {
+            this.httpService.http.postJsonData<string>(taskId, "class/EndTask").then(data => {
                 return resolve(data);
             });
         });

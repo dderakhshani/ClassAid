@@ -39,12 +39,12 @@ export class SchedulePage implements OnInit {
     }
 
     ngOnInit() {
-        this.globalService.selectedClass$.subscribe(selectedClass => {
-            if (selectedClass) {
+        this.globalService.ready$.subscribe(ready => {
+            if (ready) {
                 this.rings = this.globalService.rings;
-                this.lessonService.getBooks(selectedClass.schoolId, selectedClass.gradeId).then(r => {
+                this.lessonService.getBooks(this.globalService.selectedClass.schoolId, this.globalService.selectedClass.gradeId).then(r => {
                     this.lessons = r;
-                    this.scheduleService.get(selectedClass.id).then(x => {
+                    this.scheduleService.get(this.globalService.selectedClass.id).then(x => {
                         this.schedule = x;
                         x.scheduleTimes.forEach(st => {
                             st.ring = this.rings.find(x => x.id == st.ringId);

@@ -519,8 +519,8 @@ export class ChartService {
     createPieGaugeChart(value: number, min: number, max: number, unit: string) {
         const gaugeData = [
             {
-                value: 20,
-                name: 'ساعت',
+                value: value,
+                name: unit,
                 title: {
                     offsetCenter: ['0%', '40%']
                 },

@@ -61,7 +61,7 @@ export class ReminderComponent implements OnInit {
                 remindTime: "",
                 notes: this.notes
             };
-            this.student.reminders.push();
+            this.student.reminders.push(reminder);
             this.reminderService.student_reminders$.next([...this.reminderService.student_reminders$.value, reminder]);
         }
         else {

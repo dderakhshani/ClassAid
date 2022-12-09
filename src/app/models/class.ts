@@ -23,6 +23,6 @@ export class ClassSessionModel {
     book?: Lesson;
     lesson?: Lesson;
     class?: ClassModel;
-    scheduleId?: number;
+    scheduleTimeId?: number;
 
 }

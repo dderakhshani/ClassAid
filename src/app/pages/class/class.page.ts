@@ -20,6 +20,7 @@ export class ClassPage implements OnInit {
     lesson: Lesson;
     book: Lesson;
     selectedStudent?: StudentModel;
+    lessonId: number;
     scheduleId?: number;
 
     isStudentActionsModalOpen = false;
@@ -36,47 +37,48 @@ export class ClassPage implements OnInit {
         private actionSheetCtrl: ActionSheetController,
         private router: Router) {
 
-        const lessonId = Number(this.route.snapshot.paramMap.get('lessonId'));
+        this.lessonId = Number(this.route.snapshot.paramMap.get('lessonId'));
         if (this.route.snapshot.paramMap.has('scheduleId'))
             this.scheduleId = Number(this.route.snapshot.paramMap.get('scheduleId'))
 
-        if (lessonId == 0) {
-            this.lesson = globalService.currentClassTask.lesson;
-            this.book = globalService.currentClassTask.book;
-        }
-        else {
-            lessonService.getLessonById(lessonId).then(l => {
-                this.lesson = l;
-                lessonService.getLessonById(this.lesson.parentId).then(b => {
-                    this.book = b;
 
-                    const session = <ClassSessionModel>{
-                        id: uuidv4(),
-                        lesson: this.lesson,
-                        book: this.book,
-                        lessonId: this.book.id,
-                        subLessonId: this.lesson.id,
-                        startTime: new Date(),
-                        scheduleId: this.scheduleId
-                    };
-
-                    globalService.startClass(session);
-                });
-            });
-
-
-        }
 
     }
 
     ngOnInit() {
         this.presentingElement = document.querySelector('.ion-page');
         //tobe sure students will load from server if not already loaded
-        this.globalService.selectedClass$.subscribe(selectedClass => {
-            if (selectedClass)
-                this.studentsService.getStudentsOfClass(selectedClass.id).then(data => {
+        this.globalService.ready$.subscribe(ready => {
+            if (ready) {
+                if (this.lessonId == 0) {
+                    this.lesson = this.globalService.currentClassTask.lesson;
+                    this.book = this.globalService.currentClassTask.book;
+                }
+                else {
+                    this.lessonService.getLessonById(this.lessonId).then(l => {
+                        this.lesson = l;
+                        this.lessonService.getLessonById(this.lesson.parentId).then(b => {
+                            this.book = b;
+
+                            const session = <ClassSessionModel>{
+                                id: uuidv4(),
+                                lesson: this.lesson,
+                                book: this.book,
+                                lessonId: this.book.id,
+                                subLessonId: this.lesson.id,
+                                startTime: new Date(),
+                                scheduleTimeId: this.scheduleId
+                            };
+                            //TODO: Promise base then navigate
+                            this.globalService.startClass(session);
+                        });
+                    });
+                }
+                this.studentsService.getStudentsOfClass(this.globalService.selectedClass.id).then(data => {
 
                 });
+            }
+
         })
 
     }
@@ -90,6 +92,7 @@ export class ClassPage implements OnInit {
     }
 
     endClass() {
+        //TODO: Promise base then navigate
         this.globalService.endClass();
         this.router.navigateByUrl("tabs/home");
     }

@@ -55,8 +55,8 @@ export class HomePage implements OnInit {
     ngOnInit(): void {
         this.todayDay = this.globalService.todayDay;
 
-        this.globalService.selectedClass$.subscribe(selectedClass => {
-            if (selectedClass) {
+        this.globalService.ready$.subscribe(ready => {
+            if (ready) {
                 this.todayShedules = this.globalService.todayShedules;
 
                 this.lessonService.getLessonById(1185).then(l => {

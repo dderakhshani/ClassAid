@@ -1,4 +1,5 @@
 import { environment } from "src/environments/environment";
+import { AssessMeasure } from "./stats-serie";
 
 export class Lesson {
     id: number;
@@ -8,7 +9,7 @@ export class Lesson {
     schoolId: number;
     parentId: number;
 
-    taskTime: string;
+    // taskTime: string;
 
     getImageUrl() {
         return `${environment.imageUrl}/lessons_org/grade_${this.gradeId}/c_${this.id}.jpg`;
@@ -19,7 +20,10 @@ export class Lesson {
     }
 
     parent?: Lesson;
+
     subLessonCount: number;
     sessionsCount: number;
     lastSessionLesson: Lesson;
+    avgAssessValue: number;
+    avgAssess: AssessMeasure;
 }

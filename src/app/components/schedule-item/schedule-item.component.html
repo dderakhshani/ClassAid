@@ -1,0 +1,91 @@
+<ion-card class="lesson item_content">
+    <ion-card-content>
+        <ng-container *ngIf="schedule;else selectLesson">
+            <ion-grid class="ion-no-padding">
+                <ion-row>
+                    <ion-col size="12">
+                        <ion-item>
+                            <ion-avatar slot="start">
+                                <img alt="Avatar" [src]="schedule.lesson.getImageUrl()" />
+                            </ion-avatar>
+                            <ion-label>
+                                <h3>{{schedule.lesson.name}} </h3>
+                                <p>
+                                    {{schedule.session?.lesson?.name}} </p>
+                            </ion-label>
+                            <ion-button slot="end" (click)="start(schedule)" color="success" *ngIf="schedule.session==null">
+                                <ion-icon slot="start" name="play"></ion-icon>
+                                شروع
+                            </ion-button>
+
+                            <ng-container *ngIf="schedule.session?.endTime;else view">
+                                <ion-button slot="end" color="warning" (click)="openClass(schedule)">
+                                    <ion-icon slot="start" name="book"></ion-icon>
+                                    گزارش
+                                </ion-button>
+                            </ng-container>
+                            <ng-template #view>
+                                <ion-button slot="end" color="secondary" (click)="openClass(schedule)" *ngIf="schedule.session">
+                                    <ion-icon slot="start" name="book"></ion-icon>
+                                    مشاهده
+                                </ion-button>
+                            </ng-template>
+                        </ion-item>
+                    </ion-col>
+                </ion-row>
+                <ion-row>
+                    <ion-col size="3" class="ion-no-padding ion-justify-content-center">
+                        <div echarts [options]="lessonChartOptions(schedule)" class="widget-chart" theme="roma"></div>
+                    </ion-col>
+                    <ion-col>
+                        <ion-grid class="ion-no-padding">
+                            <ion-row>
+                                <ion-col size="6" class="ion-no-padding">
+                                    <ion-item lines="none">
+                                        <ion-icon name="book-outline" slot="start" size="small"></ion-icon>
+                                        <ion-label> جلسه برگزار شده
+                                            {{schedule.lesson.sessionsCount}}
+                                        </ion-label>
+                                    </ion-item>
+                                </ion-col>
+                                <ion-col size="6" class="ion-no-padding">
+                                    <ion-item lines="none">
+                                        <ion-icon name="stopwatch-outline" slot="start" size="small"></ion-icon>
+                                        <ion-label>50 دقیقه</ion-label>
+                                    </ion-item>
+                                </ion-col>
+                            </ion-row>
+                            <ion-row>
+                                <ion-col size="6" class="ion-no-padding">
+                                    <ion-item lines="none">
+                                        <ion-icon [color]="schedule.lesson?.avgAssess?.ionColor" name="bar-chart" slot="start" size="small"></ion-icon>
+                                        <ion-label class="{{schedule.lesson?.avgAssess?.bdColor}}">میانگین:
+                                            {{schedule.lesson?.avgAssess?.shortTitle}}
+                                        </ion-label>
+                                    </ion-item>
+                                </ion-col>
+                                <ion-col size="6" class="ion-no-padding">
+                                    <ion-item lines="none">
+                                        <ion-icon name="star" slot="start" size="small"></ion-icon>
+                                        <ion-label>5 جلسه برگزار شده</ion-label>
+                                    </ion-item>
+                                </ion-col>
+                            </ion-row>
+                        </ion-grid>
+                    </ion-col>
+                </ion-row>
+            </ion-grid>
+        </ng-container>
+        <ng-template #selectLesson>
+            <ion-item lines="none">
+                <ion-avatar slot="start">
+                    <img src="https://ionicframework.com/docs/img/demos/thumbnail.svg">
+                </ion-avatar>
+                <ion-label>
+                    درسی ثبت نشده
+                </ion-label>
+            </ion-item>
+
+        </ng-template>
+    </ion-card-content>
+</ion-card>

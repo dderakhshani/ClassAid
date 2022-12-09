@@ -13,7 +13,7 @@
                                     <ion-label>
                                         <h3>{{getSchedule(r).lesson.name}} </h3>
                                         <p>
-                                            {{getSchedule(r).lesson?.name}} </p>
+                                            {{getSchedule(r).session?.lesson?.name}} </p>
                                     </ion-label>
                                     <ion-button slot="end" (click)="start(getSchedule(r))" color="success" *ngIf="getSchedule(r).session==null">
                                         <ion-icon slot="start" name="play"></ion-icon>
@@ -45,7 +45,9 @@
                                         <ion-col size="6" class="ion-no-padding">
                                             <ion-item lines="none">
                                                 <ion-icon name="book-outline" slot="start" size="small"></ion-icon>
-                                                <ion-label>5 جلسه برگزار شده</ion-label>
+                                                <ion-label> جلسه برگزار شده
+                                                    {{getSchedule(r).lesson.sessionsCount}}
+                                                </ion-label>
                                             </ion-item>
                                         </ion-col>
                                         <ion-col size="6" class="ion-no-padding">
@@ -58,8 +60,10 @@
                                     <ion-row>
                                         <ion-col size="6" class="ion-no-padding">
                                             <ion-item lines="none">
-                                                <ion-icon name="star" slot="start" size="small"></ion-icon>
-                                                <ion-label>5 جلسه برگزار شده</ion-label>
+                                                <ion-icon [color]="getSchedule(r).lesson?.avgAssess?.ionColor" name="bar-chart" slot="start" size="small"></ion-icon>
+                                                <ion-label class="{{getSchedule(r).lesson?.avgAssess?.bdColor}}">میانگین:
+                                                    {{getSchedule(r).lesson?.avgAssess?.shortTitle}}
+                                                </ion-label>
                                             </ion-item>
                                         </ion-col>
                                         <ion-col size="6" class="ion-no-padding">
