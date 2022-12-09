@@ -18,9 +18,13 @@ export class LessonsPage implements OnInit {
         private router: Router) { }
 
     ngOnInit() {
-        this.lessonService.getBooks(this.globalService.selectedClass.schoolId, this.globalService.selectedClass.gradeId).then(r => {
-            this.lessons = r;
-        });
+        this.globalService.ready$.subscribe(ready => {
+            if (ready)
+                this.lessonService.getBooks(this.globalService.selectedClass.schoolId, this.globalService.selectedClass.gradeId).then(r => {
+                    this.lessons = r;
+                });
+        })
+
     }
 
     detail(item: Lesson) {

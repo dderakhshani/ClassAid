@@ -25,6 +25,8 @@
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
 
+@import "theme/variables.scss";
+
 :root {
     --ion-background-color: #fff;
 }
@@ -40,8 +42,6 @@ ion-label {
 ion-header {
     background-image: url("/assets/img/header.png");
     color: white;
-
-
 
     ion-toolbar {
         --background: transparent;
@@ -66,6 +66,16 @@ ion-header {
         width: 100%;
         transform: translateY(-15%);
     }
+
+    color: white;
+
+
+    ion-icon,
+    ion-back-button,
+    ion-button {
+        color: var(--ion-color-primary);
+    }
+
 }
 
 .round-content {

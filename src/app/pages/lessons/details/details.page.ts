@@ -23,16 +23,19 @@ export class DetailsPage implements OnInit {
 
         if (this.route.snapshot.paramMap.has('scheduleId'))
             this.scheduleId = Number(this.route.snapshot.paramMap.get('scheduleId'))
-
-        lessonService.getLessonById(bookId).then(b => {
-            this.book = b;
-            this.lessonService.getLessonsByParentId(this.book.id).then(r => {
-                this.lessons = [...r];
-                this.lessons.forEach(l => {
-                    l.sessionsCount = this.globalService.sessions.filter(x => x.subLessonId == l.id).length;
-                })
-            });
+        this.globalService.ready$.subscribe(ready => {
+            if (ready)
+                lessonService.getLessonById(bookId).then(b => {
+                    this.book = b;
+                    this.lessonService.getLessonsByParentId(this.book.id).then(r => {
+                        this.lessons = [...r];
+                        this.lessons.forEach(l => {
+                            l.sessionsCount = this.globalService.sessions.filter(x => x.subLessonId == l.id).length;
+                        })
+                    });
+                });
         });
+
     }
 
     ngOnInit() {

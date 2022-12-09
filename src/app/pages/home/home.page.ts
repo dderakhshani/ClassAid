@@ -31,7 +31,8 @@ export class HomePage implements OnInit {
     viewMode: "dashboard" | "timeline" = "dashboard";
 
     absentStudents: StudentModel[] = [];
-    nextLesson: Lesson;
+    nextSchedule: ScheduleTimeModel;
+    nextScheduleStatus: 'none' | 'has' | 'finish' = 'none';
     lessonChartOptions: any;
     dateName: string;
     todayDay: number;
@@ -59,8 +60,18 @@ export class HomePage implements OnInit {
             if (ready) {
                 this.todayShedules = this.globalService.todayShedules;
 
+                const l = this.todayShedules.find((x: ScheduleTimeModel) => x.session == null);
+                const nextScheduleIndex = this.todayShedules.indexOf(l);
+                if (nextScheduleIndex > -1 && nextScheduleIndex < this.todayShedules.length) {
+                    this.nextScheduleStatus = 'has';
+                    this.nextSchedule = this.todayShedules[nextScheduleIndex];
+                }
+                else if (this.todayShedules.length > 0)
+                    this.nextScheduleStatus = 'finish';
+                else
+                    this.nextScheduleStatus = 'none';
+
                 this.lessonService.getLessonById(1185).then(l => {
-                    this.nextLesson = l;
                     this.lessonChartOptions = this.chartService.createPieGaugeChart(10, 0, 100, "ساعت");
                 });
 
