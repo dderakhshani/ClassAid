@@ -1,7 +1,8 @@
 import { ClassService } from './api/class.service';
 import { GlobalService } from 'src/app/services/global.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { StudentsService } from './api/students.service';
+import { IonRouterOutlet, Platform } from '@ionic/angular';
 
 @Component({
     selector: 'app-root',
@@ -9,7 +10,10 @@ import { StudentsService } from './api/students.service';
     styleUrls: ['app.component.scss'],
 })
 export class AppComponent implements OnInit {
+    @ViewChild(IonRouterOutlet, { static: true }) routerOutlet: IonRouterOutlet;
+
     constructor(private globalService: GlobalService,
+        private platform: Platform,
         private classService: ClassService) {
 
     }
@@ -19,6 +23,9 @@ export class AppComponent implements OnInit {
             this.globalService.selectedClass = data[0];//will load students and rings automatically
 
         });
-
+        this.platform.backButton.subscribe(() => {
+            if (!this.routerOutlet.canGoBack())
+                navigator['app'].exitApp();
+        });
     }
 }

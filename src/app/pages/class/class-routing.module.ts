@@ -8,13 +8,15 @@ const routes: Routes = [
         path: ':lessonId',
         component: ClassPage
     },
+
+    {
+        path: 'assessment',
+        loadChildren: () => import('../assessment/assessment.module').then(m => m.AssessmentPageModule)
+    },
     {
         path: ':lessonId/:scheduleId',
         component: ClassPage
-    }, {
-        path: 'assessment',
-        loadChildren: () => import('../assessment/assessment.module').then(m => m.AssessmentPageModule)
-    }
+    },
 ];
 
 @NgModule({

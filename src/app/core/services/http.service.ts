@@ -11,6 +11,6 @@ export class HttpService {
     public http: HttpNativeService | HttpWebService;
 
     constructor(private platform: Platform, private angularHttp: HttpWebService, private nativeHttp: HttpNativeService) {
-        this.http = this.platform.is('mobileweb') ? this.angularHttp : this.nativeHttp;
+        this.http = this.angularHttp;//this.platform.is('mobileweb') ? this.angularHttp : this.nativeHttp;
     }
 }

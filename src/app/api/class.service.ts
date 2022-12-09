@@ -52,17 +52,17 @@ export class ClassService {
     }
 
 
-    addTask(session: ClassSessionModel): Promise<string> {
+    addTask(session: ClassSessionModel): Promise<boolean> {
         return new Promise(resolve => {
-            this.httpService.http.postJsonData<string>(session, "class/AddTask").then(data => {
+            this.httpService.http.postJsonData<boolean>(session, "class/AddTask").then(data => {
                 return resolve(data);
             });
         });
     }
 
-    endTask(taskId: string): Promise<string> {
+    endTask(taskId: string): Promise<boolean> {
         return new Promise(resolve => {
-            this.httpService.http.postJsonData<string>(taskId, "class/EndTask").then(data => {
+            this.httpService.http.postJsonData<boolean>(taskId, "class/EndTask").then(data => {
                 return resolve(data);
             });
         });

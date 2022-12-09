@@ -59,7 +59,7 @@ ion-header {
 
 .content-header {
     min-height: 150px;
-    max-height: 200px;
+    max-height: 28%;
     overflow: hidden;
 
     img {
@@ -70,11 +70,11 @@ ion-header {
     color: white;
 
 
-    ion-icon,
-    ion-back-button,
-    ion-button {
-        color: var(--ion-color-primary);
-    }
+    // ion-icon,
+    // ion-back-button,
+    // ion-button {
+    //     color: var(--ion-color-primary);
+    // }
 
 }
 

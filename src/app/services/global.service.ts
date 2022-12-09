@@ -22,7 +22,7 @@ export class GlobalService {
     public todayDay: number;
     public rings: Ring[];//Ring is diffrent for each school & grade (& maybe class)
 
-    ready$ = new ReplaySubject<boolean>();
+    ready$ = new BehaviorSubject<boolean>(false);
 
     selectedClass$ = new BehaviorSubject<ClassModel>(null);
     public classSessions$ = new BehaviorSubject<ClassSessionModel[]>([]);
@@ -142,28 +142,35 @@ export class GlobalService {
     }
 
 
-    startClass(session: ClassSessionModel) {
-        session.classId = this.selectedClass.id;
-        this.classService.addTask(session).then(result => {
+    startClass(session: ClassSessionModel): Promise<boolean> {
+        return new Promise((resolve, reject) => {
+            session.classId = this.selectedClass.id;
+            this.classService.addTask(session).then(result => {
+                if (!result) {
+                    reject(false);
+                    return;
+                }
+                //To prevent circular reference in saving to storage(no lesson stats)
+                const raw_session = { ...session };
+                raw_session.book = null;
+                raw_session.lesson = null;
 
-            //To prevent circular reference in saving to storage(no lesson stats)
-            const raw_session = { ...session };
-            raw_session.book = null;
-            raw_session.lesson = null;
+                this.currentClassTask = session;
 
-            this.currentClassTask = session;
+                //Updating Schdules
+                if (session.scheduleTimeId)
+                    this.todayShedules.find(x => x.id == session.scheduleTimeId).session = session;
+                //lesson filled in Class.ts(caller)
+                session.book.sessionsCount += 1;
+                session.book.lastSessionLesson = this.lessonService.allLessons$.value.find(x => x.id == session.subLessonId);
 
-            //Updating Schdules
-            if (session.scheduleTimeId)
-                this.todayShedules.find(x => x.id == session.scheduleTimeId).session = session;
-            //lesson filled in Class.ts(caller)
-            session.book.sessionsCount += 1;
-            session.book.lastSessionLesson = this.lessonService.allLessons$.value.find(x => x.id == session.subLessonId);
+                this.classSessions$.next([...this.classSessions$.value, session]);
 
-            this.classSessions$.next([...this.classSessions$.value, session]);
-
-            this.storageService.saveStorage(CLASS_STORAGE, JSON.stringify(raw_session));
+                this.storageService.saveStorage(CLASS_STORAGE, JSON.stringify(raw_session));
+                resolve(true);
+            })
         })
+
 
     }
 

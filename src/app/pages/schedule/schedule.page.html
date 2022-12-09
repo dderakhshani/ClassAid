@@ -23,7 +23,10 @@
             </ion-segment-button>
         </ion-segment>
         <br>
-        <app-table *ngIf="displayMode=='table'" [rings]="rings" [days]="days" [(schedules)]="schedules" [lessons]="lessons"></app-table>
+        <div style="overflow-x: auto;">
+            <app-table *ngIf="displayMode=='table'" [rings]="rings" [days]="days" [(schedules)]="schedules" [lessons]="lessons"></app-table>
+        </div>
+
         <app-timeline *ngIf="displayMode=='timeline'" [rings]="rings" [days]="days" [(schedules)]="schedules" [lessons]="lessons"></app-timeline>
     </div>
 </ion-content>

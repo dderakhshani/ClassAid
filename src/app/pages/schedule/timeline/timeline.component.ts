@@ -1,3 +1,4 @@
+import { GlobalService } from 'src/app/services/global.service';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { PickerColumnOption, PickerController } from '@ionic/angular';
 import { DateDay, Ring } from 'src/app/models/day';
@@ -30,14 +31,18 @@ export class TimelineComponent implements OnInit {
     @Input()
     days: DateDay[];
 
-    constructor(private pickerCtrl: PickerController,) {
+    constructor(private pickerCtrl: PickerController, private globalService: GlobalService) {
 
     }
 
     ngOnInit() {
         //Single day mode has no days
-        if (this.days && this.days.length > 0)
+        if (this.days && this.days.length > 0) {
             this.selectedDay = this.days[0];
+            this.selectedDay = this.days.find(x => x.no == this.globalService.todayDay);
+
+        }
+
     }
 
     getSchedule(ring: Ring) {

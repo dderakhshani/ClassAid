@@ -1,69 +1,69 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>user-profile</ion-title>
-  </ion-toolbar>
+    <ion-toolbar>
+        <ion-title>مشخصات کاربر</ion-title>
+    </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <div class="item-prof">
-    <ion-title>
-      نام و نام خانوادگی خود را وارد نمایید
-    </ion-title>
+    <div class="item-prof">
+        <ion-title>
+            نام و نام خانوادگی خود را وارد نمایید
+        </ion-title>
 
-    <ion-title class="item-title">
-      نام و نام خانوادگی
-    </ion-title>
+        <ion-title class="item-title">
+            نام و نام خانوادگی
+        </ion-title>
 
-    <ion-item lines="none">
-      <ion-input type="text" class="input-rounded" value="" [(ngModel)]="user.fullName"></ion-input>
-    </ion-item>
+        <ion-item lines="none">
+            <ion-input type="text" class="input-rounded" value="" [(ngModel)]="user.fullName"></ion-input>
+        </ion-item>
 
-  </div>
+    </div>
 
-  <div class="item-prof">
-    <ion-title>
-      ایمیل خود را وارد نمایید
-    </ion-title>
+    <div class="item-prof">
+        <ion-title>
+            ایمیل خود را وارد نمایید
+        </ion-title>
 
-    <ion-title class="item-title">
-      ایمیل
-    </ion-title>
+        <ion-title class="item-title">
+            ایمیل
+        </ion-title>
 
-    <ion-item lines="none">
-      <ion-input type="text" class="input-rounded" value="" [(ngModel)]="user.email"></ion-input>
-    </ion-item>
+        <ion-item lines="none">
+            <ion-input type="text" class="input-rounded" value="" [(ngModel)]="user.email"></ion-input>
+        </ion-item>
 
-  </div>
+    </div>
 
-  <div class="item-prof">
-    <ion-title>
-      شماره موبایل خود را وارد نمایید
-    </ion-title>
+    <div class="item-prof">
+        <ion-title>
+            شماره موبایل خود را وارد نمایید
+        </ion-title>
 
-    <ion-title class="item-title">
-      موبایل
-    </ion-title>
+        <ion-title class="item-title">
+            موبایل
+        </ion-title>
 
-    <ion-item lines="none">
-      <ion-input type="text" class="input-rounded" value="" [(ngModel)]="user.mobile"></ion-input>
-    </ion-item>
+        <ion-item lines="none">
+            <ion-input type="text" class="input-rounded" value="" [(ngModel)]="user.mobile"></ion-input>
+        </ion-item>
 
-  </div>
+    </div>
 
-  <div class="item-prof">
-    <ion-title>
-      نام کاربری خود را وارد نمایید
-    </ion-title>
+    <div class="item-prof">
+        <ion-title>
+            نام کاربری خود را وارد نمایید
+        </ion-title>
 
-    <ion-title class="item-title">
-      نام کاربری
-    </ion-title>
+        <ion-title class="item-title">
+            نام کاربری
+        </ion-title>
 
-    <ion-item lines="none">
-      <ion-input type="text" class="input-rounded" value="" [(ngModel)]="user.username"></ion-input>
-    </ion-item>
+        <ion-item lines="none">
+            <ion-input type="text" class="input-rounded" value="" [(ngModel)]="user.username"></ion-input>
+        </ion-item>
 
-  </div>
+    </div>
 
-  <ion-button (click)="saveProfile()" class="input-button">ذخیره</ion-button>
+    <ion-button (click)="saveProfile()" class="input-button">ذخیره</ion-button>
 </ion-content>

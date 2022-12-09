@@ -1,0 +1,236 @@
+/*
+ * App Global CSS
+ * ----------------------------------------------------------------------------
+ * Put style rules here that you want to apply globally. These styles are for
+ * the entire app and not just one component. Additionally, this file can be
+ * used as an entry point to import other CSS/Sass files to be included in the
+ * output CSS.
+ * For more information on global stylesheets, visit the documentation:
+ * https://ionicframework.com/docs/layout/global-stylesheets
+ */
+/* Core CSS required for Ionic components to work properly */
+@import "~@ionic/angular/css/core.css";
+/* Basic CSS for apps built with Ionic */
+@import "~@ionic/angular/css/normalize.css";
+@import "~@ionic/angular/css/structure.css";
+@import "~@ionic/angular/css/typography.css";
+@import "~@ionic/angular/css/display.css";
+/* Optional CSS utils that can be commented out */
+@import "~@ionic/angular/css/padding.css";
+@import "~@ionic/angular/css/float-elements.css";
+@import "~@ionic/angular/css/text-alignment.css";
+@import "~@ionic/angular/css/text-transformation.css";
+@import "~@ionic/angular/css/flex-utils.css";
+/** Ionic CSS Variables **/
+:root {
+  /** primary **/
+  --ion-color-primary: #2cae65;
+  --ion-color-primary-rgb: 56, 128, 255;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-contrast-rgb: 255, 255, 255;
+  --ion-color-primary-shade: #3171e0;
+  --ion-color-primary-tint: #4c8dff;
+  /** secondary **/
+  --ion-color-secondary: #4E7DF1;
+  --ion-color-secondary-rgb: 61, 194, 255;
+  --ion-color-secondary-contrast: #ffffff;
+  --ion-color-secondary-contrast-rgb: 255, 255, 255;
+  --ion-color-secondary-shade: #36abe0;
+  --ion-color-secondary-tint: #50c8ff;
+  /** tertiary **/
+  --ion-color-tertiary: #e0ac08;
+  --ion-color-tertiary-rgb: 82, 96, 255;
+  --ion-color-tertiary-contrast: #ffffff;
+  --ion-color-tertiary-contrast-rgb: 255, 255, 255;
+  --ion-color-tertiary-shade: #4854e0;
+  --ion-color-tertiary-tint: #6370ff;
+  /** success **/
+  --ion-color-success: #2dd36f;
+  --ion-color-success-rgb: 45, 211, 111;
+  --ion-color-success-contrast: #ffffff;
+  --ion-color-success-contrast-rgb: 255, 255, 255;
+  --ion-color-success-shade: #28ba62;
+  --ion-color-success-tint: #42d77d;
+  /** warning **/
+  --ion-color-warning: #ffc409;
+  --ion-color-warning-rgb: 255, 196, 9;
+  --ion-color-warning-contrast: #000000;
+  --ion-color-warning-contrast-rgb: 0, 0, 0;
+  --ion-color-warning-shade: #e0ac08;
+  --ion-color-warning-tint: #ffca22;
+  /** danger **/
+  --ion-color-danger: #eb445a;
+  --ion-color-danger-rgb: 235, 68, 90;
+  --ion-color-danger-contrast: #ffffff;
+  --ion-color-danger-contrast-rgb: 255, 255, 255;
+  --ion-color-danger-shade: #cf3c4f;
+  --ion-color-danger-tint: #ed576b;
+  /** dark **/
+  --ion-color-dark: #222428;
+  --ion-color-dark-rgb: 34, 36, 40;
+  --ion-color-dark-contrast: #ffffff;
+  --ion-color-dark-contrast-rgb: 255, 255, 255;
+  --ion-color-dark-shade: #1e2023;
+  --ion-color-dark-tint: #383a3e;
+  /** medium **/
+  --ion-color-medium: #92949c;
+  --ion-color-medium-rgb: 146, 148, 156;
+  --ion-color-medium-contrast: #ffffff;
+  --ion-color-medium-contrast-rgb: 255, 255, 255;
+  --ion-color-medium-shade: #808289;
+  --ion-color-medium-tint: #9d9fa6;
+  /** light **/
+  --ion-color-light: #f4f5f8;
+  --ion-color-light-rgb: 244, 245, 248;
+  --ion-color-light-contrast: #000000;
+  --ion-color-light-contrast-rgb: 0, 0, 0;
+  --ion-color-light-shade: #d7d8da;
+  --ion-color-light-tint: #f5f6f9;
+}
+
+@font-face {
+  font-family: "IRANSansWeb";
+  font-style: normal;
+  font-weight: 300;
+  src: local("IRANSansWeb Light"), local("IRANSansWeb-Light"), url("../assets/fonts/IRANSansWeb(FaNum)_Light.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 400;
+  src: local("IRANSansWeb"), local("IRANSansWeb-Regular"), url("../assets/fonts/IRANSansWeb(FaNum)_Light.woff2") format("woff2");
+}
+@font-face {
+  font-family: "IRANSansWeb";
+  font-style: normal;
+  font-weight: 500;
+  src: local("IRANSansWeb Medium"), local("IRANSansWeb-Medium"), url("../assets/fonts/IRANSansWeb(FaNum)_Medium.woff2") format("woff2");
+}
+@font-face {
+  font-family: "IRANSansWeb";
+  font-style: normal;
+  font-weight: 700;
+  src: local("IRANSansWeb Bold"), local("IRANSansWeb-Bold"), url("../assets/fonts/IRANSansWeb(FaNum)_bold.woff2") format("woff2");
+}
+:root {
+  --ion-background-color: #fff;
+}
+
+html {
+  direction: rtl;
+}
+
+ion-label {
+  font-size: 0.7rem;
+}
+
+ion-header {
+  background-image: url("/assets/img/header.png");
+  color: white;
+}
+ion-header ion-toolbar {
+  --background: transparent;
+  color: white;
+}
+ion-header ion-icon,
+ion-header ion-back-button,
+ion-header ion-button {
+  color: white;
+}
+
+.content-header {
+  min-height: 150px;
+  max-height: 28%;
+  overflow: hidden;
+  color: white;
+}
+.content-header img {
+  width: 100%;
+  transform: translateY(-15%);
+}
+
+.round-content {
+  position: relative;
+  background: #FFF;
+}
+
+.round-content:before {
+  content: "";
+  position: absolute;
+  background: #FFF;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  height: 30px;
+  left: 0;
+  right: 0;
+  top: -20px;
+  box-shadow: 0px -8px 8px rgba(159, 159, 159, 0.4);
+  z-index: 100;
+}
+
+ion-button[shape=circle] {
+  --border-radius: 50%;
+  width: 56px;
+  height: 56px;
+  position: relative;
+}
+ion-button[shape=circle]::part(native) {
+  overflow: visible;
+}
+ion-button[shape=circle] ion-label {
+  position: absolute;
+  top: 70px;
+  z-index: 300;
+  font-size: 14px;
+  color: #222222;
+}
+
+ion-item ion-icon[slot=start] {
+  margin-inline-end: 8px;
+}
+
+.horizontal-row {
+  flex-wrap: nowrap;
+  overflow-x: scroll;
+  overflow-y: hidden;
+}
+
+.rounded-top-4 {
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+}
+
+.text-gray-color {
+  color: #a5abbf;
+}
+
+.text-white-color {
+  color: #fff;
+}
+
+.bg-white {
+  background: #fff;
+  --background: #fff !important;
+}
+
+.text-size-2x {
+  font-size: 14px;
+  font-weight: bold;
+  display: block;
+}
+
+.text-size-medium {
+  font-size: 14px;
+}
+
+.text-small {
+  font-size: 12px;
+}
+
+.text-gray {
+  color: #ccc;
+}
+
+.text-secondary {
+  color: #62666d;
+}

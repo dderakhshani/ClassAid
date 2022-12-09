@@ -22,9 +22,10 @@
                     <ion-avatar (click)="openMenu(getSchedule(r,d))">
                         <img [src]="getSchedule(r,d).lesson.getImageUrl()">
                     </ion-avatar>
-                    <!-- <ion-badge color="tertiary" class="px-3">
-                        {{getSchedule(r,d).lesson.Name}}
-                    </ion-badge> -->
+                    <ion-badge color="secondary" class="px-3 animated">
+                        <span class="min"> {{getSchedule(r,d).lesson.name}}</span>
+
+                    </ion-badge>
                 </ng-container>
 
 

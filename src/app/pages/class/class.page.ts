@@ -6,7 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { LessonService } from 'src/app/api/lesson.service';
 import { Lesson } from 'src/app/models/lessons';
 import { GlobalService } from 'src/app/services/global.service';
-import { v4 as uuidv4 } from 'uuid';
+
 import { ActionSheetController } from '@ionic/angular';
 import { Score } from 'src/app/models/remider';
 
@@ -59,18 +59,6 @@ export class ClassPage implements OnInit {
                         this.lesson = l;
                         this.lessonService.getLessonById(this.lesson.parentId).then(b => {
                             this.book = b;
-
-                            const session = <ClassSessionModel>{
-                                id: uuidv4(),
-                                lesson: this.lesson,
-                                book: this.book,
-                                lessonId: this.book.id,
-                                subLessonId: this.lesson.id,
-                                startTime: new Date(),
-                                scheduleTimeId: this.scheduleId
-                            };
-                            //TODO: Promise base then navigate
-                            this.globalService.startClass(session);
                         });
                     });
                 }
@@ -103,9 +91,7 @@ export class ClassPage implements OnInit {
 
     onAssess() {
         this.isStudentActionsModalOpen = false;
-        setTimeout(x => {
-            this.router.navigateByUrl(`/tabs/class/assessment/${this.selectedStudent.id}`)
-        });
+        this.router.navigateByUrl(`/tabs/class/assessment/${this.selectedStudent.id}`);
     }
 
     onStudentReminder() {

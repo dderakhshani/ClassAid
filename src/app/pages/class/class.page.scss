@@ -40,8 +40,9 @@ ion-col {
     }
 }
 
-.action-button {
+ion-button[size=large].action-button {
     height: 70px;
+    width: 70px;
 }
 
 ion-modal#score-modal {
@@ -52,6 +53,8 @@ ion-modal#score-modal {
     --box-shadow: 0 28px 48px rgba(0, 0, 0, 0.4);
 
 }
+
+ion-modal.auto-height {}
 
 ion-badge {
     --padding-start: 4px;

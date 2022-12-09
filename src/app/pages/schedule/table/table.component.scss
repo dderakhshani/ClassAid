@@ -1,0 +1,47 @@
+ion-badge {
+    text-overflow: clip;
+    max-width: 85px;
+    white-space: nowrap;
+}
+
+ion-badge.animated {
+    overflow: hidden;
+    width: 11rem;
+    white-space: nowrap;
+}
+
+.animated>* {
+    display: inline-block;
+    position: relative;
+    animation: 3s linear 0s infinite alternate move;
+}
+
+.animated>*.min {
+    min-width: 100%;
+}
+
+
+@keyframes move {
+
+    0%,
+    25% {
+        transform: translateX(0%);
+        right: 0%;
+    }
+
+    75%,
+    100% {
+        transform: translateX(100%);
+        right: 100%;
+    }
+}
+
+tr {
+    border-bottom: 1px solid #ccc;
+
+    td {
+        padding-top: .25rem;
+        padding-left: .25rem;
+        padding-right: .25rem;
+    }
+}
