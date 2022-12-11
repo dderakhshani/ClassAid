@@ -4,7 +4,9 @@ export interface Reminder {
     subLessonId?: number;
     note: string;
     type: ReminderType;
+    tags: string;
 }
+
 
 export enum ReminderType {
     Score = 1,
