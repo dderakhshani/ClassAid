@@ -10,7 +10,11 @@ import { ScheduleTimeModel } from 'src/app/models/schedule';
     styleUrls: ['tabs.page.scss']
 })
 export class TabsPage {
+    current_tab = "home"; // Set this as you default page name
 
+    setCurrentTab(ev: any) {
+        this.current_tab = ev.tab;
+    }
     constructor(private router: Router,
         private navCtl: NavController,
         private alertController: AlertController,

@@ -1,3 +1,4 @@
+import { CoresModule } from './../../core/core.module';
 import { ScoreComponent } from './score/score.component';
 import { ReminderComponent } from './reminder/reminder.component';
 import { NoteComponent } from './note/note.component';
@@ -16,7 +17,8 @@ import { ClassPage } from './class.page';
         CommonModule,
         FormsModule,
         IonicModule,
-        ClassPageRoutingModule
+        ClassPageRoutingModule,
+        CoresModule
     ],
     declarations: [ClassPage, NoteComponent, ReminderComponent, ScoreComponent]
 })

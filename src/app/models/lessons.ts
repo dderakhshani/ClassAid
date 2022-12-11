@@ -1,5 +1,5 @@
 import { environment } from "src/environments/environment";
-import { AssessMeasure } from "./asses-param";
+import { AssessMeasureLevel } from "./asses-param";
 
 export class Lesson {
     id: number;
@@ -25,5 +25,5 @@ export class Lesson {
     sessionsCount: number;
     lastSessionLesson: Lesson;
     avgAssessValue: number;
-    avgAssess: AssessMeasure;
+    avgAssess: AssessMeasureLevel;
 }

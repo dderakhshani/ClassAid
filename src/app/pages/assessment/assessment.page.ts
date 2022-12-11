@@ -1,3 +1,4 @@
+import { AssessMeasureLevel } from './../../models/asses-param';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AssessmentService } from 'src/app/api/assessment.service';
@@ -20,7 +21,7 @@ export class AssessmentPage implements OnInit {
     book: Lesson;
     student: StudentModel;
     paramters: AssessParamModel[] = [];
-    assessMeasures = AssessMeasures.filter(x => x.value != 0);
+    assessMeasures = [...AssessMeasures.filter(x => x.value != 0)];
     chartOptions: any;
 
     constructor(public lessonService: LessonService,
@@ -36,7 +37,7 @@ export class AssessmentPage implements OnInit {
 
         this.globalService.ready$.subscribe(ready => {
             if (ready) {
-                this.paramters = this.assessmentService.getLessonParametersSync(lessonId);
+                this.paramters = [...this.assessmentService.getLessonParametersSync(lessonId)];
 
                 this.studentsService.getStudentsById(studentId).then(x => {
                     this.student = x;
@@ -58,4 +59,19 @@ export class AssessmentPage implements OnInit {
     ngOnInit() {
     }
 
+    selectMeasure(param: AssessParamModel, value: AssessMeasureLevel) {
+        if (param.level == value.value) {
+            param.level = 0;
+        }
+        else
+            param.level = value.value;
+    }
+
+    clear() {
+
+    }
+
+    save() {
+
+    }
 }

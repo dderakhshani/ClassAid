@@ -12,12 +12,10 @@
         </ion-buttons>
         <ion-title>ارزشیابی</ion-title>
         <ion-buttons slot="end">
-            <ion-button>
+            <ion-button (click)="save()">
                 <ion-icon slot="icon-only" name="save-outline"></ion-icon>
             </ion-button>
         </ion-buttons>
-
-
     </ion-toolbar>
 
 </ion-header>
@@ -58,10 +56,14 @@
         </ion-accordion-group>
 
         <div class="d-flex flex-column">
+            <ion-button (click)="clear()">
+                <ion-icon name="trash-bin-outline"></ion-icon>
+                حذف انتخاب ها
+            </ion-button>
             <div *ngFor="let param of paramters;let index=index;" class="pt-2">
                 <b> {{index+1}}.&nbsp;{{param.title}}</b>
-                <ion-segment [scrollable]="true" value="home" mode="ios">
-                    <ion-segment-button value="{{am.value}}" class="{{am.bdColor}}" *ngFor="let am of assessMeasures">
+                <ion-segment [scrollable]="true" [(ngModel)]="param.level" mode="ios">
+                    <ion-segment-button (click)="selectMeasure(param,am)" value="{{am.value}}" class="{{am.bdColor}}" *ngFor="let am of assessMeasures">
                         <ion-icon [name]="am.ionIcon"></ion-icon>
                         <ion-label>
                             {{am.title}}

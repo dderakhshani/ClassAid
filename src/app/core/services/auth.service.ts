@@ -20,6 +20,8 @@ export class AuthService {
 
 
     getProfile(): UserModel {
+        if(this.user)
+        return this.user;
         this.user = JSON.parse(localStorage.getItem(STORAGE_PROFILE));
         return this.user;
     }

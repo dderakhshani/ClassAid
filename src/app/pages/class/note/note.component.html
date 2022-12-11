@@ -21,43 +21,54 @@
         </ion-avatar>
         <b> {{student?.fullName}}</b>
     </div>
-    <ion-item>
-        <ion-label position="stacked">موضوع</ion-label>
-        <ion-input placeholder="یک موضوع را وارد نمایید"></ion-input>
+
+    <ion-item lines="none">
+        <ion-icon slot="start" name="alarm-outline"></ion-icon>
+        <ion-label>نوع :</ion-label>
+
     </ion-item>
 
-    <ion-item class="pt-2">
-        <ion-label position="stacked">برچسب</ion-label>
-        <div>
-            <ion-chip color="primary">
-                <ion-icon name="pricetag-outline"></ion-icon>
-                <ion-label>Icon Chip</ion-label>
-                <ion-icon name="close"></ion-icon>
-            </ion-chip>
+    <div class="px-3">
+        <ion-segment mode="ios">
+            <ion-segment-button value="next">
+                <ion-label>یادداشت شخصی </ion-label>
+            </ion-segment-button>
+            <ion-segment-button value="tommorow">
+                <ion-label> گزارش</ion-label>
+            </ion-segment-button>
+        </ion-segment>
+    </div>
 
-            <ion-chip color="success">
-                <ion-label>Icon Chip</ion-label>
-                <ion-icon name="close"></ion-icon>
-            </ion-chip>
-            <ion-chip color="secondary">
-                <ion-label>Icon Chip</ion-label>
-                <ion-icon name="close"></ion-icon>
-            </ion-chip>
-            <ion-chip color="danger">
-                <ion-label>Icon Chip</ion-label>
-                <ion-icon name="close"></ion-icon>
-            </ion-chip>
-            <ion-chip color="Tertiary">
-                <ion-label>Icon Chip</ion-label>
-                <ion-icon name="close"></ion-icon>
-            </ion-chip>
-        </div>
-    </ion-item>
 
     <ion-item class="pt-2">
         <ion-label position="stacked">متن یادداشت</ion-label>
         <ion-textarea placeholder="متن خود را وارد نمایید"></ion-textarea>
     </ion-item>
+
+    <ion-item class="pt-2">
+
+        <ion-label>برچسب: </ion-label>
+        <ion-input placeholder="متنی  را وارد نمایید" [(ngModel)]="tag"></ion-input>
+        <ion-button slot="end" (click)="addTag()" size="default">
+            <ion-icon name="add-outline" slot="start"></ion-icon>
+            افزودن
+
+        </ion-button>
+
+    </ion-item>
+    <div>
+        <ion-chip [color]="colors[index%colors.length]" *ngFor="let tag of tags;let index=index">
+            <ion-icon name="pricetag-outline"></ion-icon>
+            <ion-label>{{tag}} </ion-label>
+            <ion-icon name="close" (click)="removeTag(index)"></ion-icon>
+        </ion-chip>
+    </div>
+
+
+    <div class="p-2 mt-2">
+        <app-uploader></app-uploader>
+    </div>
+
 </ion-content>
 <ion-footer class="p-2">
     <ion-button expand="block" (click)="save()">

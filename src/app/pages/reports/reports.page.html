@@ -1,22 +1,17 @@
 <ion-header>
     <ion-toolbar>
-        <ion-title>گزارشات</ion-title>
+        <ion-title>ارزیابی و گزارشات</ion-title>
     </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true" color="light">
 
     <div class="ion-padding">
-        <ion-text></ion-text>
+        <ion-text>ارزیابی</ion-text>
     </div>
     <div class="px-2 shadow-sm " style="background: #FFF;">
         <ion-list>
-            <ion-item lines="full" button [routerLink]="['/tabs/reports/sessions']">
-                <ion-icon name="albums-outline" slot="start" color="primary"></ion-icon>
-                <ion-label>
-                    کلاس های برگزار شده
-                </ion-label>
-            </ion-item>
+
             <ion-item lines="full" button [routerLink]="['/tabs/reports/attendance']">
                 <ion-icon name="people-outline" slot="start"></ion-icon>
                 <ion-label>
@@ -57,15 +52,22 @@
     </div>
 
     <div class="ion-padding">
-        <ion-text>سایر موارد</ion-text>
+        <ion-text> گزارشات</ion-text>
     </div>
 
     <div class="px-2 shadow-sm" style="background: #FFF;">
         <ion-list>
+
             <ion-item button lines="full">
-                <ion-icon name="alarm-outline" slot="start" color="secondary"></ion-icon>
+                <ion-icon name="megaphone-outline" slot="start" color="secondary"></ion-icon>
                 <ion-label>
                     گزارش روز
+                </ion-label>
+            </ion-item>
+            <ion-item lines="full" button [routerLink]="['/tabs/reports/sessions']">
+                <ion-icon name="albums-outline" slot="start" color="primary"></ion-icon>
+                <ion-label>
+                    کلاس های برگزار شده
                 </ion-label>
             </ion-item>
             <ion-item button lines="full">

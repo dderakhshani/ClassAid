@@ -1,17 +1,21 @@
 export class AssessParamModel {
     title: string;
+    level: number;
     lessonId: number;
-
+    subLessonId: number;
+    studentId: number;
+    teacherId: number;
+    taskId: String
+    note: string;
 }
 
 export class StudentAssessParamModel extends AssessParamModel {
-    studentId: number;
+
     avgValue: number;
 }
 
 
-export interface AssessMeasure {
-
+export interface AssessMeasureLevel {
     title: string;
     shortTitle: string;
     value: number;
@@ -22,7 +26,7 @@ export interface AssessMeasure {
 }
 
 
-export const AssessMeasures: AssessMeasure[] = [
+export const AssessMeasures: AssessMeasureLevel[] = [
     { title: "ارزشیابی ثبت نشده", shortTitle: 'بدون داده', value: 0, color: "", bdColor: "", ionColor: "", ionIcon: "" },
     { title: "نیاز به تلاش", shortTitle: 'ن.ب.ت', value: 1, color: "", bdColor: "text-danger", ionColor: "danger", ionIcon: "alert-circle-outline" },
     { title: "قابل قبول", shortTitle: 'ق.ق', value: 2, color: "", bdColor: "text-warning", ionColor: "warning", ionIcon: "caret-back-circle-outline" },

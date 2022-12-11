@@ -23,6 +23,23 @@
     </div>
     <div class="p-2">
         <ion-item lines="none">
+            <ion-icon slot="start" name="albums-outline"></ion-icon>
+            <ion-label>نوع یادآورد :</ion-label>
+
+        </ion-item>
+
+
+        <ion-segment mode="ios">
+            <ion-segment-button value="next">
+                <ion-label>شخصی </ion-label>
+            </ion-segment-button>
+            <ion-segment-button value="tommorow">
+                <ion-label> گزارشی</ion-label>
+            </ion-segment-button>
+        </ion-segment>
+
+
+        <ion-item lines="none">
             <ion-icon slot="start" name="alarm-outline"></ion-icon>
             <ion-label>زمان یادآوری:</ion-label>
 
@@ -30,7 +47,7 @@
 
         <ion-segment mode="ios" [(ngModel)]="dateType">
             <ion-segment-button value="next">
-                <ion-label> جلسه بعدی درسس</ion-label>
+                <ion-label> جلسه بعدی درس</ion-label>
             </ion-segment-button>
             <ion-segment-button value="tommorow">
                 <ion-label> فردا</ion-label>
@@ -39,6 +56,8 @@
                 <ion-label> تاریخ مشخص</ion-label>
             </ion-segment-button>
         </ion-segment>
+
+
 
         <div class="days mt-2 " style="overflow-x: scroll; width: 100%;" *ngIf="dateType=='exact-date'">
             <div class="d-inline-flex ">

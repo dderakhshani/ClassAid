@@ -1,13 +1,13 @@
-<ion-tabs>
+<ion-tabs (ionTabsDidChange)="setCurrentTab($event)">
 
     <ion-tab-bar slot="bottom">
         <ion-tab-button tab="home">
-            <ion-icon name="home"></ion-icon>
+            <ion-icon [name]="current_tab == 'home' ? 'home' : 'home-outline'"></ion-icon>
             <ion-label>خانه</ion-label>
         </ion-tab-button>
 
         <ion-tab-button tab="schedule">
-            <ion-icon name="calendar-outline"></ion-icon>
+            <ion-icon [name]="current_tab == 'schedule' ? 'calendar' : 'calendar-outline'"></ion-icon>
             <ion-label>برنامه کلاسی </ion-label>
         </ion-tab-button>
 
@@ -16,12 +16,12 @@
         </ion-tab-button>
 
         <ion-tab-button tab="reports">
-            <ion-icon name="newspaper-outline"></ion-icon>
-            <ion-label>گزارش ها</ion-label>
+            <ion-icon name="speedometer-outline" [name]="current_tab == 'reports' ? 'speedometer' : 'speedometer-outline'"></ion-icon>
+            <ion-label>ارزیابی </ion-label>
         </ion-tab-button>
 
         <ion-tab-button tab="profile">
-            <ion-icon name="settings"></ion-icon>
+            <ion-icon [name]="current_tab == 'profile' ? 'settings' : 'settings-outline'"></ion-icon>
             <ion-label>تنظیمات</ion-label>
         </ion-tab-button>
 

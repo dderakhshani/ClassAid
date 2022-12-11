@@ -13,6 +13,7 @@ import { ReminderService } from 'src/app/api/reminder.service';
 })
 export class NoteComponent implements OnInit {
 
+
     @Input()
     modal: any;
 
@@ -29,10 +30,26 @@ export class NoteComponent implements OnInit {
     student?: StudentModel;
 
     notes: string;
+    tags: string[] = [];
+    tag = "";
+
+    colors = ["primary", "danger", "success", "secondary", "warning", "tertiary", "medium"]
 
     constructor(private reminderService: ReminderService) { }
 
     ngOnInit() { }
+
+
+    addTag() {
+        if (this.tag != '') {
+            this.tags.push(this.tag);
+            this.tag = "";
+        }
+    }
+
+    removeTag(index: number) {
+        this.tags.splice(index, 1);
+    }
 
     save() {
         if (this.student) {
