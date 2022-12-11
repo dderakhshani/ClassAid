@@ -1,55 +1,44 @@
-// export interface Reminder {
-//     id: string;
-//     lessonId?: number;
-//     subLessonId?: number;
-//     notes:string;
-// }
-
-export interface StudentReminder {
+export interface Reminder {
     id: string;
     lessonId?: number;
     subLessonId?: number;
-    studentId: number;
-    taskId: string;
-    remindTime: string;
-    notes: string;
+    note: string;
+    type: ReminderType;
 }
 
-export interface LessonReminder {
-    id: string;
-    lessonId?: number;
-    subLessonId?: number;
+export enum ReminderType {
+    Score = 1,
+    Reminder,
+    StudentReminder,
+    Notes,
+    StudentNotes
+}
+
+export interface StudentReminder extends Reminder {
+    studentId: number;
     taskId: string;
-    remindTime: string;
-    notes: string;
+    remindTime: Date;
+}
+
+export interface LessonReminder extends Reminder {
+    taskId: string;
+    remindTime: Date;
 }
 
 
-export interface Score {
-    id: string;
+export interface Score extends Reminder {
+
     studentId: number;
-    lessonId?: number;
-    subLessonId?: number;
     taskId: string;
     subjectParameterId?: number;
     positiveNegetive: boolean;
-    notes: string;
 }
 
-
-export interface LessonNotes {
-    id: string;
+export interface LessonNotes extends Reminder {
     taskId: string;
-    lessonId?: number;
-    subLessonId?: number;
-    notes: string;
 }
 
-export interface StudentNotes {
-    id: string;
+export interface StudentNotes extends Reminder {
     studentId: number;
     taskId: string;
-    lessonId?: number;
-    subLessonId?: number;
-    notes: string;
 }

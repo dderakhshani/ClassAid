@@ -12,7 +12,8 @@
             </ion-avatar>
             <ion-label>
                 <h3>
-                    سلام! معلم عزیز
+                    سلام!
+                    {{authService.user.fullName}}
                 </h3>
                 <p>امروز یک روز خوب برای شروع هست</p>
             </ion-label>
@@ -76,7 +77,7 @@
 
             <!-- --------------------------- Reminders---------------------------------- -->
             <h3>یادآور ها:</h3>
-            <ng-container *ngIf="(reminderService.lesson_reminders$ | async).length==0">
+            <ng-container *ngIf="(reminderService.lesson_reminders$ | async).length==0 && (reminderService.student_reminders$ | async).length==0 ">
                 <div class="no-data d-flex flex-column align-items-center justify-content-center">
                     <ion-icon name="alarm-outline" size="large"></ion-icon>
                     <ion-label *ngIf="nextScheduleStatus=='finish'">
@@ -87,13 +88,16 @@
 
             <div class="d-flex">
                 <ng-container *ngFor="let lr of reminderService.lesson_reminders$ | async">
-                    <ion-avatar slot="start">
-                        <img alt="Avatar-Student" [src]="lesson.getImageUrl(lr.lessonId)" />
+                    <ion-avatar class="reminder ms-4" (click)="showReminder(lr)">
+                        <img alt="lesson-Student" [src]="lesson.getImageUrl(lr.lessonId)" />
+                        <ion-badge class=" me-1" color="secondary" mode="ios">
+                            <ion-icon name="alarm-outline" size="small"></ion-icon>
+                        </ion-badge>
                     </ion-avatar>
                 </ng-container>
                 <ng-container *ngFor="let sr of reminderService.student_reminders$ | async">
-                    <ion-avatar slot="start" class="reminder">
-                        <img alt="Avatar-Student" [src]="studentModel.getImageUrl(sr.studentId)" />
+                    <ion-avatar class="reminder ms-4" (click)="showReminder(sr)">
+                        <img alt="avatar-student" [src]="studentModel.getImageUrl(sr.studentId)" />
                         <ion-badge class=" me-1" color="secondary" mode="ios">
                             <ion-icon name="alarm-outline" size="small"></ion-icon>
                         </ion-badge>

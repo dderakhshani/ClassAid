@@ -1,3 +1,6 @@
+import { AuthService } from 'src/app/core/services/auth.service';
+import { StudentReminder, LessonReminder, ReminderType } from './../models/remider';
+import { ReminderService } from './../api/reminder.service';
 import { AttendanceModel, AttendanceStatus } from '../models/attendance-model';
 import { ClassService } from './../api/class.service';
 import { ScheduleTimeModel } from 'src/app/models/schedule';
@@ -11,6 +14,7 @@ import { ScheduleService } from '../api/schedule.service';
 import { StudentsService } from '../api/students.service';
 import { LessonService } from '../api/lesson.service';
 import { StudentModel } from '../models/student';
+import { AssessmentService } from '../api/assessment.service';
 const CLASS_STORAGE = "CLASSAID_CLASS";
 
 @Injectable({
@@ -18,37 +22,39 @@ const CLASS_STORAGE = "CLASSAID_CLASS";
 })
 export class GlobalService {
 
-    public teacherId: number = 7;
+    public teacherId: number;
     public todayDay: number;
     public rings: Ring[];//Ring is diffrent for each school & grade (& maybe class)
 
     ready$ = new BehaviorSubject<boolean>(false);
 
     selectedClass$ = new BehaviorSubject<ClassModel>(null);
-    public classSessions$ = new BehaviorSubject<ClassSessionModel[]>([]);
 
-    public currentClassTask: ClassSessionModel | undefined;
+    public classSessions$ = new BehaviorSubject<ClassSessionModel[]>([]);
+    public currentSession: ClassSessionModel | undefined;
+
     public todayShedules: ScheduleTimeModel[];
     public callRolling: AttendanceModel[];
 
 
-
-
     constructor(private storageService: StorageService,
         private studentsService: StudentsService,
+        private authService: AuthService,
+        private assessmentService: AssessmentService,
         private classService: ClassService,
+        private reminderService: ReminderService,
         public lessonService: LessonService,
         private scheduleService: ScheduleService) {
+        this.teacherId = authService.getProfile().id;
 
-        //Reminder: remove -1
-        this.todayDay = (new Date().getDay() + 1) % 7 - 1;
+        this.todayDay = (new Date().getDay() + 1) % 7;
 
         //TODO: must remove and load from server
         // const currentClassJson = this.storageService.loadStorage(CLASS_STORAGE);
         // if (currentClassJson) {
-        //     this.currentClassTask = JSON.parse(currentClassJson);
-        //     this.currentClassTask.book = Object.assign(new Lesson(), this.currentClassTask.book);
-        //     this.currentClassTask.lesson = Object.assign(new Lesson(), this.currentClassTask.lesson);
+        //     this.currentSession = JSON.parse(currentClassJson);
+        //     this.currentSession.book = Object.assign(new Lesson(), this.currentSession.book);
+        //     this.currentSession.lesson = Object.assign(new Lesson(), this.currentSession.lesson);
 
         // }
 
@@ -69,6 +75,10 @@ export class GlobalService {
                 }
 
             });
+        });
+
+        this.assessmentService.getParameters(0, vClass.gradeId).then(params => {
+
         })
 
         //Notes:
@@ -76,7 +86,8 @@ export class GlobalService {
         //2. Load all sessions of the Class(Selected Class)
         //      2.1 fill book,lesson fields of each session
         //      2.2 Calc and apply sessions stats of each book to lessons
-        //      2.3 Emit classSessions$ subject
+        //      2.3 find CurrentSession if exist and load its reminders
+        //      2.4 Emit classSessions$ subject
         //3. Then load rings of Grade Of School(Event Class if reqiured) to load schdules
         //4. Load Schedules of the Class(Selected Class) Then:
         //      4.1 set Ring(object),Lesson(object) to each schedule by ringId,lessonId provided by prev steps
@@ -85,13 +96,15 @@ export class GlobalService {
 
 
         this.lessonService.getBooks(vClass.schoolId, vClass.gradeId).then(books => {
+
+            //2.Step: 
             this.classService.getSessionsByClass(vClass.id).then(sessions => {
-                //filling book and lesson object
+                //2.1  filling book and lesson object
                 sessions.forEach(s => {
                     s.book = books.find(x => x.id == s.lessonId);
                     s.lesson = this.lessonService.allLessons$.value.find(x => x.id == s.subLessonId);
                 });
-                //Proccesing and applying stats of each lesson
+                //2.2 Proccesing and applying stats of each lesson
                 books.forEach(b => {
                     const book_sessions = sessions.filter(x => x.lessonId == b.id);
                     b.sessionsCount = book_sessions.length;
@@ -101,7 +114,17 @@ export class GlobalService {
                     }
 
                 });
-                this.currentClassTask = sessions.find(x => x.endTime == null);
+                //2.3 find currentSession and its reminders
+                this.currentSession = sessions.find(x => x.endTime == null);
+                if (this.currentSession) {
+                    this.reminderService.getSessionReminders(this.currentSession.id).then(reminders => {
+                        this.currentSession.reminders = reminders;
+                        const lesson_reminders = reminders.filter(x => x.type == ReminderType.Reminder).map(x => (x as LessonReminder));
+                        const student_reminders = reminders.filter(x => x.type == ReminderType.StudentReminder).map(x => (x as StudentReminder));
+                        this.reminderService.lesson_reminders$.next(lesson_reminders);
+                        this.reminderService.student_reminders$.next(student_reminders);
+                    })
+                }
                 this.classSessions$.next(sessions);
             });
 
@@ -111,18 +134,19 @@ export class GlobalService {
 
                 //Loading Schedules
                 this.scheduleService.get(vClass.id).then(schdule => {
+                    if (schdule) {
+                        schdule.scheduleTimes.forEach(st => {
+                            st.ring = this.rings.find(x => x.id == st.ringId);
+                            //lessonService.books$ filled when getBooks called
+                            st.lesson = this.lessonService.books$.value.find(x => x.id == st.lessonId);
+                        });
 
-                    schdule.scheduleTimes.forEach(st => {
-                        st.ring = this.rings.find(x => x.id == st.ringId);
-                        //lessonService.books$ filled when getBooks called
-                        st.lesson = this.lessonService.books$.value.find(x => x.id == st.lessonId);
-                    });
-
-                    //Clone the schedules to make it non-changable
-                    this.todayShedules = [...schdule.scheduleTimes.filter(x => x.dayNo == this.todayDay)];
-                    this.todayShedules.forEach(sch => {
-                        sch.session = this.sessions.find(x => x.scheduleTimeId == sch.id);
-                    })
+                        //Clone the schedules to make it non-changable
+                        this.todayShedules = [...schdule.scheduleTimes.filter(x => x.dayNo == this.todayDay)];
+                        this.todayShedules.forEach(sch => {
+                            sch.session = this.sessions.find(x => x.scheduleTimeId == sch.id);
+                        })
+                    }
 
                     this.selectedClass$.next(vClass);
                     this.ready$.next(true)
@@ -155,7 +179,7 @@ export class GlobalService {
                 raw_session.book = null;
                 raw_session.lesson = null;
 
-                this.currentClassTask = session;
+                this.currentSession = session;
 
                 //Updating Schdules
                 if (session.scheduleTimeId)
@@ -175,10 +199,11 @@ export class GlobalService {
     }
 
     endClass() {
-        this.classService.endTask(this.currentClassTask.id).then(result => {
-            this.currentClassTask = undefined;
+        this.classService.endTask(this.currentSession.id).then(result => {
+            this.currentSession = undefined;
             const sessions = this.classSessions$.value;
-            sessions[sessions.length - 1].endTime = new Date();
+            const currentSession = sessions[sessions.length - 1];
+            currentSession.endTime = new Date();
 
             this.storageService.removeStorage(CLASS_STORAGE);
             this.classSessions$.next(sessions);

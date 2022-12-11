@@ -15,7 +15,7 @@
             </p>
         </ion-label>
         <ion-button slot="end" (click)="endClass()" size="default" color="danger">
-            پایان
+            اتمام
         </ion-button>
     </ion-item>
 
@@ -30,7 +30,7 @@
             <ion-label>تکلیف</ion-label>
         </ion-button>
         <ion-button shape="circle" color="danger">
-            <ion-icon slot="icon-only" name="bar-chart-outline"></ion-icon>
+            <ion-icon slot="icon-only" name="flask-outline"></ion-icon>
             <ion-label>آزمون</ion-label>
         </ion-button>
         <ion-button shape="circle" color="warning" (click)="onNotes()">
@@ -43,13 +43,13 @@
     <div>
         <ion-grid fixed>
             <ion-row>
-                <ion-col size="4" *ngFor="let student of  studentsService.students$ | async" class="d-flex  align-items-stretch">
+                <ion-col size="4" *ngFor="let student of students " class="d-flex  align-items-stretch">
                     <ion-card class="student-card flex-fill" (click)="onStudentAction(student)" [color]="getColor(student)">
                         <ion-icon *ngIf="student.present" name="checkmark-circle" class="present" color="success"></ion-icon>
 
                         <div class="d-flex justify-content-center pt-2">
                             <ion-avatar slot="start">
-                                <img alt="Avatar-Student" [src]="student.getImageUrl()" />
+                                <img alt="Avatar-Student" [src]="student.getImageUrl()" onerror="this.src='/assets/img/avatar.webp'" />
                             </ion-avatar>
                         </div>
 
@@ -92,17 +92,23 @@
 
     <ion-modal #modal_note [isOpen]="isNotesModalOpen" (didDismiss)="isNotesModalOpen=false" [presentingElement]="presentingElement">
         <ng-template>
-            <app-note [modal]="modal_note" [classTask]="globalService.currentClassTask" [book]="book" [lesson]="lesson" [student]="selectedStudent"></app-note>
+            <app-note [modal]="modal_note" [classTask]="globalService.currentSession" [book]="book" [lesson]="lesson" [student]="selectedStudent"></app-note>
         </ng-template>
     </ion-modal>
 
     <ion-modal #modal_reminder [isOpen]="isReminderModalOpen" (didDismiss)="isReminderModalOpen=false" [presentingElement]="presentingElement">
         <ng-template>
-            <app-reminder [modal]="modal_reminder" [classTask]="globalService.currentClassTask" [book]="book" [lesson]="lesson" [student]="selectedStudent"></app-reminder>
+            <app-reminder [modal]="modal_reminder" [classTask]="globalService.currentSession" [book]="book" [lesson]="lesson" [student]="selectedStudent"></app-reminder>
         </ng-template>
     </ion-modal>
 
+    <ion-modal #score_modal id="score-modal" [isOpen]="isScoreModalOpen" (didDismiss)="isScoreModalOpen=false">
+        <ng-template>
+            <app-score [modal]="score_modal" [session]="globalService.currentSession" [book]="book" [lesson]="lesson" [student]="selectedStudent"></app-score>
+        </ng-template>
+    </ion-modal>
 
+    <!-- Action Sheet Menu -->
     <ion-modal class="auto-height" #modal [isOpen]="isStudentActionsModalOpen" (didDismiss)="isStudentActionsModalOpen=false" [initialBreakpoint]="0.35" [breakpoints]="[0, 0.35]">
         <ng-template>
 
@@ -130,8 +136,8 @@
                     <ion-col size="6" class="p-3 ion-text-center">
                         <ion-button shape="circle" (click)="onScore()" color="primary" size="large" class="action-button">
                             <div class="d-flex flex-column p-2">
-                                <ion-icon slot="icon-only" name="star" size="large"></ion-icon>
-                                <ion-label class="mt-2"> امتیازدهی</ion-label>
+                                <ion-icon slot="icon-only" name="star-half" size="large"></ion-icon>
+                                <ion-label class="mt-2"> مشاهده</ion-label>
                             </div>
                         </ion-button>
                     </ion-col>
@@ -149,32 +155,5 @@
         </ng-template>
     </ion-modal>
 
-    <ion-modal #score_modal id="score-modal" [isOpen]="isScoreModalOpen" (didDismiss)="isScoreModalOpen=false">
-        <ng-template>
-            <div class="p-3">
-                <ion-segment value="postive" mode="ios">
-                    <ion-segment-button value="postive">
-                        <ion-icon name="add-circle-outline" class="text-success"></ion-icon>
-                        <ion-label>مثبت</ion-label>
-                    </ion-segment-button>
-                    <ion-segment-button value="negative" class="text-danger">
-                        <ion-icon name="remove-circle-outline"></ion-icon>
-                        <ion-label>ناخوشایند</ion-label>
-                    </ion-segment-button>
-                </ion-segment>
-                <ion-item class="pt-2">
-                    <ion-label position="stacked"> یادداشت</ion-label>
-                    <ion-textarea placeholder="متن خود را وارد نمایید"></ion-textarea>
-                </ion-item>
-                <div>
-                    <ion-button expand="block" (click)="saveScore()">
-                        <ion-icon name="save-outline" size="large"></ion-icon>
-                        <ion-label class="me-2"> ذخیره</ion-label>
-                    </ion-button>
-                </div>
-            </div>
 
-
-        </ng-template>
-    </ion-modal>
 </ion-content>

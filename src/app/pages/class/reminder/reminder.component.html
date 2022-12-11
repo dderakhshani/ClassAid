@@ -30,7 +30,7 @@
 
         <ion-segment mode="ios" [(ngModel)]="dateType">
             <ion-segment-button value="next">
-                <ion-label> جلسه بعدی</ion-label>
+                <ion-label> جلسه بعدی درسس</ion-label>
             </ion-segment-button>
             <ion-segment-button value="tommorow">
                 <ion-label> فردا</ion-label>
@@ -40,13 +40,16 @@
             </ion-segment-button>
         </ion-segment>
 
-        <div class="days d-flex justify-content-around mt-2" *ngIf="dateType=='exact-date'">
-            <div *ngFor="let d of days" class="day px-2  d-flex flex-column justify-content-center align-items-center" [class.selected]="d.no==selectedDay?.no" (click)="selectedDay=d">
-                <span class="date"> {{d.date | date: 'dd'}}</span>
-                <span class="symbol"> {{d.symbol}}</span>
+        <div class="days mt-2 " style="overflow-x: scroll; width: 100%;" *ngIf="dateType=='exact-date'">
+            <div class="d-inline-flex ">
+                <div *ngFor="let d of nextDays" [class.selected]="d.dayNo==selectedDay?.dayNo" (click)="selectedDay=d" class="day px-1 mx-2 d-flex flex-column justify-content-center align-items-center">
+                    <span class="date"> {{d.dayNo}}</span>
+                    <span class="symbol"> {{d.dayName}}</span>
 
+                </div>
             </div>
         </div>
+
 
         <ion-item class="pt-2">
             <ion-label position="stacked">متن یاد آوری</ion-label>

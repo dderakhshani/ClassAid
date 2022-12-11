@@ -20,4 +20,5 @@ export const Days = [
     <DateDay>{ no: 3, dayName: 'سه شنبه', symbol: 'سه' },
     <DateDay>{ no: 4, dayName: 'چهارشنبه', symbol: 'چهار' },
     <DateDay>{ no: 5, dayName: 'پنجشنبه', symbol: 'پنج' },
+    <DateDay>{ no: 6, dayName: 'جمعه', symbol: 'جمعه' },
 ];

@@ -1,4 +1,5 @@
 import { Lesson } from 'src/app/models/lessons';
+import { Reminder } from './remider';
 
 export interface ClassModel {
     id: number;
@@ -25,4 +26,6 @@ export class ClassSessionModel {
     class?: ClassModel;
     scheduleTimeId?: number;
 
+    reminders: Reminder[] = [];
+    notes: Reminder[];
 }

@@ -4,20 +4,20 @@ import { AuthService } from "../services/auth.service";
 
 
 @Injectable({
-  providedIn: "root",
+    providedIn: "root",
 })
 export class AuthGuard implements CanLoad {
-  constructor(private authService: AuthService,
-    private router: Router) { }
-  canLoad(route: Route) {
+    constructor(private authService: AuthService,
+        private router: Router) { }
+    canLoad(route: Route) {
 
-    if (this.authService.isAutenticated()) {
-      //    this.router.navigateByUrl('');
-      return true;
-    } else {
-      this.router.navigateByUrl("/signup");
-      return false;
+        if (this.authService.isAutenticated()) {
+            //    this.router.navigateByUrl('');
+            return true;
+        } else {
+            this.router.navigateByUrl("/signin");
+            return false;
+        }
     }
-  }
 
 }

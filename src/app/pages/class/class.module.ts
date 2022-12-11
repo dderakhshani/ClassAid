@@ -1,3 +1,4 @@
+import { ScoreComponent } from './score/score.component';
 import { ReminderComponent } from './reminder/reminder.component';
 import { NoteComponent } from './note/note.component';
 import { NgModule } from '@angular/core';
@@ -17,6 +18,6 @@ import { ClassPage } from './class.page';
         IonicModule,
         ClassPageRoutingModule
     ],
-    declarations: [ClassPage, NoteComponent, ReminderComponent]
+    declarations: [ClassPage, NoteComponent, ReminderComponent, ScoreComponent]
 })
 export class ClassPageModule { }

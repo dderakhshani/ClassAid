@@ -5,6 +5,7 @@ import { AttendanceModel } from '../models/attendance-model';
 import { ClassModel, ClassSessionModel } from '../models/class';
 import { DaySession } from '../models/day-session';
 import { GlobalService } from '../services/global.service';
+import { Reminder } from '../models/remider';
 
 @Injectable({
     providedIn: 'root'
@@ -75,4 +76,6 @@ export class ClassService {
             });
         });
     }
+
+
 }

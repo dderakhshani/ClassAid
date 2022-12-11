@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AssessmentService } from 'src/app/api/assessment.service';
 import { LessonService } from 'src/app/api/lesson.service';
 import { StudentsService } from 'src/app/api/students.service';
-import { AssessParam } from 'src/app/models/asses-param';
+import { AssessMeasures, AssessParamModel } from 'src/app/models/asses-param';
 import { Lesson } from 'src/app/models/lessons';
 import { StudentModel } from 'src/app/models/student';
 import { ChartService } from 'src/app/services/chart.service';
@@ -18,27 +19,30 @@ export class AssessmentPage implements OnInit {
     lesson: Lesson;
     book: Lesson;
     student: StudentModel;
-    paramters: AssessParam[] = [
-        { Title: 'با استفاده از کار افزار های مناسب به پرسشها پاسخ می دهد', LessonId: 1 },
-        { Title: 'به طور و موثر در جمع سخن می گوید در خواندن متون نثر و شعر توانایی دارد', LessonId: 1 },
-        { Title: 'در نقد و تحلیل متن توانایی دارد', LessonId: 1 },
-        { Title: 'درباره یک موضوع متنی ساده می نویسد', LessonId: 1 },
-        { Title: 'اصول درست نویسی و علائم نگارشی را رعایت میکند', LessonId: 1 }
-    ];
+    paramters: AssessParamModel[] = [];
+    assessMeasures = AssessMeasures.filter(x => x.value != 0);
     chartOptions: any;
 
     constructor(public lessonService: LessonService,
         private studentsService: StudentsService,
+        private assessmentService: AssessmentService,
         public globalService: GlobalService,
         private chartService: ChartService,
         private route: ActivatedRoute,
         private router: Router) {
 
+        const lessonId = Number(this.route.snapshot.paramMap.get('lessonId'));
         const studentId = Number(this.route.snapshot.paramMap.get('studentId'));
 
-        this.studentsService.getStudentsById(studentId).then(x => {
-            this.student = x;
-        });
+        this.globalService.ready$.subscribe(ready => {
+            if (ready) {
+                this.paramters = this.assessmentService.getLessonParametersSync(lessonId);
+
+                this.studentsService.getStudentsById(studentId).then(x => {
+                    this.student = x;
+                });
+            }
+        })
 
         this.chartOptions = this.chartService.createSingleSerieChart(
             [{ name: '1', value: 4, itemStyle: { color: 'green' } },

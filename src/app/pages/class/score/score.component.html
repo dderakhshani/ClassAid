@@ -1,0 +1,22 @@
+<div class="p-3">
+    <ion-segment [(ngModel)]="posNeg" mode="ios">
+        <ion-segment-button value="postive">
+            <ion-icon name="add-circle-outline" class="text-success"></ion-icon>
+            <ion-label>مثبت</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="negative" class="text-danger">
+            <ion-icon name="remove-circle-outline"></ion-icon>
+            <ion-label>ناخوشایند</ion-label>
+        </ion-segment-button>
+    </ion-segment>
+    <ion-item class="pt-2">
+        <ion-label position="stacked"> یادداشت</ion-label>
+        <ion-textarea placeholder="متن خود را وارد نمایید"></ion-textarea>
+    </ion-item>
+    <div>
+        <ion-button expand="block" (click)="saveScore()" [disabled]="posNeg==undefined">
+            <ion-icon name="save-outline" size="large"></ion-icon>
+            <ion-label class="me-2"> ذخیره</ion-label>
+        </ion-button>
+    </div>
+</div>

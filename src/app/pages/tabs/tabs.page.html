@@ -32,12 +32,12 @@
 
 <ion-fab vertical="bottom" horizontal="center" slot="fixed">
     <ion-fab-button (click)="startClass()">
-        <ion-icon name="book-outline" *ngIf="globalService.currentClassTask;else play"></ion-icon>
+        <ion-icon name="book-outline" *ngIf="globalService.currentSession;else play"></ion-icon>
         <ng-template #play>
             <ion-icon name="play-outline"></ion-icon>
         </ng-template>
     </ion-fab-button>
-    <ion-fab-list side="top" *ngIf="globalService.currentClassTask==undefined">
+    <ion-fab-list side="top" *ngIf="globalService.currentSession==undefined">
         <ion-fab-button (click)="startNextClass()" color="secondary" data-desc=" درس بعدی">
             <ion-icon name="play-skip-forward-outline"></ion-icon>
         </ion-fab-button>

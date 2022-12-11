@@ -36,7 +36,7 @@ export class ScheduleItemComponent implements OnInit {
     }
 
     async start(schedule: ScheduleTimeModel) {
-        if (this.globalService.currentClassTask) {
+        if (this.globalService.currentSession) {
             const alert = await this.alertController.create({
                 header: 'هشدار',
                 subHeader: 'نمی توانید کلاس جدیدی را شروع کرد',

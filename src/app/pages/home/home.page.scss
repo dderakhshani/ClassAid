@@ -63,9 +63,11 @@ ion-card.lesson {
 }
 
 .reminder {
+    position: relative;
+
     ion-badge {
         position: absolute;
-        right: 60px;
+        right: 50px;
     }
 }
 

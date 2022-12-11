@@ -1,21 +1,16 @@
 <ion-header>
 
-    <ion-toolbar color="primary">
+    <!-- <ion-toolbar color="primary">
         <ion-buttons slot="start">
             <ion-button>
                 <ion-icon slot="icon-only" name="settings-outline"></ion-icon>
             </ion-button>
         </ion-buttons>
 
-        <!-- <ion-buttons slot="end">
-            <ion-button>
-                <ion-icon slot="icon-only" name="create-outline"></ion-icon>
-            </ion-button>
-        </ion-buttons> -->
-    </ion-toolbar>
+    </ion-toolbar> -->
 
     <!-- Header -->
-    <div>
+    <div class="py-4">
         <div class=" d-flex flex-column align-items-center">
             <ion-button (click)="onSingOut()" expand="block" shape="round" style="position:absolute; left:8px " color="light">
                 خروج
@@ -29,23 +24,6 @@
 
         </div>
 
-        <ion-list>
-            <!-- <ion-item>
-                <ion-icon name="person-outline" slot="start" size="small" class="text-white-color"></ion-icon>
-                <ion-label class="text-white-color">
-                    {{user.username}}
-                </ion-label>
-            </ion-item> -->
-            <ion-item lines="none">
-                <ion-icon name="call-outline" slot="start" size="small" class="text-white-color"></ion-icon>
-                <ion-label class="text-white-color">
-                    {{user.mobile}}
-                </ion-label>
-            </ion-item>
-
-        </ion-list>
-
-
     </div>
 
 </ion-header>
@@ -55,26 +33,54 @@
             <ion-icon name="pencil" size="small"></ion-icon>
         </ion-fab-button>
     </ion-fab>
+    <div class="ion-padding">
+        <ion-text></ion-text>
+    </div>
+    <div class="px-2 shadow-sm " style="background: #FFF;">
+        <ion-list>
+            <ion-item lines="full" button [routerLink]="['/main/profile/favorites']">
+                <ion-icon name="albums-outline" slot="start"></ion-icon>
+                <ion-label>
+                    مدیریت کلاس ها
+                </ion-label>
+            </ion-item>
+            <ion-item button lines="full" [routerLink]="['/main/profile/orders']">
+                <ion-icon name="people-outline" slot="start"></ion-icon>
+                <ion-label>
+                    مدیریت دانش آموز ها
+                </ion-label>
+            </ion-item>
+            <ion-item button lines="none" [routerLink]="['/main/profile/orders']">
+                <ion-icon name="shapes-outline" slot="start"></ion-icon>
+                <ion-label>
+                    مدیریت پارامترهای ارزشیابی
+                </ion-label>
+            </ion-item>
+            <ion-item button lines="none" [routerLink]="['/main/profile/orders']">
+                <ion-icon name="shapes-outline" slot="start"></ion-icon>
+                <ion-label>
+                    مدیریت برچسب ها مشاهدات
+                </ion-label>
+            </ion-item>
+        </ion-list>
+    </div>
 
+    <div class="ion-padding">
+        <ion-text>سایر موارد</ion-text>
+    </div>
 
     <div class="px-2 shadow-sm" style="background: #FFF;">
         <ion-list>
-            <ion-item button lines="full" (click)="support()">
+            <!-- <ion-item button lines="full" (click)="support()">
                 <ion-icon name="headset-outline" slot="start" style="color:#D68665;"></ion-icon>
                 <ion-label>
                     پشتیانی
                 </ion-label>
-            </ion-item>
+            </ion-item> -->
             <ion-item button lines="full" (click)="help()">
                 <ion-icon name="help-circle-outline" slot="start" style="color:#F0D03D ;"></ion-icon>
                 <ion-label>
                     راهنما
-                </ion-label>
-            </ion-item>
-            <ion-item button lines="full" [routerLink]="['/rules-agreement']">
-                <ion-icon name="bug-outline" slot="start" style="color:#5e50b6 ;"></ion-icon>
-                <ion-label>
-                    شرایط و قوانین استفاده
                 </ion-label>
             </ion-item>
             <ion-item button lines="full" (click)="reportBug()">

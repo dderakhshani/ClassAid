@@ -58,25 +58,16 @@
         </ion-accordion-group>
 
         <div class="d-flex flex-column">
-            <div *ngFor="let param of paramters" class="pt-2">
-                <b>{{param.Title}}</b>
+            <div *ngFor="let param of paramters;let index=index;" class="pt-2">
+                <b> {{index+1}}.&nbsp;{{param.title}}</b>
                 <ion-segment [scrollable]="true" value="home" mode="ios">
-                    <ion-segment-button value="1" class="text-danger">
-                        <ion-icon name="alert-circle-outline"></ion-icon>
-                        <ion-label>ن.ب.ت</ion-label>
+                    <ion-segment-button value="{{am.value}}" class="{{am.bdColor}}" *ngFor="let am of assessMeasures">
+                        <ion-icon [name]="am.ionIcon"></ion-icon>
+                        <ion-label>
+                            {{am.title}}
+                        </ion-label>
                     </ion-segment-button>
-                    <ion-segment-button value="2" class="text-warning">
-                        <ion-icon name="caret-back-circle-outline"></ion-icon>
-                        <ion-label>قابل قبول</ion-label>
-                    </ion-segment-button>
-                    <ion-segment-button value="3" class="text-primary">
-                        <ion-icon name="checkmark-circle-outline"></ion-icon>
-                        <ion-label>خوب</ion-label>
-                    </ion-segment-button>
-                    <ion-segment-button value="4" class="text-success">
-                        <ion-icon name="checkmark-done-circle-outline"></ion-icon>
-                        <ion-label>عالی</ion-label>
-                    </ion-segment-button>
+
                 </ion-segment>
             </div>
         </div>

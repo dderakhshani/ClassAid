@@ -1,3 +1,4 @@
+import { Reminder } from './../../models/remider';
 import { environment } from 'src/environments/environment';
 import { Lesson } from 'src/app/models/lessons';
 import { ReminderService } from './../../api/reminder.service';
@@ -11,7 +12,8 @@ import { ChartService } from 'src/app/services/chart.service';
 import { ScheduleService } from 'src/app/api/schedule.service';
 import { GlobalService } from 'src/app/services/global.service';
 import { ScheduleTimeModel } from 'src/app/models/schedule';
-import { Platform } from '@ionic/angular';
+import { AlertController, Platform } from '@ionic/angular';
+import { AuthService } from 'src/app/core/services/auth.service';
 
 @Component({
     selector: 'app-home',
@@ -41,7 +43,9 @@ export class HomePage implements OnInit {
     constructor(private router: Router,
         private studentsService: StudentsService,
         private scheduleService: ScheduleService,
+        public authService: AuthService,
         private platform: Platform,
+        private alertController: AlertController,
         private chartService: ChartService,
         public globalService: GlobalService,
         public reminderService: ReminderService,
@@ -89,6 +93,21 @@ export class HomePage implements OnInit {
 
     attendance() {
         this.router.navigateByUrl(`/tabs/home/attendance`)
+    }
+
+    async showReminder(remidner: Reminder) {
+        const alert = await this.alertController.create({
+            header: 'متن یادآور',
+            message: remidner.note,
+            buttons: [
+                {
+                    text: 'تایید',
+                    role: 'confirm'
+                }
+            ],
+        });
+
+        await alert.present();
     }
 
 }

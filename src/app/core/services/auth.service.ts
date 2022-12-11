@@ -2,39 +2,47 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { UserModel } from '../models/user';
+import { HttpService } from './http.service';
 
-const STORAGE_PROFILE = 'profile';
+const STORAGE_PROFILE = 'CLASSAID_PROFILE';
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class AuthService {
 
-  constructor() { }
-  user!: UserModel;
+    constructor(private httpService: HttpService) { }
+    user!: UserModel;
 
-  isAutenticated(): boolean {
-    this.user = this.getProfile();
-    return this.user != null || this.user != undefined;
-  }
+    isAutenticated(): boolean {
+        this.user = this.getProfile();
+        return this.user != null || this.user != undefined;
+    }
 
 
-  getProfile(): UserModel {
-    this.user = JSON.parse(localStorage.getItem(STORAGE_PROFILE));
-    return this.user;
-  }
+    getProfile(): UserModel {
+        this.user = JSON.parse(localStorage.getItem(STORAGE_PROFILE));
+        return this.user;
+    }
 
-  saveProfile(user: UserModel): Boolean {
-    return this.signIn(user);
-  }
+    saveProfile(user: UserModel) {
+        localStorage.setItem(STORAGE_PROFILE, JSON.stringify(user))
+    }
 
-  signIn(user: UserModel): Boolean {
-    localStorage.setItem(STORAGE_PROFILE, JSON.stringify(user))
-    return true;
-  }
+    signIn(user: UserModel): Promise<UserModel> {
+        return new Promise(resolve => {
+            this.httpService.http.postJsonData<UserModel>(user, `auth/Login`).then(data => {
+                this.user = data;
+                this.saveProfile(data);
+                return resolve(data);
+            });
+        });
 
-  signOut() {
-    localStorage.removeItem(STORAGE_PROFILE);
-  }
+    }
+
+    signOut() {
+        this.user = null;
+        localStorage.removeItem(STORAGE_PROFILE);
+    }
 
 
 }

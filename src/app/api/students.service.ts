@@ -33,7 +33,7 @@ export class StudentsService {
             if (this.students$.value.length > 0)
                 return resolve(this.students$.value.find(x => x.id == studentId));
             else
-                this.httpService.http.getDataByParam<StudentModel>({ studentId: studentId }, "getStudentsById").then(data => {
+                this.httpService.http.getDataByParam<StudentModel>({ studentId: studentId }, "Student/getStudentsById").then(data => {
                     return resolve(Object.assign(new StudentModel(), data));
                 });
 

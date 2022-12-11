@@ -1,8 +1,10 @@
-import { StudentNotes } from './../../../models/remider';
+import { ReminderType, StudentNotes } from './../../../models/remider';
 import { Component, Input, OnInit } from '@angular/core';
 import { ClassSessionModel } from 'src/app/models/class';
 import { Lesson } from 'src/app/models/lessons';
 import { StudentModel } from 'src/app/models/student';
+import { v4 as uuidv4 } from 'uuid';
+import { ReminderService } from 'src/app/api/reminder.service';
 
 @Component({
     selector: 'app-note',
@@ -28,20 +30,38 @@ export class NoteComponent implements OnInit {
 
     notes: string;
 
-    constructor() { }
+    constructor(private reminderService: ReminderService) { }
 
     ngOnInit() { }
 
     save() {
         if (this.student) {
-            //Save to server
-            this.student.notes.push(<StudentNotes>{
-                id: "",
+            const reminder = <StudentNotes>{
+                id: uuidv4(),
                 studentId: this.student.id,
                 taskId: this.classTask.id,
                 lessonId: this.book.id,
                 subLessonId: this.lesson.id,
-                notes: this.notes
+                note: this.notes,
+                type: ReminderType.StudentNotes
+            }
+            this.reminderService.addReminder(reminder).then(x => {
+                this.student.notes.push(reminder);
+                this.classTask.reminders.push(reminder);
+            });
+
+        }
+        else {
+            const reminder = <StudentNotes>{
+                id: uuidv4(),
+                taskId: this.classTask.id,
+                lessonId: this.book.id,
+                subLessonId: this.lesson.id,
+                note: this.notes,
+                type: ReminderType.StudentNotes
+            }
+            this.reminderService.addReminder(reminder).then(x => {
+                this.classTask.reminders.push(reminder);
             });
         }
         this.modal.dismiss();

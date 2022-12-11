@@ -5,6 +5,7 @@ import { HttpService } from './../core/services/http.service';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { BehaviorSubject } from 'rxjs';
+import { AssessParamModel } from '../models/asses-param';
 
 @Injectable({
     providedIn: 'root'
@@ -23,7 +24,8 @@ export class LessonService {
     getBooks(schoolId: number, gradeId: number): Promise<Lesson[]> {
         return new Promise(resolve => {
             if (this.books$.value.length > 0)
-                return resolve(this.books$.value.filter(x => x.gradeId == gradeId && x.schoolId == schoolId));
+                return resolve(this.books$.value.filter(x => x.gradeId == gradeId
+                    || (x.schoolId && x.schoolId == schoolId)));
             else
                 this.httpService.http.getData<Lesson[]>("lesson/getAll").then(r => {
                     const allLessons = r.map(x => Object.assign(new Lesson(), x));
@@ -54,6 +56,7 @@ export class LessonService {
             });
 
     }
+
 
     // getLessonImage(lesson: Lesson) {
     //     return `${environment.imageUrl}/lessons_org/grade_${lesson.GradeId}/c_${lesson.Id}.jpg`;

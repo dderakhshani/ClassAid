@@ -5,7 +5,7 @@ import { AssessmentPage } from './assessment.page';
 
 const routes: Routes = [
     {
-        path: ':studentId',
+        path: ':lessonId/:studentId',
         component: AssessmentPage
     }
 ];

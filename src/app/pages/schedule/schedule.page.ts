@@ -46,11 +46,14 @@ export class SchedulePage implements OnInit {
                     this.lessons = r;
                     this.scheduleService.get(this.globalService.selectedClass.id).then(x => {
                         this.schedule = x;
-                        x.scheduleTimes.forEach(st => {
-                            st.ring = this.rings.find(x => x.id == st.ringId);
-                            st.lesson = this.lessons.find(x => x.id == st.lessonId);
-                        })
-                        this.schedules = x.scheduleTimes;
+                        if (this.schedule) {
+                            x.scheduleTimes.forEach(st => {
+                                st.ring = this.rings.find(x => x.id == st.ringId);
+                                st.lesson = this.lessons.find(x => x.id == st.lessonId);
+                            })
+                            this.schedules = x.scheduleTimes;
+                        }
+
                     });
                 });
             }

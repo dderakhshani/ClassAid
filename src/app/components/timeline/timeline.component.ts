@@ -6,7 +6,7 @@ import { Lesson } from 'src/app/models/lessons';
 import { ScheduleTimeModel, ScheduleModel } from 'src/app/models/schedule';
 import { GlobalService } from 'src/app/services/global.service';
 import { ChartService } from 'src/app/services/chart.service';
-import { AssessMeasures } from 'src/app/models/stats-serie';
+import { AssessMeasures } from 'src/app/models/asses-param';
 
 @Component({
     selector: 'app-timeline',

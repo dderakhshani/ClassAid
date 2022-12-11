@@ -1,5 +1,5 @@
 import { environment } from "src/environments/environment";
-import { AssessMeasure } from "./stats-serie";
+import { AssessMeasure } from "./asses-param";
 
 export class Lesson {
     id: number;

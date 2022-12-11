@@ -1,17 +1,7 @@
 export class UserModel {
-
+    id: number;
+    fullName: string;
     username: string | undefined = undefined;
-    mobile: string | undefined = undefined;
-    fullName: string | undefined = undefined;
-    email: string | undefined = undefined;
-}
-
-export class SignUpModel {
-
-    username: string | undefined = undefined;
-    mobile: string | undefined = undefined;
-    fullName: string | undefined = undefined;
-    email: string | undefined = undefined;
-    agreement: boolean;
+    password: string | undefined = undefined;
 }
 

@@ -1,3 +1,4 @@
+import { GlobalService } from 'src/app/services/global.service';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
@@ -15,6 +16,7 @@ export class ProfilePage implements OnInit {
 
     constructor(private router: Router,
         private authService: AuthService,
+        private globalService: GlobalService,
         public alertController: AlertController) {
     }
 
@@ -24,7 +26,12 @@ export class ProfilePage implements OnInit {
 
     onSingOut() {
         this.authService.signOut();
-        this.router.navigateByUrl("/signup");
+        this.globalService.classSessions$.next([]);
+        this.globalService.callRolling = [];
+        this.globalService.currentSession = undefined;
+        this.globalService.selectedClass$.next(undefined);
+        this.globalService.rings = [];
+        this.router.navigateByUrl("/signin");
     }
 
     async reportBug() {

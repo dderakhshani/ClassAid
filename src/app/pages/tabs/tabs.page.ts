@@ -17,7 +17,7 @@ export class TabsPage {
         public globalService: GlobalService) { }
 
     startClass() {
-        if (this.globalService.currentClassTask)
+        if (this.globalService.currentSession)
             // this.navCtl.navigateRoot(`/tabs/class/0`);
             this.router.navigateByUrl(`/tabs/class/0`);
 
