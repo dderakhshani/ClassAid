@@ -69,6 +69,10 @@ ion-header {
 
     color: white;
 
+    ion-toolbar {
+        background: linear-gradient(var(--ion-color-primary), rgba(0, 0, 0, 0))
+    }
+
 
     // ion-icon,
     // ion-back-button,

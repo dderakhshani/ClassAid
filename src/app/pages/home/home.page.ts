@@ -33,7 +33,7 @@ export class HomePage implements OnInit {
     viewMode: "dashboard" | "timeline" = "dashboard";
 
     absentStudents: StudentModel[] = [];
-    nextSchedule: ScheduleTimeModel;
+    nextCurrentSchedule: ScheduleTimeModel;
     nextScheduleStatus: 'none' | 'has' | 'finish' = 'none';
     lessonChartOptions: any;
     dateName: string;
@@ -64,11 +64,17 @@ export class HomePage implements OnInit {
             if (ready) {
                 this.todayShedules = this.globalService.todayShedules;
 
-                const l = this.todayShedules.find((x: ScheduleTimeModel) => x.session == null);
-                const nextScheduleIndex = this.todayShedules.indexOf(l);
+                let nextCurrentSchedule_: ScheduleTimeModel;
+                if (this.globalService.currentSession)
+                    nextCurrentSchedule_ = this.todayShedules.find((x: ScheduleTimeModel) => x.id == this.globalService.currentSession.scheduleTimeId);
+                else
+                    nextCurrentSchedule_ = this.todayShedules.find((x: ScheduleTimeModel) => x.session == null);
+
+                const nextScheduleIndex = this.todayShedules.indexOf(nextCurrentSchedule_);
+
                 if (nextScheduleIndex > -1 && nextScheduleIndex < this.todayShedules.length) {
                     this.nextScheduleStatus = 'has';
-                    this.nextSchedule = this.todayShedules[nextScheduleIndex];
+                    this.nextCurrentSchedule = nextCurrentSchedule_;
                 }
                 else if (this.todayShedules.length > 0)
                     this.nextScheduleStatus = 'finish';

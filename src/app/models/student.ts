@@ -25,6 +25,7 @@ export class StudentModel {
     notes: StudentNotes[] = [];
     scores: Score[] = [];
     homeWorkIssue: boolean;
+    hasAssessment: boolean;
 
 
     getImageUrl() {

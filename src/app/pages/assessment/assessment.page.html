@@ -28,6 +28,7 @@
     </div>
     <div class="px-3 pb-4">
         <hr>
+        <!-- Summery -->
         <ion-accordion-group>
             <ion-accordion value="first">
                 <ion-item slot="header" color="light">
@@ -35,10 +36,10 @@
                 </ion-item>
                 <div class="ion-padding" slot="content">
                     <ion-segment value="2" mode="ios">
-                        <ion-segment-button value="1" class="text-danger" (mousedown)="$event.preventDefault();$event.stopPropagation()">
+                        <ion-segment-button value="1" class="text-danger">
                             <ion-label>ن.ب.ت</ion-label>
                         </ion-segment-button>
-                        <ion-segment-button value="2" class="text-warning" (mousedown)="$event.preventDefault();$event.stopPropagation()">
+                        <ion-segment-button value="2" class="text-warning">
                             <ion-label>قابل قبول</ion-label>
                         </ion-segment-button>
                         <ion-segment-button value="3" class="text-primary">
@@ -55,15 +56,17 @@
 
         </ion-accordion-group>
 
+        <!-- Assessment -->
         <div class="d-flex flex-column">
-            <ion-button (click)="clear()">
+            <ion-button (click)="clear()" fill="outline" color="danger" class="mt-2">
                 <ion-icon name="trash-bin-outline"></ion-icon>
                 حذف انتخاب ها
             </ion-button>
+            <!-- Create  Parameters & Levels -->
             <div *ngFor="let param of paramters;let index=index;" class="pt-2">
                 <b> {{index+1}}.&nbsp;{{param.title}}</b>
                 <ion-segment [scrollable]="true" [(ngModel)]="param.level" mode="ios">
-                    <ion-segment-button (click)="selectMeasure(param,am)" value="{{am.value}}" class="{{am.bdColor}}" *ngFor="let am of assessMeasures">
+                    <ion-segment-button (click)="selectMeasure(param,am)" value="{{am.value}}" class="{{am.bdColor}}" *ngFor="let am of assessLevels">
                         <ion-icon [name]="am.ionIcon"></ion-icon>
                         <ion-label>
                             {{am.title}}

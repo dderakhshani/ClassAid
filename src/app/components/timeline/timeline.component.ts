@@ -6,7 +6,7 @@ import { Lesson } from 'src/app/models/lessons';
 import { ScheduleTimeModel, ScheduleModel } from 'src/app/models/schedule';
 import { GlobalService } from 'src/app/services/global.service';
 import { ChartService } from 'src/app/services/chart.service';
-import { AssessMeasures } from 'src/app/models/asses-param';
+import { AssessmentLevels } from 'src/app/models/asses-param';
 
 @Component({
     selector: 'app-timeline',
@@ -14,7 +14,7 @@ import { AssessMeasures } from 'src/app/models/asses-param';
     styleUrls: ['./timeline.component.scss'],
 })
 export class TimelineComponent implements OnInit {
-    AssessMeasures = AssessMeasures;
+    AssessMeasures = AssessmentLevels;
 
     @Input()
     schedules: ScheduleTimeModel[];
@@ -39,7 +39,7 @@ export class TimelineComponent implements OnInit {
     ngOnInit() {
         this.schedules.forEach(x => {
             const i = Math.floor(Math.random() * 4);
-            x.lesson.avgAssess = AssessMeasures[i];
+            x.lesson.avgAssess = AssessmentLevels[i];
         })
     }
 

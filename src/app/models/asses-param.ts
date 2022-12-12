@@ -26,7 +26,7 @@ export interface AssessMeasureLevel {
 }
 
 
-export const AssessMeasures: AssessMeasureLevel[] = [
+export const AssessmentLevels: AssessMeasureLevel[] = [
     { title: "ارزشیابی ثبت نشده", shortTitle: 'بدون داده', value: 0, color: "", bdColor: "", ionColor: "", ionIcon: "" },
     { title: "نیاز به تلاش", shortTitle: 'ن.ب.ت', value: 1, color: "", bdColor: "text-danger", ionColor: "danger", ionIcon: "alert-circle-outline" },
     { title: "قابل قبول", shortTitle: 'ق.ق', value: 2, color: "", bdColor: "text-warning", ionColor: "warning", ionIcon: "caret-back-circle-outline" },

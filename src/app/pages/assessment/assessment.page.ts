@@ -1,10 +1,11 @@
 import { AssessMeasureLevel } from './../../models/asses-param';
 import { Component, OnInit } from '@angular/core';
+import { Location } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AssessmentService } from 'src/app/api/assessment.service';
 import { LessonService } from 'src/app/api/lesson.service';
 import { StudentsService } from 'src/app/api/students.service';
-import { AssessMeasures, AssessParamModel } from 'src/app/models/asses-param';
+import { AssessmentLevels, AssessParamModel } from 'src/app/models/asses-param';
 import { Lesson } from 'src/app/models/lessons';
 import { StudentModel } from 'src/app/models/student';
 import { ChartService } from 'src/app/services/chart.service';
@@ -21,7 +22,7 @@ export class AssessmentPage implements OnInit {
     book: Lesson;
     student: StudentModel;
     paramters: AssessParamModel[] = [];
-    assessMeasures = [...AssessMeasures.filter(x => x.value != 0)];
+    assessLevels = [...AssessmentLevels.filter(x => x.value != 0)];
     chartOptions: any;
 
     constructor(public lessonService: LessonService,
@@ -30,6 +31,7 @@ export class AssessmentPage implements OnInit {
         public globalService: GlobalService,
         private chartService: ChartService,
         private route: ActivatedRoute,
+        private location: Location,
         private router: Router) {
 
         const lessonId = Number(this.route.snapshot.paramMap.get('lessonId'));
@@ -68,10 +70,13 @@ export class AssessmentPage implements OnInit {
     }
 
     clear() {
-
+        this.paramters.forEach(p => {
+            p.level = 0;
+        })
     }
 
     save() {
-
+        this.student.hasAssessment = true;
+        this.location.back();
     }
 }

@@ -1,7 +1,9 @@
 .days {
     background: #f7f7f7;
-    border-radius: 15px;
-    padding: .5rem;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+    // border-radius: 15px;
+    padding: 1rem .5rem;
 
     .day {
         height: 50px;
@@ -9,12 +11,20 @@
         background: #fff;
         border-radius: 15px;
         box-shadow: rgba(0, 0, 0, 0.1) -4px 9px 25px -6px;
+
+        ion-icon {
+            color: #cacaca !important;
+        }
     }
 
     .day.selected {
         background: #4E7DF1;
         color: #fff;
         box-shadow: rgba(100, 100, 111, 0.3) 0px 7px 29px 0px;
+
+        ion-icon {
+            color: #a3d4ff !important;
+        }
     }
 }
 
@@ -64,15 +74,16 @@
     .time-item:before {
         content: "";
         position: absolute;
-        top: 0px;
+        top: -20px;
         right: 50px;
         border-right: 4px solid #cbcbcf;
         width: 2px;
-        height: 118%;
+        height: 140px;
     }
 
+
     .time-item:last-child::before {
-        height: 50%;
+        height: 100px;
     }
 
     .time-item:after {
@@ -91,4 +102,18 @@
 
 
 
+}
+
+.ios :host .timeline {
+
+    .time-item:before {
+        top: -35px;
+        right: 55px;
+        height: 170px;
+    }
+
+    .time-item:after {
+
+        right: 68px;
+    }
 }

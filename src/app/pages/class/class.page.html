@@ -46,33 +46,41 @@
             <ion-row>
                 <ion-col size="4" *ngFor="let student of students " class="d-flex  align-items-stretch">
                     <ion-card class="student-card flex-fill" (click)="onStudentAction(student)" [color]="getColor(student)">
+                        <!-- If Present Icon -->
                         <ion-icon *ngIf="student.present" name="checkmark-circle" class="present" color="success"></ion-icon>
+                        <!-- Has Reminder Icon -->
+                        <ion-badge *ngIf="student.reminders.length>0" class="reminder  me-1" color="secondary" mode="ios">
+                            <ion-icon name="alarm-outline" size="small"></ion-icon>
+                        </ion-badge>
+                        <!-- Has Assessment Icon -->
+                        <ion-badge *ngIf="student.hasAssessment" class="assessment  me-1" color="danger" mode="ios">
+                            <ion-icon name="bar-chart-outline" size="small"></ion-icon>
+                        </ion-badge>
 
+                        <!-- Avatar -->
                         <div class="d-flex justify-content-center pt-2">
                             <ion-avatar slot="start">
                                 <img alt="Avatar-Student" [src]="student.getImageUrl()" onerror="this.src='/assets/img/avatar.webp'" />
                             </ion-avatar>
                         </div>
 
-                        <ion-card-header class="p-2">
+                        <ion-card-header class="p-1">
                             <ion-card-subtitle class="text-center">
                                 {{student.fullName}}
                             </ion-card-subtitle>
                         </ion-card-header>
                         <ion-card-content class="p-2 pt-0 pb-0">
                             <ng-container *ngIf="student.present">
-                                <ion-badge *ngIf="student.reminders.length>0" class=" me-1" color="secondary" mode="ios">
-                                    <ion-icon name="alarm-outline" size="small"></ion-icon>
-                                </ion-badge>
+                                <!-- Homework Issue -->
                                 <ion-badge *ngIf="student.homeWorkIssue" class=" me-1" color="danger" mode="ios">
                                     <ion-icon name="book-outline" size="small"></ion-icon>
                                 </ion-badge>
+                                <!-- Has Note Icon -->
                                 <ion-badge *ngIf="student.notes.length>0" class=" me-1" color="warning" mode="ios">
                                     <ion-icon name="reader-outline" size="small"></ion-icon>
                                 </ion-badge>
-
-
                             </ng-container>
+                            <!-- Scores  -->
                             <ng-container *ngFor="let score of student.scores">
                                 <ion-badge *ngIf="score.positiveNegetive" color="success" class=" me-1" mode="ios">
                                     <ion-icon name="add-circle-outline" size="small"></ion-icon>
@@ -81,6 +89,7 @@
                                     <ion-icon name="remove-circle-outline" size="small"></ion-icon>
                                 </ion-badge>
                             </ng-container>
+
                             <ion-badge color="danger" *ngIf="!student.present">غایب</ion-badge>
 
                         </ion-card-content>
