@@ -69,12 +69,13 @@
         </ion-item>
 
 
-        <ion-segment mode="ios" [(ngModel)]="isReport">
-            <ion-segment-button value="false">
-                <ion-label>شخصی </ion-label>
-            </ion-segment-button>
+        <ion-segment mode="ios" [(ngModel)]="isReport" color="warning">
+
             <ion-segment-button value="true">
                 <ion-label> گزارشی</ion-label>
+            </ion-segment-button>
+            <ion-segment-button value="false">
+                <ion-label>شخصی </ion-label>
             </ion-segment-button>
         </ion-segment>
 
@@ -85,7 +86,7 @@
 
         </ion-item>
 
-        <ion-segment mode="ios" [(ngModel)]="dateType">
+        <ion-segment mode="ios" [(ngModel)]="dateType" color="tertiary">
             <ion-segment-button value="next">
                 <ion-label> جلسه بعدی درس</ion-label>
             </ion-segment-button>

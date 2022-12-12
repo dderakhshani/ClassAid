@@ -1,9 +1,9 @@
 <div class="p-3">
-    <div class="" ngIf="prevScores && prevScores.length>0">
+    <div class="old_items" *ngIf="prevScores && prevScores.length>0">
         <div>
-            <h4 *>مشاهدات قبلی کلاس:</h4>
+            <h4>مشاهدات قبلی کلاس:</h4>
         </div>
-        <div class="old_items">
+        <div>
             <ion-card *ngFor="let s of prevScores;let index=index" [ngClass]="{'score-item': !expanded, 'score-item-expanded': expanded}" class="score-item" [style.transform]="'scale(' + getScale(index) + ')'">
                 <ion-item lines="none">
                     <ion-avatar slot="start">

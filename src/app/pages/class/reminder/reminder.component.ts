@@ -37,7 +37,7 @@ export class ReminderComponent implements OnInit {
     dateType: "next" | 'tommorow' | "exact-date" = "next";
     nextDays: { dayNo: number, dayName: string, date: Date }[] = [];
     selectedDay: any;
-    isReport: string;
+    isReport: string = 'true';
     notes: string;
 
     constructor(private reminderService: ReminderService) {

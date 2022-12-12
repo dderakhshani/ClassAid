@@ -77,12 +77,14 @@ export class TableComponent implements OnInit {
                 {
                     text: 'حذف',
                     role: 'destructive',
+                    icon: 'trash-outline',
                     data: {
                         action: 'delete',
                     },
                 },
                 {
                     text: 'ویرایش',
+                    icon: 'create-outline',
                     data: {
                         action: 'edit',
                     },

@@ -8,7 +8,7 @@ import { LessonService } from 'src/app/api/lesson.service';
 import { Lesson } from 'src/app/models/lessons';
 import { GlobalService } from 'src/app/services/global.service';
 
-import { ActionSheetController } from '@ionic/angular';
+import { ActionSheetController, AlertController } from '@ionic/angular';
 import { ReminderType, Score } from 'src/app/models/remider';
 
 @Component({
@@ -38,6 +38,7 @@ export class ClassPage implements OnInit {
         public studentsService: StudentsService,
         public globalService: GlobalService,
         private route: ActivatedRoute,
+        private alertController: AlertController,
         private actionSheetCtrl: ActionSheetController,
         private router: Router) {
 
@@ -101,10 +102,30 @@ export class ClassPage implements OnInit {
 
     }
 
-    endClass() {
+    async endClass() {
+        const alert = await this.alertController.create({
+            header: 'اتمام کلاس',
+            message: 'آیا از اتمام کلاس اطمینان داری؟',
+            buttons: [
+                {
+                    text: 'بله',
+                    role: 'confirm',
+                    handler: () => {
+                        this.globalService.endClass();
+                        this.router.navigateByUrl("tabs/home");
+                    },
+                },
+                {
+                    text: 'خیر',
+                    role: 'cancel',
+                },
+            ],
+        });
+
+        await alert.present();
+
         //TODO: Promise base then navigate
-        this.globalService.endClass();
-        this.router.navigateByUrl("tabs/home");
+
     }
 
     getColor(student: StudentModel) {
@@ -112,15 +133,15 @@ export class ClassPage implements OnInit {
     }
 
     hasReminder() {
-        return this.globalService.currentSession.reminders.filter(x => x.type == ReminderType.Reminder).length > 0;
+        return this.globalService.currentSession.reminders?.filter(x => x.type == ReminderType.Reminder).length > 0;
     }
 
     hasNotes() {
-        return this.globalService.currentSession.reminders.filter(x => x.type == ReminderType.Notes).length > 0;
+        return this.globalService.currentSession.reminders?.filter(x => x.type == ReminderType.Notes).length > 0;
     }
 
     hasHomeWork() {
-        return this.globalService.currentSession.reminders.filter(x => x.type == ReminderType.Reminder).length > 0;
+        return this.globalService.currentSession.reminders?.filter(x => x.type == ReminderType.Reminder).length > 0;
     }
 
     onAssess() {

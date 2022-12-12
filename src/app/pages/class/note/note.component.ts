@@ -35,6 +35,7 @@ export class NoteComponent implements OnInit {
     notes: string;
     tags: string[] = [];
     tag = "";
+    isReport: string = 'true';
 
     colors = ["primary", "danger", "success", "secondary", "warning", "tertiary", "medium"]
 

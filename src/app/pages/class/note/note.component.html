@@ -69,12 +69,12 @@
     </ion-item>
 
     <div class="px-3">
-        <ion-segment mode="ios">
-            <ion-segment-button value="next">
-                <ion-label> شخصی </ion-label>
-            </ion-segment-button>
-            <ion-segment-button value="tommorow">
+        <ion-segment mode="ios" [(ngModel)]="isReport" color="warning">
+            <ion-segment-button value="true">
                 <ion-label> گزارشی</ion-label>
+            </ion-segment-button>
+            <ion-segment-button value="false">
+                <ion-label>شخصی </ion-label>
             </ion-segment-button>
         </ion-segment>
     </div>
