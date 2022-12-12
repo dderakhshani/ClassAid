@@ -48,7 +48,7 @@
                     <div class=" absents">
                         <span class="ms-3"> غیابین:</span>
                         <ion-avatar slot="start" *ngFor="let s of absentStudents">
-                            <img alt="Avatar-Student" [src]="s.getImageUrl()" />
+                            <img alt="Avatar-Student" [src]="s.getImageUrl()" onerror="this.src='/assets/img/avatar.webp'" />
                         </ion-avatar>
                     </div>
                 </ion-card-content>
@@ -115,7 +115,7 @@
             <div class="d-flex">
                 <ng-container *ngFor="let lr of reminderService.lesson_reminders$ | async">
                     <ion-avatar class="reminder ms-4" (click)="showReminder(lr)">
-                        <img alt="lesson-Student" [src]="lesson.getImageUrl(lr.lessonId)" />
+                        <img alt="lesson-avatar" [src]="lesson.getImageUrl(lr.lessonId)" />
                         <ion-badge class=" me-1" color="secondary" mode="ios">
                             <ion-icon name="alarm-outline" size="small"></ion-icon>
                         </ion-badge>
@@ -123,7 +123,7 @@
                 </ng-container>
                 <ng-container *ngFor="let sr of reminderService.student_reminders$ | async">
                     <ion-avatar class="reminder ms-4" (click)="showReminder(sr)">
-                        <img alt="avatar-student" [src]="studentModel.getImageUrl(sr.studentId)" />
+                        <img alt="avatar-student" [src]="studentModel.getImageUrl(sr.studentId)" onerror="this.src='/assets/img/avatar.webp'" />
                         <ion-badge class=" me-1" color="secondary" mode="ios">
                             <ion-icon name="alarm-outline" size="small"></ion-icon>
                         </ion-badge>
