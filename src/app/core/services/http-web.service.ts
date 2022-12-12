@@ -54,7 +54,7 @@ export class HttpWebService {
     }
 
     private handleError(error: HttpErrorResponse) {
-        alert(JSON.stringify(error));
+        // alert(JSON.stringify(error));
         if (error.error instanceof ErrorEvent) {
             // A client-side or network error occurred. Handle it accordingly.
             console.error('HttpWebService: An error occurred:', error.error.message);

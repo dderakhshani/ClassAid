@@ -1,27 +1,26 @@
 <ion-content class="ion-padding bg-white">
+    <img class="bg" src="assets/img/footer-bg.png" width="100%" />
     <form [formGroup]="form" (ngSubmit)="signup()" class="d-flex flex-column  justify-content-center" style="height: 100%;">
         <div class="header-bg d-flex flex-column align-items-center">
             <div style="width: 60%; border-radius: 20px; overflow: hidden; box-shadow: 0 8px 10px rgba(0, 128, 255, 0.366);">
                 <img src="assets/img/logo/logo_240.png" />
             </div>
 
-            <br />
-            <label>به همیار معلم خوش آمدید</label>
-            <br />
-            <br />
-            <label>لطفا نام کاربری و رمز عبور خود را وارد نمایید</label>
+            <label class="mt-2">به همیار معلم خوش آمدید</label>
+
+
 
         </div>
-        <br />
 
+        <label>لطفا نام کاربری و رمز عبور خود را وارد نمایید</label>
 
         <ion-item style="direction:rtl">
-            <ion-input formControlName="username" required placeholder="نام کاربری"></ion-input>
+            <ion-input formControlName="username" (focus)="hideKey()" required placeholder="نام کاربری"></ion-input>
             <ion-icon name="person" slot="start"></ion-icon>
         </ion-item>
-        <ion-item>
 
-            <ion-input formControlName="password" type="password" required>
+        <ion-item>
+            <ion-input formControlName="password" (focus)="hideKey()" type="password" required>
             </ion-input>
             <ion-icon name="key" slot="start"></ion-icon>
         </ion-item>
@@ -33,6 +32,3 @@
 
 
 </ion-content>
-<ion-footer>
-    <img src="assets/img/footer-bg.png" width="100%" />
-</ion-footer>

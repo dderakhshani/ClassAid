@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { UserModel } from '../../core/models/user';
 import { AuthService } from '../../core/services/auth.service';
 import { ToastController } from '@ionic/angular';
+import { Keyboard, KeyboardResize } from '@capacitor/keyboard';
 
 @Component({
     selector: 'app-signup',
@@ -32,6 +33,12 @@ export class SignupPage implements OnInit {
             fullName: [""],
             id: [0],
         });
+
+        // Keyboard.setResizeMode({ mode: KeyboardResize.Ionic });
+    }
+
+    hideKey() {
+
     }
 
     async signup() {

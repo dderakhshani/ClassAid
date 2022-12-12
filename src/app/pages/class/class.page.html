@@ -22,7 +22,7 @@
 
     <div class="d-flex justify-content-around p-2 pb-4">
 
-        <ion-button shape="circle" (click)="onReminder()" color="secondary">
+        <ion-button shape="circle" (click)="onReminder()" color="secondary" [class.has-reminder]="hasReminder()">
             <ion-icon slot="icon-only" name="alarm-outline"></ion-icon>
             <ion-label>یادآور</ion-label>
         </ion-button>
@@ -34,8 +34,8 @@
             <ion-icon slot="icon-only" name="flask-outline"></ion-icon>
             <ion-label>آزمون</ion-label>
         </ion-button>
-        <ion-button shape="circle" color="warning" (click)="onNotes()">
-            <ion-icon slot="icon-only" name="reader-outline"></ion-icon>
+        <ion-button shape="circle" color="warning" (click)="onNotes()" [class.has-notes]="hasNotes()">
+            <ion-icon slot="icon-only" name="document-text-outline"></ion-icon>
             <ion-label>یادداشت</ion-label>
         </ion-button>
 
@@ -77,7 +77,7 @@
                                 </ion-badge>
                                 <!-- Has Note Icon -->
                                 <ion-badge *ngIf="student.notes.length>0" class=" me-1" color="warning" mode="ios">
-                                    <ion-icon name="reader-outline" size="small"></ion-icon>
+                                    <ion-icon name="document-text-outline" size="small"></ion-icon>
                                 </ion-badge>
                             </ng-container>
                             <!-- Scores  -->
@@ -102,19 +102,19 @@
 
     <ion-modal #modal_note [isOpen]="isNotesModalOpen" (didDismiss)="isNotesModalOpen=false" [presentingElement]="presentingElement">
         <ng-template>
-            <app-note [modal]="modal_note" [classTask]="globalService.currentSession" [book]="book" [lesson]="lesson" [student]="selectedStudent"></app-note>
+            <app-note [modal]="modal_note" [classTask]="globalService.currentSession" [book]="book" [lesson]="lesson" [student]="selectedStudent" [prevNotes]="modalNotes"></app-note>
         </ng-template>
     </ion-modal>
 
     <ion-modal #modal_reminder [isOpen]="isReminderModalOpen" (didDismiss)="isReminderModalOpen=false" [presentingElement]="presentingElement">
         <ng-template>
-            <app-reminder [modal]="modal_reminder" [classTask]="globalService.currentSession" [book]="book" [lesson]="lesson" [student]="selectedStudent"></app-reminder>
+            <app-reminder [modal]="modal_reminder" [classTask]="globalService.currentSession" [book]="book" [lesson]="lesson" [student]="selectedStudent" [prevReminders]="modalReminders"></app-reminder>
         </ng-template>
     </ion-modal>
 
     <ion-modal #score_modal id="score-modal" [isOpen]="isScoreModalOpen" (didDismiss)="isScoreModalOpen=false">
         <ng-template>
-            <app-score [modal]="score_modal" [session]="globalService.currentSession" [book]="book" [lesson]="lesson" [student]="selectedStudent"></app-score>
+            <app-score [modal]="score_modal" [session]="globalService.currentSession" [book]="book" [lesson]="lesson" [student]="selectedStudent" [prevScores]="selectedStudent.scores"></app-score>
         </ng-template>
     </ion-modal>
 

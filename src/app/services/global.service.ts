@@ -45,7 +45,10 @@ export class GlobalService {
         private reminderService: ReminderService,
         public lessonService: LessonService,
         private scheduleService: ScheduleService) {
-        this.teacherId = authService.getProfile().id;
+        const user = authService.getProfile();
+        if (user) {
+            this.teacherId = authService.getProfile().id;
+        }
 
         this.todayDay = (new Date().getDay() + 1) % 7;
 

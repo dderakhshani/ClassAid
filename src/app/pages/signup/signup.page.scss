@@ -1,11 +1,21 @@
 ion-content {
-  --background: #f9f9f9;
+    --background: #f9f9f9;
+    --keyboard-offset: 0px;
+
+    .bg {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+    }
 }
+
 .header-bg {
-  background-image: url("/assets/imgs/stores_bg.jpg");
-  text-align: center;
+    background-image: url("/assets/imgs/stores_bg.jpg");
+    text-align: center;
 }
 
 ion-label.rules {
-  font-size: 0.75rem;
+    font-size: 0.75rem;
+
 }

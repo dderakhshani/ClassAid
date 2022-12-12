@@ -3,6 +3,12 @@
     "appName": "ClassAidApp",
     "webDir": "www",
     "bundledWebRuntime": false,
+    "plugins": {
+        "Keyboard": {
+            "resize": "ionic",
+            "resizeOnFullScreen": true
+        }
+    },
     "server": {
         "cleartext": true
     }

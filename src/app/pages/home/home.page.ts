@@ -63,31 +63,18 @@ export class HomePage implements OnInit {
         this.globalService.ready$.subscribe(ready => {
             if (ready) {
                 this.todayShedules = this.globalService.todayShedules;
+                this.setNextCurrentSchedule();
 
-                let nextCurrentSchedule_: ScheduleTimeModel;
-                if (this.globalService.currentSession)
-                    nextCurrentSchedule_ = this.todayShedules.find((x: ScheduleTimeModel) => x.id == this.globalService.currentSession.scheduleTimeId);
-                else
-                    nextCurrentSchedule_ = this.todayShedules.find((x: ScheduleTimeModel) => x.session == null);
-
-                const nextScheduleIndex = this.todayShedules.indexOf(nextCurrentSchedule_);
-
-                if (nextScheduleIndex > -1 && nextScheduleIndex < this.todayShedules.length) {
-                    this.nextScheduleStatus = 'has';
-                    this.nextCurrentSchedule = nextCurrentSchedule_;
-                }
-                else if (this.todayShedules.length > 0)
-                    this.nextScheduleStatus = 'finish';
-                else
-                    this.nextScheduleStatus = 'none';
-
-                this.lessonService.getLessonById(1185).then(l => {
-                    this.lessonChartOptions = this.chartService.createPieGaugeChart(10, 0, 100, "ساعت");
+                this.globalService.classSessions$.subscribe(session => {
+                    if (session && session.length > 0) {
+                        this.setNextCurrentSchedule();
+                    }
                 });
-
             }
 
         });
+
+
 
         this.studentsService.students$.subscribe(students => {
 
@@ -99,6 +86,30 @@ export class HomePage implements OnInit {
 
     attendance() {
         this.router.navigateByUrl(`/tabs/home/attendance`)
+    }
+
+    setNextCurrentSchedule() {
+        let nextCurrentSchedule_: ScheduleTimeModel;
+        if (this.globalService.currentSession)
+            nextCurrentSchedule_ = this.todayShedules.find((x: ScheduleTimeModel) => x.id == this.globalService.currentSession.scheduleTimeId);
+        else
+            nextCurrentSchedule_ = this.todayShedules.find((x: ScheduleTimeModel) => x.session == null);
+
+        const nextScheduleIndex = this.todayShedules.indexOf(nextCurrentSchedule_);
+
+        if (nextScheduleIndex > -1 && nextScheduleIndex < this.todayShedules.length) {
+            this.nextScheduleStatus = 'has';
+            this.nextCurrentSchedule = nextCurrentSchedule_;
+            this.lessonService.getLessonById(this.nextCurrentSchedule.lessonId).then(l => {
+                this.lessonChartOptions = this.chartService.createPieGaugeChart(l.sessionsCount, 0, 100, "جلسه");
+            });
+        }
+        else if (this.todayShedules.length > 0)
+            this.nextScheduleStatus = 'finish';
+        else
+            this.nextScheduleStatus = 'none';
+
+
     }
 
     async showReminder(remidner: Reminder) {

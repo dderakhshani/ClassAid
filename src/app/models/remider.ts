@@ -5,6 +5,8 @@ export interface Reminder {
     note: string;
     type: ReminderType;
     tags: string;
+    remindTime: Date;
+    isReport: boolean;
 }
 
 
@@ -19,12 +21,10 @@ export enum ReminderType {
 export interface StudentReminder extends Reminder {
     studentId: number;
     taskId: string;
-    remindTime: Date;
 }
 
 export interface LessonReminder extends Reminder {
     taskId: string;
-    remindTime: Date;
 }
 
 

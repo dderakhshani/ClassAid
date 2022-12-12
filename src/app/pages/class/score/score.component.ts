@@ -13,6 +13,7 @@ import { v4 as uuidv4 } from 'uuid';
 })
 export class ScoreComponent implements OnInit {
 
+    expanded = false;
 
     @Input()
     modal: any;
@@ -28,6 +29,10 @@ export class ScoreComponent implements OnInit {
 
     @Input()
     student?: StudentModel;
+
+    @Input()
+    prevScores: Score[];
+
 
     posNeg: string;
     notes: string;
@@ -59,5 +64,16 @@ export class ScoreComponent implements OnInit {
 
         }
 
+    }
+
+    remove(score: Score) {
+
+    }
+
+    getScale(index: number) {
+        if (this.expanded)
+            return 1;
+        else
+            return 1 - ((this.prevScores.length - 1) - index) * 0.05;
     }
 }

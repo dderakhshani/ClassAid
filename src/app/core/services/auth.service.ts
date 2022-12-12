@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { UserModel } from '../models/user';
 import { HttpService } from './http.service';
@@ -12,6 +12,7 @@ export class AuthService {
 
     constructor(private httpService: HttpService) { }
     user!: UserModel;
+    user$ = new BehaviorSubject<UserModel>(null);
 
     isAutenticated(): boolean {
         this.user = this.getProfile();
@@ -20,9 +21,11 @@ export class AuthService {
 
 
     getProfile(): UserModel {
-        if(this.user)
-        return this.user;
+        if (this.user)
+            return this.user;
+
         this.user = JSON.parse(localStorage.getItem(STORAGE_PROFILE));
+        this.user$.next(this.user);
         return this.user;
     }
 
@@ -34,6 +37,7 @@ export class AuthService {
         return new Promise(resolve => {
             this.httpService.http.postJsonData<UserModel>(user, `auth/Login`).then(data => {
                 this.user = data;
+                this.user$.next(this.user);
                 this.saveProfile(data);
                 return resolve(data);
             });

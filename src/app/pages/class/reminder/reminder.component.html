@@ -5,7 +5,7 @@
                 <ion-icon slot="icon-only" name="close"></ion-icon>
             </ion-button>
         </ion-buttons>
-        <ion-title>یادداشت</ion-title>
+        <ion-title>یادآور</ion-title>
         <ion-buttons slot="end">
             <ion-button (click)="save()">
                 <ion-icon slot="icon-only" name="save-outline"></ion-icon>
@@ -21,6 +21,46 @@
         </ion-avatar>
         <b> {{student?.fullName}}</b>
     </div>
+
+    <!-- Reminders List -->
+    <div class="p-2 bg-light old_items" *ngIf="prevReminders && prevReminders.length>0">
+        <div>
+            <h4>یادآور های قبلی کلاس:</h4>
+        </div>
+        <div>
+            <ion-card *ngFor="let r of prevReminders;let index=index" [ngClass]="{'reminder-item': !expanded, 'reminder-item-expanded': expanded}" class="score-item" [style.transform]="'scale(' + getScale(index) + ')'">
+                <ion-item lines="none">
+                    <ion-avatar slot="start">
+                        <ion-icon name="alarm-outline" color="secondary" size="large" *ngIf="!r.isReport"></ion-icon>
+                        <ion-icon name="alarm-outline" color="warning" size="large" *ngIf="r.isReport"></ion-icon>
+                        <!-- <ion-icon name="newspaper-outline" color="warning" size="small" *ngIf="r.isReport"></ion-icon> -->
+                    </ion-avatar>
+                    <ion-label>
+                        <ion-note> {{r.remindTime | date}}</ion-note>
+                        <p> {{r.note}}</p>
+                    </ion-label>
+
+                    <ion-button fill="clear" slot="end" (click)="remove(r)" color="medium">
+                        <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+
+                    </ion-button>
+                </ion-item>
+            </ion-card>
+            <ion-button fill="clear" size="small" *ngIf="prevReminders.length>1" (click)="expanded=!expanded" style="margin-top: -0.5rem;">
+                <ng-container *ngIf="!expanded">
+                    <ion-icon name="chevron-down-outline"></ion-icon>
+                    مشاهده همه
+                </ng-container>
+                <ng-container *ngIf="expanded">
+                    <ion-icon name="chevron-up-outline"></ion-icon>
+                    بستن
+                </ng-container>
+            </ion-button>
+
+        </div>
+    </div>
+
+    <!-- Add New  Reminder -->
     <div class="p-2">
         <ion-item lines="none">
             <ion-icon slot="start" name="albums-outline"></ion-icon>
@@ -29,11 +69,11 @@
         </ion-item>
 
 
-        <ion-segment mode="ios">
-            <ion-segment-button value="next">
+        <ion-segment mode="ios" [(ngModel)]="isReport">
+            <ion-segment-button value="false">
                 <ion-label>شخصی </ion-label>
             </ion-segment-button>
-            <ion-segment-button value="tommorow">
+            <ion-segment-button value="true">
                 <ion-label> گزارشی</ion-label>
             </ion-segment-button>
         </ion-segment>
@@ -72,7 +112,7 @@
 
         <ion-item class="pt-2">
             <ion-label position="stacked">متن یاد آوری</ion-label>
-            <ion-textarea placeholder="متن خود را وارد نمایید" [(ngModel)]="notes"></ion-textarea>
+            <ion-textarea placeholder="متن خود را وارد نمایید" [autoGrow]="true" [(ngModel)]="notes"></ion-textarea>
         </ion-item>
     </div>
 </ion-content>

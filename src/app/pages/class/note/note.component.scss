@@ -1,3 +1,27 @@
 ion-footer {
     margin-top: -120px;
 }
+
+
+.old_items {
+    border-bottom-left-radius: 1rem;
+    border-bottom-right-radius: 1rem;
+
+    ion-card {
+        transition: all 0.3s;
+    }
+
+    .reminder-item:not(:first-child) {
+        margin-top: -50px;
+    }
+
+    .reminder-item-expanded {
+        margin-top: 0px;
+
+        ion-item {
+            ion-label {
+                white-space: normal;
+            }
+        }
+    }
+}

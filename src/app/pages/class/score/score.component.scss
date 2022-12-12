@@ -1,0 +1,15 @@
+:root {}
+
+.old_items {
+    ion-card {
+        transition: all 0.3s;
+    }
+
+    .score-item:not(:first-child) {
+        margin-top: -45px;
+    }
+
+    .score-item-expanded {
+        margin-top: 0px;
+    }
+}

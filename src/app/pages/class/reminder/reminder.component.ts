@@ -2,7 +2,7 @@ import { Days } from './../../../models/day';
 import { ReminderService } from './../../../api/reminder.service';
 import { ClassSessionModel } from './../../../models/class';
 import { Lesson } from './../../../models/lessons';
-import { StudentReminder, LessonReminder, ReminderType } from './../../../models/remider';
+import { StudentReminder, LessonReminder, ReminderType, Reminder } from './../../../models/remider';
 import { StudentModel } from 'src/app/models/student';
 import { Component, Input, OnInit } from '@angular/core';
 import { DateDay } from 'src/app/models/day';
@@ -15,7 +15,9 @@ import { v4 as uuidv4 } from 'uuid';
 })
 export class ReminderComponent implements OnInit {
 
-
+    expanded = false;
+    @Input()
+    prevReminders: Reminder[];
 
     @Input()
     modal: any;
@@ -35,7 +37,7 @@ export class ReminderComponent implements OnInit {
     dateType: "next" | 'tommorow' | "exact-date" = "next";
     nextDays: { dayNo: number, dayName: string, date: Date }[] = [];
     selectedDay: any;
-
+    isReport: string;
     notes: string;
 
     constructor(private reminderService: ReminderService) {
@@ -56,17 +58,21 @@ export class ReminderComponent implements OnInit {
 
     }
 
+    remove(reminder: Reminder) {
+
+    }
+
+    getScale(index: number) {
+        if (this.expanded)
+            return 1;
+        else
+            return 1 - ((this.prevReminders.length - 1) - index) * 0.05;
+    }
+
+
     save() {
         if (this.student) {
 
-            let remindTime = new Date();
-            if (this.dateType == 'tommorow')
-                remindTime.setDate(remindTime.getDate() + 1);
-            else if (this.dateType == 'exact-date')
-                remindTime = this.selectedDay;
-            else {
-                //find next schedule of the lesson;
-            }
 
             const reminder = <StudentReminder>{
                 id: uuidv4(),
@@ -74,8 +80,9 @@ export class ReminderComponent implements OnInit {
                 lessonId: this.book.id,
                 subLessonId: this.lesson.id,
                 taskId: this.classTask.id,
-                remindTime: remindTime,
+                remindTime: this.getReminderTime(),
                 note: this.notes,
+                isReport: this.isReport == 'true',
                 type: ReminderType.StudentReminder
             };
             this.reminderService.addReminder(reminder).then(x => {
@@ -90,8 +97,9 @@ export class ReminderComponent implements OnInit {
                 lessonId: this.book.id,
                 subLessonId: this.lesson.id,
                 taskId: this.classTask.id,
-                remindTime: new Date(),
+                remindTime: this.getReminderTime(),
                 note: this.notes,
+                isReport: this.isReport == 'true',
                 type: ReminderType.Reminder
             };
             this.reminderService.addReminder(reminder).then(x => {
@@ -102,5 +110,19 @@ export class ReminderComponent implements OnInit {
         }
         this.modal.dismiss();
     }
+    getReminderTime(): Date {
+        if (this.dateType == 'exact-date')
+            return this.selectedDay.date
+        else if (this.dateType == 'tommorow') {
+            let d = new Date();
+            d.setDate(d.getDate() + 1);
+            return d;
+        }
+        else
+            //TODO: Find next lesson time
+            return new Date()
 
+    }
 }
+
+

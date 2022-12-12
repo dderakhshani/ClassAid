@@ -1,17 +1,50 @@
 <div class="p-3">
+    <div class="" ngIf="prevScores && prevScores.length>0">
+        <div>
+            <h4 *>مشاهدات قبلی کلاس:</h4>
+        </div>
+        <div class="old_items">
+            <ion-card *ngFor="let s of prevScores;let index=index" [ngClass]="{'score-item': !expanded, 'score-item-expanded': expanded}" class="score-item" [style.transform]="'scale(' + getScale(index) + ')'">
+                <ion-item lines="none">
+                    <ion-avatar slot="start">
+                        <ion-icon *ngIf="s.positiveNegetive" name="add-circle-outline" class="text-success" size="large"></ion-icon>
+                        <ion-icon *ngIf="!s.positiveNegetive" name="remove-circle-outline" class="text-danger" size="large"></ion-icon>
+                    </ion-avatar>
+                    <ion-label>
+                        {{s.note}}
+                    </ion-label>
+                    <ion-button fill="clear" slot="end" (click)="remove(s)" color="medium">
+                        <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+
+                    </ion-button>
+                </ion-item>
+            </ion-card>
+            <ion-button fill="clear" size="small" *ngIf="prevScores.length>1" (click)="expanded=!expanded" style="margin-top: -0.5rem;">
+                <ng-container *ngIf="!expanded">
+                    <ion-icon name="chevron-down-outline"></ion-icon>
+                    مشاهده همه
+                </ng-container>
+                <ng-container *ngIf="expanded">
+                    <ion-icon name="chevron-up-outline"></ion-icon>
+                    بستن
+                </ng-container>
+            </ion-button>
+
+        </div>
+    </div>
     <ion-segment [(ngModel)]="posNeg" mode="ios">
         <ion-segment-button value="postive">
             <ion-icon name="add-circle-outline" class="text-success"></ion-icon>
             <ion-label>مثبت</ion-label>
         </ion-segment-button>
-        <ion-segment-button value="negative" class="text-danger">
-            <ion-icon name="remove-circle-outline"></ion-icon>
+        <ion-segment-button value="negative">
+            <ion-icon name="remove-circle-outline" class="text-danger"></ion-icon>
             <ion-label>ناخوشایند</ion-label>
         </ion-segment-button>
     </ion-segment>
     <ion-item class="pt-2">
         <ion-label position="stacked"> یادداشت</ion-label>
-        <ion-textarea placeholder="متن خود را وارد نمایید"></ion-textarea>
+        <ion-textarea placeholder="متن خود را وارد نمایید" [autoGrow]="true" [(ngModel)]="notes"></ion-textarea>
     </ion-item>
     <div>
         <ion-button expand="block" (click)="saveScore()" [disabled]="posNeg==undefined">

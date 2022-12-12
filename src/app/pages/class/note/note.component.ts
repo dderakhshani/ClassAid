@@ -1,4 +1,4 @@
-import { ReminderType, StudentNotes } from './../../../models/remider';
+import { LessonNotes, Reminder, ReminderType, StudentNotes } from './../../../models/remider';
 import { Component, Input, OnInit } from '@angular/core';
 import { ClassSessionModel } from 'src/app/models/class';
 import { Lesson } from 'src/app/models/lessons';
@@ -13,6 +13,9 @@ import { ReminderService } from 'src/app/api/reminder.service';
 })
 export class NoteComponent implements OnInit {
 
+    expanded = false;
+    @Input()
+    prevNotes: Reminder[];
 
     @Input()
     modal: any;
@@ -39,6 +42,16 @@ export class NoteComponent implements OnInit {
 
     ngOnInit() { }
 
+    remove(reminder: Reminder) {
+
+    }
+
+    getScale(index: number) {
+        if (this.expanded)
+            return 1;
+        else
+            return 1 - ((this.prevNotes.length - 1) - index) * 0.05;
+    }
 
     addTag() {
         if (this.tag != '') {
@@ -69,13 +82,13 @@ export class NoteComponent implements OnInit {
 
         }
         else {
-            const reminder = <StudentNotes>{
+            const reminder = <LessonNotes>{
                 id: uuidv4(),
                 taskId: this.classTask.id,
                 lessonId: this.book.id,
                 subLessonId: this.lesson.id,
                 note: this.notes,
-                type: ReminderType.StudentNotes
+                type: ReminderType.Notes
             }
             this.reminderService.addReminder(reminder).then(x => {
                 this.classTask.reminders.push(reminder);
