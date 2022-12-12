@@ -7,7 +7,9 @@ export interface AttendanceModel {
 }
 
 export enum AttendanceStatus {
+
     Present = 1,
-    Absent = 0,
-    Delayed = 2
+    Absent = 2,
+    Delayed = 3,
+    Remote = 4
 }

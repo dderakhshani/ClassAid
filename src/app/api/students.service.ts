@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { HttpService } from '../core/services/http.service';
+import { AttendanceStatus } from '../models/attendance-model';
 import { StudentModel } from '../models/student';
 import { GlobalService } from '../services/global.service';
 
@@ -19,7 +20,7 @@ export class StudentsService {
                 return resolve(this.students$.value);
             else
                 this.httpService.http.getDataByParam<StudentModel[]>({ classId: classId }, "Student/GetByClass").then(data => {
-                    const students = data.map(x => Object.assign(new StudentModel(), { ...x, present: true }));
+                    const students = data.map(x => Object.assign(new StudentModel(), { ...x, attendanceStatus: AttendanceStatus.Present }));
                     this.students$.next(students);
                     return resolve(students);
                 });

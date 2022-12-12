@@ -1,5 +1,13 @@
 <ion-header class="content-header ion-no-border" collapse="fade">
+    <ion-toolbar>
+        <ion-buttons slot="end">
+            <ion-button [routerLink]="['/tabs/home/attendance']">
+                <ion-icon slot="icon-only" name="people"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
     <img alt="Avatar" [src]="book?.getImageUrl()" />
+
 </ion-header>
 
 <ion-content class="round-content flex-fill p-2 ">
@@ -47,7 +55,7 @@
                 <ion-col size="4" *ngFor="let student of students " class="d-flex  align-items-stretch">
                     <ion-card class="student-card flex-fill" (click)="onStudentAction(student)" [color]="getColor(student)">
                         <!-- If Present Icon -->
-                        <ion-icon *ngIf="student.present" name="checkmark-circle" class="present" color="success"></ion-icon>
+                        <ion-icon *ngIf="student.attendanceStatus== AttendanceStatus.Present" name="checkmark-circle" class="present" color="success"></ion-icon>
                         <!-- Has Reminder Icon -->
                         <ion-badge *ngIf="student.reminders.length>0" class="reminder  me-1" color="secondary" mode="ios">
                             <ion-icon name="alarm-outline" size="small"></ion-icon>
@@ -70,7 +78,7 @@
                             </ion-card-subtitle>
                         </ion-card-header>
                         <ion-card-content class="p-2 pt-0 pb-0">
-                            <ng-container *ngIf="student.present">
+                            <ng-container *ngIf="student.attendanceStatus!=AttendanceStatus.Absent">
                                 <!-- Homework Issue -->
                                 <ion-badge *ngIf="student.homeWorkIssue" class=" me-1" color="danger" mode="ios">
                                     <ion-icon name="book-outline" size="small"></ion-icon>
@@ -90,7 +98,7 @@
                                 </ion-badge>
                             </ng-container>
 
-                            <ion-badge color="danger" *ngIf="!student.present">غایب</ion-badge>
+                            <ion-badge color="danger" *ngIf="student.attendanceStatus==AttendanceStatus.Absent">غایب</ion-badge>
 
                         </ion-card-content>
                     </ion-card>

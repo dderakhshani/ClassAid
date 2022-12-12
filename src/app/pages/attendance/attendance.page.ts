@@ -13,7 +13,7 @@ import { GlobalService } from 'src/app/services/global.service';
     styleUrls: ['./attendance.page.scss'],
 })
 export class AttendancePage implements OnInit {
-
+    AttendanceStatus = AttendanceStatus;
     students: StudentModel[];
 
     constructor(
@@ -33,11 +33,12 @@ export class AttendancePage implements OnInit {
     }
 
     onStudentAction(student: StudentModel) {
-        student.present = !student.present;
+        student.attendanceStatus = (student.attendanceStatus + 1) % 5;
+        student.attendanceStatus = student.attendanceStatus as any == 0 ? 1 : student.attendanceStatus;
     }
 
     save() {
-        const attendances = this.students.map(x => (<AttendanceModel>{ studentId: x.id, status: x.present ? AttendanceStatus.Present : AttendanceStatus.Absent }));
+        const attendances = this.students.map(x => (<AttendanceModel>{ studentId: x.id, status: x.attendanceStatus }));
 
         this.classService.addCallRolls(attendances, this.globalService.selectedClass.id).then(x => {
             this.studentsService.students$.next(this.students);

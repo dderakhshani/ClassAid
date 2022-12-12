@@ -14,6 +14,7 @@ import { GlobalService } from 'src/app/services/global.service';
 import { ScheduleTimeModel } from 'src/app/models/schedule';
 import { AlertController, Platform } from '@ionic/angular';
 import { AuthService } from 'src/app/core/services/auth.service';
+import { AttendanceStatus } from 'src/app/models/attendance-model';
 
 @Component({
     selector: 'app-home',
@@ -78,7 +79,7 @@ export class HomePage implements OnInit {
 
         this.studentsService.students$.subscribe(students => {
 
-            this.absentStudents = students.filter(x => !x.present);
+            this.absentStudents = students.filter(x => x.attendanceStatus == AttendanceStatus.Absent);
         });
 
 
@@ -90,21 +91,33 @@ export class HomePage implements OnInit {
 
     setNextCurrentSchedule() {
         let nextCurrentSchedule_: ScheduleTimeModel;
-        if (this.globalService.currentSession)
+        if (this.globalService.currentSession) {
             nextCurrentSchedule_ = this.todayShedules.find((x: ScheduleTimeModel) => x.id == this.globalService.currentSession.scheduleTimeId);
+            //Lesson started manually with no schedule
+            if (nextCurrentSchedule_ == undefined) {
+                nextCurrentSchedule_ = <ScheduleTimeModel>{
+                    id: 0,
+                    lessonId: this.globalService.currentSession.lessonId,
+                    session: this.globalService.currentSession,
+                    dayNo: this.globalService.todayDay,
+                    lesson: this.globalService.currentSession.book
+                    //  ring
+                }
+            }
+        }
         else
             nextCurrentSchedule_ = this.todayShedules.find((x: ScheduleTimeModel) => x.session == null);
 
         const nextScheduleIndex = this.todayShedules.indexOf(nextCurrentSchedule_);
 
-        if (nextScheduleIndex > -1 && nextScheduleIndex < this.todayShedules.length) {
+        if (nextCurrentSchedule_) {
             this.nextScheduleStatus = 'has';
             this.nextCurrentSchedule = nextCurrentSchedule_;
             this.lessonService.getLessonById(this.nextCurrentSchedule.lessonId).then(l => {
                 this.lessonChartOptions = this.chartService.createPieGaugeChart(l.sessionsCount, 0, 100, "جلسه");
             });
         }
-        else if (this.todayShedules.length > 0)
+        else if (this.todayShedules.length > 0 && nextScheduleIndex >= this.todayShedules.length)
             this.nextScheduleStatus = 'finish';
         else
             this.nextScheduleStatus = 'none';

@@ -1,4 +1,5 @@
 import { environment } from "src/environments/environment";
+import { AttendanceStatus } from "./attendance-model";
 import { Score, StudentNotes, StudentReminder } from "./remider";
 
 export class StudentModel {
@@ -20,7 +21,7 @@ export class StudentModel {
     status: number;
     personId: number;
 
-    present: boolean;
+    attendanceStatus: AttendanceStatus;
     reminders: StudentReminder[] = [];
     notes: StudentNotes[] = [];
     scores: Score[] = [];

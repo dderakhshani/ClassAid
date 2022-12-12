@@ -19,8 +19,10 @@
             <ion-row>
                 <ion-col size="4" *ngFor="let student of students" class="d-flex  align-items-stretch">
                     <ion-card class="student-card flex-fill" (click)="onStudentAction(student)">
-                        <ion-icon *ngIf="student.present" name="checkmark-circle" class="present" color="success"></ion-icon>
-                        <ion-icon *ngIf="!student.present" name="close-circle" class="present" color="danger"></ion-icon>
+                        <ion-icon *ngIf="student.attendanceStatus == AttendanceStatus.Present" name="checkmark-circle" class="attendance-status" color="success"></ion-icon>
+                        <ion-icon *ngIf="student.attendanceStatus == AttendanceStatus.Absent" name="close-circle" class="attendance-status" color="danger"></ion-icon>
+                        <ion-icon *ngIf="student.attendanceStatus == AttendanceStatus.Delayed" name="time" class="attendance-status" color="warning"></ion-icon>
+                        <ion-icon *ngIf="student.attendanceStatus == AttendanceStatus.Remote" name="laptop-outline" class="attendance-status" color="secondary"></ion-icon>
 
                         <div class="d-flex justify-content-center pt-2">
                             <ion-avatar slot="start">
@@ -34,8 +36,10 @@
                             </ion-card-subtitle>
                         </ion-card-header>
                         <ion-card-content class="p-2 pt-0 d-flex justify-content-center">
-                            <ion-badge color="success" *ngIf="student.present">حاضر</ion-badge>
-                            <ion-badge color="danger" *ngIf="!student.present">غایب</ion-badge>
+                            <ion-badge color="success" *ngIf="student.attendanceStatus== AttendanceStatus.Present">حاضر</ion-badge>
+                            <ion-badge color="danger" *ngIf="student.attendanceStatus== AttendanceStatus.Absent">غایب</ion-badge>
+                            <ion-badge color="warning" *ngIf="student.attendanceStatus== AttendanceStatus.Delayed">تاخیر</ion-badge>
+                            <ion-badge color="secondary" *ngIf="student.attendanceStatus== AttendanceStatus.Remote">راه دور</ion-badge>
                         </ion-card-content>
                     </ion-card>
                 </ion-col>

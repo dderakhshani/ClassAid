@@ -10,6 +10,7 @@ import { GlobalService } from 'src/app/services/global.service';
 
 import { ActionSheetController, AlertController } from '@ionic/angular';
 import { ReminderType, Score } from 'src/app/models/remider';
+import { AttendanceStatus } from 'src/app/models/attendance-model';
 
 @Component({
     selector: 'app-class',
@@ -17,6 +18,7 @@ import { ReminderType, Score } from 'src/app/models/remider';
     styleUrls: ['./class.page.scss'],
 })
 export class ClassPage implements OnInit {
+    AttendanceStatus = AttendanceStatus;
 
     lesson: Lesson;
     book: Lesson;
@@ -95,7 +97,7 @@ export class ClassPage implements OnInit {
     }
 
     async onStudentAction(student: StudentModel) {
-        if (!student.present)
+        if (student.attendanceStatus == AttendanceStatus.Absent)
             return;
         this.isStudentActionsModalOpen = true;
         this.selectedStudent = student;
@@ -129,19 +131,19 @@ export class ClassPage implements OnInit {
     }
 
     getColor(student: StudentModel) {
-        return !student.present ? 'medium' : ''
+        return student.attendanceStatus == AttendanceStatus.Absent ? 'medium' : ''
     }
 
     hasReminder() {
-        return this.globalService.currentSession.reminders?.filter(x => x.type == ReminderType.Reminder).length > 0;
+        return this.globalService.currentSession?.reminders?.filter(x => x.type == ReminderType.Reminder).length > 0;
     }
 
     hasNotes() {
-        return this.globalService.currentSession.reminders?.filter(x => x.type == ReminderType.Notes).length > 0;
+        return this.globalService.currentSession?.reminders?.filter(x => x.type == ReminderType.Notes).length > 0;
     }
 
     hasHomeWork() {
-        return this.globalService.currentSession.reminders?.filter(x => x.type == ReminderType.Reminder).length > 0;
+        return this.globalService.currentSession?.reminders?.filter(x => x.type == ReminderType.Reminder).length > 0;
     }
 
     onAssess() {

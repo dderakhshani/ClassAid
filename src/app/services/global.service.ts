@@ -71,8 +71,9 @@ export class GlobalService {
             this.studentsService.getStudentsOfClass(vClass.id).then(students => {
                 if (callRollings && callRollings.length > 0) {
                     students.forEach(student => {
-                        const present = callRollings.find(x => x.studentId == student.id)?.status == AttendanceStatus.Present;
-                        student.present = present;
+                        const attendance = callRollings.find(x => x.studentId == student.id);
+                        //TODO: handle if not foumd
+                        student.attendanceStatus = attendance?.status;
                     });
                     this.studentsService.students$.next(students);
                 }
