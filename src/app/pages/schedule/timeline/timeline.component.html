@@ -1,6 +1,6 @@
 <div class="days d-flex justify-content-around" *ngIf="!singleDay">
     <div *ngFor="let d of days" class="day px-2  d-flex flex-column justify-content-center align-items-center" [class.selected]="d.no==selectedDay.no" (click)="selectedDay=d">
-        <ion-icon name="calendar-clear-outline"></ion-icon>
+        <ion-icon name="today-outline"></ion-icon>
         {{d.symbol}}
     </div>
 </div>
