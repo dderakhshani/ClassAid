@@ -1,12 +1,25 @@
+export class AssessmentModel {
+    id: string;
+    eduParameterId: number;
+    lessonId: number;
+    subLessonId: number;
+    level: number;
+    progerssFlag?: number;
+    progerssStep?: number;
+    studentId: number;
+    teacherId: number;
+    time: Date | null;
+    regTimePersian: string;
+    taskId: string | null;
+
+    note: string;
+}
+
 export class AssessParamModel {
+    id: number;
     title: string;
     level: number;
     lessonId: number;
-    subLessonId: number;
-    studentId: number;
-    teacherId: number;
-    taskId: String
-    note: string;
 }
 
 export class StudentAssessParamModel extends AssessParamModel {

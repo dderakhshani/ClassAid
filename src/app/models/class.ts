@@ -1,4 +1,5 @@
 import { Lesson } from 'src/app/models/lessons';
+import { AssessmentModel, AssessParamModel } from './asses-param';
 import { Reminder } from './remider';
 
 export interface ClassModel {
@@ -28,4 +29,5 @@ export class ClassSessionModel {
 
     reminders: Reminder[] = [];
     notes: Reminder[];
+    assessments: AssessmentModel[];
 }

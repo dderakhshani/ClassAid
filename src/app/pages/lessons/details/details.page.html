@@ -34,11 +34,11 @@
 
                 <div class="buttons">
                     <ng-container *ngIf="item.sessionsCount>0;else start">
-                        <ion-button slot="end" fill="clear">
+                        <ion-button slot="end" fill="clear" (click)="viewClass(item)">
                             <ion-icon name="eye-outline" color="secondary"></ion-icon>
                         </ion-button>
                         <ion-button slot="end" fill="clear" (click)="startClass(item)">
-                            <ion-icon name="play-outline"></ion-icon>
+                            <ion-i10con name="play-outline"></ion-i10con>
                         </ion-button>
                     </ng-container>
 

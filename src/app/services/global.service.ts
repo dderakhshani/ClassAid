@@ -1,10 +1,11 @@
+import { AssessmentModel, AssessParamModel } from './../models/asses-param';
 import { AuthService } from 'src/app/core/services/auth.service';
-import { StudentReminder, LessonReminder, ReminderType } from './../models/remider';
+import { StudentReminder, LessonReminder, ReminderType, Reminder } from './../models/remider';
 import { ReminderService } from './../api/reminder.service';
 import { AttendanceModel, AttendanceStatus } from '../models/attendance-model';
 import { ClassService } from './../api/class.service';
 import { ScheduleTimeModel } from 'src/app/models/schedule';
-import { Subject, BehaviorSubject, ReplaySubject } from 'rxjs';
+import { Subject, BehaviorSubject, ReplaySubject, forkJoin } from 'rxjs';
 import { Ring } from './../models/day';
 import { Lesson } from 'src/app/models/lessons';
 import { ClassModel, ClassSessionModel } from './../models/class';
@@ -65,7 +66,9 @@ export class GlobalService {
 
     //When selectedClass is changed then rings & students must be reloaded
     public set selectedClass(vClass: ClassModel) {
+        this.reminderService.getActiveClassReminders(vClass.id).then(x => {
 
+        });
         //load students of the class
         this.classService.getCallRolls(vClass.id).then(callRollings => {
             this.studentsService.getStudentsOfClass(vClass.id).then(students => {
@@ -101,63 +104,36 @@ export class GlobalService {
 
         this.lessonService.getBooks(vClass.schoolId, vClass.gradeId).then(books => {
 
-            //2.Step: 
-            this.classService.getSessionsByClass(vClass.id).then(sessions => {
-                //2.1  filling book and lesson object
-                sessions.forEach(s => {
-                    s.book = books.find(x => x.id == s.lessonId);
-                    s.lesson = this.lessonService.allLessons$.value.find(x => x.id == s.subLessonId);
+            //2,3. Loading Rings
+            Promise.all(
+                [this.classService.getSessionsByClass(vClass.id),
+                this.scheduleService.getRings(vClass.schoolId, vClass.gradeId)])
+                .then(([sessions, rings]) => {
+                    //2.Step: 
+                    this.initSessionsAsync(sessions, books);
+
+                    this.rings = rings;
+                    //4. Loading Schedules
+                    this.scheduleService.get(vClass.id).then(schdule => {
+                        if (schdule) {
+                            schdule.scheduleTimes.forEach(st => {
+                                st.ring = this.rings.find(x => x.id == st.ringId);
+                                //lessonService.books$ filled when getBooks called
+                                st.lesson = this.lessonService.books$.value.find(x => x.id == st.lessonId);
+                            });
+
+                            //4.2 Clone the schedules to make it non-changable
+                            this.todayShedules = [...schdule.scheduleTimes.filter(x => x.dayNo == this.todayDay)];
+                            this.todayShedules.forEach(sch => {
+                                //4.3 
+                                sch.session = this.sessions.find(x => x.scheduleTimeId == sch.id);
+                            })
+                        }
+
+                        this.selectedClass$.next(vClass);
+                        this.ready$.next(true)
+                    });
                 });
-                //2.2 Proccesing and applying stats of each lesson
-                books.forEach(b => {
-                    const book_sessions = sessions.filter(x => x.lessonId == b.id);
-                    b.sessionsCount = book_sessions.length;
-                    if (book_sessions.length > 0) {
-                        const lastLessonId = book_sessions[book_sessions.length - 1].subLessonId;
-                        b.lastSessionLesson = this.lessonService.allLessons$.value.find(x => x.id == lastLessonId);
-                    }
-
-                });
-                //2.3 find currentSession and its reminders
-                this.currentSession = sessions.find(x => x.endTime == null);
-                if (this.currentSession) {
-                    this.reminderService.getSessionReminders(this.currentSession.id).then(reminders => {
-                        this.currentSession.reminders = reminders;
-                        const lesson_reminders = reminders.filter(x => x.type == ReminderType.Reminder).map(x => (x as LessonReminder));
-                        const student_reminders = reminders.filter(x => x.type == ReminderType.StudentReminder).map(x => (x as StudentReminder));
-                        this.reminderService.lesson_reminders$.next(lesson_reminders);
-                        this.reminderService.student_reminders$.next(student_reminders);
-                    })
-                }
-                this.classSessions$.next(sessions);
-            });
-
-            //Loading Rings
-            this.scheduleService.getRings(vClass.schoolId, vClass.gradeId).then(rings => {
-                this.rings = rings;
-
-                //Loading Schedules
-                this.scheduleService.get(vClass.id).then(schdule => {
-                    if (schdule) {
-                        schdule.scheduleTimes.forEach(st => {
-                            st.ring = this.rings.find(x => x.id == st.ringId);
-                            //lessonService.books$ filled when getBooks called
-                            st.lesson = this.lessonService.books$.value.find(x => x.id == st.lessonId);
-                        });
-
-                        //Clone the schedules to make it non-changable
-                        this.todayShedules = [...schdule.scheduleTimes.filter(x => x.dayNo == this.todayDay)];
-                        this.todayShedules.forEach(sch => {
-                            sch.session = this.sessions.find(x => x.scheduleTimeId == sch.id);
-                        })
-                    }
-
-                    this.selectedClass$.next(vClass);
-                    this.ready$.next(true)
-                });
-            });
-
-
         });
 
     }
@@ -167,6 +143,49 @@ export class GlobalService {
 
     public get sessions() {
         return this.classSessions$.value;
+    }
+
+    initSessionsAsync(sessions: ClassSessionModel[], books: Lesson[]) {
+        sessions.forEach(s => {
+            s.book = books.find(x => x.id == s.lessonId);
+            s.lesson = this.lessonService.allLessons$.value.find(x => x.id == s.subLessonId);
+        });
+        //2.2 Proccesing and applying stats of each lesson
+        this.initBooks(books, sessions);
+
+        //2.3 find currentSession and its reminders
+        this.currentSession = sessions.find(x => x.endTime == null);
+
+        if (this.currentSession) {
+            this.initCurrentSessionAsync(sessions);
+        }
+        else
+
+            this.classSessions$.next(sessions);
+    }
+
+    initBooks(books: Lesson[], sessions: ClassSessionModel[]) {
+        books.forEach(b => {
+            const book_sessions = sessions.filter(x => x.lessonId == b.id);
+            b.sessionsCount = book_sessions.length;
+            if (book_sessions.length > 0) {
+                const lastLessonId = book_sessions[book_sessions.length - 1].subLessonId;
+                b.lastSessionLesson = this.lessonService.allLessons$.value.find(x => x.id == lastLessonId);
+            }
+
+        });
+    }
+
+    initCurrentSessionAsync(sessions) {
+        Promise.all(
+            [this.reminderService.getSessionReminders(this.currentSession.id),
+            this.assessmentService.getSessionAssessments(this.currentSession.id)])
+            .then(([reminders, assessments]) => {
+                this.currentSession.reminders = reminders;
+                this.currentSession.assessments = assessments;
+                this.classSessions$.next(sessions);
+            });
+
     }
 
 

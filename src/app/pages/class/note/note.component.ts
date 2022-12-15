@@ -77,6 +77,8 @@ export class NoteComponent implements OnInit {
                 type: ReminderType.StudentNotes
             }
             this.reminderService.addReminder(reminder).then(x => {
+                this.classTask.reminders = this.classTask.reminders ?? [];
+                this.student.notes = this.student.notes ?? [];
                 this.student.notes.push(reminder);
                 this.classTask.reminders.push(reminder);
             });
@@ -92,6 +94,7 @@ export class NoteComponent implements OnInit {
                 type: ReminderType.Notes
             }
             this.reminderService.addReminder(reminder).then(x => {
+                this.classTask.reminders = this.classTask.reminders ?? [];
                 this.classTask.reminders.push(reminder);
             });
         }

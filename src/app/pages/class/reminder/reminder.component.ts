@@ -86,6 +86,7 @@ export class ReminderComponent implements OnInit {
                 type: ReminderType.StudentReminder
             };
             this.reminderService.addReminder(reminder).then(x => {
+                this.student.reminders = this.student.reminders ?? [];
                 this.student.reminders.push(reminder);
                 this.reminderService.student_reminders$.next([...this.reminderService.student_reminders$.value, reminder]);
             });
@@ -103,6 +104,7 @@ export class ReminderComponent implements OnInit {
                 type: ReminderType.Reminder
             };
             this.reminderService.addReminder(reminder).then(x => {
+                this.classTask.reminders = this.classTask.reminders ?? [];
                 this.classTask.reminders.push(reminder);
                 this.reminderService.lesson_reminders$.next([...this.reminderService.student_reminders$.value, reminder]);
             });

@@ -11,6 +11,7 @@ import { GlobalService } from 'src/app/services/global.service';
 import { ActionSheetController, AlertController } from '@ionic/angular';
 import { ReminderType, Score } from 'src/app/models/remider';
 import { AttendanceStatus } from 'src/app/models/attendance-model';
+import { combineLatest } from 'rxjs';
 
 @Component({
     selector: 'app-class',
@@ -55,8 +56,8 @@ export class ClassPage implements OnInit {
     ngOnInit() {
         this.presentingElement = document.querySelector('.ion-page');
         //tobe sure students will load from server if not already loaded
-        this.globalService.ready$.subscribe(ready => {
-            if (ready) {
+        combineLatest(this.globalService.classSessions$, this.globalService.ready$).subscribe(([sessions, ready]) => {
+            if (this.globalService.currentSession && ready) {
                 if (this.lessonId == 0) {
                     this.lesson = this.globalService.currentSession.lesson;
                     this.book = this.globalService.currentSession.book;
@@ -72,28 +73,40 @@ export class ClassPage implements OnInit {
                 this.studentsService.getStudentsOfClass(this.globalService.selectedClass.id).then(students => {
                     this.students = [...students];
                     //Must set all reminders at once for student and display it by type
-                    const scores = this.globalService.currentSession.reminders?.filter(x => x.type == ReminderType.Score).map(x => x as Score);
-                    const reminders = this.globalService.currentSession.reminders?.filter(x => x.type == ReminderType.StudentReminder).map(x => x as StudentReminder);
-
-                    this.students.forEach(s => {
-                        const s_s = scores?.filter(x => x.studentId == s.id);
-                        if (s_s)
-                            s_s.forEach(x => {
-                                s.scores.push(x);
-                            });
-
-                        const s_r = reminders?.filter(x => x.studentId == s.id);
-                        if (s_r)
-                            s_r.forEach(x => {
-                                s.reminders.push(x);
-                            });
-
-                    })
+                    this.initStudents();
                 });
             }
 
         })
 
+    }
+
+    initStudents() {
+        const scores = this.globalService.currentSession.reminders?.filter(x => x.type == ReminderType.Score).map(x => x as Score);
+        const reminders = this.globalService.currentSession.reminders?.filter(x => x.type == ReminderType.StudentReminder).map(x => x as StudentReminder);
+        const assesments = this.globalService.currentSession.assessments;
+
+        this.students.forEach(s => {
+            const s_s = scores?.filter(x => x.studentId == s.id);
+            if (s_s)
+                s_s.forEach(x => {
+                    s.scores.push(x);
+                });
+
+            const s_r = reminders?.filter(x => x.studentId == s.id);
+            if (s_r)
+                s_r.forEach(x => {
+                    s.reminders.push(x);
+                });
+
+            s.hasAssessment = assesments?.filter(x => x.studentId == s.id).length > 0;
+
+
+        })
+    }
+
+    attendance() {
+        this.router.navigateByUrl(`/tabs/home/attendance/${this.globalService.currentSession.id}`);
     }
 
     async onStudentAction(student: StudentModel) {
@@ -149,19 +162,19 @@ export class ClassPage implements OnInit {
     onAssess() {
         this.isStudentActionsModalOpen = false;
         setTimeout(() => {
-            this.router.navigateByUrl(`/tabs/class/assessment/${this.book.id}/${this.selectedStudent.id}`);
+            this.router.navigateByUrl(`/tabs/class/assessment/${this.lesson.id}/${this.selectedStudent.id}/${this.globalService.currentSession.id}`);
         });
     }
 
     onStudentReminder() {
-        this.modalReminders = this.selectedStudent.reminders.filter(x => x.type == ReminderType.StudentReminder);
+        this.modalReminders = this.selectedStudent.reminders?.filter(x => x.type == ReminderType.StudentReminder);
         this.isStudentActionsModalOpen = false;
         this.isReminderModalOpen = true;
 
     }
 
     onStudentNotes() {
-        this.modalNotes = this.selectedStudent.reminders.filter(x => x.type == ReminderType.StudentNotes);
+        this.modalNotes = this.selectedStudent.reminders?.filter(x => x.type == ReminderType.StudentNotes);
         this.isStudentActionsModalOpen = false;
         this.isNotesModalOpen = true;
     }
@@ -173,14 +186,14 @@ export class ClassPage implements OnInit {
 
     onReminder() {
         this.selectedStudent = null;
-        this.modalReminders = this.globalService.currentSession.reminders.filter(x => x.type == ReminderType.Reminder);
+        this.modalReminders = this.globalService.currentSession.reminders?.filter(x => x.type == ReminderType.Reminder);
         this.isStudentActionsModalOpen = false;
         this.isReminderModalOpen = true;
     }
 
     onNotes() {
         this.selectedStudent = null;
-        this.modalNotes = this.globalService.currentSession.reminders.filter(x => x.type == ReminderType.Notes);
+        this.modalNotes = this.globalService.currentSession.reminders?.filter(x => x.type == ReminderType.Notes);
         this.isStudentActionsModalOpen = false;
         this.isNotesModalOpen = true;
     }

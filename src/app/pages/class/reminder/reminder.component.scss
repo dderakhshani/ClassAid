@@ -46,6 +46,19 @@ ion-footer {
 
     ion-card {
         transition: all 0.3s;
+
+        ion-item {
+
+            ion-avatar {
+                margin-inline-end: 0;
+                margin-bottom: auto;
+            }
+
+            .actions {
+                margin-bottom: auto;
+                margin-top: 0.5rem;
+            }
+        }
     }
 
     .reminder-item:not(:first-child) {

@@ -29,32 +29,36 @@
     <div class="px-3 pb-4">
         <hr>
         <!-- Summery -->
-        <ion-accordion-group>
-            <ion-accordion value="first">
-                <ion-item slot="header" color="light">
-                    <ion-label> وضعیت کلی</ion-label>
+        <ion-card class="exapndable">
+            <ion-card-header (click)="cardExpanded=!cardExpanded" [class.exapnded]="cardExpanded">
+                <ion-item lines="none">
+                    <ion-icon slot="start" name="chevron-down"></ion-icon>
+                    <ion-label>وضعیت کلی:
+
+                    </ion-label>
+                    <ion-badge [color]="currentLevel.ionColor" class="px-3 py-2 animated">
+                        <span class="min">{{currentLevel.title}} </span>
+                    </ion-badge>
                 </ion-item>
+                <hr *ngIf="cardExpanded">
+            </ion-card-header>
+
+            <ion-card-content *ngIf="cardExpanded">
+
                 <div class="ion-padding" slot="content">
-                    <ion-segment value="2" mode="ios">
-                        <ion-segment-button value="1" class="text-danger">
-                            <ion-label>ن.ب.ت</ion-label>
-                        </ion-segment-button>
-                        <ion-segment-button value="2" class="text-warning">
-                            <ion-label>قابل قبول</ion-label>
-                        </ion-segment-button>
-                        <ion-segment-button value="3" class="text-primary">
-                            <ion-label>خوب</ion-label>
-                        </ion-segment-button>
-                        <ion-segment-button value="4" class="text-success">
-                            <ion-label>عالی</ion-label>
+                    <ion-segment mode="ios" [value]="currentLevel.value">
+                        <ion-segment-button value="{{am.value}}" class="{{am.bdColor}}" *ngFor="let am of assessLevels">
+                            <ion-icon [name]="am.ionIcon"></ion-icon>
+                            <ion-label>
+                                {{am.title}}
+                            </ion-label>
                         </ion-segment-button>
                     </ion-segment>
                     <div echarts [options]="chartOptions" class="widget-chart" theme="roma"></div>
                 </div>
+            </ion-card-content>
+        </ion-card>
 
-            </ion-accordion>
-
-        </ion-accordion-group>
 
         <!-- Assessment -->
         <div class="d-flex flex-column">

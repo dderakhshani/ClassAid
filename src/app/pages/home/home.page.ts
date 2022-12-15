@@ -86,7 +86,8 @@ export class HomePage implements OnInit {
     }
 
     attendance() {
-        this.router.navigateByUrl(`/tabs/home/attendance`)
+        if (this.globalService.currentSession)
+            this.router.navigateByUrl(`/tabs/home/attendance/${this.globalService.currentSession.id}`);
     }
 
     setNextCurrentSchedule() {

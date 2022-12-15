@@ -54,6 +54,7 @@ export class ScoreComponent implements OnInit {
                 type: ReminderType.Score
             }
             this.reminderService.addReminder(score).then(x => {
+                this.session.reminders = this.session.reminders ?? [];
                 this.session.reminders.push(score);
                 this.student.scores.push(score);
                 this.modal.dismiss();

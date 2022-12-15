@@ -1,0 +1,117 @@
+<ion-header class="content-header ion-no-border" collapse="fade">
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-button (click)="back()">
+                <ion-icon slot="icon-only" name="arrow-back-outline"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+
+        <ion-buttons slot="end">
+            <ion-button>
+                <ion-icon slot="icon-only" name="share-social"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+    <img alt="Avatar" [src]="book?.getImageUrl()" />
+
+</ion-header>
+
+<ion-content class="round-content flex-fill p-2 ">
+
+    <ion-item>
+        <ion-avatar slot="start">
+            <img alt="Avatar" [src]="book?.getImageUrl()" />
+        </ion-avatar>
+        <ion-label>
+            <h3> {{lesson?.name}}</h3>
+            <p>
+                {{book?.name}}
+            </p>
+        </ion-label>
+    </ion-item>
+    <div class="px-3">
+        <!-- Absent Students -->
+        <div class="p-2 bg-light mt-2 absents" *ngIf="absentStudents">
+            <div>
+                <h4>دانش آموزان غایب :</h4>
+            </div>
+            <ion-avatar slot="start" *ngFor="let s of absentStudents">
+                <img alt="Avatar-Student" [src]="s.getImageUrl()" onerror="this.src='/assets/img/avatar.webp'" />
+            </ion-avatar>
+        </div>
+
+        <!-- Notes List -->
+        <div class="p-2 bg-light  mt-2 old_items" *ngIf="notes && notes.length>0">
+            <div>
+                <h4>یادداشت ها :</h4>
+            </div>
+            <div>
+                <ion-card *ngFor="let n of notes;let index=index" [ngClass]="{'reminder-item': !notes_expanded, 'reminder-item-expanded': notes_expanded}" class="score-item" [style.transform]="'scale(' + getScale_notes(index) + ')'">
+                    <ion-slides *ngIf="notes_expanded" [pager]="true">
+                        <ion-slide>
+                            <img alt="Silhouette of mountains" src="https://i0.wp.com/news.kleinisd.net/wp-content/uploads/2018/08/shutterstock_200272565.jpg?resize=1000%2C640&ssl=1" />
+                        </ion-slide>
+                        <ion-slide>
+                            <img alt="Silhouette of mountains" src="https://media.istockphoto.com/id/544655644/photo/teacher-among-kids-with-computers-in-elementary-school-class.jpg?s=612x612&w=0&k=20&c=n-byZx-zgFgG2A0DSNCkLngeRaT53lqm7HVIrS3vNMc=" />
+                        </ion-slide>
+                    </ion-slides>
+                    <ion-item lines="none">
+                        <ion-avatar slot="start">
+                            <ion-icon name="alarm-outline" color="secondary" size="large" *ngIf="!n.isReport"></ion-icon>
+                            <ion-icon name="alarm-outline" color="warning" size="large" *ngIf="n.isReport"></ion-icon>
+                            <!-- <ion-icon name="newspaper-outline" color="warning" size="small" *ngIf="r.isReport"></ion-icon> -->
+                        </ion-avatar>
+                        <ion-label>
+                            <ion-note> {{n.remindTime | date}}</ion-note>
+                            <p> {{n.note}}</p>
+                        </ion-label>
+
+                        <div class="d-flex flex-column actions">
+                            <ion-button fill="clear" slot="end" (click)="remove_notes(n)" color="medium">
+                                <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+                            </ion-button>
+                            <ion-button fill="clear" slot="end" (click)="share_notes(n)" color="medium">
+                                <ion-icon slot="icon-only" name="share-social"></ion-icon>
+                            </ion-button>
+                        </div>
+
+                    </ion-item>
+                </ion-card>
+                <div class="d-flex justify-content-center">
+                    <ion-button fill="clear" size="small" *ngIf="notes.length>1" (click)="notes_expanded=!notes_expanded" style="margin-top: -0.5rem;">
+                        <ng-container *ngIf="!notes_expanded">
+                            <ion-icon name="chevron-down-outline"></ion-icon>
+                            گسترش موارد
+                        </ng-container>
+                        <ng-container *ngIf="notes_expanded">
+                            <ion-icon name="chevron-up-outline"></ion-icon>
+                            بستن
+                        </ng-container>
+                    </ion-button>
+                </div>
+            </div>
+        </div>
+
+        <div *ngIf="student_reminders">
+            <ion-item lines="none" class="mt-3">
+                <ion-icon name="alarm-outline" slot="start"></ion-icon>
+                <ion-label>
+                    <h1>یادآور ها:</h1>
+                </ion-label>
+            </ion-item>
+
+            <div class="d-flex">
+                <ng-container *ngFor="let sr of student_reminders ">
+                    <ion-avatar class="reminder ms-4" (click)="showReminder(sr)">
+                        <img alt="avatar-student" [src]="studentModel.getImageUrl(sr.studentId)" onerror="this.src='/assets/img/avatar.webp'" />
+                        <ion-badge class=" me-1" color="secondary" mode="ios">
+                            <ion-icon name="alarm-outline" size="small"></ion-icon>
+                        </ion-badge>
+                    </ion-avatar>
+                </ng-container>
+
+            </div>
+        </div>
+
+    </div>
+</ion-content>

@@ -92,4 +92,12 @@ export class DetailsPage implements OnInit {
 
     }
 
+    viewClass(lesson: Lesson) {
+        //TODO:
+        //Load sessions
+        //if there is one redirect instantly
+        //if more than one, show select dialog then redirect to selected session
+        // this.router.navigateByUrl(`/tabs/reports/class-report/${schedule.session.id}`);
+    }
+
 }

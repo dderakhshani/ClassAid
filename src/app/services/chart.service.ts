@@ -117,6 +117,10 @@ export class ChartService {
                 left: "center",
                 top: "center"
             },
+            grid: {
+                right: 0,
+                bottom: 20
+            },
             tooltip: {},
             xAxis: {
                 data: xAxisData,
@@ -125,7 +129,14 @@ export class ChartService {
                     show: false,
                 },
             },
-            yAxis: {},
+            yAxis: {
+                splitArea: {
+                    show: true,
+                    areaStyle: {
+                        color: ['#ff00001a', '#ffc4091a', '#0d6efd1a', '#2cae651a']
+                    }
+                }
+            },
             series: [
                 {
                     name: serie.name,

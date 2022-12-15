@@ -30,7 +30,7 @@ export class ClassService {
 
     getDaySession(classId: number): Promise<DaySession> {
         return new Promise(resolve => {
-            this.httpService.http.getDataByParam<DaySession>({ classId: classId }, "class/GetDaySession").then(data => {
+            this.httpService.http.getDataByParam<DaySession>({ classId: classId }, "session/GetDaySession").then(data => {
                 return resolve(data);
             });
         });
@@ -55,7 +55,7 @@ export class ClassService {
 
     addTask(session: ClassSessionModel): Promise<boolean> {
         return new Promise(resolve => {
-            this.httpService.http.postJsonData<boolean>(session, "class/AddTask").then(data => {
+            this.httpService.http.postJsonData<boolean>(session, "session/AddTask").then(data => {
                 return resolve(data);
             });
         });
@@ -63,7 +63,7 @@ export class ClassService {
 
     endTask(taskId: string): Promise<boolean> {
         return new Promise(resolve => {
-            this.httpService.http.postJsonData<boolean>(taskId, "class/EndTask").then(data => {
+            this.httpService.http.postJsonData<boolean>(taskId, "session/EndTask").then(data => {
                 return resolve(data);
             });
         });
@@ -71,7 +71,15 @@ export class ClassService {
 
     getSessionsByClass(classId: number): Promise<ClassSessionModel[]> {
         return new Promise(resolve => {
-            this.httpService.http.getDataByParam<ClassSessionModel[]>({ classId: classId }, "class/GetSessionsByClass").then(data => {
+            this.httpService.http.getDataByParam<ClassSessionModel[]>({ classId: classId }, "session/GetSessionsByClass").then(data => {
+                return resolve(data);
+            });
+        });
+    }
+
+    getSession(sessionId: string): Promise<ClassSessionModel> {
+        return new Promise(resolve => {
+            this.httpService.http.getDataByParam<ClassSessionModel>({ sessionId: sessionId }, "session/getSession").then(data => {
                 return resolve(data);
             });
         });

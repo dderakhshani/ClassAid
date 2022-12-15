@@ -29,7 +29,7 @@ export class ScheduleItemComponent implements OnInit {
 
     openClass(schedule: ScheduleTimeModel) {
         if (schedule.session?.endTime) {
-            //TODO: Open Report class
+            this.router.navigateByUrl(`/tabs/reports/class-report/${schedule.session.id}`);
         }
         else
             this.router.navigateByUrl(`/tabs/class/0`);

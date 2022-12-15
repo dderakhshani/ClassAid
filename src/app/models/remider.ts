@@ -36,11 +36,15 @@ export interface Score extends Reminder {
     positiveNegetive: boolean;
 }
 
-export interface LessonNotes extends Reminder {
+export interface Note extends Reminder {
+    images: string[];
+}
+
+export interface LessonNotes extends Note {
     taskId: string;
 }
 
-export interface StudentNotes extends Reminder {
+export interface StudentNotes extends Note {
     studentId: number;
     taskId: string;
 }
