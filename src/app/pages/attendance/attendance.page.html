@@ -1,7 +1,9 @@
 <ion-header class="content-header ion-no-border" collapse="fade">
     <ion-toolbar>
         <ion-buttons slot="start">
-            <ion-back-button></ion-back-button>
+            <ion-button (click)="location.back()">
+                <ion-icon slot="icon-only" name="arrow-back-outline"></ion-icon>
+            </ion-button>
         </ion-buttons>
         <ion-title>حضور غیاب</ion-title>
         <ion-buttons slot="end">
@@ -13,6 +15,19 @@
 </ion-header>
 
 <ion-content class="round-content ">
+
+    <ion-item>
+        <ion-avatar slot="start">
+            <img alt="Avatar" [src]="book?.getImageUrl()" onerror="this.src='/assets/img/book.png'" />
+        </ion-avatar>
+        <ion-label>
+            <h3> {{lesson?.name}}</h3>
+            <p>
+                {{book?.name}}
+            </p>
+        </ion-label>
+
+    </ion-item>
 
     <div class="p-2 py-3">
         <ion-grid fixed>

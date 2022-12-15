@@ -4,6 +4,7 @@ export interface AttendanceModel {
     time: string;
     status: AttendanceStatus;
     daySessionId: string;
+    taskId: string;
 }
 
 export enum AttendanceStatus {

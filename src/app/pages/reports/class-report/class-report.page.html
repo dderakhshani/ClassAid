@@ -12,7 +12,7 @@
             </ion-button>
         </ion-buttons>
     </ion-toolbar>
-    <img alt="Avatar" [src]="book?.getImageUrl()" />
+    <img alt="Avatar" [src]="book?.getImageUrl()" onerror="this.src='/assets/img/book.png'" />
 
 </ion-header>
 
@@ -20,7 +20,7 @@
 
     <ion-item>
         <ion-avatar slot="start">
-            <img alt="Avatar" [src]="book?.getImageUrl()" />
+            <img alt="Avatar" [src]="book?.getImageUrl()" onerror="this.src='/assets/img/book.png'" />
         </ion-avatar>
         <ion-label>
             <h3> {{lesson?.name}}</h3>

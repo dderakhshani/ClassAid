@@ -20,7 +20,7 @@
             <td *ngFor="let r of rings" class="text-center">
                 <ng-container *ngIf="getSchedule(r,d);else selectLesson">
                     <ion-avatar (click)="openMenu(getSchedule(r,d))">
-                        <img [src]="getSchedule(r,d).lesson.getImageUrl()">
+                        <img [src]="getSchedule(r,d).lesson.getImageUrl()" onerror="this.src='/assets/img/book.png'">
                     </ion-avatar>
                     <ion-badge color="secondary" class="px-3 animated">
                         <span class="min"> {{getSchedule(r,d).lesson.name}}</span>

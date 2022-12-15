@@ -12,7 +12,7 @@
                 <ng-container *ngIf="getSchedule(r);else selectLesson">
                     <ion-item lines="none">
                         <ion-avatar slot="start">
-                            <img [src]="getSchedule(r).lesson.getImageUrl()">
+                            <img [src]="getSchedule(r).lesson.getImageUrl()" onerror="this.src='/assets/img/book.png'">
                         </ion-avatar>
                         <ion-label>
                             {{getSchedule(r).lesson.name}}
@@ -34,7 +34,7 @@
                 <ng-template #selectLesson>
                     <ion-item lines="none">
                         <ion-avatar slot="start">
-                            <img src="https://ionicframework.com/docs/img/demos/thumbnail.svg">
+                            <img src="/assets/img/book.png">
                         </ion-avatar>
                         <ion-label>
                             درسی انتخاب نشده

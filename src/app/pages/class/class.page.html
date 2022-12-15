@@ -1,16 +1,21 @@
 <ion-header class="content-header ion-no-border" collapse="fade">
     <ion-toolbar>
-        <ion-buttons slot="end">
+        <ion-buttons slot="start">
             <ion-button (click)="attendance()">
-                <ion-icon slot="icon-only" name="people"></ion-icon>
+                <ion-icon name="people"></ion-icon>
+                &nbsp; حضورغیاب
             </ion-button>
+        </ion-buttons>
+
+        <ion-buttons slot="end">
+
             <ion-button (click)="endClass()">
                 <ion-icon name="power-outline" slot="icon-only"></ion-icon>
 
             </ion-button>
         </ion-buttons>
     </ion-toolbar>
-    <img alt="Avatar" [src]="book?.getImageUrl()" />
+    <img alt="Avatar" [src]="book?.getImageUrl()" onerror="this.src='/assets/img/book_cover.png'" />
 
 </ion-header>
 
@@ -18,7 +23,7 @@
 
     <ion-item>
         <ion-avatar slot="start">
-            <img alt="Avatar" [src]="book?.getImageUrl()" />
+            <img alt="Avatar" [src]="book?.getImageUrl()" onerror="this.src='/assets/img/book.png'" />
         </ion-avatar>
         <ion-label>
             <h3> {{lesson?.name}}</h3>

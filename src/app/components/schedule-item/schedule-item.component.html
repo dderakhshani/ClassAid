@@ -6,7 +6,7 @@
                     <ion-col size="12">
                         <ion-item>
                             <ion-avatar slot="start">
-                                <img alt="Avatar" [src]="schedule.lesson.getImageUrl()" />
+                                <img alt="Avatar" [src]="schedule.lesson.getImageUrl()" onerror="this.src='/assets/img/book.png'" />
                             </ion-avatar>
                             <ion-label>
                                 <h3>{{schedule.lesson.name}} </h3>
@@ -79,7 +79,7 @@
         <ng-template #selectLesson>
             <ion-item lines="none">
                 <ion-avatar slot="start">
-                    <img src="https://ionicframework.com/docs/img/demos/thumbnail.svg">
+                    <img src="/assets/img/book.png" onerror="this.src='/assets/img/book.png'">
                 </ion-avatar>
                 <ion-label>
                     درسی ثبت نشده
