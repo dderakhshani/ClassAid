@@ -49,17 +49,20 @@
                     </div>
 
                 </div>
+                <div *ngIf="absentStudents.length==0" class="no-items">
+                    هیچ دانش آموزی غایب نبوده
+                </div>
             </div>
 
         </div>
 
-        <!-- Notes List -->
+        <!-- Lesson Notes List -->
         <app-expandable-section [(expanded)]="notes_expanded" [expandable]="notes_expandable">
             <div>
-                <h4>یادداشت ها :</h4>
+                <h4>یادداشت های کلاس :</h4>
             </div>
-            <div *ngIf="notes  && notes.length>0" class="old_items">
-                <ion-card *ngFor="let n of notes;let index=index" [ngClass]="{'reminder-item': !notes_expanded, 'reminder-item-expanded': notes_expanded}" [style.transform]="'scale(' + getScale(index,notes_expanded) + ')'">
+            <div *ngIf="lesson_notes  && lesson_notes.length>0" class="old_items">
+                <ion-card *ngFor="let n of lesson_notes;let index=index" [ngClass]="{'reminder-item': !notes_expanded, 'reminder-item-expanded': notes_expanded}" [style.transform]="'scale(' + getScale(index,lesson_notes,notes_expanded) + ')'">
                     <!-- Preload images before being expanded -->
                     <img hidden *ngFor="let img of n.images;" [src]="imageUrl+img" />
                     <ion-slides *ngIf="notes_expanded" [pager]="true">
@@ -71,7 +74,6 @@
                         <ion-avatar slot="start">
                             <ion-icon name="document-text-outline" color="secondary" size="large" *ngIf="!n.isReport"></ion-icon>
                             <ion-icon name="document-text-outline" color="warning" size="large" *ngIf="n.isReport"></ion-icon>
-                            <!-- <ion-icon name="newspaper-outline" color="warning" size="small" *ngIf="r.isReport"></ion-icon> -->
                         </ion-avatar>
                         <ion-label>
                             <ion-note> {{n.remindTime | date}}</ion-note>
@@ -96,6 +98,12 @@
                     </div>
                 </ion-card>
             </div>
+
+            <div *ngIf="lesson_notes?.length==0" class="no-items">
+                <ion-icon slot="start" name="document-text-outline" size="large"></ion-icon>
+                <br>
+                هیچ گزارش یا یادداشتی ثبت نشده است
+            </div>
         </app-expandable-section>
 
 
@@ -108,7 +116,7 @@
                 <div class="d-flex flex-wrap">
                     <div *ngFor="let s of scores" class="attendance me-3">
                         <ion-avatar slot="start" (click)="showReminder(s)" class="d-flex flex-column align-items-center">
-                            <img alt="Avatar-Student" [src]="studentModel.getImageUrl(s.studentId)" onerror="this.src='/assets/img/avatar.webp'" />
+                            <img alt="avatar-Student" [src]="studentModel.getImageUrl(s.studentId)" onerror="this.src='/assets/img/avatar.webp'" />
 
                             <ion-icon color="success" size="large" name="add-circle" *ngIf="s.positiveNegetive"></ion-icon>
                             <ion-icon color="danger" name="remove-circle" size="large" *ngIf="!s.positiveNegetive"></ion-icon>
@@ -119,9 +127,65 @@
                         </span>
                     </div>
                 </div>
-
             </div>
 
+            <div *ngIf="scores?.length==0" class="no-items">
+                <ion-icon slot="start" name="star-outline" size="large"></ion-icon>
+                <br>
+                هیچ مشاهده ای ثبت نشده است
+            </div>
+        </div>
+
+        <!-- Student Notes List -->
+        <div class="mt-4">
+            <app-expandable-section [(expanded)]="notes_expanded2" [expandable]="notes_expandable2">
+                <div>
+                    <h4>یادداشت های دانش آموزی :</h4>
+                </div>
+                <div *ngIf="student_notes  && student_notes.length>0" class="old_items">
+                    <ion-card *ngFor="let n of student_notes;let index=index" [ngClass]="{'reminder-item': !notes_expanded2, 'reminder-item-expanded': notes_expanded2}" [style.transform]="'scale(' + getScale(index,student_notes,notes_expanded2) + ')'">
+                        <!-- Preload images before being expanded -->
+                        <img hidden *ngFor="let img of n.images;" [src]="imageUrl+img" />
+                        <ion-slides *ngIf="notes_expanded2" [pager]="true">
+                            <ion-slide *ngFor="let img of n.images">
+                                <img [src]="imageUrl+img" />
+                            </ion-slide>
+                        </ion-slides>
+                        <ion-item lines="none">
+                            <ion-avatar slot="start">
+                                <ion-icon name="document-text-outline" color="secondary" size="large" *ngIf="!n.isReport"></ion-icon>
+                                <ion-icon name="document-text-outline" color="warning" size="large" *ngIf="n.isReport"></ion-icon>
+                            </ion-avatar>
+                            <ion-label>
+                                <ion-note> {{n.remindTime | date}}</ion-note>
+                                <p> {{n.note}}</p>
+                            </ion-label>
+
+                            <div class="d-flex flex-column actions">
+                                <ion-button fill="clear" slot="end" (click)="remove_notes(n)" color="medium">
+                                    <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+                                </ion-button>
+                                <ion-button fill="clear" slot="end" (click)="share_notes(n)" color="medium">
+                                    <ion-icon slot="icon-only" name="share-social"></ion-icon>
+                                </ion-button>
+                            </div>
+
+                        </ion-item>
+                        <div class="px-3 pb-2">
+                            <ion-chip [color]="colors[index%colors.length]" *ngFor="let tag of n.tags;let index=index">
+                                <ion-icon name="pricetag-outline"></ion-icon>
+                                <ion-label>{{tag}} </ion-label>
+                            </ion-chip>
+                        </div>
+                    </ion-card>
+                </div>
+
+                <div *ngIf="student_notes?.length==0" class="no-items">
+                    <ion-icon slot="start" name="document-text-outline" size="large"></ion-icon>
+                    <br>
+                    هیچ گزارش یا یادداشتی ثبت نشده است
+                </div>
+            </app-expandable-section>
         </div>
 
         <!-- Reminders List -->
@@ -152,7 +216,7 @@
 
             <!-- Lesson Reminders -->
             <div class="old_items" *ngIf="reminders && reminders.length>0">
-                <ion-card *ngFor="let r of reminders;let index=index" [ngClass]="{'reminder-item': !reminder_expanded, 'reminder-item-expanded': reminder_expanded}" class="score-item" [style.transform]="'scale(' + getScale(index,reminder_expanded) + ')'">
+                <ion-card *ngFor="let r of reminders;let index=index" [ngClass]="{'reminder-item': !reminder_expanded, 'reminder-item-expanded': reminder_expanded}" class="score-item" [style.transform]="'scale(' + getScale(index,reminders,reminder_expanded) + ')'">
                     <ion-item lines="none">
                         <ion-avatar slot="start">
                             <ion-icon name="alarm-outline" color="secondary" size="large" *ngIf="!r.isReport"></ion-icon>
@@ -187,6 +251,12 @@
                         </ng-container>
                     </ion-button>
                 </div>
+            </div>
+
+            <div *ngIf="student_reminders?.length==0 && reminders?.length==0" class="no-items">
+                <ion-icon slot="start" name="alarm-outline" size="large"></ion-icon>
+                <br>
+                هیچ یادآوری ثبت نشده است
             </div>
         </div>
 

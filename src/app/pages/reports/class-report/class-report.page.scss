@@ -1,5 +1,11 @@
 @import "../../../../theme/variables.scss";
 
+.no-items {
+    color: #ababab;
+    text-align: center;
+    padding-bottom: 10px;
+}
+
 .bg-section {
     border-radius: 1rem;
     background-color: #f5f5f5;

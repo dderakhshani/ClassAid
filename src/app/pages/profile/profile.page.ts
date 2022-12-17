@@ -34,6 +34,19 @@ export class ProfilePage implements OnInit {
         this.router.navigateByUrl("/signin");
     }
 
+    async contactAdmin() {
+        const alert = await this.alertController.create({
+            cssClass: 'my-custom-class',
+            header: 'عدم دسترسی',
+            message: 'این گزینه توسط مدیر سیستم کنترل می گردد. برای اصلاح اطلاعات مربوطه با مدیر سیستم تماس حاصل فرمایید',
+            buttons: ['تایید']
+        });
+
+        await alert.present();
+
+        const { role } = await alert.onDidDismiss();
+    }
+
     async reportBug() {
         const alert = await this.alertController.create({
             cssClass: 'my-custom-class',

@@ -39,6 +39,10 @@ export class StudentsService {
                 });
 
         });
+    }
+
+    getStudentsByIdSync(studentId: number) {
+        return this.students$.value.find(x => x.id == studentId);
 
     }
 }

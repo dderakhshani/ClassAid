@@ -91,38 +91,46 @@ export class ClassPage implements OnInit {
     }
 
     initStudents() {
-        const scores = this.globalService.currentSession.reminders?.filter(x => x.type == ReminderType.Score).map(x => x as Score);
-        const reminders = this.globalService.currentSession.reminders?.filter(x => x.type == ReminderType.StudentReminder).map(x => x as StudentReminder);
-        const notes = this.globalService.currentSession.reminders?.filter(x => x.type == ReminderType.StudentNotes).map(x => x as StudentNotes);
-        const assesments = this.globalService.currentSession.assessments;
+        //TODO: can move this.studentsService.students$.subscribe and not check this.globalService.currentSession
+        if (this.globalService.currentSession) {
+            const scores = this.globalService.currentSession.reminders?.filter(x => x.type == ReminderType.Score).map(x => x as Score);
+            const reminders = this.globalService.currentSession.reminders?.filter(x => x.type == ReminderType.StudentReminder).map(x => x as StudentReminder);
+            const notes = this.globalService.currentSession.reminders?.filter(x => x.type == ReminderType.StudentNotes).map(x => x as StudentNotes);
+            const assesments = this.globalService.currentSession.assessments;
 
-        this.students.forEach(s => {
-            const s_s = scores?.filter(x => x.studentId == s.id);
-            if (s_s)
-                s_s.forEach(x => {
-                    s.scores.push(x);
-                });
+            this.students.forEach(s => {
+                const s_s = scores?.filter(x => x.studentId == s.id);
+                if (s_s)
+                    s_s.forEach(x => {
+                        s.scores.push(x);
+                    });
 
-            const s_r = reminders?.filter(x => x.studentId == s.id);
-            if (s_r)
-                s_r.forEach(x => {
-                    s.reminders.push(x);
-                });
+                const s_r = reminders?.filter(x => x.studentId == s.id);
+                if (s_r)
+                    s_r.forEach(x => {
+                        s.reminders.push(x);
+                    });
 
-            const s_n = notes?.filter(x => x.studentId == s.id);
-            if (s_n)
-                s_n.forEach(x => {
-                    s.notes.push(x);
-                });
+                const s_n = notes?.filter(x => x.studentId == s.id);
+                if (s_n)
+                    s_n.forEach(x => {
+                        s.notes.push(x);
+                    });
 
-            s.hasAssessment = assesments?.filter(x => x.studentId == s.id).length > 0;
+                s.hasAssessment = assesments?.filter(x => x.studentId == s.id).length > 0;
 
 
-        })
+            })
+        }
+
     }
 
     attendance() {
         this.router.navigateByUrl(`/tabs/home/attendance/${this.globalService.currentSession.id}`);
+    }
+
+    homeWork() {
+        this.router.navigateByUrl(`/tabs/home-work/${this.globalService.currentSession.id}`);
     }
 
     async onStudentAction(student: StudentModel) {

@@ -54,7 +54,10 @@ export class LessonService {
                 const lesson = this.allLessons$.value.find(x => x.id == lessonId);
                 return resolve(lesson);
             });
+    }
 
+    getLessonByIdSynce(lessonId: number): Lesson {
+        return this.allLessons$.value.find(x => x.id == lessonId);
     }
 
 

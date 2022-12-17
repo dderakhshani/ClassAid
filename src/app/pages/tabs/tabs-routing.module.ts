@@ -37,6 +37,10 @@ const routes: Routes = [
                 loadChildren: () => import('../assessment/assessment.module').then(m => m.AssessmentPageModule)
             },
             {
+                path: 'home-work/:sessionId',
+                loadChildren: () => import('../home-work/home-work.module').then(m => m.HomeWorkPageModule)
+            },
+            {
                 path: '',
                 redirectTo: '/tabs/home',
                 pathMatch: 'full'
