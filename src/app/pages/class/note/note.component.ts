@@ -81,6 +81,7 @@ export class NoteComponent implements OnInit {
                 subLessonId: this.lesson.id,
                 note: this.notes,
                 tags: this.tags,
+                isReport: this.isReport == "true",
                 images: this.uploadFiles,
                 type: ReminderType.StudentNotes
             }
@@ -101,6 +102,7 @@ export class NoteComponent implements OnInit {
                 note: this.notes,
                 type: ReminderType.Notes,
                 tags: this.tags,
+                isReport: this.isReport == "true",
                 images: this.uploadFiles
             }
             this.reminderService.addReminder(reminder).then(x => {

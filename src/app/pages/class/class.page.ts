@@ -55,6 +55,10 @@ export class ClassPage implements OnInit {
 
     ngOnInit() {
         this.presentingElement = document.querySelector('.ion-page');
+    }
+
+    ionViewWillEnter() {
+
         //tobe sure students will load from server if not already loaded
         combineLatest(this.globalService.classSessions$, this.globalService.ready$).subscribe(([sessions, ready]) => {
             if (this.globalService.currentSession && ready) {
@@ -78,7 +82,12 @@ export class ClassPage implements OnInit {
             }
 
         })
-
+        //If students state changed by attendance
+        this.studentsService.students$.subscribe(students => {
+            this.students = [...students];
+            //Must set all reminders at once for student and display it by type
+            this.initStudents();
+        })
     }
 
     initStudents() {

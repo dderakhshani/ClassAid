@@ -70,10 +70,13 @@ export class GlobalService {
 
         });
         //load students of the class
+        //NOTE: getCallRolls will load all daysession callRollings(include all sessions) but order by time desc
+        //--So last state of the attendance will be considered
         this.classService.getCallRolls(vClass.id).then(callRollings => {
             this.studentsService.getStudentsOfClass(vClass.id).then(students => {
                 if (callRollings && callRollings.length > 0) {
                     students.forEach(student => {
+                        //NOTE: will find last state of the students
                         const attendance = callRollings.find(x => x.studentId == student.id);
                         //TODO: handle if not foumd
                         student.attendanceStatus = attendance?.status;
@@ -126,7 +129,7 @@ export class GlobalService {
                             this.todayShedules = [...schdule.scheduleTimes.filter(x => x.dayNo == this.todayDay)];
                             this.todayShedules.forEach(sch => {
                                 //4.3 
-                                sch.session = this.sessions.find(x => x.scheduleTimeId == sch.id);
+                                sch.session = sessions.find(x => x.scheduleTimeId == sch.id);
                             })
                         }
 
@@ -223,10 +226,11 @@ export class GlobalService {
 
     endClass() {
         this.classService.endTask(this.currentSession.id).then(result => {
+            this.currentSession.endTime = new Date();
             this.currentSession = undefined;
             const sessions = this.classSessions$.value;
-            const currentSession = sessions[sessions.length - 1];
-            currentSession.endTime = new Date();
+            // const currentSession = sessions[sessions.length - 1];
+            // currentSession.endTime = new Date();
 
             this.storageService.removeStorage(CLASS_STORAGE);
             this.classSessions$.next(sessions);

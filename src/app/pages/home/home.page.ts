@@ -60,7 +60,9 @@ export class HomePage implements OnInit {
 
     ngOnInit(): void {
         this.todayDay = this.globalService.todayDay;
+    }
 
+    ionViewWillEnter() {
         combineLatest(this.globalService.classSessions$, this.globalService.ready$).subscribe(([sessions, ready]) => {
             if (ready) {
                 this.todayShedules = this.globalService.todayShedules;
@@ -76,7 +78,6 @@ export class HomePage implements OnInit {
 
             this.absentStudents = students.filter(x => x.attendanceStatus == AttendanceStatus.Absent);
         });
-
     }
 
     async attendance() {

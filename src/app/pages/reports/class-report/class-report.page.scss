@@ -10,18 +10,37 @@
 }
 
 .attendance {
-    position: relative;
+    text-align: center;
 
-    ion-icon {
-        position: absolute;
-        right: -14px;
-        top: -2px;
+    span {
+        max-width: 100px;
     }
+
+    ion-avatar {
+        position: relative;
+
+        ion-icon {
+            position: absolute;
+            right: -14px;
+            top: -2px;
+        }
+    }
+
 }
 
 
 .reminder {
-    position: relative;
+    text-align: center;
+
+    span {
+        max-width: 100px;
+    }
+
+    ion-avatar {
+        position: relative;
+        box-shadow: 4px 6px 10px #7f7f7f61;
+
+    }
 
     ion-badge {
         position: absolute;
