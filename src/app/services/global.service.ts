@@ -106,7 +106,7 @@ export class GlobalService {
 
             //2,3. Loading Rings
             Promise.all(
-                [this.classService.getSessionsByClass(vClass.id),
+                [this.classService.getTodaySessionsByClass(vClass.id),
                 this.scheduleService.getRings(vClass.schoolId, vClass.gradeId)])
                 .then(([sessions, rings]) => {
                     //2.Step: 

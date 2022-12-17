@@ -1,32 +1,25 @@
 <ion-header collapse="fade" class="ion-no-border">
     <ion-toolbar>
         <ion-title>
-            برنامه کلاسی
+            برنامه درسی امروز
         </ion-title>
         <ion-buttons slot="end">
-            <ion-button (click)="save()">
-                <ion-icon slot="icon-only" name="save-outline"></ion-icon>
+            <ion-button [routerLink]="['edit']" routerLinkActive="router-link-active">
+                <ion-icon slot="icon-only" name="create-outline"></ion-icon>
             </ion-button>
         </ion-buttons>
     </ion-toolbar>
-
 </ion-header>
 
 <ion-content>
-    <div class="p-2">
-        <ion-segment value="table" mode="ios" [(ngModel)]="displayMode">
-            <ion-segment-button value="table">
-                <ion-label>نمایش جدولی</ion-label>
-            </ion-segment-button>
-            <ion-segment-button value="timeline">
-                <ion-label>نمایش خطی</ion-label>
-            </ion-segment-button>
-        </ion-segment>
-        <br>
-        <div style="overflow-x: auto;">
-            <app-table *ngIf="displayMode=='table'" [rings]="rings" [days]="days" [(schedules)]="schedules" [lessons]="lessons"></app-table>
-        </div>
+    <div class="p-2 pb-4">
+        <ion-button [routerLink]="['edit']" expand="block" color="secondary" class="my-3">
+            <ion-icon name="create-outline"></ion-icon>
+            &nbsp;
+            ویرایش برنامه درسی کلاسی
+        </ion-button>
 
-        <app-timeline *ngIf="displayMode=='timeline'" [rings]="rings" [days]="days" [(schedules)]="schedules" [lessons]="lessons"></app-timeline>
+        <app-timeline [selectedDay]="globalService.todayDay" [rings]="globalService.rings" [schedules]="todayShedules"></app-timeline>
     </div>
+
 </ion-content>

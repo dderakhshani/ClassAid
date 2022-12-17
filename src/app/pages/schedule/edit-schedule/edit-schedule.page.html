@@ -1,0 +1,39 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-button (click)="location.back()">
+                <ion-icon slot="icon-only" name="arrow-back-outline"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+        <ion-title>
+            تعریف برنامه کلاسی
+        </ion-title>
+        <ion-buttons slot="end">
+            <ion-button (click)="save()">
+                <ion-icon slot="icon-only" name="save-outline"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <div *ngIf="loading" class="d-flex align-items-center justify-content-center">
+        <ion-spinner></ion-spinner>
+    </div>
+    <div class="p-2 pb-5" *ngIf="!loading">
+        <ion-segment value="table" mode="ios" [(ngModel)]="displayMode">
+            <ion-segment-button value="table">
+                <ion-label>نمایش جدولی</ion-label>
+            </ion-segment-button>
+            <ion-segment-button value="timeline">
+                <ion-label>نمایش خطی</ion-label>
+            </ion-segment-button>
+        </ion-segment>
+        <br>
+        <div style="overflow-x: auto;">
+            <app-table *ngIf="displayMode=='table'" [rings]="rings" [days]="days" [(schedules)]="schedules" [lessons]="lessons"></app-table>
+        </div>
+
+        <app-timeline *ngIf="displayMode=='timeline'" [rings]="rings" [days]="days" [(schedules)]="schedules" [lessons]="lessons"></app-timeline>
+    </div>
+</ion-content>

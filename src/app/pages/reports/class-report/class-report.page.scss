@@ -1,5 +1,37 @@
-.old_items {
+@import "../../../../theme/variables.scss";
+
+.bg-section {
     border-radius: 1rem;
+    background-color: #f5f5f5;
+
+    ion-item {
+        --background: transparent;
+    }
+}
+
+.attendance {
+    position: relative;
+
+    ion-icon {
+        position: absolute;
+        right: -14px;
+        top: -2px;
+    }
+}
+
+
+.reminder {
+    position: relative;
+
+    ion-badge {
+        position: absolute;
+        right: 50px;
+    }
+}
+
+
+.old_items {
+
 
     ion-card {
         transition: all 0.3s;
@@ -21,6 +53,16 @@
 }
 
 ion-card {
+    ion-slide {
+        max-height: 180px;
+        overflow: hidden;
+
+        img {
+
+            width: 100%;
+        }
+    }
+
     ion-item::part(native) {
         --inner-padding-start: 0px;
         --inner-padding-end: 0px;
@@ -30,6 +72,7 @@ ion-card {
         ion-avatar {
             margin-inline-end: 0;
             margin-bottom: auto;
+            margin-top: 1rem;
         }
 
         .actions {

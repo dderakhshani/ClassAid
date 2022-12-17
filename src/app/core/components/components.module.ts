@@ -1,3 +1,4 @@
+import { ExpandableSectionComponent } from './expandable-section/expandable-section.component';
 import { UploaderComponent } from './uploader/uploader.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -11,7 +12,7 @@ import { IonicModule } from '@ionic/angular';
         FormsModule,
         IonicModule,
     ],
-    declarations: [UploaderComponent],
-    exports: [UploaderComponent]
+    declarations: [UploaderComponent, ExpandableSectionComponent],
+    exports: [UploaderComponent, ExpandableSectionComponent]
 })
 export class ComponentsModule { }

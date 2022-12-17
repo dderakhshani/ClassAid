@@ -24,18 +24,28 @@ ion-col {
     }
 }
 
+.btn-end-class {
+    margin-right: 0;
+}
+
+.btn-end-class::part(native) {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+}
+
 .has-reminder:before,
 .has-notes:before {
-    content: "";
+    content: attr(data-count);
     display: inline-block;
     background: #21b547;
     border: 2px solid #ffffff;
-    width: 14px;
-    height: 14px;
+    width: 23px;
+    height: 23px;
     border-radius: 12px;
     position: absolute;
-    right: 2px;
+    right: -5px;
     z-index: 100;
+    top: -3px;
 }
 
 .student-card {

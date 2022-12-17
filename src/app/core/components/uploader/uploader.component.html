@@ -13,8 +13,8 @@
 
     <div class="upload-area m-1 " *ngFor="let file of files">
 
-        <ion-button class="position-absolute top-0 start-0" icon-only (click)="removeImage(file)">
-            <ion-icon class="text-danger" name="cancel"></ion-icon>
+        <ion-button class="position-absolute top-0 start-0" color="danger" (click)="removeImage(file)">
+            <ion-icon slot="icon-only" name="close-circle-outline"></ion-icon>
         </ion-button>
 
         <ng-container *ngIf="file.progressStatus=='in-progress' || file.progressStatus==''">

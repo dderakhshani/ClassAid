@@ -2,8 +2,9 @@ import { ClassService } from './api/class.service';
 import { GlobalService } from 'src/app/services/global.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { StudentsService } from './api/students.service';
-import { IonRouterOutlet, Platform } from '@ionic/angular';
+import { IonRouterOutlet, LoadingController, Platform } from '@ionic/angular';
 import { AuthService } from './core/services/auth.service';
+import { combineLatest } from 'rxjs';
 
 @Component({
     selector: 'app-root',
@@ -14,13 +15,20 @@ export class AppComponent implements OnInit {
     @ViewChild(IonRouterOutlet, { static: true }) routerOutlet: IonRouterOutlet;
 
     constructor(private globalService: GlobalService,
+        private loadingCtrl: LoadingController,
         private platform: Platform,
         private authService: AuthService,
         private classService: ClassService) {
 
     }
 
-    ngOnInit() {
+    async ngOnInit() {
+        const loading = await this.loadingCtrl.create();
+        loading.present();
+        combineLatest(this.globalService.classSessions$, this.globalService.ready$).subscribe(([sessions, ready]) => {
+            if (ready)
+                loading.dismiss();
+        })
         const user = this.authService.getProfile();
         this.authService.user$.subscribe(u => {
             if (u) {
@@ -31,8 +39,6 @@ export class AppComponent implements OnInit {
                 });
             }
         })
-
-
 
         this.platform.backButton.subscribe(() => {
             if (!this.routerOutlet.canGoBack())

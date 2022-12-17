@@ -52,6 +52,14 @@ export class ClassService {
         });
     }
 
+    getSessionCallRolls(sessionId: string): Promise<AttendanceModel[]> {
+        return new Promise(resolve => {
+            this.httpService.http.getDataByParam<AttendanceModel[]>({ sessionId: sessionId }, "session/GetSessionCallRolls").then(data => {
+                return resolve(data);
+            });
+        });
+    }
+
 
     addTask(session: ClassSessionModel): Promise<boolean> {
         return new Promise(resolve => {
@@ -69,9 +77,9 @@ export class ClassService {
         });
     }
 
-    getSessionsByClass(classId: number): Promise<ClassSessionModel[]> {
+    getTodaySessionsByClass(classId: number): Promise<ClassSessionModel[]> {
         return new Promise(resolve => {
-            this.httpService.http.getDataByParam<ClassSessionModel[]>({ classId: classId }, "session/GetSessionsByClass").then(data => {
+            this.httpService.http.getDataByParam<ClassSessionModel[]>({ classId: classId }, "session/GetTodaySessionsByClass").then(data => {
                 return resolve(data);
             });
         });

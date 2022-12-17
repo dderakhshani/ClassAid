@@ -8,6 +8,10 @@ const routes: Routes = [
         path: '',
         component: SchedulePage
     },
+    {
+        path: 'edit',
+        loadChildren: () => import('./edit-schedule/edit-schedule.module').then(m => m.EditSchedulePageModule)
+    },
 ];
 
 @NgModule({

@@ -161,7 +161,7 @@ export class UploaderComponent implements OnInit {
                         );
                         break;
                     case HttpEventType.Response:
-                        let fileName = event.body?.objResult;
+                        let fileName = event.body?.url;
                         data.extention = fileName.split(".")[1].toUpperCase();
                         data.filePath = fileName;
                         data.fullFilePath = `${environment.imageUrl}` + "/" + fileName;

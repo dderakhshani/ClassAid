@@ -1,4 +1,5 @@
-import { LessonNotes, Reminder, ReminderType, StudentNotes } from './../../../models/remider';
+import { environment } from './../../../../environments/environment';
+import { LessonNotes, Note, ReminderType, StudentNotes } from './../../../models/remider';
 import { Component, Input, OnInit } from '@angular/core';
 import { ClassSessionModel } from 'src/app/models/class';
 import { Lesson } from 'src/app/models/lessons';
@@ -12,10 +13,10 @@ import { ReminderService } from 'src/app/api/reminder.service';
     styleUrls: ['./note.component.scss'],
 })
 export class NoteComponent implements OnInit {
-
+    imageUrl = environment.imageUrl + '/'
     expanded = false;
     @Input()
-    prevNotes: Reminder[];
+    prevNotes: Note[];
 
     @Input()
     modal: any;
@@ -36,14 +37,19 @@ export class NoteComponent implements OnInit {
     tags: string[] = [];
     tag = "";
     isReport: string = 'true';
+    uploadFiles: string[];
 
-    colors = ["primary", "danger", "success", "secondary", "warning", "tertiary", "medium"]
+    colors = ["primary", "danger", "success", "secondary", "warning", "tertiary", "medium"];
 
     constructor(private reminderService: ReminderService) { }
 
     ngOnInit() { }
 
-    remove(reminder: Reminder) {
+    loaded() {
+        console.log('image loaded');
+    }
+
+    remove(note: Note) {
 
     }
 
@@ -74,6 +80,8 @@ export class NoteComponent implements OnInit {
                 lessonId: this.book.id,
                 subLessonId: this.lesson.id,
                 note: this.notes,
+                tags: this.tags,
+                images: this.uploadFiles,
                 type: ReminderType.StudentNotes
             }
             this.reminderService.addReminder(reminder).then(x => {
@@ -91,7 +99,9 @@ export class NoteComponent implements OnInit {
                 lessonId: this.book.id,
                 subLessonId: this.lesson.id,
                 note: this.notes,
-                type: ReminderType.Notes
+                type: ReminderType.Notes,
+                tags: this.tags,
+                images: this.uploadFiles
             }
             this.reminderService.addReminder(reminder).then(x => {
                 this.classTask.reminders = this.classTask.reminders ?? [];

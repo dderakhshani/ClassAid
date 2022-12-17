@@ -4,7 +4,6 @@ export interface Reminder {
     subLessonId?: number;
     note: string;
     type: ReminderType;
-    tags: string;
     remindTime: Date;
     isReport: boolean;
 }
@@ -38,6 +37,7 @@ export interface Score extends Reminder {
 
 export interface Note extends Reminder {
     images: string[];
+    tags: string[];
 }
 
 export interface LessonNotes extends Note {

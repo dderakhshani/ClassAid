@@ -1,4 +1,4 @@
-import { Reminder, StudentReminder } from './../../models/remider';
+import { Reminder, StudentReminder, StudentNotes } from './../../models/remider';
 import { StudentModel } from 'src/app/models/student';
 import { StudentsService } from './../../api/students.service';
 import { ClassSessionModel } from './../../models/class';
@@ -84,6 +84,7 @@ export class ClassPage implements OnInit {
     initStudents() {
         const scores = this.globalService.currentSession.reminders?.filter(x => x.type == ReminderType.Score).map(x => x as Score);
         const reminders = this.globalService.currentSession.reminders?.filter(x => x.type == ReminderType.StudentReminder).map(x => x as StudentReminder);
+        const notes = this.globalService.currentSession.reminders?.filter(x => x.type == ReminderType.StudentNotes).map(x => x as StudentNotes);
         const assesments = this.globalService.currentSession.assessments;
 
         this.students.forEach(s => {
@@ -97,6 +98,12 @@ export class ClassPage implements OnInit {
             if (s_r)
                 s_r.forEach(x => {
                     s.reminders.push(x);
+                });
+
+            const s_n = notes?.filter(x => x.studentId == s.id);
+            if (s_n)
+                s_n.forEach(x => {
+                    s.notes.push(x);
                 });
 
             s.hasAssessment = assesments?.filter(x => x.studentId == s.id).length > 0;
@@ -147,16 +154,16 @@ export class ClassPage implements OnInit {
         return student.attendanceStatus == AttendanceStatus.Absent ? 'medium' : ''
     }
 
-    hasReminder() {
-        return this.globalService.currentSession?.reminders?.filter(x => x.type == ReminderType.Reminder).length > 0;
+    remindersCount() {
+        return this.globalService.currentSession?.reminders?.filter(x => x.type == ReminderType.Reminder).length;
     }
 
-    hasNotes() {
-        return this.globalService.currentSession?.reminders?.filter(x => x.type == ReminderType.Notes).length > 0;
+    notesCount() {
+        return this.globalService.currentSession?.reminders?.filter(x => x.type == ReminderType.Notes).length;
     }
 
-    hasHomeWork() {
-        return this.globalService.currentSession?.reminders?.filter(x => x.type == ReminderType.Reminder).length > 0;
+    homeWorksCount() {
+        return this.globalService.currentSession?.reminders?.filter(x => x.type == ReminderType.Reminder).length;
     }
 
     onAssess() {
@@ -167,14 +174,14 @@ export class ClassPage implements OnInit {
     }
 
     onStudentReminder() {
-        this.modalReminders = this.selectedStudent.reminders?.filter(x => x.type == ReminderType.StudentReminder);
+        this.modalReminders = this.selectedStudent.reminders;
         this.isStudentActionsModalOpen = false;
         this.isReminderModalOpen = true;
 
     }
 
     onStudentNotes() {
-        this.modalNotes = this.selectedStudent.reminders?.filter(x => x.type == ReminderType.StudentNotes);
+        this.modalNotes = this.selectedStudent.notes;
         this.isStudentActionsModalOpen = false;
         this.isNotesModalOpen = true;
     }

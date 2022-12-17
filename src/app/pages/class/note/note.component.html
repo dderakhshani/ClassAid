@@ -5,7 +5,7 @@
                 <ion-icon slot="icon-only" name="close"></ion-icon>
             </ion-button>
         </ion-buttons>
-        <ion-title>یادداشت/گزارش</ion-title>
+        <ion-title>گزارش / یادداشت</ion-title>
         <ion-buttons slot="end">
             <ion-button>
                 <ion-icon slot="icon-only" name="save-outline"></ion-icon>
@@ -15,7 +15,7 @@
 </ion-header>
 
 <ion-content>
-    <div *ngIf="student" class="pt-3 d-flex flex-column align-items-center justify-content-center">
+    <div *ngIf="student" class="pt-3 pb-1 d-flex flex-column align-items-center justify-content-center">
         <ion-avatar>
             <img alt="Avatar-Student" [src]="student?.getImageUrl()" onerror="this.src='/assets/img/avatar.webp'" />
         </ion-avatar>
@@ -23,43 +23,48 @@
     </div>
 
     <!-- Notes List -->
-    <div class="p-2 bg-light old_items" *ngIf="prevNotes && prevNotes.length>0">
+    <app-expandable-section [(expanded)]="expanded" *ngIf="prevNotes && prevNotes.length>0">
         <div>
             <h4>یادداشت های قبلی کلاس:</h4>
         </div>
-        <div>
+        <div class="old_items">
+
             <ion-card *ngFor="let r of prevNotes;let index=index" [ngClass]="{'reminder-item': !expanded, 'reminder-item-expanded': expanded}" class="score-item" [style.transform]="'scale(' + getScale(index) + ')'">
+                <!-- Preload images before being expanded -->
+                <img hidden *ngFor="let img of r.images;" [src]="imageUrl+img" />
+
+                <ion-slides *ngIf="expanded" [pager]="true">
+                    <ion-slide *ngFor="let img of r.images">
+                        <img [src]="imageUrl+img" />
+                    </ion-slide>
+                </ion-slides>
                 <ion-item lines="none">
                     <ion-avatar slot="start">
-                        <ion-icon name="alarm-outline" color="secondary" size="large" *ngIf="!r.isReport"></ion-icon>
-                        <ion-icon name="alarm-outline" color="warning" size="large" *ngIf="r.isReport"></ion-icon>
+                        <ion-icon name="document-text-outline" color="secondary" size="large" *ngIf="!r.isReport"></ion-icon>
+                        <ion-icon name="document-text-outline" color="warning" size="large" *ngIf="r.isReport"></ion-icon>
                         <!-- <ion-icon name="newspaper-outline" color="warning" size="small" *ngIf="r.isReport"></ion-icon> -->
                     </ion-avatar>
                     <ion-label>
                         <ion-note> {{r.remindTime | date}}</ion-note>
                         <p> {{r.note}}</p>
+
                     </ion-label>
 
-                    <ion-button fill="clear" slot="end" (click)="remove(r)" color="medium">
+                    <ion-button class="actions" fill="clear" slot="end" (click)="remove(r)" color="medium">
                         <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
 
                     </ion-button>
                 </ion-item>
+                <div class="px-3 pb-2">
+                    <ion-chip [color]="colors[index%colors.length]" *ngFor="let tag of r.tags;let index=index">
+                        <ion-icon name="pricetag-outline"></ion-icon>
+                        <ion-label>{{tag}} </ion-label>
+                    </ion-chip>
+                </div>
             </ion-card>
-            <div class="d-flex justify-content-center">
-                <ion-button fill="clear" size="small" (click)="expanded=!expanded" style="margin-top: -0.5rem;">
-                    <ng-container *ngIf="!expanded">
-                        <ion-icon name="chevron-down-outline"></ion-icon>
-                        گسترش موارد
-                    </ng-container>
-                    <ng-container *ngIf="expanded">
-                        <ion-icon name="chevron-up-outline"></ion-icon>
-                        بستن
-                    </ng-container>
-                </ion-button>
-            </div>
         </div>
-    </div>
+    </app-expandable-section>
+
 
 
     <!-- Add New Notes -->
@@ -72,10 +77,10 @@
     <div class="px-3">
         <ion-segment mode="ios" [(ngModel)]="isReport" color="warning">
             <ion-segment-button value="true">
-                <ion-label> گزارشی</ion-label>
+                <ion-label> گزارش</ion-label>
             </ion-segment-button>
             <ion-segment-button value="false">
-                <ion-label>شخصی </ion-label>
+                <ion-label>یادداشت شخصی </ion-label>
             </ion-segment-button>
         </ion-segment>
     </div>
@@ -107,7 +112,7 @@
 
 
     <div class="p-2 mt-2">
-        <app-uploader></app-uploader>
+        <app-uploader (filesChange)="uploadFiles=$event"></app-uploader>
     </div>
 
 </ion-content>

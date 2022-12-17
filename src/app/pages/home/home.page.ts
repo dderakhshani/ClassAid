@@ -15,6 +15,7 @@ import { ScheduleTimeModel } from 'src/app/models/schedule';
 import { AlertController, Platform } from '@ionic/angular';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { AttendanceStatus } from 'src/app/models/attendance-model';
+import { combineLatest } from 'rxjs';
 
 @Component({
     selector: 'app-home',
@@ -31,7 +32,6 @@ export class HomePage implements OnInit {
         autoplay: true
     };
 
-    viewMode: "dashboard" | "timeline" = "dashboard";
 
     absentStudents: StudentModel[] = [];
     nextCurrentSchedule: ScheduleTimeModel;
@@ -61,33 +61,41 @@ export class HomePage implements OnInit {
     ngOnInit(): void {
         this.todayDay = this.globalService.todayDay;
 
-        this.globalService.ready$.subscribe(ready => {
+        combineLatest(this.globalService.classSessions$, this.globalService.ready$).subscribe(([sessions, ready]) => {
             if (ready) {
                 this.todayShedules = this.globalService.todayShedules;
                 this.setNextCurrentSchedule();
 
-                this.globalService.classSessions$.subscribe(session => {
-                    if (session && session.length > 0) {
-                        this.setNextCurrentSchedule();
-                    }
-                });
+                if (sessions && sessions.length > 0) {
+                    this.setNextCurrentSchedule();
+                }
             }
-
         });
-
-
 
         this.studentsService.students$.subscribe(students => {
 
             this.absentStudents = students.filter(x => x.attendanceStatus == AttendanceStatus.Absent);
         });
 
-
     }
 
-    attendance() {
+    async attendance() {
         if (this.globalService.currentSession)
             this.router.navigateByUrl(`/tabs/home/attendance/${this.globalService.currentSession.id}`);
+        else {
+            const alert = await this.alertController.create({
+                header: 'هشدار',
+                message: 'برای حضور و غیاب ابتدا یک کلاس درس را شروع نمایید',
+                buttons: [
+                    {
+                        text: 'تایید',
+                        role: 'confirm'
+                    }
+                ],
+            });
+
+            await alert.present();
+        }
     }
 
     setNextCurrentSchedule() {
@@ -132,7 +140,7 @@ export class HomePage implements OnInit {
             message: remidner.note,
             buttons: [
                 {
-                    text: 'تایید',
+                    text: 'بستن',
                     role: 'confirm'
                 }
             ],

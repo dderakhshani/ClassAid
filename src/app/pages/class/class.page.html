@@ -31,7 +31,7 @@
                 {{book?.name}}
             </p>
         </ion-label>
-        <ion-button slot="end" (click)="endClass()" size="default" color="danger">
+        <ion-button slot="end" (click)="endClass()" size="default" color="danger" class="btn-end-class">
             <ion-icon name="power-outline" class="ms-2"></ion-icon>
             اتمام
         </ion-button>
@@ -39,7 +39,7 @@
 
     <div class="d-flex justify-content-around p-2 pb-4">
 
-        <ion-button shape="circle" (click)="onReminder()" color="secondary" [class.has-reminder]="hasReminder()">
+        <ion-button shape="circle" (click)="onReminder()" color="secondary" [class.has-reminder]="remindersCount()" [attr.data-count]="remindersCount()">
             <ion-icon slot="icon-only" name="alarm-outline"></ion-icon>
             <ion-label>یادآور</ion-label>
         </ion-button>
@@ -51,7 +51,7 @@
             <ion-icon slot="icon-only" name="flask-outline"></ion-icon>
             <ion-label>آزمون</ion-label>
         </ion-button>
-        <ion-button shape="circle" color="warning" (click)="onNotes()" [class.has-notes]="hasNotes()">
+        <ion-button shape="circle" color="warning" (click)="onNotes()" [class.has-notes]="notesCount()>0" [attr.data-count]="notesCount()">
             <ion-icon slot="icon-only" name="document-text-outline"></ion-icon>
             <ion-label>یادداشت</ion-label>
         </ion-button>

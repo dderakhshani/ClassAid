@@ -43,19 +43,8 @@
                 <hr *ngIf="cardExpanded">
             </ion-card-header>
 
-            <ion-card-content *ngIf="cardExpanded">
-
-                <div class="ion-padding" slot="content">
-                    <ion-segment mode="ios" [value]="currentLevel.value">
-                        <ion-segment-button value="{{am.value}}" class="{{am.bdColor}}" *ngFor="let am of assessLevels">
-                            <ion-icon [name]="am.ionIcon"></ion-icon>
-                            <ion-label>
-                                {{am.title}}
-                            </ion-label>
-                        </ion-segment-button>
-                    </ion-segment>
-                    <div echarts [options]="chartOptions" class="widget-chart" theme="roma"></div>
-                </div>
+            <ion-card-content *ngIf="cardExpanded" class="ion-padding">
+                <div echarts [options]="chartOptions" class="widget-chart" theme="roma"></div>
             </ion-card-content>
         </ion-card>
 

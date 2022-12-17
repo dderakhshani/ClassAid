@@ -1,3 +1,4 @@
+import { CoresModule } from './../../core/core.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -8,15 +9,14 @@ import { SchedulePageRoutingModule } from './schedule-routing.module';
 
 import { SchedulePage } from './schedule.page';
 import { ComponentsModule } from 'src/app/components/components.module';
-import { TimelineComponent } from './timeline/timeline.component';
-import { TableComponent } from './table/table.component';
 @NgModule({
     imports: [
         CommonModule,
         FormsModule,
         IonicModule,
         SchedulePageRoutingModule,
+        ComponentsModule
     ],
-    declarations: [SchedulePage, TimelineComponent, TableComponent]
+    declarations: [SchedulePage]
 })
 export class SchedulePageModule { }
