@@ -1,7 +1,7 @@
 import { AttendanceModel, AttendanceStatus } from './../../models/attendance-model';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { NavController } from '@ionic/angular';
+import { LoadingController, NavController } from '@ionic/angular';
 import { ClassService } from 'src/app/api/class.service';
 import { StudentsService } from 'src/app/api/students.service';
 import { StudentModel } from 'src/app/models/student';
@@ -30,6 +30,7 @@ export class AttendancePage implements OnInit {
         public globalService: GlobalService,
         private classService: ClassService,
         private route: ActivatedRoute,
+        private loadingCtrl: LoadingController,
         private navCtrl: NavController,) {
         this.sessionIdParam = this.route.snapshot.paramMap.get('sessionId');
     }
@@ -55,7 +56,10 @@ export class AttendancePage implements OnInit {
         student.attendanceStatus = student.attendanceStatus as any == 0 ? 1 : student.attendanceStatus;
     }
 
-    save() {
+    async save() {
+        const loading = await this.loadingCtrl.create();
+        loading.present();
+
         const attendances = this.students
             .map(x => (<AttendanceModel>{
                 studentId: x.id,
@@ -64,6 +68,7 @@ export class AttendancePage implements OnInit {
             }));
 
         this.classService.addCallRolls(attendances, this.globalService.selectedClass.id).then(x => {
+            loading.dismiss();
             this.studentsService.students$.next(this.students);
             this.navCtrl.navigateRoot('tabs/home');
         })

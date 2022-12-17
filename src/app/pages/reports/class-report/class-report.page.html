@@ -37,13 +37,17 @@
             </div>
             <div style="overflow-x: auto;width: 100%;">
                 <div class="d-inline-flex">
-                    <ion-avatar slot="start" *ngFor="let s of absentStudents" class="attendance me-3">
-                        <img alt="Avatar-Student" [src]="studentModel.getImageUrl(s.studentId)" onerror="this.src='/assets/img/avatar.webp'" />
+                    <div *ngFor="let s of absentStudents" class="attendance me-3">
+                        <ion-avatar slot="start">
+                            <img alt="Avatar-Student" [src]="studentModel.getImageUrl(s.studentId)" onerror="this.src='/assets/img/avatar.webp'" />
 
-                        <ion-icon color="danger" size="large" name="close-circle" *ngIf="s.status== AttendanceStatus.Absent"></ion-icon>
-                        <ion-icon name="time" size="large" color="warning" *ngIf="s.status== AttendanceStatus.Delayed"></ion-icon>
+                            <ion-icon color="danger" size="large" name="close-circle" *ngIf="s.status== AttendanceStatus.Absent"></ion-icon>
+                            <ion-icon name="time" size="large" color="warning" *ngIf="s.status== AttendanceStatus.Delayed"></ion-icon>
 
-                    </ion-avatar>
+                        </ion-avatar>
+                        {{s.studentFullName}}
+                    </div>
+
                 </div>
             </div>
 

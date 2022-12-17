@@ -5,6 +5,8 @@ export interface AttendanceModel {
     status: AttendanceStatus;
     daySessionId: string;
     taskId: string;
+
+    studentFullName: string;
 }
 
 export enum AttendanceStatus {

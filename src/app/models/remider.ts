@@ -1,3 +1,5 @@
+import { Lesson } from './lessons';
+import { StudentModel } from './student';
 export interface Reminder {
     id: string;
     lessonId?: number;
@@ -20,10 +22,14 @@ export enum ReminderType {
 export interface StudentReminder extends Reminder {
     studentId: number;
     taskId: string;
+
+    studentFullName: string;
 }
 
 export interface LessonReminder extends Reminder {
     taskId: string;
+
+    lesson?: Lesson;
 }
 
 

@@ -101,22 +101,30 @@
             </div>
         </ng-container>
 
-        <div class="d-flex px-2">
+        <div class="d-inline-flex px-2">
             <ng-container *ngFor="let lr of reminderService.lesson_reminders$ | async">
-                <ion-avatar class="reminder ms-4" (click)="showReminder(lr)">
-                    <img alt="lesson-avatar" [src]="lesson.getImageUrl(lr.lessonId)" onerror="this.src='/assets/img/book.png'" />
-                    <ion-badge class=" me-1" color="secondary" mode="ios">
-                        <ion-icon name="alarm-outline" size="small"></ion-icon>
-                    </ion-badge>
-                </ion-avatar>
+                <div class="reminder ms-5 d-flex flex-column align-items-center">
+                    <ion-avatar (click)="showReminder(lr)">
+                        <img alt="lesson-avatar" [src]="lesson.getImageUrl(lr.lessonId)" onerror="this.src='/assets/img/book.png'" />
+                        <ion-badge class=" me-1" color="secondary" mode="ios">
+                            <ion-icon name="alarm-outline" size="small"></ion-icon>
+                        </ion-badge>
+                    </ion-avatar>
+                    <span class="mt-2">{{lr.lesson.name}}</span>
+                </div>
+
             </ng-container>
             <ng-container *ngFor="let sr of reminderService.student_reminders$ | async">
-                <ion-avatar class="reminder ms-4" (click)="showReminder(sr)">
-                    <img alt="avatar-student" [src]="studentModel.getImageUrl(sr.studentId)" onerror="this.src='/assets/img/avatar.webp'" />
-                    <ion-badge class=" me-1" color="secondary" mode="ios">
-                        <ion-icon name="alarm-outline" size="small"></ion-icon>
-                    </ion-badge>
-                </ion-avatar>
+                <div class="reminder ms-5 d-flex flex-column align-items-center">
+                    <ion-avatar (click)="showReminder(sr)">
+                        <img alt="avatar-student" [src]="studentModel.getImageUrl(sr.studentId)" onerror="this.src='/assets/img/avatar.webp'" />
+                        <ion-badge class=" me-1" color="secondary" mode="ios">
+                            <ion-icon name="alarm-outline" size="small"></ion-icon>
+                        </ion-badge>
+                    </ion-avatar>
+                    <span class="mt-2"> {{sr.studentFullName}}</span>
+                </div>
+
             </ng-container>
 
         </div>

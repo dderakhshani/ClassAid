@@ -73,7 +73,6 @@ export class ReminderComponent implements OnInit {
     save() {
         if (this.student) {
 
-
             const reminder = <StudentReminder>{
                 id: uuidv4(),
                 studentId: this.student.id,
@@ -83,7 +82,8 @@ export class ReminderComponent implements OnInit {
                 remindTime: this.getReminderTime(),
                 note: this.notes,
                 isReport: this.isReport == 'true',
-                type: ReminderType.StudentReminder
+                type: ReminderType.StudentReminder,
+                studentFullName: this.student.fullName,//Helper
             };
             this.reminderService.addReminder(reminder).then(x => {
                 this.student.reminders = this.student.reminders ?? [];
@@ -101,12 +101,13 @@ export class ReminderComponent implements OnInit {
                 remindTime: this.getReminderTime(),
                 note: this.notes,
                 isReport: this.isReport == 'true',
-                type: ReminderType.Reminder
+                type: ReminderType.Reminder,
+                lessonName: this.lesson.name
             };
             this.reminderService.addReminder(reminder).then(x => {
                 this.classTask.reminders = this.classTask.reminders ?? [];
                 this.classTask.reminders.push(reminder);
-                this.reminderService.lesson_reminders$.next([...this.reminderService.student_reminders$.value, reminder]);
+                this.reminderService.lesson_reminders$.next([...this.reminderService.lesson_reminders$.value, reminder]);
             });
 
         }

@@ -63,8 +63,13 @@ ion-card.lesson {
 }
 
 .reminder {
-    position: relative;
-    box-shadow: 4px 6px 10px #7f7f7f61;
+    text-align: center;
+
+    ion-avatar {
+        position: relative;
+        box-shadow: 4px 6px 10px #7f7f7f61;
+
+    }
 
     ion-badge {
         position: absolute;

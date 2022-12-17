@@ -74,8 +74,8 @@ export class EditSchedulePage implements OnInit {
             };
         }
         const loading = await this.loadingCtrl.create();
-
         loading.present();
+
         this.scheduleService.saveSchedule(this.schedule).then(x => {
             loading.dismiss();
         });
