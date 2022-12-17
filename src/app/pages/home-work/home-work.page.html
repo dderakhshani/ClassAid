@@ -15,28 +15,30 @@
 </ion-header>
 
 <ion-content>
-    <div *ngFor="let student of students ">
-        <ion-card class="student-card flex-fill" (click)="onStudentAction(student)">
-            <ion-card-content>
-                <div class="d-flex flex-column ion-align-items-center">
-                    <ion-avatar slot="start">
-                        <img alt="Avatar-Student" [src]="student.getImageUrl()" onerror="this.src='/assets/img/avatar.webp'" />
-                    </ion-avatar>
-                    <div>
-                        {{student.fullName}}
+    <div class="pb-5">
+        <div *ngFor="let student of students ">
+            <ion-card class="student-card flex-fill" (click)="onStudentAction(student)">
+                <ion-card-content>
+                    <div class="d-flex flex-column ion-align-items-center">
+                        <ion-avatar slot="start">
+                            <img alt="Avatar-Student" [src]="student.getImageUrl()" onerror="this.src='/assets/img/avatar.webp'" />
+                        </ion-avatar>
+                        <div>
+                            {{student.fullName}}
+                        </div>
+
+                        <ion-segment [scrollable]="true" mode="ios">
+                            <ion-segment-button value="{{am.value}}" class="{{am.bdColor}}" *ngFor="let am of assessLevels">
+                                <ion-icon [name]="am.ionIcon"></ion-icon>
+                                <ion-label>
+                                    {{am.title}}
+                                </ion-label>
+                            </ion-segment-button>
+                        </ion-segment>
+
                     </div>
-
-                    <ion-segment [scrollable]="true" mode="ios">
-                        <ion-segment-button value="{{am.value}}" class="{{am.bdColor}}" *ngFor="let am of assessLevels">
-                            <ion-icon [name]="am.ionIcon"></ion-icon>
-                            <ion-label>
-                                {{am.title}}
-                            </ion-label>
-                        </ion-segment-button>
-                    </ion-segment>
-
-                </div>
-            </ion-card-content>
-        </ion-card>
+                </ion-card-content>
+            </ion-card>
+        </div>
     </div>
 </ion-content>
