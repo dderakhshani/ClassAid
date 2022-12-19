@@ -1,4 +1,11 @@
-<ion-header>
+<div class="avatar d-flex flex-column align-items-center">
+    <div class="d-flex align-items-center justify-content-center">
+        <ion-avatar class="d-flex align-items-center justify-content-center">
+            <ion-icon color="success" name="library-outline" size="large"></ion-icon>
+        </ion-avatar>
+    </div>
+</div>
+<ion-header class="content-header ion-no-border">
     <ion-toolbar>
         <ion-buttons slot="start">
             <ion-button (click)="modal.dismiss()">
@@ -14,15 +21,13 @@
     </ion-toolbar>
 </ion-header>
 
-<ion-content>
-    <div class="d-flex justify-content-center pt-3">
-        <ion-icon color="success" name="library-outline" size="large"></ion-icon>
-    </div>
+<ion-content class="round-content">
+
     <!-- Home Works List -->
-    <app-expandable-section [(expanded)]="expanded" *ngIf="prevReminders && prevReminders.length>0">
+    <app-expandable-section [(expanded)]="expanded" *ngIf="prevItems && prevItems.length>0">
         <div class="p-2 old_items">
             <div>
-                <h4> تکالیف های بررسی نشده درس:</h4>
+                <h4> تکالیف ثبت شده:</h4>
             </div>
             <div>
                 <ion-card *ngFor="let item of prevItems;let index=index" [ngClass]="{'reminder-item': !expanded, 'reminder-item-expanded': expanded}" [style.transform]="'scale(' + getScale(index) + ')'">
@@ -32,7 +37,8 @@
                         </ion-avatar>
                         <ion-label>
                             <ion-note> {{item.dueTime | date}}</ion-note>
-                            <p> {{item.title}}</p>
+                            <h3> {{item.title}}</h3>
+                            <p> {{item.description}}</p>
                         </ion-label>
 
                         <ion-button fill="clear" slot="end" (click)="remove(item)" color="medium">
@@ -40,6 +46,19 @@
 
                         </ion-button>
                     </ion-item>
+                    <div *ngIf="expanded">
+                        <div class="upload-item m-1 d-flex" *ngFor="let file of item.files">
+
+                            <a [href]="imageUrl+'/'+file" target="_blank" *ngIf="!homeWork.isImageFile(homeWork.getExtension(file))" class="d-flex flex-column align-items-center align-self-stretch">
+                                <ion-icon name="document-outline" class="mx-auto" size="large"></ion-icon>
+                                <div class="px-1.5 rounded text-sm font-semibold leading-5 text-white " [class.bg-danger]="homeWork.getExtension(file)  === 'PDF'" [class.bg-primary]="homeWork.getExtension(file)  === 'DOC'" [class.bg-primary]="homeWork.getExtension(file)  === 'DOCX'" [class.bg-success]="homeWork.getExtension(file)  === 'XLSX'" [class.bg-success]="homeWork.getExtension(file)  === 'XLS'" [class.bg-secondary]="homeWork.getExtension(file) === 'TXT'">
+                                    {{homeWork.getExtension(file) }}
+                                </div>
+                            </a>
+                            <img *ngIf="homeWork.isImageFile(homeWork.getExtension(file))" [src]="imageUrl+'/'+file">
+
+                        </div>
+                    </div>
                 </ion-card>
 
             </div>
@@ -48,7 +67,7 @@
 
 
     <!-- Add New  Reminder -->
-    <form class="p-2" [formGroup]="form">
+    <form class="p-2" [formGroup]="form" style="margin-bottom: 180px;">
         <ion-item class="pt-2">
             <ion-label position="stacked"> عنوان :</ion-label>
             <ion-input placeholder=" عنوان را وارد نمایید" formControlName="title"></ion-input>
@@ -108,7 +127,7 @@
 
 
         <div class="p-2 mt-2">
-            <app-uploader (filesChange)="uploadFiles=$event"></app-uploader>
+            <app-uploader (filesChange)="uploadFiles=$event" [fileFilters]="fileFilters" [addTitle]="'افزودن فایل'"></app-uploader>
         </div>
 
     </form>

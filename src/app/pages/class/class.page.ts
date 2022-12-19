@@ -1,3 +1,4 @@
+import { HomeWorkModel } from './../../models/home-work';
 import { Reminder, StudentReminder, StudentNotes, Note } from './../../models/remider';
 import { StudentModel } from 'src/app/models/student';
 import { StudentsService } from './../../api/students.service';
@@ -29,6 +30,7 @@ export class ClassPage implements OnInit {
     scheduleId?: number;
     modalReminders: Reminder[];
     modalNotes: Note[];
+    modalHomeWorks: HomeWorkModel[];
 
     isStudentActionsModalOpen = false;
     isScoreModalOpen = false;
@@ -179,7 +181,7 @@ export class ClassPage implements OnInit {
     }
 
     homeWorksCount() {
-        return this.globalService.currentSession?.reminders?.filter(x => x.type == ReminderType.Reminder).length;
+        return this.globalService.currentSession?.homeWorks?.filter(x => x.creatorTaskId == this.globalService.currentSession.id).length;
     }
 
     onAssess() {
@@ -191,7 +193,7 @@ export class ClassPage implements OnInit {
 
     onHomeWork() {
         this.selectedStudent = null;
-        // this.modalReminders = this.globalService.currentSession.reminders?.filter(x => x.type == ReminderType.Reminder);
+        this.modalHomeWorks = this.globalService.currentSession.homeWorks?.filter(x => x.creatorTaskId == this.globalService.currentSession.id);
         this.isStudentActionsModalOpen = false;
         this.isHomeWorkModalOpen = true;
         // this.router.navigateByUrl(`/tabs/home-work/${this.globalService.currentSession.id}`);

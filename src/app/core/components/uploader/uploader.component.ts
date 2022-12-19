@@ -17,6 +17,9 @@ import { environment } from 'src/environments/environment';
 export class UploaderComponent implements OnInit {
 
     @Input()
+    addTitle = "افزودن تصویر";
+
+    @Input()
     autoUpload: boolean = true;
 
     @Input()

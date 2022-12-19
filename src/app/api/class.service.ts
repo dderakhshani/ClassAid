@@ -86,6 +86,14 @@ export class ClassService {
         });
     }
 
+    getLessonHomeWorks(lessonId: number): Promise<HomeWorkModel[]> {
+        return new Promise(resolve => {
+            this.httpService.http.getDataByParam<HomeWorkModel[]>({ lessonId: lessonId }, "class/GetLessonHomeWorks").then(data => {
+                return resolve(data);
+            });
+        });
+    }
+
     getTodaySessionsByClass(classId: number): Promise<ClassSessionModel[]> {
         return new Promise(resolve => {
             this.httpService.http.getDataByParam<ClassSessionModel[]>({ classId: classId }, "session/GetTodaySessionsByClass").then(data => {

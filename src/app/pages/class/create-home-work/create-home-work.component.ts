@@ -1,11 +1,14 @@
+import { environment } from './../../../../environments/environment';
 import { ClassService } from 'src/app/api/class.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Component, Input, OnInit } from '@angular/core';
 import { ClassSessionModel } from 'src/app/models/class';
 import { Days } from 'src/app/models/day';
-import { HomeWorkModel } from 'src/app/models/home-work';
+import { HomeWorkModel, IHomeWorkModel } from 'src/app/models/home-work';
 import { Lesson } from 'src/app/models/lessons';
 import { IFormGroup, IFormBuilder } from '@rxweb/types';
+import { v4 as uuidv4 } from 'uuid';
+import { ToastController } from '@ionic/angular';
 
 @Component({
     selector: 'app-create-home-work',
@@ -13,13 +16,15 @@ import { IFormGroup, IFormBuilder } from '@rxweb/types';
     styleUrls: ['./create-home-work.component.scss'],
 })
 export class CreateHomeWorkComponent implements OnInit {
+    homeWork = HomeWorkModel;
+    imageUrl = environment.imageUrl;
 
     expanded = false;
     @Input()
     modal: any;
 
     @Input()
-    prevReminders: HomeWorkModel[];
+    prevItems: HomeWorkModel[];
 
     @Input()
     classTask: ClassSessionModel;
@@ -30,9 +35,8 @@ export class CreateHomeWorkComponent implements OnInit {
     @Input()
     book: Lesson;
 
-    prevItems: HomeWorkModel[];
 
-    form: IFormGroup<HomeWorkModel>;
+    form: IFormGroup<IHomeWorkModel>;
     formBuilder: IFormBuilder;
 
     dateType: "next" | 'tommorow' | "exact-date" = "next";
@@ -41,9 +45,12 @@ export class CreateHomeWorkComponent implements OnInit {
     tag = "";
     uploadFiles: string[];
     colors = ["primary", "success", "danger", "secondary", "warning", "tertiary", "medium"];
+    fileFilters = "*.*";
 
     constructor(formBuilder: FormBuilder,
-        private classService: ClassService) {
+        private classService: ClassService,
+        public toastController: ToastController) {
+
         const d = new Date();
         for (let i = 1; i < 15; i++) {
             var date = new Date();
@@ -61,13 +68,17 @@ export class CreateHomeWorkComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.form = this.formBuilder.group<HomeWorkModel>({
+        this.form = this.formBuilder.group<IHomeWorkModel>({
+            id: [uuidv4()],
             title: ["", [Validators.required]],
             description: ["", [Validators.required]],
             dueTime: [new Date(), [Validators.required]],
             points: [0],
             tags: [[], [Validators.required]],
-            files: [[]]
+            files: [[]],
+            creatorTaskId: [this.classTask.id],
+            lessonId: [this.book.id],
+            subLessonId: [this.lesson.id]
         });
     }
 
@@ -75,7 +86,7 @@ export class CreateHomeWorkComponent implements OnInit {
         if (this.expanded)
             return 1;
         else
-            return 1 - ((this.prevReminders.length - 1) - index) * 0.05;
+            return 1 - ((this.prevItems.length - 1) - index) * 0.05;
     }
 
 
@@ -86,17 +97,46 @@ export class CreateHomeWorkComponent implements OnInit {
         }
     }
 
+    remove(item: HomeWorkModel) {
+
+    }
+
     removeTag(index: number) {
         this.form.get("tags").value.splice(index, 1);
     }
 
-    save() {
-        const homeWork = this.form.getRawValue();
+    async save() {
+        if (!this.form.valid) {
+            const toast = await this.toastController.create({
+                message: 'لطفا تمام فیلد ها را پر نمایید',
+                duration: 3000,
+
+            });
+            toast.present();
+            return;
+        }
+        const homeWork = this.form.getRawValue() as HomeWorkModel;
+        homeWork.files = this.uploadFiles;
+        homeWork.dueTime = this.getReminderTime();
         this.classService.addHomeWork(homeWork).then(x => {
-            // this.classTask.reminders = this.classTask.reminders ?? [];
-            // this.classTask.reminders.push(reminder);
+            this.classTask.homeWorks = this.classTask.homeWorks ?? [];
+            this.classTask.homeWorks.push(homeWork);
             this.modal.dismiss();
         });
+
+    }
+
+    getReminderTime(): Date {
+        if (this.dateType == 'exact-date')
+            return this.selectedDay.date
+        else if (this.dateType == 'tommorow') {
+            let d = new Date();
+            d.setDate(d.getDate() + 1);
+            return d;
+        }
+        else
+            //TODO: Find next lesson time
+            return new Date()
 
     }
 }

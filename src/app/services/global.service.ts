@@ -182,10 +182,12 @@ export class GlobalService {
     initCurrentSessionAsync(sessions) {
         Promise.all(
             [this.reminderService.getSessionReminders(this.currentSession.id),
-            this.assessmentService.getSessionAssessments(this.currentSession.id)])
-            .then(([reminders, assessments]) => {
+            this.assessmentService.getSessionAssessments(this.currentSession.id),
+            this.classService.getLessonHomeWorks(this.currentSession.lessonId)])
+            .then(([reminders, assessments, homeWorks]) => {
                 this.currentSession.reminders = reminders;
                 this.currentSession.assessments = assessments;
+                this.currentSession.homeWorks = homeWorks;
                 this.classSessions$.next(sessions);
             });
 

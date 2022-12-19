@@ -1,3 +1,30 @@
+ion-header {
+    overflow: visible;
+    min-height: 120px;
+}
+
+.avatar {
+
+    div {
+        width: 65px;
+        height: 65px;
+        position: absolute;
+        top: 60px;
+        z-index: 300;
+
+        ion-avatar {
+            width: 60px;
+            height: 60px;
+            background: #fff;
+            box-shadow: 0 0 8px #0000006e;
+
+            ion-icon {
+                margin: 0 auto;
+            }
+        }
+    }
+}
+
 .days {
     background: #f7f7f7;
     border-radius: 15px;
@@ -36,7 +63,8 @@
 }
 
 ion-footer {
-    margin-top: -120px;
+    margin-top: -180px;
+    background: #fff;
 }
 
 
@@ -58,6 +86,10 @@ ion-footer {
                 margin-bottom: auto;
                 margin-top: 0.5rem;
             }
+        }
+
+        img {
+            width: 120px;
         }
     }
 
