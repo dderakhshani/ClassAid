@@ -27,6 +27,8 @@ export class HomeWorkPage implements OnInit {
     lessonIdParam: number;
     studentIdParam: number;
 
+
+
     constructor(public lessonService: LessonService,
         public studentsService: StudentsService,
         public globalService: GlobalService,

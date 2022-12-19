@@ -47,7 +47,7 @@
             <ion-icon slot="icon-only" name="library-outline"></ion-icon>
             <ion-label>تکلیف</ion-label>
         </ion-button>
-        <ion-button shape="circle" color="danger">
+        <ion-button shape="circle" color="danger" (click)="onTest()">
             <ion-icon slot="icon-only" name="flask-outline"></ion-icon>
             <ion-label>آزمون</ion-label>
         </ion-button>
@@ -59,6 +59,25 @@
     </div>
     <hr>
     <div>
+        <div class="px-2">
+            <ion-card color="success" *ngIf="homeWork">
+                <ion-item lines="none" color="success">
+                    <ion-avatar slot="start">
+                        <ion-icon name="library-outline" size="large"></ion-icon>
+                    </ion-avatar>
+                    <ion-label>
+
+                        <h3> {{homeWork.title}}</h3>
+                        <p> {{homeWork.description}}</p>
+                    </ion-label>
+                </ion-item>
+                <div class="d-flex flex-row-reverse px-2">
+                    <ion-button fill="outline" color="light" (click)="homeWork=undefined">بعدا</ion-button>
+                    <ion-button fill="outline" color="light" (click)="assessHomeWork()">ارزیابی</ion-button>
+                </div>
+            </ion-card>
+        </div>
+
         <ion-grid fixed>
             <ion-row>
                 <ion-col size="4" *ngFor="let student of students " class="d-flex  align-items-stretch">

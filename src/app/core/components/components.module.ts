@@ -1,3 +1,4 @@
+import { ScoreRatingComponent } from './score-rating/score-rating.component';
 import { ExpandableSectionComponent } from './expandable-section/expandable-section.component';
 import { UploaderComponent } from './uploader/uploader.component';
 import { NgModule } from '@angular/core';
@@ -12,7 +13,7 @@ import { IonicModule } from '@ionic/angular';
         FormsModule,
         IonicModule,
     ],
-    declarations: [UploaderComponent, ExpandableSectionComponent],
-    exports: [UploaderComponent, ExpandableSectionComponent]
+    declarations: [UploaderComponent, ExpandableSectionComponent, ScoreRatingComponent],
+    exports: [UploaderComponent, ExpandableSectionComponent, ScoreRatingComponent]
 })
 export class ComponentsModule { }

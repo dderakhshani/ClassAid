@@ -1,0 +1,7 @@
+@import "../../../../theme/variables.scss";
+
+.selected {
+    background: var(--ion-color-warning);
+    border-color: var(--ion-color-warning) !important;
+    color: white;
+}

@@ -37,7 +37,7 @@ const routes: Routes = [
                 loadChildren: () => import('../assessment/assessment.module').then(m => m.AssessmentPageModule)
             },
             {
-                path: 'home-work/:sessionId',
+                path: 'home-work/:homeWorkId',
                 loadChildren: () => import('../home-work/home-work.module').then(m => m.HomeWorkPageModule)
             },
             {

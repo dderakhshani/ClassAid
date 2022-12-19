@@ -17,7 +17,7 @@
 <ion-content>
     <div class="pb-5">
         <div *ngFor="let student of students ">
-            <ion-card class="student-card flex-fill" (click)="onStudentAction(student)">
+            <ion-card class="student-card flex-fill">
                 <ion-card-content>
                     <div class="d-flex flex-column ion-align-items-center">
                         <ion-avatar slot="start">
@@ -35,7 +35,7 @@
                                 </ion-label>
                             </ion-segment-button>
                         </ion-segment>
-
+                        <app-score-rating [maxScore]="10"></app-score-rating>
                     </div>
                 </ion-card-content>
             </ion-card>

@@ -31,6 +31,7 @@ export class ClassPage implements OnInit {
     modalReminders: Reminder[];
     modalNotes: Note[];
     modalHomeWorks: HomeWorkModel[];
+    homeWork: HomeWorkModel;
 
     isStudentActionsModalOpen = false;
     isScoreModalOpen = false;
@@ -77,6 +78,7 @@ export class ClassPage implements OnInit {
                         });
                     });
                 }
+                this.homeWork = this.globalService.currentSession.homeWorks.find(x => x.creatorTaskId != this.globalService.currentSession.id);
                 this.studentsService.getStudentsOfClass(this.globalService.selectedClass.id).then(students => {
                     this.students = [...students];
                     //Must set all reminders at once for student and display it by type
@@ -133,7 +135,6 @@ export class ClassPage implements OnInit {
     }
 
 
-
     async onStudentAction(student: StudentModel) {
         if (student.attendanceStatus == AttendanceStatus.Absent)
             return;
@@ -184,6 +185,21 @@ export class ClassPage implements OnInit {
         return this.globalService.currentSession?.homeWorks?.filter(x => x.creatorTaskId == this.globalService.currentSession.id).length;
     }
 
+    async onTest() {
+        const alert = await this.alertController.create({
+            header: 'عدم آمادگی',
+            message: 'این قابلیت در دست ساخت می باشد',
+            buttons: [
+                {
+                    text: 'تایید',
+                    role: 'confirm'
+                }
+            ],
+        });
+
+        await alert.present();
+    }
+
     onAssess() {
         this.isStudentActionsModalOpen = false;
         setTimeout(() => {
@@ -231,4 +247,7 @@ export class ClassPage implements OnInit {
         this.isNotesModalOpen = true;
     }
 
+    assessHomeWork() {
+        this.router.navigateByUrl(`tabs/home-work/${this.homeWork.id}`)
+    }
 }

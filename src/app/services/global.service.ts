@@ -16,6 +16,7 @@ import { StudentsService } from '../api/students.service';
 import { LessonService } from '../api/lesson.service';
 import { StudentModel } from '../models/student';
 import { AssessmentService } from '../api/assessment.service';
+import { resolve } from 'dns';
 const CLASS_STORAGE = "CLASSAID_CLASS";
 
 @Injectable({
@@ -66,6 +67,7 @@ export class GlobalService {
 
     //When selectedClass is changed then rings & students must be reloaded
     public set selectedClass(vClass: ClassModel) {
+
         this.reminderService.getActiveClassReminders(vClass.id).then(x => {
 
         });
@@ -111,9 +113,9 @@ export class GlobalService {
             Promise.all(
                 [this.classService.getTodaySessionsByClass(vClass.id),
                 this.scheduleService.getRings(vClass.schoolId, vClass.gradeId)])
-                .then(([sessions, rings]) => {
+                .then(async ([sessions, rings]) => {
                     //2.Step: 
-                    this.initSessionsAsync(sessions, books);
+                    await this.initSessionsAsync(sessions, books);
 
                     this.rings = rings;
                     //4. Loading Schedules
@@ -148,23 +150,28 @@ export class GlobalService {
         return this.classSessions$.value;
     }
 
-    initSessionsAsync(sessions: ClassSessionModel[], books: Lesson[]) {
-        sessions.forEach(s => {
-            s.book = books.find(x => x.id == s.lessonId);
-            s.lesson = this.lessonService.allLessons$.value.find(x => x.id == s.subLessonId);
+    async initSessionsAsync(sessions: ClassSessionModel[], books: Lesson[]): Promise<boolean> {
+        return new Promise(async resolve => {
+            sessions.forEach(s => {
+                s.book = books.find(x => x.id == s.lessonId);
+                s.lesson = this.lessonService.allLessons$.value.find(x => x.id == s.subLessonId);
+            });
+            //2.2 Proccesing and applying stats of each lesson
+            this.initBooks(books, sessions);
+
+            //2.3 find currentSession and its reminders
+            this.currentSession = sessions.find(x => x.endTime == null);
+
+            if (this.currentSession) {
+                await this.initCurrentSessionAsync(sessions);
+            }
+            else
+
+                this.classSessions$.next(sessions);
+
+            return resolve(true);
         });
-        //2.2 Proccesing and applying stats of each lesson
-        this.initBooks(books, sessions);
 
-        //2.3 find currentSession and its reminders
-        this.currentSession = sessions.find(x => x.endTime == null);
-
-        if (this.currentSession) {
-            this.initCurrentSessionAsync(sessions);
-        }
-        else
-
-            this.classSessions$.next(sessions);
     }
 
     initBooks(books: Lesson[], sessions: ClassSessionModel[]) {
@@ -179,8 +186,8 @@ export class GlobalService {
         });
     }
 
-    initCurrentSessionAsync(sessions) {
-        Promise.all(
+    async initCurrentSessionAsync(sessions) {
+        return Promise.all(
             [this.reminderService.getSessionReminders(this.currentSession.id),
             this.assessmentService.getSessionAssessments(this.currentSession.id),
             this.classService.getLessonHomeWorks(this.currentSession.lessonId)])
