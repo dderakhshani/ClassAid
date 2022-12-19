@@ -113,6 +113,7 @@ export class ReminderComponent implements OnInit {
         }
         this.modal.dismiss();
     }
+
     getReminderTime(): Date {
         if (this.dateType == 'exact-date')
             return this.selectedDay.date

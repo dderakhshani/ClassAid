@@ -92,7 +92,6 @@
         </ion-segment>
 
 
-
         <div class="days mt-2 " style="overflow-x: scroll; width: 100%;" *ngIf="dateType=='exact-date'">
             <div class="d-inline-flex ">
                 <div *ngFor="let d of nextDays" [class.selected]="d.dayNo==selectedDay?.dayNo" (click)="selectedDay=d" class="day px-1 mx-2 d-flex flex-column justify-content-center align-items-center">

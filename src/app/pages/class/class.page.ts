@@ -1,4 +1,4 @@
-import { Reminder, StudentReminder, StudentNotes } from './../../models/remider';
+import { Reminder, StudentReminder, StudentNotes, Note } from './../../models/remider';
 import { StudentModel } from 'src/app/models/student';
 import { StudentsService } from './../../api/students.service';
 import { ClassSessionModel } from './../../models/class';
@@ -28,12 +28,13 @@ export class ClassPage implements OnInit {
     lessonId: number;
     scheduleId?: number;
     modalReminders: Reminder[];
-    modalNotes: Reminder[];
+    modalNotes: Note[];
 
     isStudentActionsModalOpen = false;
     isScoreModalOpen = false;
     isReminderModalOpen = false;
     isNotesModalOpen = false;
+    isHomeWorkModalOpen = false;
 
     presentingElement = null;
 
@@ -129,9 +130,7 @@ export class ClassPage implements OnInit {
         this.router.navigateByUrl(`/tabs/home/attendance/${this.globalService.currentSession.id}`);
     }
 
-    homeWork() {
-        this.router.navigateByUrl(`/tabs/home-work/${this.globalService.currentSession.id}`);
-    }
+
 
     async onStudentAction(student: StudentModel) {
         if (student.attendanceStatus == AttendanceStatus.Absent)
@@ -190,6 +189,14 @@ export class ClassPage implements OnInit {
         });
     }
 
+    onHomeWork() {
+        this.selectedStudent = null;
+        // this.modalReminders = this.globalService.currentSession.reminders?.filter(x => x.type == ReminderType.Reminder);
+        this.isStudentActionsModalOpen = false;
+        this.isHomeWorkModalOpen = true;
+        // this.router.navigateByUrl(`/tabs/home-work/${this.globalService.currentSession.id}`);
+    }
+
     onStudentReminder() {
         this.modalReminders = this.selectedStudent.reminders;
         this.isStudentActionsModalOpen = false;
@@ -217,7 +224,7 @@ export class ClassPage implements OnInit {
 
     onNotes() {
         this.selectedStudent = null;
-        this.modalNotes = this.globalService.currentSession.reminders?.filter(x => x.type == ReminderType.Notes);
+        this.modalNotes = this.globalService.currentSession.reminders?.filter(x => x.type == ReminderType.Notes).map(x => x as Note);
         this.isStudentActionsModalOpen = false;
         this.isNotesModalOpen = true;
     }

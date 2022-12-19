@@ -1,3 +1,4 @@
+import { HomeWorkModel } from './../models/home-work';
 import { Subject } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { HttpService } from '../core/services/http.service';
@@ -72,6 +73,14 @@ export class ClassService {
     endTask(taskId: string): Promise<boolean> {
         return new Promise(resolve => {
             this.httpService.http.postJsonData<boolean>(taskId, "session/EndTask").then(data => {
+                return resolve(data);
+            });
+        });
+    }
+
+    addHomeWork(homeWork: HomeWorkModel): Promise<boolean> {
+        return new Promise(resolve => {
+            this.httpService.http.postJsonData<boolean>(homeWork, "class/AddHomeWork").then(data => {
                 return resolve(data);
             });
         });

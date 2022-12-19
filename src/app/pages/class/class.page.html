@@ -43,7 +43,7 @@
             <ion-icon slot="icon-only" name="alarm-outline"></ion-icon>
             <ion-label>یادآور</ion-label>
         </ion-button>
-        <ion-button shape="circle" color="success" (click)="homeWork()">
+        <ion-button shape="circle" color="success" (click)="onHomeWork()">
             <ion-icon slot="icon-only" name="library-outline"></ion-icon>
             <ion-label>تکلیف</ion-label>
         </ion-button>
@@ -117,17 +117,25 @@
         </ion-grid>
     </div>
 
+    <ion-modal #modal_reminder [isOpen]="isReminderModalOpen" (didDismiss)="isReminderModalOpen=false" [presentingElement]="presentingElement">
+        <ng-template>
+            <app-reminder [modal]="modal_reminder" [classTask]="globalService.currentSession" [book]="book" [lesson]="lesson" [student]="selectedStudent" [prevReminders]="modalReminders"></app-reminder>
+        </ng-template>
+    </ion-modal>
+
+    <ion-modal #modal_homework [isOpen]="isHomeWorkModalOpen" (didDismiss)="isHomeWorkModalOpen=false" [presentingElement]="presentingElement">
+        <ng-template>
+            <app-create-home-work [modal]="modal_homework" [classTask]="globalService.currentSession" [book]="book" [lesson]="lesson"></app-create-home-work>
+        </ng-template>
+    </ion-modal>
+
     <ion-modal #modal_note [isOpen]="isNotesModalOpen" (didDismiss)="isNotesModalOpen=false" [presentingElement]="presentingElement">
         <ng-template>
             <app-note [modal]="modal_note" [classTask]="globalService.currentSession" [book]="book" [lesson]="lesson" [student]="selectedStudent" [prevNotes]="modalNotes"></app-note>
         </ng-template>
     </ion-modal>
 
-    <ion-modal #modal_reminder [isOpen]="isReminderModalOpen" (didDismiss)="isReminderModalOpen=false" [presentingElement]="presentingElement">
-        <ng-template>
-            <app-reminder [modal]="modal_reminder" [classTask]="globalService.currentSession" [book]="book" [lesson]="lesson" [student]="selectedStudent" [prevReminders]="modalReminders"></app-reminder>
-        </ng-template>
-    </ion-modal>
+
 
     <ion-modal #score_modal id="score-modal" [isOpen]="isScoreModalOpen" (didDismiss)="isScoreModalOpen=false">
         <ng-template>
