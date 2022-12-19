@@ -1,3 +1,121 @@
-<p>
-  create-home-work works!
-</p>
+<ion-header>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-button (click)="modal.dismiss()">
+                <ion-icon slot="icon-only" name="close"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+        <ion-title>ایجاد تکلیف</ion-title>
+        <ion-buttons slot="end">
+            <ion-button (click)="save()">
+                <ion-icon slot="icon-only" name="save-outline"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <div class="d-flex justify-content-center pt-3">
+        <ion-icon color="success" name="library-outline" size="large"></ion-icon>
+    </div>
+    <!-- Home Works List -->
+    <app-expandable-section [(expanded)]="expanded" *ngIf="prevReminders && prevReminders.length>0">
+        <div class="p-2 old_items">
+            <div>
+                <h4> تکالیف های بررسی نشده درس:</h4>
+            </div>
+            <div>
+                <ion-card *ngFor="let item of prevItems;let index=index" [ngClass]="{'reminder-item': !expanded, 'reminder-item-expanded': expanded}" [style.transform]="'scale(' + getScale(index) + ')'">
+                    <ion-item lines="none">
+                        <ion-avatar slot="start">
+                            <ion-icon name="library-outline" color="success" size="large"></ion-icon>
+                        </ion-avatar>
+                        <ion-label>
+                            <ion-note> {{item.dueTime | date}}</ion-note>
+                            <p> {{item.title}}</p>
+                        </ion-label>
+
+                        <ion-button fill="clear" slot="end" (click)="remove(item)" color="medium">
+                            <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+
+                        </ion-button>
+                    </ion-item>
+                </ion-card>
+
+            </div>
+        </div>
+    </app-expandable-section>
+
+
+    <!-- Add New  Reminder -->
+    <form class="p-2" [formGroup]="form">
+        <ion-item class="pt-2">
+            <ion-label position="stacked"> عنوان :</ion-label>
+            <ion-input placeholder=" عنوان را وارد نمایید" formControlName="title"></ion-input>
+        </ion-item>
+
+        <ion-item class="pt-2">
+            <ion-label position="stacked"> شرح تکلیف:</ion-label>
+            <ion-textarea placeholder="متن خود را وارد نمایید" [autoGrow]="true" formControlName="description"></ion-textarea>
+        </ion-item>
+
+        <ion-item lines="none">
+            <ion-icon slot="start" name="alarm-outline"></ion-icon>
+            <ion-label>مدت زمان انجام:</ion-label>
+        </ion-item>
+
+        <ion-segment mode="ios" [(ngModel)]="dateType" [ngModelOptions]="{standalone: true}" color="tertiary">
+            <ion-segment-button value="next">
+                <ion-label> جلسه بعدی درس</ion-label>
+            </ion-segment-button>
+            <ion-segment-button value="tommorow">
+                <ion-label> فردا</ion-label>
+            </ion-segment-button>
+            <ion-segment-button value="exact-date">
+                <ion-label> تاریخ مشخص</ion-label>
+            </ion-segment-button>
+        </ion-segment>
+
+
+        <div class="days mt-2 " style="overflow-x: scroll; width: 100%;" *ngIf="dateType=='exact-date'">
+            <div class="d-inline-flex ">
+                <div *ngFor="let d of nextDays" [class.selected]="d.dayNo==selectedDay?.dayNo" (click)="selectedDay=d" class="day px-1 mx-2 d-flex flex-column justify-content-center align-items-center">
+                    <span class="date"> {{d.dayNo}}</span>
+                    <span class="symbol"> {{d.dayName}}</span>
+
+                </div>
+            </div>
+        </div>
+
+        <ion-item class="pt-2 mt-2">
+
+            <ion-label>اهداف: </ion-label>
+            <ion-input placeholder="متنی  را وارد نمایید" [(ngModel)]="tag" [ngModelOptions]="{standalone: true}"></ion-input>
+            <ion-button slot="end" (click)="addTag()" size="default">
+                <ion-icon name="add-outline" slot="start"></ion-icon>
+                افزودن
+
+            </ion-button>
+
+        </ion-item>
+        <div>
+            <ion-chip [color]="colors[index%colors.length]" *ngFor="let tag of form.get('tags').value;let index=index">
+                <ion-icon name="pricetag-outline"></ion-icon>
+                <ion-label>{{tag}} </ion-label>
+                <ion-icon name="close" (click)="removeTag(index)"></ion-icon>
+            </ion-chip>
+        </div>
+
+
+        <div class="p-2 mt-2">
+            <app-uploader (filesChange)="uploadFiles=$event"></app-uploader>
+        </div>
+
+    </form>
+</ion-content>
+<ion-footer class="p-2">
+    <ion-button expand="block" (click)="save()">
+        <ion-icon name="save-outline" size="large"></ion-icon>
+        <ion-label class="me-2"> ذخیره</ion-label>
+    </ion-button>
+</ion-footer>
