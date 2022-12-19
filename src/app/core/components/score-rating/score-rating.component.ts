@@ -7,7 +7,7 @@ import { Component, Input, OnInit, EventEmitter, Output } from '@angular/core';
 })
 export class ScoreRatingComponent implements OnInit {
     @Input()
-    maxScore: number;
+    maxScore: number = 10;
 
     @Input()
     score;
