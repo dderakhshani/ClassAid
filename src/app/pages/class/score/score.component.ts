@@ -1,10 +1,13 @@
+import { ScoreAssessmentModel } from './../../../models/asses-param';
 import { ReminderService } from './../../../api/reminder.service';
 import { Component, Input, OnInit } from '@angular/core';
 import { ClassSessionModel } from 'src/app/models/class';
 import { Lesson } from 'src/app/models/lessons';
-import { ReminderType, Score } from 'src/app/models/remider';
+import { ReminderType } from 'src/app/models/remider';
 import { StudentModel } from 'src/app/models/student';
 import { v4 as uuidv4 } from 'uuid';
+import { AssessmentService } from 'src/app/api/assessment.service';
+import { AssessParamModel } from 'src/app/models/asses-param';
 
 @Component({
     selector: 'app-score',
@@ -31,31 +34,43 @@ export class ScoreComponent implements OnInit {
     student?: StudentModel;
 
     @Input()
-    prevScores: Score[];
+    prevScores: ScoreAssessmentModel[];
 
 
     posNeg: string;
     notes: string;
+    rate: number;
+    param: AssessParamModel;
 
-    constructor(private reminderService: ReminderService) { }
+    assesmentParamters: AssessParamModel[];
 
-    ngOnInit() { }
+    constructor(private assessmentService: AssessmentService) {
+
+    }
+
+    ngOnInit() {
+        //TODO: maybe filter by lessonId==undefined
+        this.assesmentParamters = this.assessmentService.assesmentParamters.filter(x => x.rank == 2)
+    }
 
     saveScore() {
         if (this.posNeg) {
-            const score = <Score>{
+            const score = <ScoreAssessmentModel>{
                 id: uuidv4(),
                 studentId: this.student.id,
                 lessonId: this.book.id,
                 subLessonId: this.lesson.id,
                 taskId: this.session.id,
-                positiveNegetive: this.posNeg == "postive",
                 note: this.notes,
-                type: ReminderType.Score
+                level: 0,//this is only mark,Server will always set this to 0 for Score, 
+                progerssFlag: this.posNeg == "postive" ? 1 : -1,
+                progerssStep: this.rate
             }
-            this.reminderService.addReminder(score).then(x => {
-                this.session.reminders = this.session.reminders ?? [];
-                this.session.reminders.push(score);
+            this.assessmentService.addScore(score).then(x => {
+                //TODO: check prev assessment
+                this.session.scores = this.session.scores ?? [];
+                this.session.scores.push(score);
+
                 this.student.scores.push(score);
                 this.modal.dismiss();
             })
@@ -67,7 +82,7 @@ export class ScoreComponent implements OnInit {
 
     }
 
-    remove(score: Score) {
+    remove(score: ScoreAssessmentModel) {
 
     }
 

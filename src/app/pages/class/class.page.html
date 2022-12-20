@@ -154,9 +154,7 @@
         </ng-template>
     </ion-modal>
 
-
-
-    <ion-modal #score_modal id="score-modal" [isOpen]="isScoreModalOpen" (didDismiss)="isScoreModalOpen=false">
+    <ion-modal #score_modal [isOpen]="isScoreModalOpen" (didDismiss)="isScoreModalOpen=false" [presentingElement]="presentingElement">
         <ng-template>
             <app-score [modal]="score_modal" [session]="globalService.currentSession" [book]="book" [lesson]="lesson" [student]="selectedStudent" [prevScores]="selectedStudent.scores"></app-score>
         </ng-template>

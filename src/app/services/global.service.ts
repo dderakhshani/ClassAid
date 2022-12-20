@@ -1,4 +1,4 @@
-import { AssessmentModel, AssessParamModel } from './../models/asses-param';
+import { AssessmentModel, AssessParamModel, ScoreAssessmentModel } from './../models/asses-param';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { StudentReminder, LessonReminder, ReminderType, Reminder } from './../models/remider';
 import { ReminderService } from './../api/reminder.service';
@@ -193,7 +193,8 @@ export class GlobalService {
             this.classService.getLessonHomeWorks(this.currentSession.lessonId)])
             .then(([reminders, assessments, homeWorks]) => {
                 this.currentSession.reminders = reminders;
-                this.currentSession.assessments = assessments;
+                this.currentSession.assessments = assessments.filter(x => x.level > 0);
+                this.currentSession.scores = assessments.filter(x => x.level == 0).map(x => x as ScoreAssessmentModel);
                 this.currentSession.homeWorks = homeWorks;
                 this.classSessions$.next(sessions);
             });

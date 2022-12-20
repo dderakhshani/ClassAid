@@ -1,3 +1,4 @@
+import { ScoreAssessmentModel } from './../../../models/asses-param';
 import { AttendanceModel, AttendanceStatus } from './../../../models/attendance-model';
 import { AssessmentModel } from 'src/app/models/asses-param';
 import { ClassService } from './../../../api/class.service';
@@ -6,7 +7,7 @@ import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common'
 import { AlertController } from '@ionic/angular';
 import { Lesson } from 'src/app/models/lessons';
-import { Reminder, Score } from 'src/app/models/remider';
+import { Reminder } from 'src/app/models/remider';
 import { StudentModel } from 'src/app/models/student';
 import { ActivatedRoute } from '@angular/router';
 import { LessonService } from 'src/app/api/lesson.service';
@@ -39,7 +40,7 @@ export class ClassReportPage implements OnInit {
     student_notes: StudentNotes[];
     reminders: LessonReminder[];
     student_reminders: StudentReminder[];
-    scores: Score[];
+    scores: ScoreAssessmentModel[];
     assessments: AssessmentModel[];
     notes_expanded = false;
     notes_expandable = true;
@@ -89,7 +90,7 @@ export class ClassReportPage implements OnInit {
                     if (this.reminders.length == 1)
                         this.reminder_expanded = true;
 
-                    this.scores = reminders.filter(x => x.type == ReminderType.Score).map(x => x as Score);
+                    this.scores = assessments.filter(x => (x as any).progerssFlag).map(x => x as ScoreAssessmentModel);
 
                     this.lesson_notes = reminders.filter(x => x.type == ReminderType.Notes).map(x => x as LessonNotes);
                     if (this.lesson_notes.length <= 1) {

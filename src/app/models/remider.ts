@@ -33,13 +33,7 @@ export interface LessonReminder extends Reminder {
 }
 
 
-export interface Score extends Reminder {
 
-    studentId: number;
-    taskId: string;
-    subjectParameterId?: number;
-    positiveNegetive: boolean;
-}
 
 export interface Note extends Reminder {
     images: string[];

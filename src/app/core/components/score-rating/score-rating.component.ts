@@ -13,7 +13,7 @@ export class ScoreRatingComponent implements OnInit {
     score;
 
     @Output()
-    scoreChanged = new EventEmitter<number>()
+    scoreChange = new EventEmitter<number>()
 
     scores: number[] = [];
 
@@ -29,7 +29,7 @@ export class ScoreRatingComponent implements OnInit {
 
     select(item: number) {
         this.score = item;
-        this.scoreChanged.emit(this.score);
+        this.scoreChange.emit(this.score);
     }
 
 }

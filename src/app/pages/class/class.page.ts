@@ -10,7 +10,7 @@ import { Lesson } from 'src/app/models/lessons';
 import { GlobalService } from 'src/app/services/global.service';
 
 import { ActionSheetController, AlertController } from '@ionic/angular';
-import { ReminderType, Score } from 'src/app/models/remider';
+import { ReminderType } from 'src/app/models/remider';
 import { AttendanceStatus } from 'src/app/models/attendance-model';
 import { combineLatest } from 'rxjs';
 
@@ -98,7 +98,7 @@ export class ClassPage implements OnInit {
     initStudents() {
         //TODO: can move this.studentsService.students$.subscribe and not check this.globalService.currentSession
         if (this.globalService.currentSession) {
-            const scores = this.globalService.currentSession.reminders?.filter(x => x.type == ReminderType.Score).map(x => x as Score);
+            const scores = this.globalService.currentSession.scores;
             const reminders = this.globalService.currentSession.reminders?.filter(x => x.type == ReminderType.StudentReminder).map(x => x as StudentReminder);
             const notes = this.globalService.currentSession.reminders?.filter(x => x.type == ReminderType.StudentNotes).map(x => x as StudentNotes);
             const assesments = this.globalService.currentSession.assessments;

@@ -4,22 +4,36 @@ export class AssessmentModel {
     lessonId: number;
     subLessonId: number;
     level: number;
-    progerssFlag?: number;
-    progerssStep?: number;
     studentId: number;
     teacherId: number;
     time: Date | null;
     regTimePersian: string;
     taskId: string | null;
+    homeWorkId: number;
 
     note: string;
+}
+
+export interface ScoreAssessmentModel extends AssessmentModel {
+
+    progerssStep?: number;
+    progerssFlag?: number;
 }
 
 export class AssessParamModel {
     id: number;
     title: string;
     level: number;
-    lessonId: number;
+    lessonId?: number;
+    rank: number;
+    type: AssessmentParamType
+}
+
+
+export enum AssessmentParamType {
+    Knowledge = 1,
+    Skill,
+    Attitude
 }
 
 export class StudentAssessParamModel extends AssessParamModel {

@@ -1,56 +1,91 @@
-<div class="p-3">
-    <div class="old_items" *ngIf="prevScores && prevScores.length>0">
-        <div>
-            <h4>مشاهدات قبلی کلاس:</h4>
-        </div>
-        <div>
-            <ion-card *ngFor="let s of prevScores;let index=index" [ngClass]="{'score-item': !expanded, 'score-item-expanded': expanded}" class="score-item" [style.transform]="'scale(' + getScale(index) + ')'">
-                <ion-item lines="none">
-                    <ion-avatar slot="start">
-                        <ion-icon *ngIf="s.positiveNegetive" name="add-circle-outline" class="text-success" size="large"></ion-icon>
-                        <ion-icon *ngIf="!s.positiveNegetive" name="remove-circle-outline" class="text-danger" size="large"></ion-icon>
-                    </ion-avatar>
-                    <ion-label>
-                        {{s.note}}
-                    </ion-label>
-                    <ion-button fill="clear" slot="end" (click)="remove(s)" color="medium">
-                        <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
-
-                    </ion-button>
-                </ion-item>
-            </ion-card>
-            <ion-button fill="clear" size="small" *ngIf="prevScores.length>1" (click)="expanded=!expanded" style="margin-top: -0.5rem;">
-                <ng-container *ngIf="!expanded">
-                    <ion-icon name="chevron-down-outline"></ion-icon>
-                    مشاهده همه
-                </ng-container>
-                <ng-container *ngIf="expanded">
-                    <ion-icon name="chevron-up-outline"></ion-icon>
-                    بستن
-                </ng-container>
-            </ion-button>
-
-        </div>
-    </div>
-    <ion-segment [(ngModel)]="posNeg" mode="ios">
-        <ion-segment-button value="postive">
-            <ion-icon name="add-circle-outline" class="text-success"></ion-icon>
-            <ion-label>مثبت</ion-label>
-        </ion-segment-button>
-        <ion-segment-button value="negative">
-            <ion-icon name="remove-circle-outline" class="text-danger"></ion-icon>
-            <ion-label>نیاز به تلاش</ion-label>
-        </ion-segment-button>
-    </ion-segment>
-    <app-score-rating></app-score-rating>
-    <ion-item class="pt-2">
-        <ion-label position="stacked"> یادداشت</ion-label>
-        <ion-textarea placeholder="متن خود را وارد نمایید" [autoGrow]="true" [(ngModel)]="notes"></ion-textarea>
-    </ion-item>
-    <div>
-        <ion-button expand="block" (click)="saveScore()" [disabled]="posNeg==undefined">
-            <ion-icon name="save-outline" size="large"></ion-icon>
-            <ion-label class="me-2"> ذخیره</ion-label>
-        </ion-button>
-    </div>
+<div class="avatar d-flex flex-column align-items-center">
+    <ion-card class="d-flex align-items-center justify-content-center">
+        <ion-avatar>
+            <img alt="avatar-Student" [src]="student?.getImageUrl()" onerror="this.src='/assets/img/avatar.webp'" />
+        </ion-avatar>
+    </ion-card>
 </div>
+<ion-header class="content-header ion-no-border" collapse="fade">
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-button (click)="modal.dismiss()">
+                <ion-icon slot="icon-only" name="close"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+        <ion-title>ثبت مشاهده و امتیاز</ion-title>
+        <ion-buttons slot="end">
+            <ion-button (click)="saveScore()">
+                <ion-icon slot="icon-only" name="save-outline"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+
+</ion-header>
+<ion-content class="round-content">
+    <div class="p-3 mt-4">
+        <app-expandable-section [(expanded)]="expanded" *ngIf="prevScores && prevScores.length>0">
+
+            <div class="old_items">
+                <div>
+                    <h4>مشاهدات قبلی کلاس:</h4>
+                </div>
+                <div>
+                    <ion-card *ngFor="let s of prevScores;let index=index" [ngClass]="{'score-item': !expanded, 'score-item-expanded': expanded}" class="score-item" [style.transform]="'scale(' + getScale(index) + ')'">
+                        <ion-item lines="none">
+                            <ion-avatar slot="start">
+                                <ion-icon *ngIf="s.positiveNegetive" name="add-circle-outline" class="text-success" size="large"></ion-icon>
+                                <ion-icon *ngIf="!s.positiveNegetive" name="remove-circle-outline" class="text-danger" size="large"></ion-icon>
+                            </ion-avatar>
+                            <ion-label>
+                                {{s.note}}
+                            </ion-label>
+                            <ion-button fill="clear" slot="end" (click)="remove(s)" color="medium">
+                                <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+
+                            </ion-button>
+                        </ion-item>
+                    </ion-card>
+
+
+                </div>
+            </div>
+        </app-expandable-section>
+
+        <ion-segment [(ngModel)]="posNeg" mode="ios" class="mt-4">
+            <ion-segment-button value="postive">
+                <ion-icon name="add-circle-outline" class="text-success"></ion-icon>
+                <ion-label>مثبت</ion-label>
+            </ion-segment-button>
+            <ion-segment-button value="negative">
+                <ion-icon name="remove-circle-outline" class="text-danger"></ion-icon>
+                <ion-label>نیاز به تلاش</ion-label>
+            </ion-segment-button>
+        </ion-segment>
+
+        <div class="d-flex align-items-center border-bottom mt-3">
+            <span>پارامتر ارزیابی</span>
+            <ion-select [(ngModel)]="rate" placeholder="   انتخاب کنید" class="flex-fill" interface="popover">
+                <ion-select-option value="apples" *ngFor="let item of assesmentParamters" [value]="item">
+                    {{item.title}}
+                </ion-select-option>
+            </ion-select>
+        </div>
+
+        <div class="d-flex justify-content-center">
+            <app-score-rating [(score)]="rate"></app-score-rating>
+        </div>
+
+        <ion-item class="pt-2">
+            <ion-label position="stacked"> یادداشت</ion-label>
+            <ion-textarea placeholder="متن خود را وارد نمایید" [autoGrow]="true" [(ngModel)]="notes"></ion-textarea>
+        </ion-item>
+
+    </div>
+</ion-content>
+
+<ion-footer class="p-2">
+    <ion-button expand="block" (click)="saveScore()" [disabled]="posNeg==undefined">
+        <ion-icon name="save-outline" size="large"></ion-icon>
+        <ion-label class="me-2"> ذخیره</ion-label>
+    </ion-button>
+</ion-footer>

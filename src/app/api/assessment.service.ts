@@ -19,6 +19,14 @@ export class AssessmentService {
         });
     }
 
+    addScore(session: AssessmentModel): Promise<boolean> {
+        return new Promise(resolve => {
+            this.httpService.http.postJsonData<boolean>(session, "assessment/addScore").then(data => {
+                return resolve(data);
+            });
+        });
+    }
+
     getParameters(lessonId?: number, gradeId?: number): Promise<AssessParamModel[]> {
         return new Promise(resolve => {
             this.httpService.http.getDataByParam<AssessParamModel[]>({ lessonId: lessonId, gradeId: gradeId }, "assessment/GetParameters").then(data => {

@@ -1,6 +1,7 @@
+import { ScoreAssessmentModel } from './asses-param';
 import { environment } from "src/environments/environment";
 import { AttendanceStatus } from "./attendance-model";
-import { Score, StudentNotes, StudentReminder } from "./remider";
+import { StudentNotes, StudentReminder } from "./remider";
 
 export class StudentModel {
 
@@ -24,7 +25,7 @@ export class StudentModel {
     attendanceStatus: AttendanceStatus;
     reminders: StudentReminder[] = [];
     notes: StudentNotes[] = [];
-    scores: Score[] = [];
+    scores: ScoreAssessmentModel[] = [];
     homeWorkIssue: boolean;
     hasAssessment: boolean;
 
