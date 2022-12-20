@@ -118,10 +118,10 @@
                             </ng-container>
                             <!-- Scores  -->
                             <ng-container *ngFor="let score of student.scores">
-                                <ion-badge *ngIf="score.positiveNegetive" color="success" class=" me-1" mode="ios">
+                                <ion-badge *ngIf="score.progerssFlag>0" color="success" class=" me-1" mode="ios">
                                     <ion-icon name="add-circle-outline" size="small"></ion-icon>
                                 </ion-badge>
-                                <ion-badge *ngIf="!score.positiveNegetive" color="danger" class=" me-1" mode="ios">
+                                <ion-badge *ngIf="score.progerssFlag<0" color="danger" class=" me-1" mode="ios">
                                     <ion-icon name="remove-circle-outline" size="small"></ion-icon>
                                 </ion-badge>
                             </ng-container>

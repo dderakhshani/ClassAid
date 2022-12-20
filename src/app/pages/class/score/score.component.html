@@ -33,17 +33,33 @@
                     <ion-card *ngFor="let s of prevScores;let index=index" [ngClass]="{'score-item': !expanded, 'score-item-expanded': expanded}" class="score-item" [style.transform]="'scale(' + getScale(index) + ')'">
                         <ion-item lines="none">
                             <ion-avatar slot="start">
-                                <ion-icon *ngIf="s.positiveNegetive" name="add-circle-outline" class="text-success" size="large"></ion-icon>
-                                <ion-icon *ngIf="!s.positiveNegetive" name="remove-circle-outline" class="text-danger" size="large"></ion-icon>
+                                <ion-icon *ngIf="s.progerssFlag>0" name="add-circle-outline" class="text-success" size="large"></ion-icon>
+                                <ion-icon *ngIf="s.progerssFlag<0" name="remove-circle-outline" class="text-danger" size="large"></ion-icon>
                             </ion-avatar>
-                            <ion-label>
-                                {{s.note}}
+                            <ion-label class="ion-text-wrap mb-0">
+                                <h3>{{s.eduParameterTitle}}</h3>
+                                <p> {{s.note}}</p>
+
                             </ion-label>
                             <ion-button fill="clear" slot="end" (click)="remove(s)" color="medium">
                                 <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
 
                             </ion-button>
                         </ion-item>
+                        <div class="px-3 pb-2 d-flex align-items-center">
+                            <ion-icon src="../../../../assets/coins.svg" [color]="s.progerssFlag>0?'warning':'danger'" size="large">
+                            </ion-icon>
+
+                            <span class="mx-1">امتیاز:
+
+                            </span>
+                            <ion-badge *ngIf="s.progerssFlag>0" color="warning" mode="ios">
+                                {{s.progerssStep}}
+                            </ion-badge>
+                            <ion-badge *ngIf="s.progerssFlag<0" color="danger" mode="ios">
+                                {{s.progerssStep}}-
+                            </ion-badge>
+                        </div>
                     </ion-card>
 
 
@@ -64,7 +80,7 @@
 
         <div class="d-flex align-items-center border-bottom mt-3">
             <span>پارامتر ارزیابی</span>
-            <ion-select [(ngModel)]="rate" placeholder="   انتخاب کنید" class="flex-fill" interface="popover">
+            <ion-select [(ngModel)]="selectedeParameter" placeholder="...انتخاب کنید" class="flex-fill" interface="popover">
                 <ion-select-option value="apples" *ngFor="let item of assesmentParamters" [value]="item">
                     {{item.title}}
                 </ion-select-option>
@@ -72,7 +88,7 @@
         </div>
 
         <div class="d-flex justify-content-center">
-            <app-score-rating [(score)]="rate"></app-score-rating>
+            <app-score-rating [(score)]="rate" [color]="posNeg!='negative'?'warning':'danger'"></app-score-rating>
         </div>
 
         <ion-item class="pt-2">

@@ -5,7 +5,6 @@ ion-header {
 
 .avatar {
 
-
     ion-card {
         width: 90px;
         height: 90px;
@@ -31,23 +30,16 @@ ion-header {
 
     .score-item-expanded {
         margin-top: 0px;
+
+        ion-item {
+            ion-label {
+                white-space: normal;
+            }
+        }
     }
 }
 
 ion-footer {
     margin-top: -180px;
     background: #fff;
-}
-
-
-ion-item {
-
-    ion-select {
-        width: 100%;
-        max-width: 100%;
-    }
-
-    ion-label {
-        max-width: 100px;
-    }
 }

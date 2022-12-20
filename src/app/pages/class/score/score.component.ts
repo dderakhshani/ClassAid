@@ -40,7 +40,8 @@ export class ScoreComponent implements OnInit {
     posNeg: string;
     notes: string;
     rate: number;
-    param: AssessParamModel;
+    selectedeParameter: AssessParamModel;
+    // param: AssessParamModel;
 
     assesmentParamters: AssessParamModel[];
 
@@ -60,6 +61,8 @@ export class ScoreComponent implements OnInit {
                 studentId: this.student.id,
                 lessonId: this.book.id,
                 subLessonId: this.lesson.id,
+                eduParameterId: this.selectedeParameter.id,
+                eduParameterTitle: this.selectedeParameter.title,
                 taskId: this.session.id,
                 note: this.notes,
                 level: 0,//this is only mark,Server will always set this to 0 for Score, 

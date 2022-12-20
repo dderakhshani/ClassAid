@@ -15,6 +15,9 @@ export class ScoreRatingComponent implements OnInit {
     @Output()
     scoreChange = new EventEmitter<number>()
 
+    @Input()
+    color = 'warning';
+
     scores: number[] = [];
 
     constructor() {

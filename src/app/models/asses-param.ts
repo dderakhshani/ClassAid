@@ -1,6 +1,7 @@
 export class AssessmentModel {
     id: string;
     eduParameterId: number;
+    eduParameterTitle: string;
     lessonId: number;
     subLessonId: number;
     level: number;

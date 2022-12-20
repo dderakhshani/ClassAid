@@ -1,5 +1,5 @@
 <div class="p-2 mt-2 d-flex align-items-center">
-    <ion-icon src="../../../../assets/coins.svg" color="warning" size="large">
+    <ion-icon src="../../../../assets/coins.svg" [color]="color" size="large">
     </ion-icon>
 
     <span class="me-1">امتیاز: </span>
@@ -9,7 +9,7 @@
     <ng-container *ngFor="let item of scores">
         <!-- <ion-icon name="star-outline" color="warning" size="large">
         </ion-icon> -->
-        <div class="border rounded-circle px-2 py-1 me-1" (click)="select(item)" [class.selected]="item<=score">
+        <div class="border rounded-circle px-2 py-1 me-1" (click)="select(item)" [class.red]="color=='danger'" [class.selected]="item<=score">
             {{item}}
         </div>
 
