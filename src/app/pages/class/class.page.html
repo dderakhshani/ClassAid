@@ -169,12 +169,11 @@
             <ion-grid fixed>
                 <ion-row>
                     <ion-col size="6" class="p-3 ion-text-center">
-                        <ion-button shape="circle" color="secondary" class="action-button" size="large" (click)="onStudentReminder()">
+                        <ion-button shape="circle" (click)="onScore()" color="primary" size="large" class="action-button">
                             <div class="d-flex flex-column p-2">
-                                <ion-icon slot="icon-only" name="alarm-outline" size="large"></ion-icon>
-                                <ion-label class="mt-2"> یادآور</ion-label>
+                                <ion-icon slot="icon-only" name="star-half" size="large"></ion-icon>
+                                <ion-label class="mt-2"> مشاهده</ion-label>
                             </div>
-
                         </ion-button>
                     </ion-col>
                     <ion-col size="6" class="p-3 ion-text-center">
@@ -188,10 +187,10 @@
                 </ion-row>
                 <ion-row>
                     <ion-col size="6" class="p-3 ion-text-center">
-                        <ion-button shape="circle" (click)="onScore()" color="primary" size="large" class="action-button">
+                        <ion-button shape="circle" color="secondary" class="action-button" size="large" (click)="onStudentReminder()">
                             <div class="d-flex flex-column p-2">
-                                <ion-icon slot="icon-only" name="star-half" size="large"></ion-icon>
-                                <ion-label class="mt-2"> مشاهده</ion-label>
+                                <ion-icon slot="icon-only" name="alarm-outline" size="large"></ion-icon>
+                                <ion-label class="mt-2"> یادآور</ion-label>
                             </div>
                         </ion-button>
                     </ion-col>

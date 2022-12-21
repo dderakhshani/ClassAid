@@ -67,17 +67,16 @@
             </div>
         </app-expandable-section>
 
-
-
-        <div class="days mt-2 " style="overflow-x: scroll; width: 100%;">
-            <div class="d-inline-flex ">
-                <div *ngFor="let d of nextDays" class="day px-1 mx-2 d-flex flex-column justify-content-center align-items-center">
-                    <span class="date"> {{d.dayNo}}</span>
-                    <span class="symbol"> {{d.dayName}}</span>
-
-                </div>
-            </div>
-        </div>
+        <ion-segment [(ngModel)]="posNeg" mode="ios" class="mt-4">
+            <ion-segment-button value="postive">
+                <ion-icon name="add-circle-outline" class="text-success"></ion-icon>
+                <ion-label>مثبت</ion-label>
+            </ion-segment-button>
+            <ion-segment-button value="negative">
+                <ion-icon name="remove-circle-outline" class="text-danger"></ion-icon>
+                <ion-label>نیاز به تلاش</ion-label>
+            </ion-segment-button>
+        </ion-segment>
 
         <div class="border-bottom mt-3">
             <span>پارامتر ارزیابی</span>
@@ -86,13 +85,11 @@
             <div class="parameters">
                 <ion-row no-padding class="horizontal-row">
 
-                    <ion-col size="4" *ngFor="let item of assesmentParamters">
-                        <ion-card (click)="selectedeParameter=item" [class.selected]="selectedeParameter==item">
-                            <ion-icon src="assets/coin-person.svg"></ion-icon>
-                            {{item.title}}
-                        </ion-card>
-
-
+                    <ion-col size="4" class="p-2" *ngFor="let item of assesmentParamters">
+                        <div class="d-flex flex-column justify-content-center align-items-center" (click)="selectedeParameter=item" [class.selected]="selectedeParameter==item">
+                            <ion-icon [src]="imageUrl+'/parameters/param_'+item.id+'.svg'" size="large"></ion-icon>
+                            <span> {{item.title}}</span>
+                        </div>
                     </ion-col>
                 </ion-row>
             </div>

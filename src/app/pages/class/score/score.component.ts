@@ -9,6 +9,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { AssessmentService } from 'src/app/api/assessment.service';
 import { AssessParamterModel } from 'src/app/models/asses-param';
 import { Days } from 'src/app/models/day';
+import { environment } from 'src/environments/environment';
 
 @Component({
     selector: 'app-score',
@@ -16,6 +17,7 @@ import { Days } from 'src/app/models/day';
     styleUrls: ['./score.component.scss'],
 })
 export class ScoreComponent implements OnInit {
+    imageUrl = environment.imageUrl;
 
     expanded = false;
 
@@ -47,16 +49,7 @@ export class ScoreComponent implements OnInit {
     assesmentParamters: AssessParamterModel[];
 
     constructor(private assessmentService: AssessmentService) {
-        const d = new Date();
-        for (let i = 1; i < 15; i++) {
-            var date = new Date();
-            date.setDate(date.getDate() + i);
-            const dateDay = new Intl.DateTimeFormat('en-US-u-ca-persian', { day: 'numeric' }).format(date);
 
-            const dayName = Days[(date.getDay() + 1) % 7].symbol;
-
-            this.nextDays.push({ dayNo: parseInt(dateDay), dayName: dayName, date: date });
-        }
     }
 
     ngOnInit() {
@@ -106,5 +99,4 @@ export class ScoreComponent implements OnInit {
             return 1 - ((this.prevScores.length - 1) - index) * 0.08;
     }
 
-    nextDays: { dayNo: number, dayName: string, date: Date }[] = [];
 }

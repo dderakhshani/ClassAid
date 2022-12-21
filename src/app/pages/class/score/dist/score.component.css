@@ -1,0 +1,50 @@
+ion-header {
+  overflow: visible;
+  min-height: 120px;
+}
+
+.avatar ion-card {
+  width: 90px;
+  height: 90px;
+  position: absolute;
+  top: 42px;
+  z-index: 300;
+}
+.avatar ion-card ion-avatar {
+  width: 80px;
+  height: 80px;
+}
+
+.old_items ion-card {
+  transition: all 0.3s;
+}
+.old_items .score-item:not(:first-child) {
+  margin-top: -65px;
+}
+.old_items .score-item-expanded {
+  margin-top: 0px;
+}
+.old_items .score-item-expanded ion-item ion-label {
+  white-space: normal;
+}
+
+.parameters {
+  overflow-x: auto;
+  width: 100%;
+}
+.parameters ion-card {
+  width: 120px;
+  height: 80px;
+  display: inline-block;
+}
+.parameters ion-icon {
+  zoom: 2;
+}
+.parameters .selected {
+  background: red;
+}
+
+ion-footer {
+  margin-top: -180px;
+  background: #fff;
+}

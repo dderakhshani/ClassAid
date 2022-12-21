@@ -49,6 +49,10 @@ ion-header {
         display: inline-block;
     }
 
+    ion-icon {
+        zoom: 2;
+    }
+
     .selected {
         background: red;
     }
