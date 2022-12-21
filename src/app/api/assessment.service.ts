@@ -13,19 +13,11 @@ export class AssessmentService {
     constructor(private httpService: HttpService) { }
 
     add(session: AssessmentModel[]): Promise<boolean> {
-        return new Promise(resolve => {
-            this.httpService.http.postJsonData<boolean>(session, "assessment/add").then(data => {
-                return resolve(data);
-            });
-        });
+        return this.httpService.http.postJsonData<boolean>(session, "assessment/add");
     }
 
     closeHomeWorkAssessment(homeWork: HomeWorkModel): Promise<boolean> {
-        return new Promise(resolve => {
-            this.httpService.http.postJsonData<boolean>(homeWork, "assessment/CloseHomeWorkAssessment").then(data => {
-                return resolve(data);
-            });
-        });
+        return this.httpService.http.postJsonData<boolean>(homeWork, "assessment/CloseHomeWorkAssessment");
     }
 
     addScore(session: AssessmentModel): Promise<boolean> {
@@ -37,20 +29,19 @@ export class AssessmentService {
     }
 
     getParameters(lessonId?: number, gradeId?: number): Promise<AssessParamterModel[]> {
-        return new Promise(resolve => {
+        return new Promise((resolve, reject) => {
             this.httpService.http.getDataByParam<AssessParamterModel[]>({ lessonId: lessonId, gradeId: gradeId }, "assessment/GetParameters").then(data => {
                 this.assesmentParamters = data;
                 return resolve(data);
-            });
+            },
+                err => {
+                    reject(err);
+                });
         });
     }
 
     getSessionAssessments(sessionId: string): Promise<AssessmentModel[]> {
-        return new Promise(resolve => {
-            this.httpService.http.getDataByParam<AssessmentModel[]>({ sessionId: sessionId }, "assessment/getSessionAssessments").then(data => {
-                return resolve(data);
-            });
-        });
+        return this.httpService.http.getDataByParam<AssessmentModel[]>({ sessionId: sessionId }, "assessment/getSessionAssessments");
     }
 
     getLessonParametersSync(lessonId: number) {

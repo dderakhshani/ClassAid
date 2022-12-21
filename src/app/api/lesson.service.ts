@@ -21,7 +21,7 @@ export class LessonService {
 
     //TODO: Get Lessons by SchoolId not load all lessons
     getBooks(schoolId: number, gradeId: number): Promise<Lesson[]> {
-        return new Promise(resolve => {
+        return new Promise((resolve, reject) => {
             if (this.books$.value.length > 0)
                 return resolve(this.books$.value.filter(x => x.gradeId == gradeId
                     || (x.schoolId && x.schoolId == schoolId)));
@@ -35,6 +35,8 @@ export class LessonService {
                     })
                     this.books$.next(books);
                     return resolve(books.filter(x => x.gradeId == gradeId && x.schoolId == schoolId));
+                }, err => {
+                    reject(err);
                 });
 
         });

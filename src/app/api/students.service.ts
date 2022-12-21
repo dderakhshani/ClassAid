@@ -15,7 +15,7 @@ export class StudentsService {
     }
 
     getStudentsOfClass(classId: number): Promise<StudentModel[]> {
-        return new Promise(resolve => {
+        return new Promise((resolve, reject) => {
             if (this.students$.value.length > 0)
                 return resolve(this.students$.value);
             else
@@ -23,6 +23,8 @@ export class StudentsService {
                     const students = data.map(x => Object.assign(new StudentModel(), { ...x, attendanceStatus: AttendanceStatus.Present }));
                     this.students$.next(students);
                     return resolve(students);
+                }, err => {
+                    reject(err)
                 });
 
         });
@@ -30,12 +32,14 @@ export class StudentsService {
     }
 
     getStudentsById(studentId: number): Promise<StudentModel> {
-        return new Promise(resolve => {
+        return new Promise((resolve, reject) => {
             if (this.students$.value.length > 0)
                 return resolve(this.students$.value.find(x => x.id == studentId));
             else
                 this.httpService.http.getDataByParam<StudentModel>({ studentId: studentId }, "Student/getStudentsById").then(data => {
                     return resolve(Object.assign(new StudentModel(), data));
+                }, err => {
+                    reject(err)
                 });
 
         });

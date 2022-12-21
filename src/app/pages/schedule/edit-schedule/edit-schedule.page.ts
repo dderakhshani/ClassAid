@@ -78,7 +78,10 @@ export class EditSchedulePage implements OnInit {
 
         this.scheduleService.saveSchedule(this.schedule).then(x => {
             loading.dismiss();
-        });
+        },
+            err => {
+                loading.dismiss();
+            });
     }
 
 }

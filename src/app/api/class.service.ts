@@ -21,101 +21,52 @@ export class ClassService {
     }
 
     getClassesByTeacherId(teacherId: number): Promise<ClassModel[]> {
-        return new Promise(resolve => {
-            this.httpService.http.getDataByParam<ClassModel[]>({ teacherId: teacherId }, "class/getByTeacherId").then(data => {
-                return resolve(data);
-            });
-
-        });
+        return this.httpService.http.getDataByParam<ClassModel[]>({ teacherId: teacherId }, "class/getByTeacherId");
     }
 
     getDaySession(classId: number): Promise<DaySession> {
-        return new Promise(resolve => {
-            this.httpService.http.getDataByParam<DaySession>({ classId: classId }, "session/GetDaySession").then(data => {
-                return resolve(data);
-            });
-        });
+        return this.httpService.http.getDataByParam<DaySession>({ classId: classId }, "session/GetDaySession");
     }
 
     addCallRolls(attendances: AttendanceModel[], classId: number): Promise<string> {
-        return new Promise(resolve => {
-            this.httpService.http.postJsonData<string>(attendances, `class/addCallRolls/${classId}`).then(data => {
-                return resolve(data);
-            });
-        });
+        return this.httpService.http.postJsonData<string>(attendances, `class/addCallRolls/${classId}`);
     }
 
     getCallRolls(classId: number): Promise<AttendanceModel[]> {
-        return new Promise(resolve => {
-            this.httpService.http.getDataByParam<AttendanceModel[]>({ classId: classId }, "class/GetCallRolls").then(data => {
-                return resolve(data);
-            });
-        });
+        return this.httpService.http.getDataByParam<AttendanceModel[]>({ classId: classId }, "class/GetCallRolls");
     }
 
     getSessionCallRolls(sessionId: string): Promise<AttendanceModel[]> {
-        return new Promise(resolve => {
-            this.httpService.http.getDataByParam<AttendanceModel[]>({ sessionId: sessionId }, "session/GetSessionCallRolls").then(data => {
-                return resolve(data);
-            });
-        });
+        return this.httpService.http.getDataByParam<AttendanceModel[]>({ sessionId: sessionId }, "session/GetSessionCallRolls");
     }
 
 
     addTask(session: ClassSessionModel): Promise<boolean> {
-        return new Promise(resolve => {
-            this.httpService.http.postJsonData<boolean>(session, "session/AddTask").then(data => {
-                return resolve(data);
-            });
-        });
+        return this.httpService.http.postJsonData<boolean>(session, "session/AddTask");
     }
 
     endTask(taskId: string): Promise<boolean> {
-        return new Promise(resolve => {
-            this.httpService.http.postJsonData<boolean>(taskId, "session/EndTask").then(data => {
-                return resolve(data);
-            });
-        });
+        return this.httpService.http.postJsonData<boolean>(taskId, "session/EndTask");
     }
 
     addHomeWork(homeWork: HomeWorkModel): Promise<boolean> {
-        return new Promise(resolve => {
-            this.httpService.http.postJsonData<boolean>(homeWork, "class/AddHomeWork").then(data => {
-                return resolve(data);
-            });
-        });
+        return this.httpService.http.postJsonData<boolean>(homeWork, "class/AddHomeWork");
     }
 
     getLessonHomeWorks(lessonId: number): Promise<HomeWorkModel[]> {
-        return new Promise(resolve => {
-            this.httpService.http.getDataByParam<HomeWorkModel[]>({ lessonId: lessonId }, "class/GetLessonHomeWorks").then(data => {
-                return resolve(data);
-            });
-        });
+        return this.httpService.http.getDataByParam<HomeWorkModel[]>({ lessonId: lessonId }, "class/GetLessonHomeWorks");
     }
 
     getTodaySessionsByClass(classId: number): Promise<ClassSessionModel[]> {
-        return new Promise(resolve => {
-            this.httpService.http.getDataByParam<ClassSessionModel[]>({ classId: classId }, "session/GetTodaySessionsByClass").then(data => {
-                return resolve(data);
-            });
-        });
+        return this.httpService.http.getDataByParam<ClassSessionModel[]>({ classId: classId }, "session/GetTodaySessionsByClass");
     }
 
     getSession(sessionId: string): Promise<ClassSessionModel> {
-        return new Promise(resolve => {
-            this.httpService.http.getDataByParam<ClassSessionModel>({ sessionId: sessionId }, "session/getSession").then(data => {
-                return resolve(data);
-            });
-        });
+        return this.httpService.http.getDataByParam<ClassSessionModel>({ sessionId: sessionId }, "session/getSession");
     }
 
     getHomeWorkById(homeWorkId: string): Promise<HomeWorkModel> {
-        return new Promise(resolve => {
-            this.httpService.http.getDataByParam<HomeWorkModel>({ homeWorkId: homeWorkId }, "class/GetHomeWorkById").then(data => {
-                return resolve(data);
-            });
-        });
+        return this.httpService.http.getDataByParam<HomeWorkModel>({ homeWorkId: homeWorkId }, "class/GetHomeWorkById");
     }
 
 }

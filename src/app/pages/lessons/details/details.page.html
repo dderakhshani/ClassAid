@@ -22,6 +22,14 @@
             </ion-label>
 
         </ion-item>
+        <div class="p-2 px-4">
+            <div class="progress">
+                <div class="progress-value" [style.width]="getProgressValue()+'%'"></div>
+            </div>
+            <div class="text-center">
+                {{getHasSessionLesson()}}&nbsp;درس از &nbsp;{{lessons?.length}}&nbsp;تا
+            </div>
+        </div>
         <ion-list>
             <ion-item *ngFor="let item of lessons">
                 <ion-icon *ngIf="item.sessionsCount>0;else wait" name="checkmark-circle-outline" slot="start" class="text-success"></ion-icon>
@@ -32,10 +40,14 @@
 
                 <ion-label>{{item.name}}</ion-label>
 
-                <div class="buttons">
+                <div class="buttons d-flex align-items-center">
                     <ng-container *ngIf="item.sessionsCount>0;else start">
+
                         <ion-button slot="end" fill="clear" (click)="viewClass(item)">
                             <ion-icon name="eye-outline" color="secondary"></ion-icon>
+                            <ion-badge slot="start" color="secondary" mode="ios">
+                                {{item.sessionsCount}}
+                            </ion-badge>
                         </ion-button>
                         <ion-button slot="end" fill="clear" (click)="startClass(item)">
                             <ion-icon name="play-outline"></ion-icon>
@@ -49,31 +61,9 @@
                     </ng-template>
                 </div>
 
-
-
             </ion-item>
         </ion-list>
-        <!--<ion-accordion-group [multiple]="true">
-            
 
-            <ion-accordion *ngFor="let item0 of lessons">
-                <ion-item slot="header" color="light">
-                    <ion-label>{{item0.Name}}</ion-label>
-                </ion-item>
-                <div class="ion-padding" slot="content" *ngFor="let item1 of lessonService.getLessonsByParentId(item0.Id) | async">
-                    <ion-item>
-                        <ion-thumbnail slot="start">
-                            <img alt="Silhouette of mountains" src="https://ionicframework.com/docs/img/demos/thumbnail.svg" />
-                        </ion-thumbnail>
-                        <ion-label>{{item1.Name}}</ion-label>
-                        <ion-button slot="end">
-                            Play
-                        </ion-button>
-                    </ion-item>
-                </div>
-            </ion-accordion> 
-
-        </ion-accordion-group>-->
     </div>
 
 </ion-content>

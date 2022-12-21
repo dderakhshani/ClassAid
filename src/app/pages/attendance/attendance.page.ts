@@ -71,7 +71,10 @@ export class AttendancePage implements OnInit {
             loading.dismiss();
             this.studentsService.students$.next(this.students);
             this.navCtrl.navigateRoot('tabs/home');
-        })
+        },
+            err => {
+                loading.dismiss();
+            });
 
     }
 }

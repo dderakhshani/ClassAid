@@ -124,7 +124,10 @@ export class AssessmentPage implements OnInit {
             loading.dismiss();
             this.student.hasAssessment = true;
             this.location.back();
-        })
+        },
+            err => {
+                loading.dismiss();
+            });
 
     }
 }

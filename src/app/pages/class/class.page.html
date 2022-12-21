@@ -120,9 +120,11 @@
                             <ng-container *ngFor="let score of student.scores">
                                 <ion-badge *ngIf="score.progerssFlag>0" color="success" class=" me-1" mode="ios">
                                     <ion-icon name="add-circle-outline" size="small"></ion-icon>
+                                    {{score.progerssStep}}
                                 </ion-badge>
                                 <ion-badge *ngIf="score.progerssFlag<0" color="danger" class=" me-1" mode="ios">
                                     <ion-icon name="remove-circle-outline" size="small"></ion-icon>
+                                    {{score.progerssStep}}
                                 </ion-badge>
                             </ng-container>
 

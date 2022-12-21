@@ -8,6 +8,7 @@ import { IonicModule } from '@ionic/angular';
 import { HomeWorkPageRoutingModule } from './home-work-routing.module';
 
 import { HomeWorkPage } from './home-work.page';
+import { ComponentsModule } from 'src/app/components/components.module';
 
 @NgModule({
     imports: [
@@ -16,7 +17,8 @@ import { HomeWorkPage } from './home-work.page';
         IonicModule,
         CoresModule,
         NgxIonicImageViewerModule,
-        HomeWorkPageRoutingModule
+        HomeWorkPageRoutingModule,
+        ComponentsModule
     ],
     declarations: [HomeWorkPage]
 })

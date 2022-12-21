@@ -1,3 +1,4 @@
+import { HomeWorkItemComponent } from './home-work-item/home-work-item.component';
 import { ScheduleItemComponent } from './schedule-item/schedule-item.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -17,7 +18,7 @@ import { NgxEchartsModule } from 'ngx-echarts';
             echarts: () => import('echarts')
         }),
     ],
-    declarations: [TimelineComponent, ScheduleItemComponent],
-    exports: [TimelineComponent, ScheduleItemComponent]
+    declarations: [TimelineComponent, ScheduleItemComponent, HomeWorkItemComponent],
+    exports: [TimelineComponent, ScheduleItemComponent, HomeWorkItemComponent]
 })
 export class ComponentsModule { }

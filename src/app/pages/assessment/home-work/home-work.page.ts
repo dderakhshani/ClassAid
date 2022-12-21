@@ -110,6 +110,7 @@ export class HomeWorkPage implements OnInit {
     addAssess() {
         this.selectedStudent.level = this.assess.level;
         this.selectedStudent.progerssStep = this.assess.progerssStep;
+        this.selectedStudent.note = this.assess.note;
         this.isModalOpen = false;
     }
 
@@ -132,7 +133,7 @@ export class HomeWorkPage implements OnInit {
                     regTimePersian: "",
                     taskId: this.homeWork.creatorTaskId,//maybe without current Session
                     homeWorkId: this.homeWork.id,
-                    note: ""
+                    note: s.note
                 };
 
                 assessments.push(assessModel);
@@ -146,14 +147,20 @@ export class HomeWorkPage implements OnInit {
             this.assessmentService.closeHomeWorkAssessment(this.homeWork).then(result => {
                 loading.dismiss();
                 this.location.back();
-            });
+            },
+                err => {
+                    loading.dismiss();
+                });
         }
 
         else
             this.assessmentService.add(assessments).then(result => {
                 loading.dismiss();
                 this.location.back();
-            })
+            },
+                err => {
+                    loading.dismiss();
+                });
     }
 
 

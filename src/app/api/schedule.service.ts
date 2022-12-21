@@ -13,27 +13,15 @@ export class ScheduleService {
     }
 
     get(classId: number): Promise<ScheduleModel> {
-        return new Promise(resolve => {
-            this.httpService.http.getDataByParam<ScheduleModel>({ classId: classId }, "Schedule/Get").then(data => {
-                return resolve(data);
-            });
-        });
+        return this.httpService.http.getDataByParam<ScheduleModel>({ classId: classId }, "Schedule/Get");
     }
 
     getRings(schoolId: number, gradeId: number): Promise<Ring[]> {
-        return new Promise(resolve => {
-            this.httpService.http.getDataByParam<Ring[]>({ schoolId: schoolId, gradeId: gradeId }, "Schedule/GetRings").then(data => {
-                return resolve(data);
-            });
-        });
+        return this.httpService.http.getDataByParam<Ring[]>({ schoolId: schoolId, gradeId: gradeId }, "Schedule/GetRings");
     }
 
     saveSchedule(schedule: ScheduleModel): Promise<string> {
-        return new Promise(resolve => {
-            this.httpService.http.postJsonData<string>(schedule, "Schedule/AddUpdateSchedule").then(data => {
-                return resolve(data);
-            });
-        });
+        return this.httpService.http.postJsonData<string>(schedule, "Schedule/AddUpdateSchedule");
     }
 
 }

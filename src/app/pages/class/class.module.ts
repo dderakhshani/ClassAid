@@ -13,6 +13,7 @@ import { ClassPageRoutingModule } from './class-routing.module';
 
 import { ClassPage } from './class.page';
 import { CreateHomeWorkComponent } from './create-home-work/create-home-work.component';
+import { ComponentsModule } from 'src/app/components/components.module';
 
 @NgModule({
     imports: [
@@ -21,7 +22,8 @@ import { CreateHomeWorkComponent } from './create-home-work/create-home-work.com
         ReactiveFormsModule,
         IonicModule,
         ClassPageRoutingModule,
-        CoresModule
+        CoresModule,
+        ComponentsModule
     ],
     declarations: [ClassPage, NoteComponent, ReminderComponent, ScoreComponent, CreateHomeWorkComponent]
 })

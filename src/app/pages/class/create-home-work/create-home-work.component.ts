@@ -8,7 +8,7 @@ import { HomeWorkModel, IHomeWorkModel } from 'src/app/models/home-work';
 import { Lesson } from 'src/app/models/lessons';
 import { IFormGroup, IFormBuilder } from '@rxweb/types';
 import { v4 as uuidv4 } from 'uuid';
-import { ToastController } from '@ionic/angular';
+import { LoadingController, ModalController, ToastController } from '@ionic/angular';
 
 @Component({
     selector: 'app-create-home-work',
@@ -16,8 +16,7 @@ import { ToastController } from '@ionic/angular';
     styleUrls: ['./create-home-work.component.scss'],
 })
 export class CreateHomeWorkComponent implements OnInit {
-    homeWork = HomeWorkModel;
-    imageUrl = environment.imageUrl;
+
 
     expanded = false;
     @Input()
@@ -49,6 +48,8 @@ export class CreateHomeWorkComponent implements OnInit {
 
     constructor(formBuilder: FormBuilder,
         private classService: ClassService,
+        private loadingCtrl: LoadingController,
+
         public toastController: ToastController) {
 
         const d = new Date();
@@ -74,7 +75,7 @@ export class CreateHomeWorkComponent implements OnInit {
             description: ["", [Validators.required]],
             dueTime: [new Date(), [Validators.required]],
             points: [0],
-            tags: [[], [Validators.required]],
+            tags: [[]],
             files: [[]],
             creatorTaskId: [this.classTask.id],
             lessonId: [this.book.id],
@@ -97,9 +98,6 @@ export class CreateHomeWorkComponent implements OnInit {
         }
     }
 
-    remove(item: HomeWorkModel) {
-
-    }
 
     removeTag(index: number) {
         this.form.get("tags").value.splice(index, 1);
@@ -118,13 +116,21 @@ export class CreateHomeWorkComponent implements OnInit {
         const homeWork = this.form.getRawValue() as HomeWorkModel;
         homeWork.files = this.uploadFiles;
         homeWork.dueTime = this.getReminderTime();
+        const loading = await this.loadingCtrl.create();
+        loading.present();
+
         this.classService.addHomeWork(homeWork).then(x => {
+            loading.dismiss();
             this.classTask.homeWorks = this.classTask.homeWorks ?? [];
             this.classTask.homeWorks.push(homeWork);
             this.modal.dismiss();
+        }, err => {
+            loading.dismiss();
         });
 
     }
+
+
 
     getReminderTime(): Date {
         if (this.dateType == 'exact-date')

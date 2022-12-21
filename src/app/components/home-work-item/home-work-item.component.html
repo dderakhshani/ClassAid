@@ -1,0 +1,30 @@
+<ion-card [ngClass]="{'reminder-item': !expanded, 'reminder-item-expanded': expanded}" *ngIf="item">
+    <ion-item lines="none">
+        <ion-avatar slot="start">
+            <ion-icon name="library-outline" color="success" size="large"></ion-icon>
+        </ion-avatar>
+        <ion-label>
+            <ion-note> {{item.dueTime | date}}</ion-note>
+            <h3> {{item.title}}</h3>
+            <p> {{item.description}}</p>
+        </ion-label>
+
+        <ion-button fill="clear" slot="end" (click)="remove(item)" color="medium" *ngIf="!readonly">
+            <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+
+        </ion-button>
+    </ion-item>
+    <div *ngIf="expanded" class="d-flex pb-2">
+        <div class="file-item mx-2 d-flex  align-items-stretch" *ngFor="let file of item.files">
+
+            <a class="flex-fill d-flex flex-column align-items-center justify-content-center" [href]="imageUrl+'/'+file" target="_blank" *ngIf="!homeWork.isImageFile(homeWork.getExtension(file))">
+                <ion-icon name="document-outline" class="mx-auto" size="large"></ion-icon>
+                <div class="px-1.5 rounded text-sm font-semibold leading-5 text-white " [class.bg-danger]="homeWork.getExtension(file)  === 'PDF'" [class.bg-primary]="homeWork.getExtension(file)  === 'DOC'" [class.bg-primary]="homeWork.getExtension(file)  === 'DOCX'" [class.bg-success]="homeWork.getExtension(file)  === 'XLSX'" [class.bg-success]="homeWork.getExtension(file)  === 'XLS'" [class.bg-secondary]="homeWork.getExtension(file) === 'TXT'">
+                    {{homeWork.getExtension(file) }}
+                </div>
+            </a>
+            <img (click)="openViewer(imageUrl+'/'+file)" *ngIf="homeWork.isImageFile(homeWork.getExtension(file))" [src]="imageUrl+'/'+file">
+
+        </div>
+    </div>
+</ion-card>

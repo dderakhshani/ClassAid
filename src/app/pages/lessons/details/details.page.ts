@@ -46,6 +46,21 @@ export class DetailsPage implements OnInit {
 
     }
 
+    getProgressValue() {
+        if (this.lessons)
+            return this.getHasSessionLesson() / this.lessons.length * 100;
+        else
+            return 0;
+    }
+
+    getHasSessionLesson() {
+        if (this.lessons)
+            return this.lessons.filter(x => x.sessionsCount > 0).length;
+        else
+            return 0;
+
+    }
+
     startClass(lesson: Lesson) {
         const session = <ClassSessionModel>{
             id: uuidv4(),

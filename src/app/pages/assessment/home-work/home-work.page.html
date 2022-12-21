@@ -13,32 +13,7 @@
 <ion-content>
     <div class="pb-5">
         <app-expandable-section [(expanded)]="expanded">
-            <div class="homework">
-                <ion-item lines="none">
-                    <ion-avatar slot="start">
-                        <ion-icon name="library-outline" color="success" size="large"></ion-icon>
-                    </ion-avatar>
-                    <ion-label>
-                        <ion-note> {{homeWork?.dueTime | date}}</ion-note>
-                        <h3> {{homeWork?.title}}</h3>
-                        <p> {{homeWork?.description}}</p>
-                    </ion-label>
-
-                </ion-item>
-                <div *ngIf="expanded">
-                    <div class="upload-item m-1 d-flex" *ngFor="let file of homeWork?.files">
-
-                        <a [href]="imageUrl+'/'+file" target="_blank" *ngIf="!homeWorkModel.isImageFile(homeWorkModel.getExtension(file))" class="d-flex flex-column align-items-center align-self-stretch">
-                            <ion-icon name="document-outline" class="mx-auto" size="large"></ion-icon>
-                            <div class="px-1.5 rounded text-sm font-semibold leading-5 text-white " [class.bg-danger]="homeWorkModel.getExtension(file)  === 'PDF'" [class.bg-primary]="homeWorkModel.getExtension(file)  === 'DOC'" [class.bg-primary]="homeWorkModel.getExtension(file)  === 'DOCX'" [class.bg-success]="homeWorkModel.getExtension(file)  === 'XLSX'" [class.bg-success]="homeWorkModel.getExtension(file)  === 'XLS'" [class.bg-secondary]="homeWorkModel.getExtension(file) === 'TXT'">
-                                {{homeWorkModel.getExtension(file) }}
-                            </div>
-                        </a>
-                        <img *ngIf="homeWorkModel.isImageFile(homeWorkModel.getExtension(file))" (click)="openViewer(imageUrl+'/'+file)" [src]="imageUrl+'/'+file">
-
-                    </div>
-                </div>
-            </div>
+            <app-home-work-item [item]="homeWork" [expanded]="expanded" [readonly]="true"></app-home-work-item>
         </app-expandable-section>
 
 
@@ -47,11 +22,13 @@
                 <ion-col size="4" *ngFor="let student of studentHomeWorkAssess " class="d-flex  align-items-stretch">
                     <ion-card class="student-card flex-fill" (click)="onAssess(student)">
 
-                        <ion-badge *ngIf="student.level>0" color="warning" class="score-rate" mode="ios">
+                        <ion-badge *ngIf="student.progerssStep>0" color="warning" class="score-rate" mode="ios">
                             <ion-icon src="../../../../assets/coins.svg" class="me-2" size="small">
                             </ion-icon>
                             <span> {{student.progerssStep}}</span>
                         </ion-badge>
+
+
 
                         <!-- Avatar -->
                         <div class="d-flex justify-content-center pt-2">
@@ -69,6 +46,9 @@
                             <ion-badge [color]="student.accessLevel.ionColor" class="px-3 py-2">
                                 <span class="min">{{student.accessLevel.title}} </span>
                             </ion-badge>
+                            <ion-badge *ngIf="student.note" class="note" color="warning" mode="ios">
+                                <ion-icon name="document-text-outline" size="small"></ion-icon>
+                            </ion-badge>
                         </ion-card-content>
                     </ion-card>
                 </ion-col>
@@ -76,7 +56,7 @@
             </ion-row>
         </ion-grid>
 
-        <ion-modal [isOpen]="isModalOpen" (didDismiss)="isModalOpen=false" [initialBreakpoint]="0.25" [breakpoints]="[0, 0.25]">
+        <ion-modal [isOpen]="isModalOpen" (didDismiss)="isModalOpen=false" [initialBreakpoint]="0.4" [breakpoints]="[0, 0.4]">
             <ng-template>
                 <div class="p-3">
                     <ion-segment [scrollable]="true" mode="ios" [(ngModel)]="assess.level">
@@ -90,6 +70,11 @@
                     <div class="mt-2">
                         <app-score-rating [maxScore]="10" [(score)]="assess.progerssStep"></app-score-rating>
                     </div>
+                    <ion-item class="pt-2">
+                        <ion-label position="stacked"> یادداشت</ion-label>
+                        <ion-textarea placeholder="متن خود را وارد نمایید" [(ngModel)]="assess.note"></ion-textarea>
+                    </ion-item>
+
                     <div class="mt-2">
                         <ion-button expand="block" (click)="addAssess()" color="secondary">
                             <ion-icon name="save-outline" size="large"></ion-icon>

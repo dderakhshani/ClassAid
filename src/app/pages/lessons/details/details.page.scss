@@ -1,0 +1,27 @@
+.progress {
+    width: 100%;
+    height: 15px;
+    border: 1px solid #ccc;
+    border-radius: 12px;
+
+    .progress-value {
+        display: inline-block;
+        background: rgb(18, 141, 198);
+    }
+}
+
+ion-badge {
+    position: absolute;
+    right: -15px;
+    top: -2px;
+}
+
+ion-button {
+    position: relative;
+    overflow: visible !important;
+}
+
+/* Setting Overflow Visible */
+ion-button::part(native) {
+    overflow: visible !important;
+}

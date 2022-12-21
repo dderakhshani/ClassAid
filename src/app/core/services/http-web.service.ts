@@ -15,10 +15,14 @@ export class HttpWebService {
         public toastController: ToastController) { }
 
     getData<T>(action: string): Promise<T> {
-        return new Promise(resolve => {
+        return new Promise((resolve, reject) => {
             this.http.get<T>(`${environment.apiUrl}/api/${action}`)
                 .pipe(
-                    catchError(this.handleError.bind(this))
+                    catchError(this.handleError.bind(this)),
+                    catchError((error) => {
+                        reject(null);
+                        return throwError(error.statusText);
+                    })
                 ).subscribe(result => {
                     return resolve(result);
                 });
@@ -28,11 +32,15 @@ export class HttpWebService {
 
 
     getDataByParam<T>(param: any, action: string): Promise<T> {
-        return new Promise(resolve => {
+        return new Promise((resolve, reject) => {
             this.http.get<T>(`${environment.apiUrl}/api/${action}`, {
                 params: param
             }).pipe(
-                catchError(this.handleError.bind(this))
+                catchError(this.handleError.bind(this)),
+                catchError((error) => {
+                    reject(null);
+                    return throwError(error.statusText);
+                })
             ).subscribe(result => {
                 return resolve(result);
             });
@@ -43,10 +51,14 @@ export class HttpWebService {
 
     postJsonData<T>(data: any, action: string): Promise<T> {
         const headers = { 'Content-Type': 'application/json' }
-        return new Promise(resolve => {
+        return new Promise((resolve, reject) => {
             this.http.post<T>(`${environment.apiUrl}/api/${action}`, JSON.stringify(data), { headers })
                 .pipe(
-                    catchError(this.handleError.bind(this))
+                    catchError(this.handleError.bind(this)),
+                    catchError((error) => {
+                        reject(null);
+                        return throwError(error.statusText);
+                    })
                 ).subscribe(result => {
                     return resolve(result);
                 });
