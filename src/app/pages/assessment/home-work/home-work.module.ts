@@ -1,8 +1,8 @@
-import { CoresModule } from './../../core/core.module';
+import { CoresModule } from '../../../core/core.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
+import { NgxIonicImageViewerModule } from 'ngx-ionic-image-viewer';
 import { IonicModule } from '@ionic/angular';
 
 import { HomeWorkPageRoutingModule } from './home-work-routing.module';
@@ -15,6 +15,7 @@ import { HomeWorkPage } from './home-work.page';
         FormsModule,
         IonicModule,
         CoresModule,
+        NgxIonicImageViewerModule,
         HomeWorkPageRoutingModule
     ],
     declarations: [HomeWorkPage]

@@ -37,8 +37,8 @@ const routes: Routes = [
                 loadChildren: () => import('../assessment/assessment.module').then(m => m.AssessmentPageModule)
             },
             {
-                path: 'home-work/:homeWorkId',
-                loadChildren: () => import('../home-work/home-work.module').then(m => m.HomeWorkPageModule)
+                path: 'home-work',
+                loadChildren: () => import('../assessment/home-work/home-work.module').then(m => m.HomeWorkPageModule)
             },
             {
                 path: '',

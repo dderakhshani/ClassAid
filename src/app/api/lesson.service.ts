@@ -5,7 +5,6 @@ import { HttpService } from './../core/services/http.service';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { BehaviorSubject } from 'rxjs';
-import { AssessParamModel } from '../models/asses-param';
 
 @Injectable({
     providedIn: 'root'

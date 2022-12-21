@@ -1,19 +1,28 @@
+import { HomeWorkModel } from './../models/home-work';
 import { Injectable } from '@angular/core';
 import { HttpService } from '../core/services/http.service';
-import { AssessmentModel, AssessParamModel } from '../models/asses-param';
+import { AssessmentModel, AssessParamterModel } from '../models/asses-param';
 
 @Injectable({
     providedIn: 'root'
 })
 export class AssessmentService {
 
-    assesmentParamters: AssessParamModel[] = [];
+    assesmentParamters: AssessParamterModel[] = [];
 
     constructor(private httpService: HttpService) { }
 
     add(session: AssessmentModel[]): Promise<boolean> {
         return new Promise(resolve => {
             this.httpService.http.postJsonData<boolean>(session, "assessment/add").then(data => {
+                return resolve(data);
+            });
+        });
+    }
+
+    closeHomeWorkAssessment(homeWork: HomeWorkModel): Promise<boolean> {
+        return new Promise(resolve => {
+            this.httpService.http.postJsonData<boolean>(homeWork, "assessment/CloseHomeWorkAssessment").then(data => {
                 return resolve(data);
             });
         });
@@ -27,9 +36,9 @@ export class AssessmentService {
         });
     }
 
-    getParameters(lessonId?: number, gradeId?: number): Promise<AssessParamModel[]> {
+    getParameters(lessonId?: number, gradeId?: number): Promise<AssessParamterModel[]> {
         return new Promise(resolve => {
-            this.httpService.http.getDataByParam<AssessParamModel[]>({ lessonId: lessonId, gradeId: gradeId }, "assessment/GetParameters").then(data => {
+            this.httpService.http.getDataByParam<AssessParamterModel[]>({ lessonId: lessonId, gradeId: gradeId }, "assessment/GetParameters").then(data => {
                 this.assesmentParamters = data;
                 return resolve(data);
             });

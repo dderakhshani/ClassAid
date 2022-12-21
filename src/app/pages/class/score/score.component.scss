@@ -25,7 +25,7 @@ ion-header {
     }
 
     .score-item:not(:first-child) {
-        margin-top: -45px;
+        margin-top: -65px;
     }
 
     .score-item-expanded {
@@ -36,6 +36,21 @@ ion-header {
                 white-space: normal;
             }
         }
+    }
+}
+
+.parameters {
+    overflow-x: auto;
+    width: 100%;
+
+    ion-card {
+        width: 120px;
+        height: 80px;
+        display: inline-block;
+    }
+
+    .selected {
+        background: red;
     }
 }
 

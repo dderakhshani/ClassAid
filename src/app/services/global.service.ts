@@ -1,4 +1,4 @@
-import { AssessmentModel, AssessParamModel, ScoreAssessmentModel } from './../models/asses-param';
+import { AssessmentModel, AssessParamterModel, ScoreAssessmentModel } from './../models/asses-param';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { StudentReminder, LessonReminder, ReminderType, Reminder } from './../models/remider';
 import { ReminderService } from './../api/reminder.service';

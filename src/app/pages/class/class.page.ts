@@ -105,22 +105,30 @@ export class ClassPage implements OnInit {
 
             this.students.forEach(s => {
                 const s_s = scores?.filter(x => x.studentId == s.id);
-                if (s_s)
+                if (s_s) {
+                    s.scores = [];
                     s_s.forEach(x => {
                         s.scores.push(x);
                     });
+                }
+
 
                 const s_r = reminders?.filter(x => x.studentId == s.id);
-                if (s_r)
+                if (s_r) {
+                    s.reminders = [];
                     s_r.forEach(x => {
                         s.reminders.push(x);
                     });
+                }
+
 
                 const s_n = notes?.filter(x => x.studentId == s.id);
-                if (s_n)
+                if (s_n) {
+                    s.notes = [];
                     s_n.forEach(x => {
                         s.notes.push(x);
                     });
+                }
 
                 s.hasAssessment = assesments?.filter(x => x.studentId == s.id).length > 0;
 

@@ -7,7 +7,8 @@ import { ReminderType } from 'src/app/models/remider';
 import { StudentModel } from 'src/app/models/student';
 import { v4 as uuidv4 } from 'uuid';
 import { AssessmentService } from 'src/app/api/assessment.service';
-import { AssessParamModel } from 'src/app/models/asses-param';
+import { AssessParamterModel } from 'src/app/models/asses-param';
+import { Days } from 'src/app/models/day';
 
 @Component({
     selector: 'app-score',
@@ -40,13 +41,22 @@ export class ScoreComponent implements OnInit {
     posNeg: string;
     notes: string;
     rate: number;
-    selectedeParameter: AssessParamModel;
+    selectedeParameter: AssessParamterModel;
     // param: AssessParamModel;
 
-    assesmentParamters: AssessParamModel[];
+    assesmentParamters: AssessParamterModel[];
 
     constructor(private assessmentService: AssessmentService) {
+        const d = new Date();
+        for (let i = 1; i < 15; i++) {
+            var date = new Date();
+            date.setDate(date.getDate() + i);
+            const dateDay = new Intl.DateTimeFormat('en-US-u-ca-persian', { day: 'numeric' }).format(date);
 
+            const dayName = Days[(date.getDay() + 1) % 7].symbol;
+
+            this.nextDays.push({ dayNo: parseInt(dateDay), dayName: dayName, date: date });
+        }
     }
 
     ngOnInit() {
@@ -93,6 +103,8 @@ export class ScoreComponent implements OnInit {
         if (this.expanded)
             return 1;
         else
-            return 1 - ((this.prevScores.length - 1) - index) * 0.05;
+            return 1 - ((this.prevScores.length - 1) - index) * 0.08;
     }
+
+    nextDays: { dayNo: number, dayName: string, date: Date }[] = [];
 }

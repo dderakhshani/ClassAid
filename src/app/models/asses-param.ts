@@ -4,24 +4,28 @@ export class AssessmentModel {
     eduParameterTitle: string;
     lessonId: number;
     subLessonId: number;
-    level: number;
+    level: number = 0;
     studentId: number;
     teacherId: number;
     time: Date | null;
     regTimePersian: string;
     taskId: string | null;
-    homeWorkId: number;
+    homeWorkId: string;
 
     note: string;
+
+    get accessLevel(): AssessMeasureLevel {
+        return AssessmentLevels.find(x => x.value == this.level);
+    }
 }
 
-export interface ScoreAssessmentModel extends AssessmentModel {
+export class ScoreAssessmentModel extends AssessmentModel {
 
     progerssStep?: number;
     progerssFlag?: number;
 }
 
-export class AssessParamModel {
+export class AssessParamterModel {
     id: number;
     title: string;
     level: number;
@@ -37,7 +41,7 @@ export enum AssessmentParamType {
     Attitude
 }
 
-export class StudentAssessParamModel extends AssessParamModel {
+export class StudentAssessParamModel extends AssessParamterModel {
 
     avgValue: number;
 }
@@ -55,7 +59,7 @@ export interface AssessMeasureLevel {
 
 
 export const AssessmentLevels: AssessMeasureLevel[] = [
-    { title: "ارزشیابی ثبت نشده", shortTitle: 'بدون داده', value: 0, color: "", bdColor: "", ionColor: "", ionIcon: "" },
+    { title: "ارزشیابی نشده", shortTitle: 'بدون داده', value: 0, color: "", bdColor: "text-gray", ionColor: "medium", ionIcon: "" },
     { title: "نیاز به تلاش", shortTitle: 'ن.ب.ت', value: 1, color: "", bdColor: "text-danger", ionColor: "danger", ionIcon: "alert-circle-outline" },
     { title: "قابل قبول", shortTitle: 'ق.ق', value: 2, color: "", bdColor: "text-warning", ionColor: "warning", ionIcon: "caret-back-circle-outline" },
     { title: "خوب", shortTitle: 'خ', value: 3, color: "", bdColor: "text-primary", ionColor: "secondary", ionIcon: "checkmark-circle-outline" },

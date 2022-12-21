@@ -110,5 +110,12 @@ export class ClassService {
         });
     }
 
+    getHomeWorkById(homeWorkId: string): Promise<HomeWorkModel> {
+        return new Promise(resolve => {
+            this.httpService.http.getDataByParam<HomeWorkModel>({ homeWorkId: homeWorkId }, "class/GetHomeWorkById").then(data => {
+                return resolve(data);
+            });
+        });
+    }
 
 }

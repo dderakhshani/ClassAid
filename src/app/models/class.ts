@@ -1,6 +1,6 @@
 import { HomeWorkModel } from 'src/app/models/home-work';
 import { Lesson } from 'src/app/models/lessons';
-import { AssessmentModel, AssessParamModel, ScoreAssessmentModel } from './asses-param';
+import { AssessmentModel, ScoreAssessmentModel } from './asses-param';
 import { Reminder } from './remider';
 
 export interface ClassModel {

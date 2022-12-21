@@ -4,12 +4,13 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AssessmentService } from 'src/app/api/assessment.service';
 import { LessonService } from 'src/app/api/lesson.service';
 import { StudentsService } from 'src/app/api/students.service';
-import { AssessMeasureLevel, AssessmentLevels, AssessmentModel, AssessParamModel } from 'src/app/models/asses-param';
+import { AssessMeasureLevel, AssessmentLevels, AssessmentModel, AssessParamterModel } from 'src/app/models/asses-param';
 import { Lesson } from 'src/app/models/lessons';
 import { StudentModel } from 'src/app/models/student';
 import { ChartService } from 'src/app/services/chart.service';
 import { GlobalService } from 'src/app/services/global.service';
 import { v4 as uuidv4 } from 'uuid';
+import { LoadingController } from '@ionic/angular';
 
 @Component({
     selector: 'app-assessment',
@@ -28,7 +29,7 @@ export class AssessmentPage implements OnInit {
     book: Lesson;
 
     student: StudentModel;
-    paramters: AssessParamModel[] = [];
+    paramters: AssessParamterModel[] = [];
     currentLevel: AssessMeasureLevel = AssessmentLevels[2];
     assessLevels = [...AssessmentLevels.filter(x => x.value != 0)];
     chartOptions: any;
@@ -40,6 +41,7 @@ export class AssessmentPage implements OnInit {
         private chartService: ChartService,
         private route: ActivatedRoute,
         private location: Location,
+        private loadingCtrl: LoadingController,
         private router: Router) {
 
         this.sessionIdParam = this.route.snapshot.paramMap.get('sessionId');
@@ -79,7 +81,7 @@ export class AssessmentPage implements OnInit {
     ngOnInit() {
     }
 
-    selectMeasure(param: AssessParamModel, value: AssessMeasureLevel) {
+    selectMeasure(param: AssessParamterModel, value: AssessMeasureLevel) {
         if (param.level == value.value) {
             param.level = 0;
         }
@@ -93,7 +95,7 @@ export class AssessmentPage implements OnInit {
         });
     }
 
-    save() {
+    async save() {
         let assessments = [];
         this.paramters.forEach(p => {
             if (p.level > 0) {
@@ -113,9 +115,13 @@ export class AssessmentPage implements OnInit {
                 assessments.push(assessModel);
             }
 
-        })
+        });
+
+        const loading = await this.loadingCtrl.create();
+        loading.present();
 
         this.assessmentService.add(assessments).then(result => {
+            loading.dismiss();
             this.student.hasAssessment = true;
             this.location.back();
         })

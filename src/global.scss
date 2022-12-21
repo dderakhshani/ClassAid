@@ -101,6 +101,12 @@ ion-header {
     z-index: 100;
 }
 
+.horizontal-row {
+    flex-wrap: nowrap;
+    overflow-x: scroll;
+    overflow-y: hidden;
+}
+
 ion-button[shape=circle] {
     --border-radius: 50%;
     width: 56px;
@@ -123,6 +129,15 @@ ion-button[shape=circle] {
 ion-item {
     ion-icon[slot="start"] {
         margin-inline-end: 8px;
+    }
+}
+
+.bg-section {
+    border-radius: 1rem;
+    background-color: #f5f5f5;
+
+    ion-item {
+        --background: transparent;
     }
 }
 

@@ -4,14 +4,14 @@ import { Routes, RouterModule } from '@angular/router';
 import { HomeWorkPage } from './home-work.page';
 
 const routes: Routes = [
-  {
-    path: '',
-    component: HomeWorkPage
-  }
+    {
+        path: ':homeWorkId',
+        component: HomeWorkPage
+    }
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule],
+    imports: [RouterModule.forChild(routes)],
+    exports: [RouterModule],
 })
-export class HomeWorkPageRoutingModule {}
+export class HomeWorkPageRoutingModule { }
