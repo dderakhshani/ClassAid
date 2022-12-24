@@ -14,6 +14,7 @@ export class AssessmentModel {
 
     note: string;
 
+    studentFullName: number;
     get accessLevel(): AssessMeasureLevel {
         return AssessmentLevels.find(x => x.value == this.level);
     }
@@ -59,9 +60,9 @@ export interface AssessMeasureLevel {
 
 
 export const AssessmentLevels: AssessMeasureLevel[] = [
-    { title: "ارزشیابی نشده", shortTitle: 'بدون داده', value: 0, color: "", bdColor: "text-gray", ionColor: "medium", ionIcon: "" },
-    { title: "نیاز به تلاش", shortTitle: 'ن.ب.ت', value: 1, color: "", bdColor: "text-danger", ionColor: "danger", ionIcon: "alert-circle-outline" },
-    { title: "قابل قبول", shortTitle: 'ق.ق', value: 2, color: "", bdColor: "text-warning", ionColor: "warning", ionIcon: "caret-back-circle-outline" },
-    { title: "خوب", shortTitle: 'خ', value: 3, color: "", bdColor: "text-primary", ionColor: "secondary", ionIcon: "checkmark-circle-outline" },
-    { title: "خیلی خوب", shortTitle: 'خ.خ', value: 4, color: "", bdColor: "text-success", ionColor: "success", ionIcon: "checkmark-done-circle-outline" }
+    { title: "ارزشیابی نشده", shortTitle: 'بدون داده', value: 0, color: "#92949c", bdColor: "text-gray", ionColor: "medium", ionIcon: "" },
+    { title: "نیاز به تلاش", shortTitle: 'ن.ب.ت', value: 1, color: "#eb445a", bdColor: "text-danger", ionColor: "danger", ionIcon: "alert-circle-outline" },
+    { title: "قابل قبول", shortTitle: 'ق.ق', value: 2, color: "#ffc409", bdColor: "text-warning", ionColor: "warning", ionIcon: "caret-back-circle-outline" },
+    { title: "خوب", shortTitle: 'خ', value: 3, color: "#4E7DF1", bdColor: "text-primary", ionColor: "secondary", ionIcon: "checkmark-circle-outline" },
+    { title: "خیلی خوب", shortTitle: 'خ.خ', value: 4, color: "#2dd36f", bdColor: "text-success", ionColor: "success", ionIcon: "checkmark-done-circle-outline" }
 ]

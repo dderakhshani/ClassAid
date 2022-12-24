@@ -26,7 +26,7 @@ export class LessonService {
                 return resolve(this.books$.value.filter(x => x.gradeId == gradeId
                     || (x.schoolId && x.schoolId == schoolId)));
             else
-                this.httpService.http.getData<Lesson[]>("lesson/getAll").then(r => {
+                this.httpService.http.getDataByParam<Lesson[]>({ gradeId: gradeId }, "lesson/GetByGrade").then(r => {
                     const allLessons = r.map(x => Object.assign(new Lesson(), x));
                     const books = allLessons.filter(x => x.parentId == null && x.schoolId);
                     this.allLessons$.next(allLessons);

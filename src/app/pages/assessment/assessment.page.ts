@@ -11,6 +11,7 @@ import { ChartService } from 'src/app/services/chart.service';
 import { GlobalService } from 'src/app/services/global.service';
 import { v4 as uuidv4 } from 'uuid';
 import { LoadingController } from '@ionic/angular';
+import { StatReportModel } from 'src/app/models/stats-serie';
 
 @Component({
     selector: 'app-assessment',
@@ -30,7 +31,8 @@ export class AssessmentPage implements OnInit {
 
     student: StudentModel;
     paramters: AssessParamterModel[] = [];
-    currentLevel: AssessMeasureLevel = AssessmentLevels[2];
+    avg: number;
+    currentLevel: AssessMeasureLevel;
     assessLevels = [...AssessmentLevels.filter(x => x.value != 0)];
     chartOptions: any;
 
@@ -48,6 +50,15 @@ export class AssessmentPage implements OnInit {
         this.lessonIdParam = Number(this.route.snapshot.paramMap.get('lessonId'));
         this.studentIdParam = Number(this.route.snapshot.paramMap.get('studentId'));
 
+
+
+
+    }
+
+    ngOnInit() {
+    }
+
+    ionViewWillEnter() {
         this.globalService.ready$.subscribe(ready => {
             if (ready) {
 
@@ -55,30 +66,38 @@ export class AssessmentPage implements OnInit {
                     this.student = x;
                 });
 
+
+
                 //Can read book and lesson from CurrentSession but there are some assessment without class session
-                lessonService.getLessonById(this.lessonIdParam).then(l => {
+                this.lessonService.getLessonById(this.lessonIdParam).then(l => {
                     this.lesson = l;
                     this.lessonService.getLessonById(l.parentId).then(b => {
                         this.book = b;
-                        this.paramters = [...this.assessmentService.getLessonParametersSync(b.id)];
+                        this.paramters = this.globalService.cloneArray(this.assessmentService.getLessonParametersSync(b.id));
 
+                        this.assessmentService.getParamterAssessment(this.globalService.selectedClass.id, this.studentIdParam, this.book.id).then(data => {
+                            this.initChart(data);
+                            const sum = data.map(x => x.value).reduce((old, current) => old + current);
+                            this.avg = sum / data.length;
+                            this.currentLevel = this.globalService.findLevelByValue(this.avg);
+                        });
                     });
                 });
             }
         })
-
-        this.chartOptions = this.chartService.createSingleSerieChart(
-            [{ name: '1', value: 4, itemStyle: { color: '#2cae65' } },
-            { name: '2', value: 2, itemStyle: { color: '#ffca22' } },
-            { name: '3', value: 3, itemStyle: { color: '#1472fd' } },
-            { name: '4', value: 1, itemStyle: { color: '#dd4150' } },
-            { name: '5', value: 2, itemStyle: { color: '#ffca22' } }
-            ],
-            { name: 'وضعیت هر پارامتر', type: 'bar' }
-        )
     }
 
-    ngOnInit() {
+    initChart(assesmentParams: StatReportModel[]) {
+        const series = assesmentParams.map(x => ({
+            name: x.title, value: x.value,
+            itemStyle: {
+                color: this.globalService.findLevelByValue(x.value).color
+            }
+        }))
+        this.chartOptions = this.chartService.createSingleSerieChart(
+            series,
+            { name: 'وضعیت هر پارامتر', type: 'bar' }
+        )
     }
 
     selectMeasure(param: AssessParamterModel, value: AssessMeasureLevel) {

@@ -42,7 +42,12 @@ export class ClassService {
 
 
     addTask(session: ClassSessionModel): Promise<boolean> {
-        return this.httpService.http.postJsonData<boolean>(session, "session/AddTask");
+        let pure_session = { ...session };
+        //remove client base data to prevent circular dependecies
+        pure_session.assessments = undefined;
+        pure_session.book = undefined;
+        pure_session.lesson = undefined;
+        return this.httpService.http.postJsonData<boolean>(pure_session, "session/AddTask");
     }
 
     endTask(taskId: string): Promise<boolean> {
@@ -50,6 +55,7 @@ export class ClassService {
     }
 
     addHomeWork(homeWork: HomeWorkModel): Promise<boolean> {
+
         return this.httpService.http.postJsonData<boolean>(homeWork, "class/AddHomeWork");
     }
 
@@ -57,8 +63,16 @@ export class ClassService {
         return this.httpService.http.getDataByParam<HomeWorkModel[]>({ lessonId: lessonId }, "class/GetLessonHomeWorks");
     }
 
+    getHomeWorkBySession(sessionId: string): Promise<HomeWorkModel[]> {
+        return this.httpService.http.getDataByParam<HomeWorkModel[]>({ sessionId: sessionId }, "class/GetHomeWorkBySession");
+    }
+
     getTodaySessionsByClass(classId: number): Promise<ClassSessionModel[]> {
         return this.httpService.http.getDataByParam<ClassSessionModel[]>({ classId: classId }, "session/GetTodaySessionsByClass");
+    }
+
+    getAllSessionsByClass(classId: number): Promise<ClassSessionModel[]> {
+        return this.httpService.http.getDataByParam<ClassSessionModel[]>({ classId: classId }, "session/GetAllSessionsByClass");
     }
 
     getSession(sessionId: string): Promise<ClassSessionModel> {

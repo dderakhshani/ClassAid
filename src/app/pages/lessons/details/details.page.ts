@@ -33,8 +33,10 @@ export class DetailsPage implements OnInit {
                     this.book = b;
                     this.lessonService.getLessonsByParentId(this.book.id).then(r => {
                         this.lessons = [...r];
+                        //TODO: Already filled globalService but must add new sessions
                         this.lessons.forEach(l => {
-                            l.sessionsCount = this.globalService.sessions.filter(x => x.subLessonId == l.id).length;
+                            l.sessions = this.globalService.sessions.filter(x => x.subLessonId == l.id)
+                            l.sessionsCount = l.sessions.length;
                         })
                     });
                 });
@@ -108,11 +110,11 @@ export class DetailsPage implements OnInit {
     }
 
     viewClass(lesson: Lesson) {
-        //TODO:
-        //Load sessions
-        //if there is one redirect instantly
-        //if more than one, show select dialog then redirect to selected session
-        // this.router.navigateByUrl(`/tabs/reports/class-report/${schedule.session.id}`);
+        if (lesson.sessions && lesson.sessions.length > 0)
+            this.router.navigateByUrl(`/tabs/reports/class-report/${lesson.sessions[lesson.sessions.length - 1].id}`);
+        else {
+            // select session;
+        }
     }
 
 }

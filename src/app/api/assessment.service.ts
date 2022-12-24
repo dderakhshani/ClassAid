@@ -2,6 +2,7 @@ import { HomeWorkModel } from './../models/home-work';
 import { Injectable } from '@angular/core';
 import { HttpService } from '../core/services/http.service';
 import { AssessmentModel, AssessParamterModel } from '../models/asses-param';
+import { StatReportModel } from '../models/stats-serie';
 
 @Injectable({
     providedIn: 'root'
@@ -46,5 +47,9 @@ export class AssessmentService {
 
     getLessonParametersSync(lessonId: number) {
         return this.assesmentParamters.filter(x => x.lessonId == lessonId);
+    }
+
+    getParamterAssessment(classId: number, studentId?: number, lessonId?: number): Promise<StatReportModel[]> {
+        return this.httpService.http.getDataByParam<StatReportModel[]>({ classId: classId, studentId: studentId, lessonId: lessonId }, "assessment/GetParamterAssessment");
     }
 }

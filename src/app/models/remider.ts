@@ -46,5 +46,6 @@ export interface LessonNotes extends Note {
 
 export interface StudentNotes extends Note {
     studentId: number;
+    studentFullName: number;
     taskId: string;
 }

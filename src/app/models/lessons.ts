@@ -1,5 +1,6 @@
 import { environment } from "src/environments/environment";
 import { AssessMeasureLevel } from "./asses-param";
+import { ClassSessionModel } from "./class";
 
 export class Lesson {
     id: number;
@@ -23,6 +24,7 @@ export class Lesson {
 
     subLessonCount: number;
     sessionsCount: number;
+    sessions?: ClassSessionModel[];
     lastSessionLesson: Lesson;
     avgAssessValue: number;
     avgAssess: AssessMeasureLevel;

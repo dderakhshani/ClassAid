@@ -36,8 +36,8 @@
                     <ion-label>وضعیت کلی:
 
                     </ion-label>
-                    <ion-badge [color]="currentLevel.ionColor" class="px-3 py-2 animated">
-                        <span class="min">{{currentLevel.title}} </span>
+                    <ion-badge [color]="currentLevel?.ionColor" class="px-3 py-2 animated">
+                        <span class="min">{{currentLevel?.title}} &nbsp;| {{avg|number:'1.1-1'}}</span>
                     </ion-badge>
                 </ion-item>
                 <hr *ngIf="cardExpanded">
@@ -59,7 +59,7 @@
             <div *ngFor="let param of paramters;let index=index;" class="pt-2">
                 <b> {{index+1}}.&nbsp;{{param.title}}</b>
                 <ion-segment [scrollable]="true" [(ngModel)]="param.level" mode="ios">
-                    <ion-segment-button (click)="selectMeasure(param,am)" value="{{am.value}}" class="{{am.bdColor}}" *ngFor="let am of assessLevels">
+                    <ion-segment-button (click)="selectMeasure(param,am)" [class.selected]="param.level==am.value" value="{{am.value}}" class="{{am.bdColor}}" *ngFor="let am of assessLevels">
                         <ion-icon [name]="am.ionIcon"></ion-icon>
                         <ion-label>
                             {{am.title}}

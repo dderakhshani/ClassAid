@@ -1,0 +1,111 @@
+<div class="avatar d-flex flex-column align-items-center">
+    <ion-card class="d-flex align-items-center justify-content-center">
+        <ion-avatar>
+            <img alt="Avatar-Student" [src]="student?.getImageUrl()" onerror="this.src='/assets/img/avatar.webp'" />
+        </ion-avatar>
+    </ion-card>
+</div>
+<ion-header class="content-header ion-no-border" collapse="fade">
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button></ion-back-button>
+        </ion-buttons>
+        <ion-title>پروفایل {{student?.fullName}}</ion-title>
+
+    </ion-toolbar>
+
+</ion-header>
+
+<ion-content class="round-content">
+    <div class="d-flex flex-column align-items-center pt-3">
+
+        <b> {{student?.fullName}}</b>
+
+    </div>
+    <div class="px-3 pb-4" *ngIf="student">
+        <ion-card>
+            <ion-grid fixed>
+                <ion-row>
+                    <ion-col size="4">
+                        <div class="d-flex flex-column align-items-center  justify-content-around" style="height: 100%;">
+                            امتیاز
+                            <ion-badge color="warning" class="score-rate" mode="ios">
+                                <ion-icon src="../../../../assets/coins.svg" class="me-2" size="small">
+                                </ion-icon>
+                                <span> {{student.positiveScore+student.negetiveScore}}</span>
+                            </ion-badge>
+                            <div>
+                                <ion-badge color="success" class="score-rate" mode="ios">
+                                    {{student.positiveScore}}
+                                </ion-badge>
+                                <ion-badge color="danger" class="score-rate" mode="ios">
+                                    {{student.negetiveScore}}
+                                </ion-badge>
+                            </div>
+                        </div>
+
+                    </ion-col>
+                    <ion-col size="4">
+                        <div class="d-flex flex-column align-items-center justify-content-around" style="height: 100%;">
+                            ارزشیابی
+                            <ion-badge [color]="student.avgAssessmentLevel.ionColor" class="px-3 py-2">
+                                <span>{{student.avgAssessmentLevel.title}}</span>
+                            </ion-badge>
+                            <ion-badge [color]="student.avgAssessmentLevel.ionColor" class="px-3 py-2">
+                                <span>{{student.avgAssessment}}</span>
+                            </ion-badge>
+                        </div>
+                    </ion-col>
+                    <ion-col size="4">
+                        <div class="d-flex flex-column align-items-center justify-content-around">
+                            حضور
+                            <div echarts [options]="attendanceChartOptions()" class="widget-chart" theme="roma"></div>
+                        </div>
+
+                    </ion-col>
+                </ion-row>
+            </ion-grid>
+        </ion-card>
+
+        <app-expandable-section>
+            <h4>بهترین توانمندی ها</h4>
+            <ion-item *ngFor="let score of student.accScores">
+                <ion-avatar slot="start">
+                    <ion-icon [src]="imageUrl+'/parameters/param_'+score.id+'.svg'" size="large"></ion-icon>
+                </ion-avatar>
+                <ion-label>
+                    {{score.title}}
+                </ion-label>
+                <ion-badge slot="end" color="success" class="score-rate" mode="ios"> {{score.value}}</ion-badge>
+            </ion-item>
+        </app-expandable-section>
+
+        <app-expandable-section>
+            <h4>
+                ارزشیابی درسی
+            </h4>
+            <ion-grid fixed>
+                <ion-row *ngFor="let ass of student.accAssessments">
+                    <ion-col size="12">
+                        <div class="assess-item d-flex align-items-center">
+                            <ion-avatar class="ms-1">
+                                <img alt="Avatar" [src]="imageUrl+'/lessons_org/grade_5/c_'+ass.id+'.jpg'" />
+                            </ion-avatar>
+                            <span class="label">
+                                {{ass.title}}
+                            </span>
+                            <div class="progress green ms-2">
+                                <div class="progress-value" [style.width]="(ass.value/4) '%'"></div>
+                            </div>
+                            <ion-badge color="success" class="px-3 py-2">
+                                <span>{{ass.color}}</span>
+                            </ion-badge>
+                        </div>
+                    </ion-col>
+                </ion-row>
+
+            </ion-grid>
+        </app-expandable-section>
+
+    </div>
+</ion-content>

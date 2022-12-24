@@ -1,3 +1,4 @@
+import { HomeWorkModel } from './../../../models/home-work';
 import { ScoreAssessmentModel } from './../../../models/asses-param';
 import { AttendanceModel, AttendanceStatus } from './../../../models/attendance-model';
 import { AssessmentModel } from 'src/app/models/asses-param';
@@ -9,7 +10,7 @@ import { AlertController } from '@ionic/angular';
 import { Lesson } from 'src/app/models/lessons';
 import { Reminder } from 'src/app/models/remider';
 import { StudentModel } from 'src/app/models/student';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { LessonService } from 'src/app/api/lesson.service';
 import { StudentsService } from 'src/app/api/students.service';
 import { AssessmentService } from 'src/app/api/assessment.service';
@@ -18,6 +19,7 @@ import { ChartService } from 'src/app/services/chart.service';
 import { ReminderService } from 'src/app/api/reminder.service';
 import { init } from 'echarts';
 import { environment } from 'src/environments/environment';
+import { Share } from '@capacitor/share';
 
 @Component({
     selector: 'app-class-report',
@@ -42,6 +44,7 @@ export class ClassReportPage implements OnInit {
     student_reminders: StudentReminder[];
     scores: ScoreAssessmentModel[];
     assessments: AssessmentModel[];
+    homeWorks: HomeWorkModel[];
     notes_expanded = false;
     notes_expandable = true;
     notes_expanded2 = false;
@@ -57,6 +60,7 @@ export class ClassReportPage implements OnInit {
         private assessmentService: AssessmentService,
         private reminderService: ReminderService,
         public globalService: GlobalService,
+        private router: Router,
         private chartService: ChartService,) {
         this.sessionIdParam = this.route.snapshot.paramMap.get('sessionId');
     }
@@ -79,6 +83,10 @@ export class ClassReportPage implements OnInit {
 
             this.classService.getSessionCallRolls(session.id).then(data => {
                 this.absentStudents = data.filter(x => x.status == 2 || x.status == 3);
+            });
+
+            this.classService.getHomeWorkBySession(session.id).then(data => {
+                this.homeWorks = data;
             })
 
             Promise.all(
@@ -125,32 +133,39 @@ export class ClassReportPage implements OnInit {
             title += this.studentsService.getStudentsByIdSync((note as StudentNotes).studentId).fullName + ' ';
         title += this.lessonService.getLessonByIdSynce(note.lessonId).name;
 
-        let blob = undefined;
-        if (note.images)
-            blob = await fetch(environment.imageUrl + '/' + note.images[0], {
-                mode: 'no-cors',
-                method: 'get'
-            }).then(r => r.blob())
+        // let blob = undefined;
+        // if (note.images)
+        //     blob = await fetch(environment.imageUrl + '/' + note.images[0], {
+        //         mode: 'no-cors',
+        //         method: 'get'
+        //     }).then(r => r.blob())
 
 
-        const data = {
-            files: blob ? ([
-                new File([blob], 'file.jpg', {
-                    type: blob.type,
-                }),
-            ]) : undefined,
+        // const data = {
+        //     files: blob ? ([
+        //         new File([blob], 'file.jpg', {
+        //             type: blob.type,
+        //         }),
+        //     ]) : undefined,
+        //     title: title,
+        //     text: note.note,
+        // };
+
+        await Share.share({
             title: title,
             text: note.note,
-        };
+            url: environment.imageUrl + '/' + note.images[0],
+            dialogTitle: 'اشتراک گزارش',
+        });
 
-        try {
-            // if (!(navigator.canShare(data))) {
-            //     throw new Error("Can't share data.");
-            // }
-            await navigator.share(data);
-        } catch (err) {
-            console.error(err.name, err.message);
-        }
+        // try {
+        //     // if (!(navigator.canShare(data))) {
+        //     //     throw new Error("Can't share data.");
+        //     // }
+        //     await navigator.share(data);
+        // } catch (err) {
+        //     console.error(err.name, err.message);
+        // }
 
     }
 
@@ -162,10 +177,10 @@ export class ClassReportPage implements OnInit {
             return 1 - ((data.length - 1) - index) * 0.05;
     }
 
-    async showReminder(remidner: Reminder) {
+    async showReminder(score: ScoreAssessmentModel) {
         const alert = await this.alertController.create({
             header: 'یادداشت ',
-            message: remidner.note,
+            message: score.note,
             buttons: [
                 {
                     text: 'بستن',
@@ -175,6 +190,10 @@ export class ClassReportPage implements OnInit {
         });
 
         await alert.present();
+    }
+
+    assessHomeWork(homeWork: HomeWorkModel) {
+        this.router.navigateByUrl(`tabs/home-work/${homeWork.id}`)
     }
 
 }

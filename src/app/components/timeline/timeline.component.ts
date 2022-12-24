@@ -37,10 +37,10 @@ export class TimelineComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.schedules.forEach(x => {
-            const i = Math.floor(Math.random() * 4);
-            x.lesson.avgAssess = AssessmentLevels[i];
-        })
+        // this.schedules.forEach(x => {
+        //     const i = Math.floor(Math.random() * 4);
+        //     x.lesson.avgAssess = AssessmentLevels[i];
+        // })
     }
 
     getSchedule(ring: Ring) {

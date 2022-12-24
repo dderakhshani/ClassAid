@@ -11,6 +11,14 @@ export interface StatsSerie {
     itemStyle: any;
 }
 
+export interface StatReportModel {
+    title: string;
+    id: number;
+    value: number;
+    type: number;
+    color: string;
+}
+
 
 export interface NameValue {
 

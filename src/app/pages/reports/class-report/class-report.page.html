@@ -112,22 +112,45 @@
             <div>
                 <h4> مشاهدات و امتیازات :</h4>
             </div>
-            <div style="overflow-x: auto;">
-                <div class="d-flex flex-wrap">
-                    <div *ngFor="let s of scores" class="attendance me-3">
-                        <ion-avatar slot="start" (click)="showReminder(s)" class="d-flex flex-column align-items-center">
-                            <img alt="avatar-Student" [src]="studentModel.getImageUrl(s.studentId)" onerror="this.src='/assets/img/avatar.webp'" />
 
-                            <ion-icon color="success" size="large" name="add-circle" *ngIf="s.positiveNegetive"></ion-icon>
-                            <ion-icon color="danger" name="remove-circle" size="large" *ngIf="!s.positiveNegetive"></ion-icon>
+            <ion-grid class="ion-no-padding">
+                <ion-row>
+                    <ion-col size="4">
+                        <ion-card class="score flex-fill" *ngFor="let s of scores">
+                            <div class="flag">
 
-                        </ion-avatar>
-                        <span>
-                            {{s.studentFullName}}
-                        </span>
-                    </div>
-                </div>
-            </div>
+                                <ion-icon color="success" size="large" name="add-circle" *ngIf="s.progerssFlag>0"></ion-icon>
+                                <ion-icon color="danger" name="remove-circle" size="large" *ngIf="s.progerssFlag<0"></ion-icon>
+                            </div>
+                            <!-- Avatar -->
+                            <div class="d-flex justify-content-center pt-2">
+                                <ion-avatar slot="start">
+                                    <img alt="Avatar-Student" [src]="studentModel.getImageUrl(s.studentId)" onerror="this.src='/assets/img/avatar.webp'" />
+                                </ion-avatar>
+                            </div>
+
+                            <ion-card-header class="p-1">
+                                <ion-card-subtitle class="text-center">
+                                    {{s.studentFullName}}
+                                </ion-card-subtitle>
+                            </ion-card-header>
+                            <ion-card-content class="px-2 pt-0 pb-1 d-flex justify-content-center">
+                                <ion-badge *ngIf="s.progerssStep>0" color="warning" class="score-rate" mode="ios">
+                                    <ion-icon src="../../../../assets/coins.svg" class="me-2" size="small">
+                                    </ion-icon>
+                                    <span> {{s.progerssStep}}</span>
+                                </ion-badge>
+                                <!-- <ion-badge *ngIf="s.note" class="note" color="warning" mode="ios">
+                                            <ion-icon name="document-text-outline" size="small"></ion-icon>
+                                        </ion-badge> -->
+                            </ion-card-content>
+                        </ion-card>
+                    </ion-col>
+
+                </ion-row>
+            </ion-grid>
+
+
 
             <div *ngIf="scores?.length==0" class="no-items">
                 <ion-icon slot="start" name="star-outline" size="large"></ion-icon>
@@ -152,12 +175,13 @@
                             </ion-slide>
                         </ion-slides>
                         <ion-item lines="none">
-                            <ion-avatar slot="start">
-                                <ion-icon name="document-text-outline" color="secondary" size="large" *ngIf="!n.isReport"></ion-icon>
-                                <ion-icon name="document-text-outline" color="warning" size="large" *ngIf="n.isReport"></ion-icon>
+                            <ion-avatar slot="start" *ngIf="n.type">
+                                <img alt="avatar-Student" [src]="studentModel.getImageUrl(n.studentId)" onerror="this.src='/assets/img/avatar.webp'" />
                             </ion-avatar>
+
                             <ion-label>
                                 <ion-note> {{n.remindTime | date}}</ion-note>
+                                <h3>{{n.studentFullName}}</h3>
                                 <p> {{n.note}}</p>
                             </ion-label>
 
@@ -260,6 +284,31 @@
             </div>
         </div>
 
+        <!-- HomeWorks List -->
+        <div class="p-2 mt-3 bg-section">
+            <ion-item lines="none">
+                <ion-icon name="alarm-outline" slot="start"></ion-icon>
+                <ion-label>
+                    <h1>تکالیف ها و تمرین ها:</h1>
+                </ion-label>
+            </ion-item>
+            <ion-card class="home-work" color="success" *ngFor="let homeWork of homeWorks" (click)="assessHomeWork(homeWork)">
+                <ion-item lines="none" color="success">
+                    <ion-avatar slot="start">
+                        <ion-icon name="library-outline" size="large"></ion-icon>
+                    </ion-avatar>
+                    <ion-label>
+
+                        <h3> {{homeWork.title}}</h3>
+                        <p> {{homeWork.description}}</p>
+                    </ion-label>
+                </ion-item>
+                <!-- <div class="d-flex flex-row-reverse px-2">
+                <ion-button fill="outline" color="light" (click)="homeWork=undefined">بعدا</ion-button>
+                <ion-button fill="outline" color="light" (click)="assessHomeWork()">ارزیابی</ion-button>
+            </div> -->
+            </ion-card>
+        </div>
 
 
     </div>

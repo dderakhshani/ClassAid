@@ -1,4 +1,4 @@
-import { AssessmentModel, AssessParamterModel, ScoreAssessmentModel } from './../models/asses-param';
+import { AssessmentLevels, AssessmentModel, AssessParamterModel, ScoreAssessmentModel } from './../models/asses-param';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { StudentReminder, LessonReminder, ReminderType, Reminder } from './../models/remider';
 import { ReminderService } from './../api/reminder.service';
@@ -23,6 +23,7 @@ const CLASS_STORAGE = "CLASSAID_CLASS";
     providedIn: 'root'
 })
 export class GlobalService {
+
 
     public teacherId: number;
     public todayDay: number;
@@ -54,14 +55,7 @@ export class GlobalService {
 
         this.todayDay = (new Date().getDay() + 1) % 7;
 
-        //TODO: must remove and load from server
-        // const currentClassJson = this.storageService.loadStorage(CLASS_STORAGE);
-        // if (currentClassJson) {
-        //     this.currentSession = JSON.parse(currentClassJson);
-        //     this.currentSession.book = Object.assign(new Lesson(), this.currentSession.book);
-        //     this.currentSession.lesson = Object.assign(new Lesson(), this.currentSession.lesson);
 
-        // }
 
     }
 
@@ -112,10 +106,11 @@ export class GlobalService {
             //2,3. Loading Rings
             Promise.all(
                 [this.classService.getTodaySessionsByClass(vClass.id),
+                this.classService.getAllSessionsByClass(vClass.id),
                 this.scheduleService.getRings(vClass.schoolId, vClass.gradeId)])
-                .then(async ([sessions, rings]) => {
+                .then(async ([today_sessions, sessions, rings]) => {
                     //2.Step: 
-                    await this.initSessionsAsync(sessions, books);
+                    await this.initSessionsAsync(today_sessions, sessions, books);
 
                     this.rings = rings;
                     //4. Loading Schedules
@@ -131,7 +126,7 @@ export class GlobalService {
                             this.todayShedules = [...schdule.scheduleTimes.filter(x => x.dayNo == this.todayDay)];
                             this.todayShedules.forEach(sch => {
                                 //4.3 
-                                sch.session = sessions.find(x => x.scheduleTimeId == sch.id);
+                                sch.session = today_sessions.find(x => x.scheduleTimeId == sch.id);
                             })
                         }
 
@@ -150,24 +145,29 @@ export class GlobalService {
         return this.classSessions$.value;
     }
 
-    async initSessionsAsync(sessions: ClassSessionModel[], books: Lesson[]): Promise<boolean> {
+    async initSessionsAsync(today_sessions: ClassSessionModel[], sessions2: ClassSessionModel[], books: Lesson[]): Promise<boolean> {
         return new Promise(async resolve => {
-            sessions.forEach(s => {
+            sessions2.forEach(s => {
+                s.book = books.find(x => x.id == s.lessonId);
+                s.lesson = this.lessonService.allLessons$.value.find(x => x.id == s.subLessonId);
+            });
+            today_sessions.forEach(s => {
+                s.avgAssessMeasure = this.findLevelByValue(s.averageAssessment);
                 s.book = books.find(x => x.id == s.lessonId);
                 s.lesson = this.lessonService.allLessons$.value.find(x => x.id == s.subLessonId);
             });
             //2.2 Proccesing and applying stats of each lesson
-            this.initBooks(books, sessions);
+            this.initBooks(books, sessions2);
 
             //2.3 find currentSession and its reminders
-            this.currentSession = sessions.find(x => x.endTime == null);
+            this.currentSession = today_sessions.find(x => x.endTime == null);
 
             if (this.currentSession) {
-                await this.initCurrentSessionAsync(sessions);
+                await this.initCurrentSessionAsync(today_sessions);
             }
             else
 
-                this.classSessions$.next(sessions);
+                this.classSessions$.next(sessions2);
 
             return resolve(true);
         });
@@ -177,6 +177,7 @@ export class GlobalService {
     initBooks(books: Lesson[], sessions: ClassSessionModel[]) {
         books.forEach(b => {
             const book_sessions = sessions.filter(x => x.lessonId == b.id);
+            //b.sessions = this.sessions.filter(x => x.lessonId == b.id);
             b.sessionsCount = book_sessions.length;
             if (book_sessions.length > 0) {
                 const lastLessonId = book_sessions[book_sessions.length - 1].subLessonId;
@@ -245,5 +246,13 @@ export class GlobalService {
             this.storageService.removeStorage(CLASS_STORAGE);
             this.classSessions$.next(sessions);
         });
+    }
+
+    findLevelByValue(value: number) {
+        return AssessmentLevels.find(x => x.value == Math.ceil(value))
+    }
+
+    cloneArray(array: any[]) {
+        return JSON.parse(JSON.stringify(array));
     }
 }

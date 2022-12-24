@@ -78,7 +78,7 @@ export class ClassPage implements OnInit {
                         });
                     });
                 }
-                this.homeWork = this.globalService.currentSession.homeWorks.find(x => x.creatorTaskId != this.globalService.currentSession.id);
+                this.homeWork = this.globalService.currentSession.homeWorks?.find(x => x.creatorTaskId != this.globalService.currentSession.id);
                 this.studentsService.getStudentsOfClass(this.globalService.selectedClass.id).then(students => {
                     this.students = [...students];
                     //Must set all reminders at once for student and display it by type

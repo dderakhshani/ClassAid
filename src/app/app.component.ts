@@ -5,7 +5,7 @@ import { StudentsService } from './api/students.service';
 import { IonRouterOutlet, LoadingController, Platform } from '@ionic/angular';
 import { AuthService } from './core/services/auth.service';
 import { combineLatest } from 'rxjs';
-
+import { Location } from '@angular/common'
 @Component({
     selector: 'app-root',
     templateUrl: 'app.component.html',
@@ -18,6 +18,7 @@ export class AppComponent implements OnInit {
         private loadingCtrl: LoadingController,
         private platform: Platform,
         private authService: AuthService,
+        private location: Location,
         private classService: ClassService) {
 
     }
@@ -41,7 +42,9 @@ export class AppComponent implements OnInit {
         })
 
         this.platform.backButton.subscribe(() => {
-            if (!this.routerOutlet.canGoBack())
+            if (window.history.length > 1)
+                this.location.back();
+            else
                 navigator['app'].exitApp();
         });
     }

@@ -1,6 +1,6 @@
 import { HomeWorkModel } from 'src/app/models/home-work';
 import { Lesson } from 'src/app/models/lessons';
-import { AssessmentModel, ScoreAssessmentModel } from './asses-param';
+import { AssessMeasureLevel, AssessmentModel, ScoreAssessmentModel } from './asses-param';
 import { Reminder } from './remider';
 
 export interface ClassModel {
@@ -21,12 +21,14 @@ export class ClassSessionModel {
     subLessonId: number;
     startTime: Date;
     endTime?: Date;
-
+    averageAssessment: number;
+    avgAssessMeasure: AssessMeasureLevel;
 
     book?: Lesson;
     lesson?: Lesson;
     class?: ClassModel;
     scheduleTimeId?: number;
+
 
     reminders: Reminder[] = [];
     notes: Reminder[];

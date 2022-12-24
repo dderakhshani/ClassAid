@@ -1,7 +1,9 @@
+import { AssessMeasureLevel } from 'src/app/models/asses-param';
 import { ScoreAssessmentModel } from './asses-param';
 import { environment } from "src/environments/environment";
 import { AttendanceStatus } from "./attendance-model";
-import { StudentNotes, StudentReminder } from "./remider";
+import { Note, StudentNotes, StudentReminder } from "./remider";
+import { StatReportModel } from './stats-serie';
 
 export class StudentModel {
 
@@ -37,4 +39,15 @@ export class StudentModel {
     static getImageUrl(studentId: number) {
         return `${environment.imageUrl}/students/student_${studentId}.jpg`;
     }
+}
+
+export class StudentProfileModel extends StudentModel {
+    attendancePercent: number;
+    avgAssessment: number;
+    positiveScore: number;
+    negetiveScore: number;
+    accScores: StatReportModel[];
+    accAssessments: StatReportModel[];
+
+    avgAssessmentLevel: AssessMeasureLevel;
 }

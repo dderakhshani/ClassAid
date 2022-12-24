@@ -141,6 +141,37 @@ ion-item {
     }
 }
 
+.progress {
+    width: 100%;
+    height: 15px;
+    border: 1px solid #ccc;
+    border-radius: 12px;
+
+    .progress-value {
+        display: inline-block;
+        background: rgb(18, 141, 198);
+    }
+}
+
+.progress.green {
+    .progress-value {
+        background: var(--ion-color-success);
+    }
+}
+
+.progress.blue {
+    .progress-value {
+        background: var(--ion-color-secondary);
+    }
+}
+
+.progress.yellow {
+    .progress-value {
+        background: var(--ion-color-warning);
+    }
+}
+
+
 .horizontal-row {
     flex-wrap: nowrap;
     overflow-x: scroll;

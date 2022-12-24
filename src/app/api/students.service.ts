@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { HttpService } from '../core/services/http.service';
 import { AttendanceStatus } from '../models/attendance-model';
-import { StudentModel } from '../models/student';
+import { StudentModel, StudentProfileModel } from '../models/student';
 import { GlobalService } from '../services/global.service';
 
 @Injectable({
@@ -41,6 +41,17 @@ export class StudentsService {
                 }, err => {
                     reject(err)
                 });
+
+        });
+    }
+
+    getStudentProfile(studentId: number): Promise<StudentProfileModel> {
+        return new Promise((resolve, reject) => {
+            this.httpService.http.getDataByParam<StudentProfileModel>({ studentId: studentId }, "Student/GetStudentProfile").then(data => {
+                return resolve(Object.assign(new StudentProfileModel(), data));
+            }, err => {
+                reject(err)
+            });
 
         });
     }
