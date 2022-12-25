@@ -52,14 +52,14 @@
                                 <span>{{student.avgAssessmentLevel.title}}</span>
                             </ion-badge>
                             <ion-badge [color]="student.avgAssessmentLevel.ionColor" class="px-3 py-2">
-                                <span>{{student.avgAssessment}}</span>
+                                <span>{{student.avgAssessment|number:'1.1-1'}}</span>
                             </ion-badge>
                         </div>
                     </ion-col>
                     <ion-col size="4">
                         <div class="d-flex flex-column align-items-center justify-content-around">
                             حضور
-                            <div echarts [options]="attendanceChartOptions()" class="widget-chart" theme="roma"></div>
+                            <div echarts [options]="attendanceChartOptions" class="small-chart" theme="roma"></div>
                         </div>
 
                     </ion-col>
@@ -68,44 +68,134 @@
         </ion-card>
 
         <app-expandable-section>
-            <h4>بهترین توانمندی ها</h4>
-            <ion-item *ngFor="let score of student.accScores">
-                <ion-avatar slot="start">
-                    <ion-icon [src]="imageUrl+'/parameters/param_'+score.id+'.svg'" size="large"></ion-icon>
-                </ion-avatar>
-                <ion-label>
-                    {{score.title}}
-                </ion-label>
-                <ion-badge slot="end" color="success" class="score-rate" mode="ios"> {{score.value}}</ion-badge>
-            </ion-item>
+            <div class="d-flex align-items-center">
+                <h4 class=" flex-fill">بهترین توانمندی ها</h4>
+                <div>
+                    <ion-segment [(ngModel)]="scoreDisplayMode" mode="ios">
+                        <ion-segment-button value="default">
+                            <ion-icon name="list-outline"></ion-icon>
+                        </ion-segment-button>
+                        <ion-segment-button value="chart">
+                            <ion-icon name="stats-chart-outline"></ion-icon>
+                        </ion-segment-button>
+                    </ion-segment>
+                </div>
+            </div>
+            <ng-container *ngIf="scoreDisplayMode=='default'">
+                <ion-item *ngFor="let score of student.accScores">
+                    <ion-avatar slot="start">
+                        <ion-icon [src]="imageUrl+'parameters/param_'+score.id+'.svg'" size="large"></ion-icon>
+                    </ion-avatar>
+                    <ion-label>
+                        {{score.title}}
+                    </ion-label>
+                    <ion-badge slot="end" color="success" class="score-rate" mode="ios"> {{score.value}}</ion-badge>
+                </ion-item>
+            </ng-container>
+            <ng-container *ngIf="scoreDisplayMode=='chart'">
+                <div echarts [options]="scoreChartOptions" class="widget-chart" theme="roma"></div>
+            </ng-container>
         </app-expandable-section>
-
+        <br>
         <app-expandable-section>
-            <h4>
-                ارزشیابی درسی
-            </h4>
-            <ion-grid fixed>
-                <ion-row *ngFor="let ass of student.accAssessments">
-                    <ion-col size="12">
-                        <div class="assess-item d-flex align-items-center">
-                            <ion-avatar class="ms-1">
-                                <img alt="Avatar" [src]="imageUrl+'/lessons_org/grade_5/c_'+ass.id+'.jpg'" />
-                            </ion-avatar>
-                            <span class="label">
-                                {{ass.title}}
-                            </span>
-                            <div class="progress green ms-2">
-                                <div class="progress-value" [style.width]="(ass.value/4) '%'"></div>
-                            </div>
-                            <ion-badge color="success" class="px-3 py-2">
-                                <span>{{ass.color}}</span>
-                            </ion-badge>
-                        </div>
-                    </ion-col>
-                </ion-row>
+            <div class="d-flex align-items-center">
+                <h4 class=" flex-fill">ارزشیابی درسی</h4>
+                <div>
+                    <ion-segment [(ngModel)]="assessDisplayMode" mode="ios">
+                        <ion-segment-button value="default">
+                            <ion-icon name="list-outline"></ion-icon>
+                        </ion-segment-button>
+                        <ion-segment-button value="chart">
+                            <ion-icon name="stats-chart-outline"></ion-icon>
+                        </ion-segment-button>
+                    </ion-segment>
+                </div>
+            </div>
+            <ng-container *ngIf="assessDisplayMode=='default'">
+                <ion-grid fixed>
+                    <ion-row *ngFor="let ass of student.accAssessments">
+                        <ion-col size="12">
+                            <div class="assess-item d-flex align-items-center">
+                                <ion-avatar class="ms-1">
+                                    <img alt="Avatar" [src]="imageUrl+'lessons_org/grade_5/c_'+ass.id+'.jpg'" />
+                                </ion-avatar>
+                                <span class="label">
+                                    {{ass.title}}
+                                </span>
+                                <div class="flex-fill ms-2">
+                                    <div class="text-center">{{ass.value|number:'1.1-1'}}</div>
+                                    <div class="progress" [class]="getProgressClass(ass.value)">
+                                        <div class="progress-value" [style.width]="(ass.value/4*100) +'%'"></div>
+                                    </div>
+                                </div>
 
-            </ion-grid>
+                                <ion-badge [color]="getAccessLevel(ass.value).ionColor" class="px-3 py-2">
+                                    {{getAccessLevel(ass.value).shortTitle}}
+
+                                </ion-badge>
+                            </div>
+                        </ion-col>
+                    </ion-row>
+
+                </ion-grid>
+            </ng-container>
+            <ng-container *ngIf="assessDisplayMode=='chart'">
+
+                <div echarts [options]="assessChartOptions" class="widget-chart" theme="roma"></div>
+
+            </ng-container>
         </app-expandable-section>
 
+        <div class="mt-4">
+            <app-expandable-section [(expanded)]="notes_expanded">
+                <div>
+                    <h4>یادداشت ها :</h4>
+                </div>
+                <div *ngIf="student.notes  && student.notes.length>0" class="old_items">
+                    <ion-card *ngFor="let n of student.notes;let index=index" [ngClass]="{'reminder-item': !notes_expanded, 'reminder-item-expanded': notes_expanded}" [style.transform]="'scale(' + getScale(index,student.notes,notes_expanded) + ')'">
+                        <!-- Preload images before being expanded -->
+                        <img hidden *ngFor="let img of n.images;" [src]="imageUrl+img" />
+                        <ion-slides *ngIf="notes_expanded" [pager]="true">
+                            <ion-slide *ngFor="let img of n.images">
+                                <img [src]="imageUrl+img" />
+                            </ion-slide>
+                        </ion-slides>
+                        <ion-item lines="none">
+                            <ion-avatar slot="start" *ngIf="n.type">
+                                <img alt="avatar-Student" [src]="studentModel.getImageUrl(n.studentId)" onerror="this.src='/assets/img/avatar.webp'" />
+                            </ion-avatar>
+
+                            <ion-label>
+                                <ion-note> {{n.remindTime | date}}</ion-note>
+                                <h3>{{n.studentFullName}}</h3>
+                                <p> {{n.note}}</p>
+                            </ion-label>
+
+                            <div class="d-flex flex-column actions">
+                                <ion-button fill="clear" slot="end" (click)="remove_notes(n)" color="medium">
+                                    <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+                                </ion-button>
+                                <ion-button fill="clear" slot="end" (click)="share_notes(n)" color="medium">
+                                    <ion-icon slot="icon-only" name="share-social"></ion-icon>
+                                </ion-button>
+                            </div>
+
+                        </ion-item>
+                        <div class="px-3 pb-2">
+                            <ion-chip [color]="colors[index%colors.length]" *ngFor="let tag of n.tags;let index=index">
+                                <ion-icon name="pricetag-outline"></ion-icon>
+                                <ion-label>{{tag}} </ion-label>
+                            </ion-chip>
+                        </div>
+                    </ion-card>
+                </div>
+
+                <div *ngIf="student.notes?.length==0" class="no-items">
+                    <ion-icon slot="start" name="document-text-outline" size="large"></ion-icon>
+                    <br>
+                    هیچ گزارش یا یادداشتی ثبت نشده است
+                </div>
+            </app-expandable-section>
+        </div>
     </div>
 </ion-content>

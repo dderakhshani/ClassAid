@@ -1,0 +1,53 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>روایت روز</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <div *ngIf="lesson_notes  && lesson_notes.length>0" class="old_items p-2">
+        <ion-card *ngFor="let n of lesson_notes;let index=index" class="reminder-item-expanded">
+            <!-- Preload images before being expanded -->
+            <img hidden *ngFor="let img of n.images;" [src]="imageUrl+img" />
+            <ion-slides [pager]="true">
+                <ion-slide *ngFor="let img of n.images">
+                    <img [src]="imageUrl+img" (click)="globalService.openImageViewer(imageUrl+img)" />
+                </ion-slide>
+            </ion-slides>
+            <ion-item>
+                <ion-avatar slot="start">
+                    <img alt="Avatar" [src]="n.book?.getImageUrl()" />
+                </ion-avatar>
+                <ion-label>
+                    <h3>{{n.book?.name}} </h3>
+                    <p>
+                        {{n.lesson?.name}} </p>
+                </ion-label>
+                <div class="d-flex flex-column actions">
+                    <!-- <ion-button fill="clear" slot="end" color="medium">
+                        <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+                    </ion-button> -->
+                    <ion-button fill="clear" slot="end" (click)="share_notes(n)" color="medium">
+                        <ion-icon slot="icon-only" name="share-social"></ion-icon>
+                    </ion-button>
+                </div>
+            </ion-item>
+            <ion-item lines="none">
+
+                <ion-label>
+                    <ion-note> {{n.remindTime | date}}</ion-note>
+                    <p> {{n.note}}</p>
+                </ion-label>
+
+
+
+            </ion-item>
+            <div class="px-3 pb-2">
+                <ion-chip [color]="colors[index%colors.length]" *ngFor="let tag of n.tags;let index=index">
+                    <ion-icon name="pricetag-outline"></ion-icon>
+                    <ion-label>{{tag}} </ion-label>
+                </ion-chip>
+            </div>
+        </ion-card>
+    </div>
+</ion-content>

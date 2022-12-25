@@ -35,7 +35,7 @@
 
                 <ion-slides *ngIf="expanded" [pager]="true">
                     <ion-slide *ngFor="let img of r.images">
-                        <img [src]="imageUrl+img" />
+                        <img [src]="imageUrl+img" (click)="globalService.openImageViewer(imageUrl+img)" />
                     </ion-slide>
                 </ion-slides>
                 <ion-item lines="none">

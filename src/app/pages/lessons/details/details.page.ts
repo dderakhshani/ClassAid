@@ -6,6 +6,7 @@ import { ClassSessionModel } from 'src/app/models/class';
 import { Lesson } from 'src/app/models/lessons';
 import { GlobalService } from 'src/app/services/global.service';
 import { v4 as uuidv4 } from 'uuid';
+import { Location } from '@angular/common'
 
 @Component({
     selector: 'app-details',
@@ -17,19 +18,28 @@ export class DetailsPage implements OnInit {
     lessons: Lesson[];
     book: Lesson;
     scheduleId?: number;
-
+    bookIdParam: number;
     constructor(public lessonService: LessonService,
         public globalService: GlobalService,
         private route: ActivatedRoute,
         private alertController: AlertController,
+        public location: Location,
         private router: Router) {
-        const bookId = Number(this.route.snapshot.paramMap.get('lessonId'));
 
+        this.bookIdParam = Number(this.route.snapshot.paramMap.get('lessonId'));
+
+    }
+
+    ngOnInit() {
+
+    }
+
+    ionViewWillEnter() {
         if (this.route.snapshot.paramMap.has('scheduleId'))
             this.scheduleId = Number(this.route.snapshot.paramMap.get('scheduleId'))
         this.globalService.ready$.subscribe(ready => {
             if (ready)
-                lessonService.getLessonById(bookId).then(b => {
+                this.lessonService.getLessonById(this.bookIdParam).then(b => {
                     this.book = b;
                     this.lessonService.getLessonsByParentId(this.book.id).then(r => {
                         this.lessons = [...r];
@@ -41,11 +51,6 @@ export class DetailsPage implements OnInit {
                     });
                 });
         });
-
-    }
-
-    ngOnInit() {
-
     }
 
     getProgressValue() {

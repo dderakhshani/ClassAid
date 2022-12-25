@@ -58,7 +58,7 @@
     <div class="px-2 shadow-sm" style="background: #FFF;">
         <ion-list>
 
-            <ion-item button lines="full">
+            <ion-item button lines="full" [routerLink]="['/tabs/reports/today-stories']">
                 <ion-icon src="../../../assets/story.svg" slot="start" color="secondary"></ion-icon>
                 <ion-label>
                     روایت روز
@@ -87,7 +87,5 @@
         </ion-list>
     </div>
 
-    <div class="ion-padding ion-text-center">
-        <ion-text class="text-secondary text-small"> تمامی حقوق محفوظ است</ion-text>
-    </div>
+
 </ion-content>

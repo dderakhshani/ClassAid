@@ -115,7 +115,7 @@ export class AssessmentPage implements OnInit {
     }
 
     async save() {
-        let assessments = [];
+        let assessments: AssessmentModel[] = [];
         this.paramters.forEach(p => {
             if (p.level > 0) {
                 const assessModel = <AssessmentModel>{
@@ -141,6 +141,8 @@ export class AssessmentPage implements OnInit {
 
         this.assessmentService.add(assessments).then(result => {
             loading.dismiss();
+            if (this.globalService.currentSession)
+                this.globalService.currentSession.assessments.push(...assessments);
             this.student.hasAssessment = true;
             this.location.back();
         },

@@ -24,13 +24,16 @@ export class AppComponent implements OnInit {
     }
 
     async ngOnInit() {
-        const loading = await this.loadingCtrl.create();
-        loading.present();
-        combineLatest(this.globalService.classSessions$, this.globalService.ready$).subscribe(([sessions, ready]) => {
-            if (ready)
-                loading.dismiss();
-        })
         const user = this.authService.getProfile();
+        if (user) {
+            const loading = await this.loadingCtrl.create();
+            loading.present();
+            combineLatest(this.globalService.classSessions$, this.globalService.ready$).subscribe(([sessions, ready]) => {
+                if (ready)
+                    loading.dismiss();
+            });
+
+        }
         this.authService.user$.subscribe(u => {
             if (u) {
                 this.globalService.teacherId = u.id;
@@ -40,7 +43,6 @@ export class AppComponent implements OnInit {
                 });
             }
         })
-
         this.platform.backButton.subscribe(() => {
             if (window.history.length > 1)
                 this.location.back();

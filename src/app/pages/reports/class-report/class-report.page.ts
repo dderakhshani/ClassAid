@@ -20,6 +20,7 @@ import { ReminderService } from 'src/app/api/reminder.service';
 import { init } from 'echarts';
 import { environment } from 'src/environments/environment';
 import { Share } from '@capacitor/share';
+import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
 
 @Component({
     selector: 'app-class-report',
@@ -133,42 +134,26 @@ export class ClassReportPage implements OnInit {
             title += this.studentsService.getStudentsByIdSync((note as StudentNotes).studentId).fullName + ' ';
         title += this.lessonService.getLessonByIdSynce(note.lessonId).name;
 
-        // let blob = undefined;
-        // if (note.images)
-        //     blob = await fetch(environment.imageUrl + '/' + note.images[0], {
-        //         mode: 'no-cors',
-        //         method: 'get'
-        //     }).then(r => r.blob())
-
-
-        // const data = {
-        //     files: blob ? ([
-        //         new File([blob], 'file.jpg', {
-        //             type: blob.type,
-        //         }),
-        //     ]) : undefined,
-        //     title: title,
-        //     text: note.note,
-        // };
-
-        await Share.share({
-            title: title,
-            text: note.note,
-            url: environment.imageUrl + '/' + note.images[0],
-            dialogTitle: 'اشتراک گزارش',
-        });
-
-        // try {
-        //     // if (!(navigator.canShare(data))) {
-        //     //     throw new Error("Can't share data.");
-        //     // }
-        //     await navigator.share(data);
-        // } catch (err) {
-        //     console.error(err.name, err.message);
-        // }
+        if (note.images) {
+            this.globalService.shareData(title, note.note, environment.imageUrl + '/' + note.images[0]);
+        }
+        else
+            this.globalService.shareData(title, note.note);
 
     }
 
+    remove_reminder(reminder: Reminder) {
+
+    }
+    share_reminders(reminder: Reminder) {
+        let title = reminder.isReport ? 'گزارش ' : 'یادداشت ';
+
+        if (reminder.type == ReminderType.StudentReminder)
+            title += this.studentsService.getStudentsByIdSync((reminder as StudentReminder).studentId).fullName + ' ';
+        title += this.lessonService.getLessonByIdSynce(reminder.lessonId).name;
+
+        this.globalService.shareData(title, reminder.note);
+    }
 
     getScale(index: number, data: any[], expanded: boolean) {
         if (expanded)
@@ -177,7 +162,22 @@ export class ClassReportPage implements OnInit {
             return 1 - ((data.length - 1) - index) * 0.05;
     }
 
-    async showReminder(score: ScoreAssessmentModel) {
+    async showReminder(reminder: Reminder) {
+        const alert = await this.alertController.create({
+            header: 'یادداشت ',
+            message: reminder.note,
+            buttons: [
+                {
+                    text: 'بستن',
+                    role: 'confirm'
+                }
+            ],
+        });
+
+        await alert.present();
+    }
+
+    async showScore(score: ScoreAssessmentModel) {
         const alert = await this.alertController.create({
             header: 'یادداشت ',
             message: score.note,

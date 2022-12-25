@@ -1,0 +1,52 @@
+.old_items {
+
+
+    ion-card {
+        transition: all 0.3s;
+    }
+
+    .reminder-item:not(:first-child) {
+        margin-top: -50px;
+    }
+
+    .reminder-item-expanded {
+        margin-top: 0px;
+
+        ion-item {
+            ion-label {
+                white-space: normal;
+            }
+        }
+    }
+}
+
+
+ion-card {
+    ion-slide {
+        max-height: 180px;
+        overflow: hidden;
+
+        img {
+
+            width: 100%;
+        }
+    }
+
+    ion-item::part(native) {
+        --inner-padding-start: 0px;
+        --inner-padding-end: 0px;
+    }
+
+    ion-item {
+        ion-avatar {
+            margin-inline-end: 0;
+            margin-bottom: auto;
+            margin-top: 1rem;
+        }
+
+        .actions {
+            margin-bottom: auto;
+            margin-top: 0.5rem;
+        }
+    }
+}

@@ -67,7 +67,7 @@
                     <img hidden *ngFor="let img of n.images;" [src]="imageUrl+img" />
                     <ion-slides *ngIf="notes_expanded" [pager]="true">
                         <ion-slide *ngFor="let img of n.images">
-                            <img [src]="imageUrl+img" />
+                            <img [src]="imageUrl+img" (click)="globalService.openImageViewer(imageUrl+img)" />
                         </ion-slide>
                     </ion-slides>
                     <ion-item lines="none">
@@ -116,7 +116,7 @@
             <ion-grid class="ion-no-padding">
                 <ion-row>
                     <ion-col size="4">
-                        <ion-card class="score flex-fill" *ngFor="let s of scores">
+                        <ion-card class="score flex-fill" *ngFor="let s of scores" (click)="showScore(s)">
                             <div class="flag">
 
                                 <ion-icon color="success" size="large" name="add-circle" *ngIf="s.progerssFlag>0"></ion-icon>
@@ -171,7 +171,7 @@
                         <img hidden *ngFor="let img of n.images;" [src]="imageUrl+img" />
                         <ion-slides *ngIf="notes_expanded2" [pager]="true">
                             <ion-slide *ngFor="let img of n.images">
-                                <img [src]="imageUrl+img" />
+                                <img [src]="imageUrl+img" (click)="globalService.openImageViewer(imageUrl+img)" />
                             </ion-slide>
                         </ion-slides>
                         <ion-item lines="none">
@@ -253,10 +253,10 @@
                         </ion-label>
 
                         <div class="d-flex flex-column actions">
-                            <ion-button fill="clear" slot="end" (click)="remove_reminder(n)" color="medium">
+                            <ion-button fill="clear" slot="end" (click)="remove_reminder(r)" color="medium">
                                 <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
                             </ion-button>
-                            <ion-button fill="clear" slot="end" (click)="share_reminders(n)" color="medium">
+                            <ion-button fill="clear" slot="end" (click)="share_reminders(r)" color="medium">
                                 <ion-icon slot="icon-only" name="share-social"></ion-icon>
                             </ion-button>
                         </div>

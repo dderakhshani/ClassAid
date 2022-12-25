@@ -95,7 +95,7 @@ export class ChartService {
         };
     }
 
-    createSingleSerieChart(dataSerie: StatsSerie[], serie: any) {
+    createSingleSerieChart(dataSerie: StatsSerie[], serie: any, showSplitArea = true) {
         const xAxisData = [];
 
         for (let i = 0; i < dataSerie.length; i++) {
@@ -131,7 +131,7 @@ export class ChartService {
             },
             yAxis: {
                 splitArea: {
-                    show: true,
+                    show: showSplitArea,
                     areaStyle: {
                         color: ['#ff00001a', '#ffc4091a', '#0d6efd1a', '#2cae651a']
                     }
@@ -478,7 +478,7 @@ export class ChartService {
                 splitNumber: 4,
                 axisLine: {
                     lineStyle: {
-                        width: 10,
+                        width: 8,
                         color: [
                             [0.25, '#FF6E76'],
                             [0.5, '#FDDD60'],

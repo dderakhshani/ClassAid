@@ -35,7 +35,11 @@ const routes: Routes = [
     {
         path: 'class-report',
         loadChildren: () => import('./class-report/class-report.module').then(m => m.ClassReportPageModule)
-    }
+    },
+  {
+    path: 'today-stories',
+    loadChildren: () => import('./today-stories/today-stories.module').then( m => m.TodayStoriesPageModule)
+  }
 ];
 
 @NgModule({

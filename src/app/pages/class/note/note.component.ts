@@ -6,6 +6,7 @@ import { Lesson } from 'src/app/models/lessons';
 import { StudentModel } from 'src/app/models/student';
 import { v4 as uuidv4 } from 'uuid';
 import { ReminderService } from 'src/app/api/reminder.service';
+import { GlobalService } from 'src/app/services/global.service';
 
 @Component({
     selector: 'app-note',
@@ -41,7 +42,7 @@ export class NoteComponent implements OnInit {
 
     colors = ["primary", "danger", "success", "secondary", "warning", "tertiary", "medium"];
 
-    constructor(private reminderService: ReminderService) { }
+    constructor(private reminderService: ReminderService, public globalService: GlobalService) { }
 
     ngOnInit() { }
 

@@ -42,6 +42,9 @@ export interface Note extends Reminder {
 
 export interface LessonNotes extends Note {
     taskId: string;
+
+    book?: Lesson;
+    lesson?: Lesson;
 }
 
 export interface StudentNotes extends Note {

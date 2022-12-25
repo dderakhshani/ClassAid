@@ -17,6 +17,10 @@ import { LessonService } from '../api/lesson.service';
 import { StudentModel } from '../models/student';
 import { AssessmentService } from '../api/assessment.service';
 import { resolve } from 'dns';
+import { ViewerModalComponent } from 'ngx-ionic-image-viewer';
+import { ModalController } from '@ionic/angular';
+import { Share } from '@capacitor/share';
+import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
 const CLASS_STORAGE = "CLASSAID_CLASS";
 
 @Injectable({
@@ -47,6 +51,7 @@ export class GlobalService {
         private classService: ClassService,
         private reminderService: ReminderService,
         public lessonService: LessonService,
+        public modalController: ModalController,
         private scheduleService: ScheduleService) {
         const user = authService.getProfile();
         if (user) {
@@ -254,5 +259,97 @@ export class GlobalService {
 
     cloneArray(array: any[]) {
         return JSON.parse(JSON.stringify(array));
+    }
+
+    async openImageViewer(imageUrl: string) {
+        const modal = await this.modalController.create({
+            component: ViewerModalComponent,
+            componentProps: {
+                src: imageUrl
+            },
+            cssClass: 'ion-img-viewer',
+            keyboardClose: true,
+            showBackdrop: true
+        });
+
+        return await modal.present();
+    }
+
+    async shareData(title: string, text: string, imageUrl?: string) {
+
+        let permission = await Filesystem.checkPermissions();
+        if (permission.publicStorage !== "granted") {
+            console.log("permission is required");
+            permission = await Filesystem.requestPermissions() // Why this doesn't work????
+
+            if (permission.publicStorage !== "granted") {
+                return
+            }
+        }
+
+
+        if (imageUrl) {
+            console.log("Has Image");
+            let blob = undefined;
+            const fileName = imageUrl;
+            //Download file
+
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', imageUrl, true);
+            xhr.responseType = 'blob';
+            const me = this;
+            xhr.onload = function (e) {
+                console.log("Blob download");
+                if (this.status !== 200) return;
+                console.log("Blob Success");
+                let blob = new Blob([this.response], { type: this.response.type });
+                //Conver Blob
+                const reader = me.getFileReader();
+
+                reader.onloadend = async () => {
+                    const filedata = reader.result;
+                    console.log("Blob Read");
+                    try {
+                        console.log("Writing Blob to cache");
+                        await Filesystem.writeFile({
+                            path: fileName,
+                            data: filedata as string,
+                            directory: Directory.Cache,
+                            recursive: true
+                        });
+
+                        let fileResult = await Filesystem.getUri({
+                            directory: Directory.Cache,
+                            path: fileName
+                        });
+                        console.log("Reading uri: " + fileResult.uri);
+                        await Share.share({
+                            title: title,
+                            text: text,
+                            url: fileResult.uri,
+                            dialogTitle: 'اشتراک گزارش',
+                        });
+
+                    } catch (e) {
+                        console.error('Unable to write file', e);
+                    }
+                };
+                reader.readAsDataURL(blob);
+            };
+            xhr.send();
+        }
+        else
+            await Share.share({
+                title: title,
+                text: text,
+                //url: environment.imageUrl + '/' + note.images[0],
+                dialogTitle: 'اشتراک گزارش',
+            });
+    }
+
+    getFileReader(): FileReader {
+        const fileReader = new FileReader();
+        const zoneOriginalInstance = (fileReader as any)["__zone_symbol__originalInstance"];
+        return zoneOriginalInstance || fileReader;
     }
 }

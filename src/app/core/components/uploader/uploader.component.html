@@ -37,7 +37,7 @@
                     {{file.extention}}
                 </div>
             </a>
-            <img *ngIf="isImageFile(file)" [src]="file.fullFilePath">
+            <img *ngIf="isImageFile(file)" [src]="file.fullFilePath" (click)="openImageViewer(file.fullFilePath)">
         </ng-container>
     </div>
 

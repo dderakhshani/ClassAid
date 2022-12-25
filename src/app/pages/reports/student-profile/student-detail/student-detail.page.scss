@@ -22,18 +22,46 @@ ion-header {
 
 .assess-item {
     .label {
-        width: 100px;
+        width: 80px;
     }
 
     ion-avatar {
 
-        width: 64px;
+        width: 36px;
         height: 36px;
 
     }
 }
 
-.widget-chart {
+.small-chart {
     height: 90px;
     width: 100%;
+}
+
+.widget-chart {
+    height: 280px;
+    width: 100%;
+}
+
+
+.old_items {
+
+
+    ion-card {
+        transition: all 0.3s;
+    }
+
+    .reminder-item:not(:first-child) {
+        margin-top: -50px;
+    }
+
+    .reminder-item-expanded {
+        margin-top: 0px;
+
+        ion-item {
+            ion-label {
+                white-space: normal;
+            }
+        }
+    }
 }

@@ -2,12 +2,13 @@
 import { HttpErrorResponse, HttpEvent, HttpEventType, HttpProgressEvent } from '@angular/common/http';
 import { outputAst } from '@angular/compiler';
 import { Component, ElementRef, Input, OnInit, Output, ViewChild, EventEmitter } from '@angular/core';
-import { ActionSheetController } from '@ionic/angular';
+import { ActionSheetController, ModalController } from '@ionic/angular';
 
 import { of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { UploadFileService } from 'src/app/core/services/upload-file.service';
 import { environment } from 'src/environments/environment';
+import { ViewerModalComponent } from 'ngx-ionic-image-viewer';
 
 @Component({
     selector: 'app-uploader',
@@ -42,6 +43,7 @@ export class UploaderComponent implements OnInit {
     files: UploadFileData[] = [];
 
     constructor(private uploadFileService: UploadFileService,
+        public modalController: ModalController,
         private actionSheetCtrl: ActionSheetController,) { }
 
     ngOnInit(): void {
@@ -199,6 +201,20 @@ export class UploaderComponent implements OnInit {
     removeImage(file: UploadFileData) {
         // this.depositReceipt.imageUrl = '';
         this.files.splice(this.files.indexOf(file), 1);
+    }
+
+    async openImageViewer(imageUrl: string) {
+        const modal = await this.modalController.create({
+            component: ViewerModalComponent,
+            componentProps: {
+                src: imageUrl
+            },
+            cssClass: 'ion-img-viewer',
+            keyboardClose: true,
+            showBackdrop: true
+        });
+
+        return await modal.present();
     }
 
 }
