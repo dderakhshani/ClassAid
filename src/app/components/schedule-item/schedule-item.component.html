@@ -6,10 +6,10 @@
                     <ion-col size="12">
                         <ion-item>
                             <ion-avatar slot="start">
-                                <img alt="Avatar" [src]="schedule.lesson.getImageUrl()" onerror="this.src='/assets/img/book.png'" />
+                                <img alt="Avatar" [src]="schedule.lesson?.getImageUrl()" onerror="this.src='/assets/img/book.png'" />
                             </ion-avatar>
                             <ion-label>
-                                <h3>{{schedule.lesson.name}} </h3>
+                                <h3>{{schedule.lesson?.name}} </h3>
                                 <p>
                                     {{schedule.session?.lesson?.name}} </p>
                             </ion-label>

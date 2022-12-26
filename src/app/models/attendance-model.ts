@@ -1,3 +1,4 @@
+import { ClassSessionModel } from './class';
 export interface AttendanceModel {
     id: string;
     studentId: number;
@@ -7,6 +8,7 @@ export interface AttendanceModel {
     taskId: string;
 
     studentFullName: string;
+    session?: ClassSessionModel;
 }
 
 export enum AttendanceStatus {

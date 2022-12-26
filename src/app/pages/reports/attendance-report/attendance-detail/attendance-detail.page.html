@@ -1,0 +1,57 @@
+<div class="avatar d-flex flex-column align-items-center">
+    <ion-card class="d-flex align-items-center justify-content-center">
+        <ion-avatar>
+            <img alt="Avatar-Student" [src]="student?.getImageUrl()" onerror="this.src='/assets/img/avatar.webp'" />
+        </ion-avatar>
+    </ion-card>
+</div>
+<ion-header class="content-header ion-no-border" collapse="fade">
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button></ion-back-button>
+        </ion-buttons>
+        <ion-title>حضور غیاب دانش آموز</ion-title>
+
+    </ion-toolbar>
+
+</ion-header>
+
+<ion-content class="round-content">
+    <div class="d-flex flex-column align-items-center pt-3">
+
+        <b> {{student?.fullName}}</b>
+
+    </div>
+    <div class="px-3 pb-4" *ngIf="student">
+        <ion-card *ngFor="let at of attendances" class="student-card " [routerLink]="['detail/'+student.id]">
+
+            <ion-card-content>
+                <ion-item lines="none">
+                    <ion-avatar class="ms-2">
+                        <img alt="Avatar-Student" [src]="at.session?.book.getImageUrl()" onerror="this.src='/assets/img/avatar.webp'" />
+                    </ion-avatar>
+
+                    <ion-label>
+                        <ion-note>{{at.time | jalali}}</ion-note>
+                        <p> {{at.session?.book.name}}</p>
+                    </ion-label>
+                    <ion-badge color="success" slot="end" mode="ios" *ngIf="at.status==1">
+                        حاضر
+                    </ion-badge>
+                    <ion-badge color="danger" slot="end" mode="ios" *ngIf="at.status==2">
+                        غایب
+                    </ion-badge>
+                    <ion-badge color="warning" slot="end" mode="ios" *ngIf="at.status==3">
+                        تاخیر
+                    </ion-badge>
+                    <ion-badge color="secondary" slot="end" mode="ios" *ngIf="at.status==4">
+                        راه دور
+                    </ion-badge>
+                </ion-item>
+            </ion-card-content>
+
+
+        </ion-card>
+
+    </div>
+</ion-content>

@@ -1,9 +1,68 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>sessions-report</ion-title>
-  </ion-toolbar>
+    <ion-toolbar>
+        <ion-title>کلاس های برگزار شده</ion-title>
+    </ion-toolbar>
 </ion-header>
 
 <ion-content>
-
+    <div class="p-3">
+        <ion-item button lines="full">
+            <ion-label>
+                فیلتر زمان
+            </ion-label>
+            <ion-select [(ngModel)]="dateType" placeholder="...انتخاب کنید" interface="popover">
+                <ion-select-option value="week">
+                    هفته اخیر
+                </ion-select-option>
+                <ion-select-option value="last-week" (click)="loadData()">
+                    هفته قبل
+                </ion-select-option>
+                <ion-select-option value="month" (click)="loadData()">
+                    ماه جاری
+                </ion-select-option>
+                <ion-select-option value="last-month" (click)="loadData()">
+                    ماه قبل
+                </ion-select-option>
+                <ion-select-option value="custom" (click)="loadData()">
+                    تاریخ انتخابی
+                </ion-select-option>
+            </ion-select>
+        </ion-item>
+        <ion-item button lines="full">
+            <ion-label>
+                فیلتر درس
+            </ion-label>
+            <ion-select [(ngModel)]="lessonFilter" placeholder="...انتخاب کنید" interface="popover" (ngModelChange)="loadData()">
+                <ion-select-option value="">
+                    بدون فیلتر
+                </ion-select-option>
+                <ion-select-option [value]="item" *ngFor="let item of lessons">
+                    {{item.name}}
+                </ion-select-option>
+            </ion-select>
+        </ion-item>
+        <div>
+            <ion-card *ngFor="let item of sessions">
+                <ion-card-content>
+                    <ion-item>
+                        <ion-avatar slot="start">
+                            <img alt="Avatar" [src]="item.book?.getImageUrl()" />
+                        </ion-avatar>
+                        <ion-label>
+                            <h3>{{item.book?.name}} </h3>
+                            <p>
+                                {{item.lesson?.name}} </p>
+                        </ion-label>
+                        <ion-note>{{item.startTime | jalali}}</ion-note>
+                    </ion-item>
+                    <div class="d-flex flex-row-reverse">
+                        <ion-button slot="end" color="secondary" [routerLink]="['/tabs/reports/class-report/'+item.id]">
+                            <ion-icon slot="start" name="book"></ion-icon>
+                            مشاهده
+                        </ion-button>
+                    </div>
+                </ion-card-content>
+            </ion-card>
+        </div>
+    </div>
 </ion-content>

@@ -8,10 +8,15 @@ import { StatReportModel } from '../models/stats-serie';
     providedIn: 'root'
 })
 export class AssessmentService {
-
+    PARAMETERS_STORAGE = "CLASSAID_PARAMETERS";
     assesmentParamters: AssessParamterModel[] = [];
 
-    constructor(private httpService: HttpService) { }
+    constructor(private httpService: HttpService) {
+        const paramteresJson = localStorage.getItem(this.PARAMETERS_STORAGE);
+        if (paramteresJson) {
+            this.assesmentParamters = JSON.parse(paramteresJson);
+        }
+    }
 
     add(session: AssessmentModel[]): Promise<boolean> {
         return this.httpService.http.postJsonData<boolean>(session, "assessment/add");
@@ -30,14 +35,19 @@ export class AssessmentService {
     }
 
     getParameters(lessonId?: number, gradeId?: number): Promise<AssessParamterModel[]> {
+
         return new Promise((resolve, reject) => {
-            this.httpService.http.getDataByParam<AssessParamterModel[]>({ lessonId: lessonId, gradeId: gradeId }, "assessment/GetParameters").then(data => {
-                this.assesmentParamters = data;
-                return resolve(data);
-            },
-                err => {
-                    reject(err);
-                });
+            if (this.assesmentParamters.length > 0)
+                resolve(this.assesmentParamters)
+            else
+                this.httpService.http.getDataByParam<AssessParamterModel[]>({ lessonId: lessonId, gradeId: gradeId }, "assessment/GetParameters").then(data => {
+                    this.assesmentParamters = data;
+                    localStorage.setItem(this.PARAMETERS_STORAGE, JSON.stringify(data));
+                    return resolve(data);
+                },
+                    err => {
+                        reject(err);
+                    });
         });
     }
 
@@ -51,5 +61,9 @@ export class AssessmentService {
 
     getParamterAssessment(classId: number, studentId?: number, lessonId?: number): Promise<StatReportModel[]> {
         return this.httpService.http.getDataByParam<StatReportModel[]>({ classId: classId, studentId: studentId, lessonId: lessonId }, "assessment/GetParamterAssessment");
+    }
+
+    reset() {
+        localStorage.removeItem(this.PARAMETERS_STORAGE);
     }
 }

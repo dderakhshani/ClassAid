@@ -28,14 +28,34 @@
 }
 
 .score {
-    position: relative;
-    overflow: visible;
 
-    .flag {
-        position: absolute;
-        right: -14px;
-        top: -2px;
+
+    ion-avatar {
+        position: relative;
+        overflow: visible;
+        width: 64px;
+        height: 64px;
+
+        .flag {
+            position: absolute;
+            right: -14px;
+            top: -2px;
+        }
     }
+
+    .actions {
+        width: 60px;
+    }
+
+
+}
+
+.score.red {
+    border-right: 0.25rem solid var(--ion-color-danger);
+}
+
+.score.green {
+    border-right: 0.25rem solid var(--ion-color-success);
 }
 
 
@@ -64,6 +84,34 @@
 
     ion-card {
         transition: all 0.3s;
+
+        ion-slide {
+            max-height: 180px;
+            overflow: hidden;
+
+            img {
+
+                width: 100%;
+            }
+        }
+
+        ion-item::part(native) {
+            --inner-padding-start: 0px;
+            --inner-padding-end: 0px;
+        }
+
+        ion-item {
+            ion-avatar {
+                margin-inline-end: 0;
+                margin-bottom: auto;
+                margin-top: 1rem;
+            }
+
+            .actions {
+                margin-bottom: auto;
+                margin-top: 0.5rem;
+            }
+        }
     }
 
     .reminder-item:not(:first-child) {
@@ -81,35 +129,6 @@
     }
 }
 
-ion-card {
-    ion-slide {
-        max-height: 180px;
-        overflow: hidden;
-
-        img {
-
-            width: 100%;
-        }
-    }
-
-    ion-item::part(native) {
-        --inner-padding-start: 0px;
-        --inner-padding-end: 0px;
-    }
-
-    ion-item {
-        ion-avatar {
-            margin-inline-end: 0;
-            margin-bottom: auto;
-            margin-top: 1rem;
-        }
-
-        .actions {
-            margin-bottom: auto;
-            margin-top: 0.5rem;
-        }
-    }
-}
 
 .home-work {
     ion-item {

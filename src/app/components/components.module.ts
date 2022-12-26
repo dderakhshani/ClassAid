@@ -1,3 +1,4 @@
+import { CoresModule } from './../core/core.module';
 import { HomeWorkItemComponent } from './home-work-item/home-work-item.component';
 import { ScheduleItemComponent } from './schedule-item/schedule-item.component';
 import { NgModule } from '@angular/core';
@@ -14,6 +15,7 @@ import { NgxEchartsModule } from 'ngx-echarts';
         CommonModule,
         FormsModule,
         IonicModule,
+        CoresModule,
         NgxEchartsModule.forRoot({
             echarts: () => import('echarts')
         }),

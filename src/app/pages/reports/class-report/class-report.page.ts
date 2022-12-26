@@ -99,7 +99,7 @@ export class ClassReportPage implements OnInit {
                     if (this.reminders.length == 1)
                         this.reminder_expanded = true;
 
-                    this.scores = assessments.filter(x => (x as any).progerssFlag).map(x => x as ScoreAssessmentModel);
+                    this.scores = assessments.filter(x => (x as any).progerssFlag && x.level == 0).map(x => x as ScoreAssessmentModel);
 
                     this.lesson_notes = reminders.filter(x => x.type == ReminderType.Notes).map(x => x as LessonNotes);
                     if (this.lesson_notes.length <= 1) {

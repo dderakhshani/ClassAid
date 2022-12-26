@@ -10,15 +10,22 @@ import { BehaviorSubject } from 'rxjs';
     providedIn: 'root'
 })
 export class LessonService {
-
+    LESSON_STORAGE = "CLASSAID_LESSONS";
     allLessons$ = new BehaviorSubject<Lesson[]>([]);
     books$ = new BehaviorSubject<Lesson[]>([]);
 
 
     constructor(private httpService: HttpService) {
-
+        const lessonsJson = localStorage.getItem(this.LESSON_STORAGE);
+        if (lessonsJson) {
+            const lessons = JSON.parse(lessonsJson);
+            this.initBooks(lessons);
+        }
     }
 
+    reset() {
+        localStorage.removeItem(this.LESSON_STORAGE);
+    }
     //TODO: Get Lessons by SchoolId not load all lessons
     getBooks(schoolId: number, gradeId: number): Promise<Lesson[]> {
         return new Promise((resolve, reject) => {
@@ -27,19 +34,24 @@ export class LessonService {
                     || (x.schoolId && x.schoolId == schoolId)));
             else
                 this.httpService.http.getDataByParam<Lesson[]>({ gradeId: gradeId }, "lesson/GetByGrade").then(r => {
-                    const allLessons = r.map(x => Object.assign(new Lesson(), x));
-                    const books = allLessons.filter(x => x.parentId == null && x.schoolId);
-                    this.allLessons$.next(allLessons);
-                    books.forEach(b => {
-                        b.subLessonCount = allLessons.filter(x => x.parentId == b.id).length;
-                    })
-                    this.books$.next(books);
-                    return resolve(books.filter(x => x.gradeId == gradeId && x.schoolId == schoolId));
+                    localStorage.setItem(this.LESSON_STORAGE, JSON.stringify(r));
+                    this.initBooks(r);
+                    return resolve(this.books$.value.filter(x => x.gradeId == gradeId && x.schoolId == schoolId));
                 }, err => {
                     reject(err);
                 });
 
         });
+    }
+
+    initBooks(rawData: Lesson[]) {
+        const allLessons = rawData.map(x => Object.assign(new Lesson(), x));
+        const books = allLessons.filter(x => x.parentId == null && x.schoolId);
+        this.allLessons$.next(allLessons);
+        books.forEach(b => {
+            b.subLessonCount = allLessons.filter(x => x.parentId == b.id).length;
+        })
+        this.books$.next(books);
     }
 
     getLessonsByParentId(parentId: number): Promise<Lesson[]> {

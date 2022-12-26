@@ -51,3 +51,10 @@ export class StudentProfileModel extends StudentModel {
 
     avgAssessmentLevel: AssessMeasureLevel;
 }
+
+export class StudentAttendanceReportModel extends StudentModel {
+    present: number;
+    absent: number;
+    delay: number;
+    remote: number;
+}

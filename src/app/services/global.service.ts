@@ -153,6 +153,7 @@ export class GlobalService {
     async initSessionsAsync(today_sessions: ClassSessionModel[], sessions2: ClassSessionModel[], books: Lesson[]): Promise<boolean> {
         return new Promise(async resolve => {
             sessions2.forEach(s => {
+                s.startTime = new Date(s.startTime);
                 s.book = books.find(x => x.id == s.lessonId);
                 s.lesson = this.lessonService.allLessons$.value.find(x => x.id == s.subLessonId);
             });
@@ -165,10 +166,10 @@ export class GlobalService {
             this.initBooks(books, sessions2);
 
             //2.3 find currentSession and its reminders
-            this.currentSession = today_sessions.find(x => x.endTime == null);
+            this.currentSession = sessions2.find(x => x.endTime == null);
 
             if (this.currentSession) {
-                await this.initCurrentSessionAsync(today_sessions);
+                await this.initCurrentSessionAsync(sessions2);
             }
             else
 
@@ -216,6 +217,8 @@ export class GlobalService {
                     reject(false);
                     return;
                 }
+
+
                 //To prevent circular reference in saving to storage(no lesson stats)
                 const raw_session = { ...session };
                 raw_session.book = null;
@@ -230,9 +233,14 @@ export class GlobalService {
                 session.book.sessionsCount += 1;
                 session.book.lastSessionLesson = this.lessonService.allLessons$.value.find(x => x.id == session.subLessonId);
 
-                this.classSessions$.next([...this.classSessions$.value, session]);
+                this.classSessions$.next([...this.sessions, session]);
 
                 this.storageService.saveStorage(CLASS_STORAGE, JSON.stringify(raw_session));
+
+                this.classService.getLessonHomeWorks(this.currentSession.lessonId)
+                    .then(homeWorks => {
+                        this.currentSession.homeWorks = homeWorks;
+                    });
                 resolve(true);
             })
         })
@@ -244,12 +252,9 @@ export class GlobalService {
         this.classService.endTask(this.currentSession.id).then(result => {
             this.currentSession.endTime = new Date();
             this.currentSession = undefined;
-            const sessions = this.classSessions$.value;
-            // const currentSession = sessions[sessions.length - 1];
-            // currentSession.endTime = new Date();
 
             this.storageService.removeStorage(CLASS_STORAGE);
-            this.classSessions$.next(sessions);
+            this.classSessions$.next(this.sessions);
         });
     }
 

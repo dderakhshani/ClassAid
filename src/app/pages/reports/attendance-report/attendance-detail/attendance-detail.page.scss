@@ -1,0 +1,67 @@
+ion-header {
+    overflow: visible;
+    min-height: 120px;
+}
+
+.avatar {
+    margin: 10px auto;
+
+    ion-card {
+        width: 90px;
+        height: 90px;
+        position: absolute;
+        top: 35px;
+        z-index: 300;
+
+        ion-avatar {
+            width: 80px;
+            height: 80px;
+        }
+    }
+}
+
+.assess-item {
+    .label {
+        width: 80px;
+    }
+
+    ion-avatar {
+
+        width: 36px;
+        height: 36px;
+
+    }
+}
+
+.small-chart {
+    height: 90px;
+    width: 100%;
+}
+
+.widget-chart {
+    height: 280px;
+    width: 100%;
+}
+
+
+.old_items {
+
+
+    ion-card {
+        transition: all 0.3s;
+    }
+
+    .reminder-item:not(:first-child) {
+        margin-top: -50px;
+    }
+
+    .reminder-item-expanded {
+        margin-top: 0px;
+
+        ion-item {
+            ion-label {
+                white-space: normal;
+            }
+        }
+    }
+}

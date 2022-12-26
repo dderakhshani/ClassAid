@@ -1,3 +1,5 @@
+import { AssessmentService } from 'src/app/api/assessment.service';
+import { LessonService } from 'src/app/api/lesson.service';
 import { GlobalService } from 'src/app/services/global.service';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
@@ -17,6 +19,8 @@ export class ProfilePage implements OnInit {
     constructor(private router: Router,
         private authService: AuthService,
         private globalService: GlobalService,
+        private lessonService: LessonService,
+        private assessmentService: AssessmentService,
         public alertController: AlertController) {
     }
 
@@ -31,6 +35,8 @@ export class ProfilePage implements OnInit {
         this.globalService.currentSession = undefined;
         this.globalService.selectedClass$.next(undefined);
         this.globalService.rings = [];
+        this.lessonService.reset();
+        this.assessmentService.reset();
         this.router.navigateByUrl("/signin");
     }
 

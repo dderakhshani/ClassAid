@@ -58,7 +58,7 @@ export class HomeWorkPage implements OnInit {
     ionViewWillEnter() {
 
         combineLatest(this.globalService.classSessions$, this.globalService.ready$).subscribe(([sessions, ready]) => {
-            if (this.globalService.currentSession && ready) {
+            if (sessions && ready) {
                 this.classService.getHomeWorkById(this.homeWorkIdParam).then(h => {
                     this.homeWork = h;
                     this.studentsService.getStudentsOfClass(this.globalService.selectedClass.id).then(students => {

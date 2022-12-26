@@ -1,0 +1,22 @@
+@import "../../../../theme/variables.scss";
+
+table {
+    width: 100%;
+    text-align: center;
+
+    th.present {
+        border-bottom: 4px solid var(--ion-color-success);
+    }
+
+    th.absent {
+        border-bottom: 4px solid var(--ion-color-danger);
+    }
+
+    th.delay {
+        border-bottom: 4px solid var(--ion-color-warning);
+    }
+
+    th.remote {
+        border-bottom: 4px solid var(--ion-color-secondary);
+    }
+}

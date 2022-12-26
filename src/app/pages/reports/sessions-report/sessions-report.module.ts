@@ -1,3 +1,4 @@
+import { CoresModule } from './../../../core/core.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -9,12 +10,13 @@ import { SessionsReportPageRoutingModule } from './sessions-report-routing.modul
 import { SessionsReportPage } from './sessions-report.page';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    SessionsReportPageRoutingModule
-  ],
-  declarations: [SessionsReportPage]
+    imports: [
+        CommonModule,
+        FormsModule,
+        IonicModule,
+        CoresModule,
+        SessionsReportPageRoutingModule
+    ],
+    declarations: [SessionsReportPage]
 })
-export class SessionsReportPageModule {}
+export class SessionsReportPageModule { }

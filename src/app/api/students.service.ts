@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { HttpService } from '../core/services/http.service';
-import { AttendanceStatus } from '../models/attendance-model';
-import { StudentModel, StudentProfileModel } from '../models/student';
+import { AttendanceModel, AttendanceStatus } from '../models/attendance-model';
+import { StudentAttendanceReportModel, StudentModel, StudentProfileModel } from '../models/student';
 import { GlobalService } from '../services/global.service';
 
 @Injectable({
@@ -49,6 +49,29 @@ export class StudentsService {
         return new Promise((resolve, reject) => {
             this.httpService.http.getDataByParam<StudentProfileModel>({ studentId: studentId }, "Student/GetStudentProfile").then(data => {
                 return resolve(Object.assign(new StudentProfileModel(), data));
+            }, err => {
+                reject(err)
+            });
+
+        });
+    }
+
+    getStudentAttendanceReport(classId: number): Promise<StudentAttendanceReportModel[]> {
+        return new Promise((resolve, reject) => {
+            this.httpService.http.getDataByParam<StudentAttendanceReportModel[]>({ classId: classId }, "Student/GetStudentAttendanceReport").then(data => {
+                const students = data.map(x => Object.assign(new StudentAttendanceReportModel(), x));
+                return resolve(students);
+            }, err => {
+                reject(err)
+            });
+
+        });
+    }
+
+    GetStudentAttendances(studentId: number): Promise<AttendanceModel[]> {
+        return new Promise((resolve, reject) => {
+            this.httpService.http.getDataByParam<AttendanceModel[]>({ studentId: studentId }, "Student/GetStudentAttendances").then(data => {
+                return resolve(data);
             }, err => {
                 reject(err)
             });

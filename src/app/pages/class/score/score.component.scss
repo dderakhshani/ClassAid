@@ -39,13 +39,32 @@ ion-header {
     }
 }
 
+
+ion-segment-button.selected {
+
+    ion-label,
+    ion-icon {
+        color: #fff;
+    }
+}
+
+ion-segment-button[value=negative].selected {
+    --indicator-color: var(--ion-color-danger);
+}
+
+ion-segment-button[value=postive].selected {
+
+    --indicator-color: var(--ion-color-success);
+}
+
 .parameters {
     overflow-x: auto;
     width: 100%;
 
+
     ion-card {
         width: 120px;
-        height: 80px;
+        height: 120px;
         display: inline-block;
     }
 
@@ -54,7 +73,7 @@ ion-header {
     }
 
     .selected {
-        background: red;
+        background: #ccc;
     }
 }
 

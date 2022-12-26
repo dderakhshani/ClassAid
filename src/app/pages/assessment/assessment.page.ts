@@ -77,7 +77,7 @@ export class AssessmentPage implements OnInit {
 
                         this.assessmentService.getParamterAssessment(this.globalService.selectedClass.id, this.studentIdParam, this.book.id).then(data => {
                             this.initChart(data);
-                            const sum = data.map(x => x.value).reduce((old, current) => old + current);
+                            const sum = data.map(x => x.value).reduce((old, current) => old + current, 0);
                             this.avg = sum / data.length;
                             this.currentLevel = this.globalService.findLevelByValue(this.avg);
                         });
@@ -141,8 +141,11 @@ export class AssessmentPage implements OnInit {
 
         this.assessmentService.add(assessments).then(result => {
             loading.dismiss();
-            if (this.globalService.currentSession)
+            if (this.globalService.currentSession) {
+                this.globalService.currentSession.assessments = this.globalService.currentSession.assessments ?? [];
                 this.globalService.currentSession.assessments.push(...assessments);
+            }
+
             this.student.hasAssessment = true;
             this.location.back();
         },

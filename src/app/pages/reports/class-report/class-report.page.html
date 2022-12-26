@@ -76,7 +76,7 @@
                             <ion-icon name="document-text-outline" color="warning" size="large" *ngIf="n.isReport"></ion-icon>
                         </ion-avatar>
                         <ion-label>
-                            <ion-note> {{n.remindTime | date}}</ion-note>
+                            <ion-note> {{n.remindTime | jalali}}</ion-note>
                             <p> {{n.note}}</p>
                         </ion-label>
 
@@ -113,44 +113,39 @@
                 <h4> مشاهدات و امتیازات :</h4>
             </div>
 
-            <ion-grid class="ion-no-padding">
-                <ion-row>
-                    <ion-col size="4">
-                        <ion-card class="score flex-fill" *ngFor="let s of scores" (click)="showScore(s)">
-                            <div class="flag">
+            <div>
 
-                                <ion-icon color="success" size="large" name="add-circle" *ngIf="s.progerssFlag>0"></ion-icon>
-                                <ion-icon color="danger" name="remove-circle" size="large" *ngIf="s.progerssFlag<0"></ion-icon>
-                            </div>
-                            <!-- Avatar -->
-                            <div class="d-flex justify-content-center pt-2">
-                                <ion-avatar slot="start">
-                                    <img alt="Avatar-Student" [src]="studentModel.getImageUrl(s.studentId)" onerror="this.src='/assets/img/avatar.webp'" />
-                                </ion-avatar>
-                            </div>
-
-                            <ion-card-header class="p-1">
-                                <ion-card-subtitle class="text-center">
+                <ion-card class="score" [class.green]="s.progerssFlag>0" [class.red]="s.progerssFlag<0" *ngFor="let s of scores" (click)="showScore(s)">
+                    <ion-card-content>
+                        <ion-item lines="none">
+                            <ion-avatar slot="start" class="ms-3">
+                                <img alt="Avatar-Student" [src]="studentModel.getImageUrl(s.studentId)" onerror="this.src='/assets/img/avatar.webp'" />
+                                <div class="flag">
+                                    <ion-icon color="success" size="large" name="add-circle" *ngIf="s.progerssFlag>0"></ion-icon>
+                                    <ion-icon color="danger" name="remove-circle" size="large" *ngIf="s.progerssFlag<0"></ion-icon>
+                                </div>
+                            </ion-avatar>
+                            <ion-label>
+                                <h3>
                                     {{s.studentFullName}}
-                                </ion-card-subtitle>
-                            </ion-card-header>
-                            <ion-card-content class="px-2 pt-0 pb-1 d-flex justify-content-center">
+                                </h3>
                                 <ion-badge *ngIf="s.progerssStep>0" color="warning" class="score-rate" mode="ios">
                                     <ion-icon src="../../../../assets/coins.svg" class="me-2" size="small">
                                     </ion-icon>
                                     <span> {{s.progerssStep}}</span>
                                 </ion-badge>
-                                <!-- <ion-badge *ngIf="s.note" class="note" color="warning" mode="ios">
-                                            <ion-icon name="document-text-outline" size="small"></ion-icon>
-                                        </ion-badge> -->
-                            </ion-card-content>
-                        </ion-card>
-                    </ion-col>
+                            </ion-label>
 
-                </ion-row>
-            </ion-grid>
+                            <div class="d-flex flex-column align-items-center border-end pe-2 actions">
+                                <ion-icon [src]=" imageUrl+'/parameters/param_'+s.eduParameterId+'.svg'" size="large"></ion-icon>
+                                {{s.eduParameterTitle}}
+                            </div>
+                        </ion-item>
+                    </ion-card-content>
 
+                </ion-card>
 
+            </div>
 
             <div *ngIf="scores?.length==0" class="no-items">
                 <ion-icon slot="start" name="star-outline" size="large"></ion-icon>
@@ -180,7 +175,7 @@
                             </ion-avatar>
 
                             <ion-label>
-                                <ion-note> {{n.remindTime | date}}</ion-note>
+                                <ion-note> {{n.remindTime | jalali}}</ion-note>
                                 <h3>{{n.studentFullName}}</h3>
                                 <p> {{n.note}}</p>
                             </ion-label>
@@ -222,17 +217,32 @@
             </ion-item>
 
             <!-- Student Reminders -->
-            <div class="d-flex" *ngIf="student_reminders && student_reminders.length>0">
+            <div class="old_items" *ngIf="student_reminders && student_reminders.length>0">
                 <ng-container *ngFor="let sr of student_reminders ">
-                    <div class="reminder ms-5 d-flex flex-column align-items-center">
-                        <ion-avatar (click)="showReminder(sr)">
-                            <img alt="avatar-student" [src]="studentModel.getImageUrl(sr.studentId)" onerror="this.src='/assets/img/avatar.webp'" />
-                            <ion-badge class=" me-1" color="secondary" mode="ios">
-                                <ion-icon name="alarm-outline" size="small"></ion-icon>
-                            </ion-badge>
-                        </ion-avatar>
-                        <span class="mt-2"> {{sr.studentFullName}}</span>
-                    </div>
+
+                    <ion-card class="reminder-item">
+                        <ion-item lines="none">
+                            <ion-avatar (click)="showReminder(sr)">
+                                <img alt="avatar-student" [src]="studentModel.getImageUrl(sr.studentId)" onerror="this.src='/assets/img/avatar.webp'" />
+
+                            </ion-avatar>
+                            <ion-label>
+                                <ion-note> {{sr.remindTime | jalali}}</ion-note>
+                                <h3>{{sr.studentFullName}}</h3>
+                                <p> {{sr.note}}</p>
+                            </ion-label>
+
+                            <div class="d-flex flex-column actions">
+                                <ion-button fill="clear" slot="end" (click)="remove_reminder(sr)" color="medium">
+                                    <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+                                </ion-button>
+                                <ion-button fill="clear" slot="end" (click)="share_reminders(sr)" color="medium">
+                                    <ion-icon slot="icon-only" name="share-social"></ion-icon>
+                                </ion-button>
+                            </div>
+
+                        </ion-item>
+                    </ion-card>
                 </ng-container>
 
 
@@ -248,7 +258,7 @@
                             <!-- <ion-icon name="newspaper-outline" color="warning" size="small" *ngIf="r.isReport"></ion-icon> -->
                         </ion-avatar>
                         <ion-label>
-                            <ion-note> {{r.remindTime | date}}</ion-note>
+                            <ion-note> {{r.remindTime | jalali}}</ion-note>
                             <p> {{r.note}}</p>
                         </ion-label>
 

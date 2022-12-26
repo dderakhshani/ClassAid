@@ -47,7 +47,20 @@
                 <div echarts [options]="chartOptions" class="widget-chart" theme="roma"></div>
             </ion-card-content>
         </ion-card>
-
+        <h3>
+            از طریق:
+        </h3>
+        <ion-segment mode="ios" class="mt-4">
+            <ion-segment-button value="homeWork">
+                <ion-label>تمرین</ion-label>
+            </ion-segment-button>
+            <ion-segment-button value="test">
+                <ion-label>آزمون</ion-label>
+            </ion-segment-button>
+            <ion-segment-button value="intuative">
+                <ion-label>شهودی</ion-label>
+            </ion-segment-button>
+        </ion-segment>
 
         <!-- Assessment -->
         <div class="d-flex flex-column">
