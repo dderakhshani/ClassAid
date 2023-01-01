@@ -1,28 +1,76 @@
-ion-grid {
-    display: flex;
-    flex-direction: column;
-    height: 100% !important;
-}
+.timer {
+    position: absolute;
+    font-size: 20px;
+    top: 75px;
+    margin: 0 auto;
+    left: 1rem;
+    font-weight: bold;
+    width: 75px;
+    height: 75px;
+    border-radius: 50%;
+    background: #ffffffad;
+    text-align: center;
+    line-height: 75px;
+    box-shadow: 0 0 10px #0000002b;
 
-.row1 {
-    flex: 1 !important;
-}
+    #countdown-number {
 
-.row2 {
-    flex: 1 !important;
-}
-
-ion-grid {
-    padding: 0;
-}
-
-ion-col {
-    padding: 0;
-
-    ion-card {
-        margin: 5px;
+        color: #000;
+        display: inline-block;
+        line-height: 40px;
     }
+
+    circle-progress {
+        position: absolute;
+        top: -10px;
+        left: -10px;
+        width: 96px;
+        height: 96px;
+    }
+
 }
+
+.timer-secondary {
+    left: auto;
+    right: 1.75rem;
+    top: 95px;
+
+    width: 55px;
+    height: 55px;
+    line-height: 50px;
+
+    #countdown-number {
+        font-size: 14px;
+    }
+
+    circle-progress {
+        position: absolute;
+        top: -5px;
+        right: -5px;
+        width: 55px;
+        height: 55px;
+    }
+
+}
+
+.timer-fab {
+    margin-top: -20px;
+    margin-right: 1rem;
+}
+
+ion-grid.students {
+    padding: 0;
+
+    ion-col {
+        padding: 0;
+
+        ion-card {
+            margin: 5px;
+        }
+    }
+
+}
+
 
 .btn-end-class {
     margin-right: 0;
@@ -52,6 +100,15 @@ ion-col {
     position: relative;
     overflow: visible;
 
+    ion-item::part(native) {
+        --background: transparent;
+    }
+
+    ion-avatar {
+        width: 64px;
+        height: 64px;
+    }
+
     .present {
         position: absolute;
         right: -5px;
@@ -76,6 +133,21 @@ ion-col {
     }
 }
 
+.list-tools {
+    ion-button {
+        --padding-start: 0.5rem !important;
+        --padding-end: 0.5rem !important;
+    }
+
+    ion-segment {
+        width: 104px;
+    }
+
+    ion-segment-button {
+        min-width: 50px;
+    }
+}
+
 ion-button[size=large].action-button {
     height: 70px;
     width: 70px;
@@ -90,9 +162,36 @@ ion-modal#score-modal {
 
 }
 
-ion-modal.auto-height {}
 
 ion-badge {
     --padding-start: 4px;
     --padding-end: 4px;
+}
+
+ion-modal.compact-modal {
+    --width: fit-content;
+    --min-width: 280px;
+    --height: fit-content;
+    --border-radius: 6px;
+    --box-shadow: 0 28px 48px rgba(0, 0, 0, 0.4);
+    padding: 1rem;
+
+    .header {
+        padding: 1.25rem;
+        text-align: center;
+        background: #4e7df1;
+        color: #fff;
+
+        h1 {
+            margin: 0;
+        }
+    }
+
+    .wrapper {
+        margin-bottom: 10px;
+    }
+
+    ion-input {
+        font-size: 24px;
+    }
 }

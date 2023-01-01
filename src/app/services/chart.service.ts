@@ -392,15 +392,17 @@ export class ChartService {
         };
     }
 
-    singleSeriesStackChart(dataSerie1: StatsSerie[], serie1: any, color: string = "") {
-        const colors = ['#546FC6', '#91CC76', '#FAC758', '#EE6666', '#72C0DD', '#3AA271', '#FC8452', '#9961B3', '#E97BCD'];
+    singleSeriesStackChart(dataSerie1: StatsSerie[], serie1: any, colors: string[] = []) {
+        if (colors.length == 0)
+            colors = ['#546FC6', '#91CC76', '#FAC758', '#EE6666', '#72C0DD', '#3AA271', '#FC8452', '#9961B3', '#E97BCD'];
         let yAxisData: string[] = [];
-        let data1 = [];
+        let values = [];
 
         //Assumed that dataSerie1.length>=dataSerie2.length
 
         yAxisData = dataSerie1.map(x => x.name);
-        data1 = dataSerie1.map(x => x.value);
+        values = dataSerie1.map(x => x.value);
+        let labels = dataSerie1.map(x => x.valueLabel);
 
         return {
             legend: {
@@ -413,14 +415,14 @@ export class ChartService {
                     type: 'shadow'
                 }
             },
-            color: [color],
+            color: colors,
             title: {
                 show: dataSerie1.length === 0,
                 textStyle: {
                     color: "grey",
                     fontSize: 20
                 },
-                text: "No data to display",
+                text: "داده ای برای نمایش وجود ندارد",
                 left: "center",
                 top: "center"
             },
@@ -430,23 +432,29 @@ export class ChartService {
                 containLabel: true
             },
             xAxis: {
+                inverse: true,
                 type: 'value',
                 boundaryGap: [0, 0.01]
             },
             yAxis: {
+                inverse: true,
                 type: 'category',
-                data: yAxisData
+                data: yAxisData,
+                axisLabel: {
+                    width: "120",
+                    overflow: "truncate",
+                },
             },
             series: [
                 {
                     name: serie1.name,
                     type: serie1.type,
-                    data: data1,
+                    data: values,
                     // stack: 'total',
                     label: {
                         show: true,
                         formatter: (param: any) => {
-                            return param.data == 0 ? '' : param.data;
+                            return param.data == 0 ? '' : param.data + (labels[param.dataIndex] ? (' | ' + labels[param.dataIndex]) : '');
                         }
                     },
                     itemStyle: {
@@ -577,7 +585,7 @@ export class ChartService {
                     axisLabel: {
                         show: false,
                         distance: 100,
-                        fontSize: 10
+                        fontSize: 8
                     },
                     data: gaugeData,
                     title: {

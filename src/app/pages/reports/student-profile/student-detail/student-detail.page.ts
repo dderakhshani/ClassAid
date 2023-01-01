@@ -1,3 +1,5 @@
+import { StatReportModel } from 'src/app/models/stats-serie';
+import { AssessmentService } from 'src/app/api/assessment.service';
 import { LessonService } from './../../../../api/lesson.service';
 import { StatsSerie } from './../../../../models/stats-serie';
 import { StudentProfileModel } from './../../../../models/student';
@@ -27,16 +29,19 @@ export class StudentDetailPage implements OnInit {
     assessDisplayMode = 'default';
     scoreDisplayMode = 'default';
 
+    subParamterAssessments: StatReportModel[];
     assessChartOptions: any;
     scoreChartOptions: any;
     attendanceChartOptions: any;
 
+    scoreExpanded = false;
     notes_expanded = false;
 
     constructor(private chartService: ChartService,
         public studentsService: StudentsService,
         public globalService: GlobalService,
         private lessonService: LessonService,
+        private assessmentService: AssessmentService,
         private route: ActivatedRoute,
         private router: Router) {
         this.studentIdParam = Number(this.route.snapshot.paramMap.get('studentId'));
@@ -52,34 +57,74 @@ export class StudentDetailPage implements OnInit {
                     this.student.accAssessments.forEach(item => {
                         item.color = this.globalService.findLevelByValue(this.student.avgAssessment).ionColor;
                     });
-                    this.initChartOptions();
+                    this.initAssesstChartOptions();
+                    this.initScoreChartOptions();
                 });
             }
         })
     }
 
 
-    initChartOptions() {
+    initAssesstChartOptions() {
         this.attendanceChartOptions = this.chartService.createPieGaugeChart(this.student.attendancePercent, 0, 100, "%");
         const series = this.student.accAssessments.map(x => ({
-            name: x.title, value: x.value,
+            name: x.title, value: x.value, valueLabel: this.globalService.findLevelByValue(x.value).shortTitle,
             itemStyle: {
                 color: this.globalService.findLevelByValue(x.value).color
             }
-        }))
-        this.assessChartOptions = this.chartService.createSingleSerieChart(
+        }));
+        const colors = series.map(x => this.globalService.findLevelByValue(x.value).color);
+        this.assessChartOptions = this.chartService.singleSeriesStackChart(
             series,
-            { name: 'ارزشیابی درسی', type: 'bar' }
+            { name: 'ارزشیابی درسی', type: 'bar' }, colors
         );
+
+    }
+
+    initScoreChartOptions() {
 
         const series2 = this.student.accScores.map(x => (<StatsSerie>{
             name: x.title, value: x.value
         }))
-        this.scoreChartOptions = this.chartService.createSingleSerieChart(
+        this.scoreChartOptions = this.chartService.singleSeriesStackChart(
             series2,
-            { name: 'نمودار توانمندی ها', type: 'bar' },
-            false
+            { name: 'نمودار توانمندی ها', type: 'bar' }
         )
+    }
+
+    onAssessClick(item: StatReportModel) {
+        this.loadSubParamterAssessment(item.id);
+    }
+    onBarCLick(params: any) {
+        const ass = this.student.accAssessments[params.dataIndex];
+        this.loadSubParamterAssessment(ass.id);
+
+    }
+
+    backAssessment() {
+        this.subParamterAssessments = undefined;
+        this.initAssesstChartOptions();
+    }
+
+    loadSubParamterAssessment(bookId: number) {
+        if (this.subParamterAssessments)
+            return;
+        this.assessmentService.getParamterAssessment(this.globalService.selectedClass.id, this.studentIdParam, bookId).then(data => {
+            this.subParamterAssessments = data;
+
+            const series = data.map(x => ({
+                name: x.title, value: x.value,
+                itemStyle: {
+                    color: this.globalService.findLevelByValue(x.value).color
+                }
+            }));
+
+            const newOptions = this.chartService.singleSeriesStackChart(
+                series,
+                { name: 'وضعیت هر پارامتر', type: 'bar' }
+            );
+            this.assessChartOptions = newOptions;
+        });
     }
 
     getAccessLevel(value: number) {

@@ -8,6 +8,7 @@ export interface StatsSerie {
     name: string;
     // VALUE
     value: number;
+    valueLabel?: string;
     itemStyle: any;
 }
 

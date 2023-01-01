@@ -1,9 +1,9 @@
-<div class="avatar d-flex flex-column align-items-center">
-    <ion-card class="d-flex align-items-center justify-content-center">
-        <ion-avatar>
-            <img alt="Avatar-Student" [src]="student?.getImageUrl()" onerror="this.src='/assets/img/avatar.webp'" />
-        </ion-avatar>
-    </ion-card>
+<div class="avatar-header d-flex flex-column align-items-center">
+
+    <ion-avatar>
+        <img alt="Avatar-Student" [src]="student?.getImageUrl()" onerror="this.src='/assets/img/avatar.webp'" />
+    </ion-avatar>
+
 </div>
 <ion-header class="content-header ion-no-border" collapse="fade">
     <ion-toolbar>
@@ -17,7 +17,7 @@
 </ion-header>
 
 <ion-content class="round-content">
-    <div class="d-flex flex-column align-items-center pt-3">
+    <div class="d-flex flex-column align-items-center pt-4">
 
         <b> {{student?.fullName}}</b>
 
@@ -67,7 +67,7 @@
             </ion-grid>
         </ion-card>
 
-        <app-expandable-section>
+        <app-expandable-section [(expanded)]="scoreExpanded">
             <div class="d-flex align-items-center">
                 <h4 class=" flex-fill">بهترین توانمندی ها</h4>
                 <div>
@@ -82,15 +82,19 @@
                 </div>
             </div>
             <ng-container *ngIf="scoreDisplayMode=='default'">
-                <ion-item *ngFor="let score of student.accScores">
-                    <ion-avatar slot="start">
-                        <ion-icon [src]="imageUrl+'parameters/param_'+score.id+'.svg'" size="large"></ion-icon>
-                    </ion-avatar>
-                    <ion-label>
-                        {{score.title}}
-                    </ion-label>
-                    <ion-badge slot="end" color="success" class="score-rate" mode="ios"> {{score.value}}</ion-badge>
-                </ion-item>
+                <ng-container *ngFor="let score of student.accScores;let index=index">
+                    <ion-item *ngIf="index<3 || scoreExpanded">
+                        <ion-avatar slot="start">
+                            <ion-icon [src]="imageUrl+'parameters/param_'+score.id+'.svg'" size="large"></ion-icon>
+                        </ion-avatar>
+                        <ion-label>
+                            {{score.title}}
+                        </ion-label>
+                        <ion-badge slot="end" color="success" *ngIf="score.value>=0" class="score-rate" mode="ios"> {{score.value}}</ion-badge>
+                        <ion-badge slot="end" color="danger" *ngIf="score.value<0" class="score-rate" mode="ios"> {{score.value}}</ion-badge>
+                    </ion-item>
+                </ng-container>
+
             </ng-container>
             <ng-container *ngIf="scoreDisplayMode=='chart'">
                 <div echarts [options]="scoreChartOptions" class="widget-chart" theme="roma"></div>
@@ -99,6 +103,9 @@
         <br>
         <app-expandable-section>
             <div class="d-flex align-items-center">
+                <ion-button (click)="backAssessment()" fill="clear" *ngIf="subParamterAssessments">
+                    <ion-icon name="arrow-back-outline"></ion-icon>
+                </ion-button>
                 <h4 class=" flex-fill">ارزشیابی درسی</h4>
                 <div>
                     <ion-segment [(ngModel)]="assessDisplayMode" mode="ios">
@@ -112,24 +119,24 @@
                 </div>
             </div>
             <ng-container *ngIf="assessDisplayMode=='default'">
-                <ion-grid fixed>
-                    <ion-row *ngFor="let ass of student.accAssessments">
-                        <ion-col size="12">
-                            <div class="assess-item d-flex align-items-center">
-                                <ion-avatar class="ms-1">
-                                    <img alt="Avatar" [src]="imageUrl+'lessons_org/grade_5/c_'+ass.id+'.jpg'" />
-                                </ion-avatar>
-                                <span class="label">
-                                    {{ass.title}}
-                                </span>
+
+                <ion-grid fixed *ngIf="subParamterAssessments;else LessonAssess">
+                    <ion-row *ngFor="let ass of subParamterAssessments">
+                        <ion-col size="12" class="border-bottom">
+                            <div class="label">
+                                {{ass.title}}
+                            </div>
+                            <div class="assess-item d-flex align-items-center ">
                                 <div class="flex-fill ms-2">
-                                    <div class="text-center">{{ass.value|number:'1.1-1'}}</div>
+
                                     <div class="progress" [class]="getProgressClass(ass.value)">
                                         <div class="progress-value" [style.width]="(ass.value/4*100) +'%'"></div>
                                     </div>
                                 </div>
 
                                 <ion-badge [color]="getAccessLevel(ass.value).ionColor" class="px-3 py-2">
+                                    <span class="text-center">{{ass.value|number:'1.1-1'}}</span>
+                                    &nbsp;|&nbsp;
                                     {{getAccessLevel(ass.value).shortTitle}}
 
                                 </ion-badge>
@@ -138,10 +145,40 @@
                     </ion-row>
 
                 </ion-grid>
+                <ng-template #LessonAssess>
+
+
+                    <ion-grid fixed>
+                        <ion-row *ngFor="let ass of student.accAssessments" (click)="onAssessClick(ass)">
+                            <ion-col size="12">
+                                <div class="assess-item d-flex align-items-center">
+                                    <ion-avatar class="ms-1">
+                                        <img alt="Avatar" [src]="imageUrl+'lessons_org/grade_5/c_'+ass.id+'.jpg'" />
+                                    </ion-avatar>
+                                    <span class="label">
+                                        {{ass.title}}
+                                    </span>
+                                    <div class="flex-fill ms-2">
+                                        <div class="text-center">{{ass.value|number:'1.1-1'}}</div>
+                                        <div class="progress" [class]="getProgressClass(ass.value)">
+                                            <div class="progress-value" [style.width]="(ass.value/4*100) +'%'"></div>
+                                        </div>
+                                    </div>
+
+                                    <ion-badge [color]="getAccessLevel(ass.value).ionColor" class="px-3 py-2">
+                                        {{getAccessLevel(ass.value).shortTitle}}
+
+                                    </ion-badge>
+                                </div>
+                            </ion-col>
+                        </ion-row>
+
+                    </ion-grid>
+                </ng-template>
             </ng-container>
             <ng-container *ngIf="assessDisplayMode=='chart'">
 
-                <div echarts [options]="assessChartOptions" class="widget-chart" theme="roma"></div>
+                <div echarts [options]="assessChartOptions" class="widget-chart" (chartClick)="onBarCLick($event)" theme="roma"></div>
 
             </ng-container>
         </app-expandable-section>
@@ -157,7 +194,7 @@
                         <img hidden *ngFor="let img of n.images;" [src]="imageUrl+img" />
                         <ion-slides *ngIf="notes_expanded" [pager]="true">
                             <ion-slide *ngFor="let img of n.images">
-                                <img [src]="imageUrl+img" />
+                                <img [src]="imageUrl+img" (click)="globalService.openImageViewer(imageUrl+img)" />
                             </ion-slide>
                         </ion-slides>
                         <ion-item lines="none">
@@ -166,7 +203,7 @@
                             </ion-avatar>
 
                             <ion-label>
-                                <ion-note> {{n.remindTime | jalali}}</ion-note>
+                                <ion-note *ngIf="n.remindTime"> {{n.remindTime | jalali}}</ion-note>
                                 <h3>{{n.studentFullName}}</h3>
                                 <p> {{n.note}}</p>
                             </ion-label>

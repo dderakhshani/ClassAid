@@ -21,6 +21,7 @@ import { ViewerModalComponent } from 'ngx-ionic-image-viewer';
 import { ModalController } from '@ionic/angular';
 import { Share } from '@capacitor/share';
 import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
+import { Settings } from '../models/settings';
 const CLASS_STORAGE = "CLASSAID_CLASS";
 
 @Injectable({
@@ -28,6 +29,7 @@ const CLASS_STORAGE = "CLASSAID_CLASS";
 })
 export class GlobalService {
 
+    Settings_Storage = 'CLASSAID_Settings';
 
     public teacherId: number;
     public todayDay: number;
@@ -42,6 +44,8 @@ export class GlobalService {
 
     public todayShedules: ScheduleTimeModel[];
     public callRolling: AttendanceModel[];
+
+    settings: Settings = new Settings();
 
 
     constructor(private storageService: StorageService,
@@ -60,8 +64,14 @@ export class GlobalService {
 
         this.todayDay = (new Date().getDay() + 1) % 7;
 
+        const settingJson = localStorage.getItem(this.Settings_Storage);
+        if (settingJson)
+            this.settings = JSON.parse(settingJson);
 
+    }
 
+    saveSetting() {
+        localStorage.setItem(this.Settings_Storage, JSON.stringify(this.settings));
     }
 
     //When selectedClass is changed then rings & students must be reloaded
@@ -251,9 +261,11 @@ export class GlobalService {
     endClass() {
         this.classService.endTask(this.currentSession.id).then(result => {
             this.currentSession.endTime = new Date();
+            this.todayShedules.find(x => x.id == this.currentSession.scheduleTimeId).session.endTime = new Date();
             this.currentSession = undefined;
 
             this.storageService.removeStorage(CLASS_STORAGE);
+
             this.classSessions$.next(this.sessions);
         });
     }

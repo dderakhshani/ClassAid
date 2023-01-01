@@ -9,9 +9,19 @@ import { GlobalService } from '../services/global.service';
     providedIn: 'root'
 })
 export class StudentsService {
-
+    STUDENT_STORAGE = "CLASSAID_STUDENTS";
     students$ = new BehaviorSubject<StudentModel[]>([]);
+
     constructor(private httpService: HttpService) {
+        const studentsJson = localStorage.getItem(this.STUDENT_STORAGE);
+        if (studentsJson) {
+            const students = JSON.parse(studentsJson);
+            this.initStudents(students);
+        }
+    }
+
+    reset() {
+        localStorage.removeItem(this.STUDENT_STORAGE);
     }
 
     getStudentsOfClass(classId: number): Promise<StudentModel[]> {
@@ -20,15 +30,18 @@ export class StudentsService {
                 return resolve(this.students$.value);
             else
                 this.httpService.http.getDataByParam<StudentModel[]>({ classId: classId }, "Student/GetByClass").then(data => {
-                    const students = data.map(x => Object.assign(new StudentModel(), { ...x, attendanceStatus: AttendanceStatus.Present }));
-                    this.students$.next(students);
-                    return resolve(students);
+                    localStorage.setItem(this.STUDENT_STORAGE, JSON.stringify(data));
+                    this.initStudents(data);
+                    return resolve(this.students$.value);
                 }, err => {
                     reject(err)
                 });
-
         });
+    }
 
+    initStudents(rawData: StudentModel[]) {
+        const students = rawData.map(x => Object.assign(new StudentModel(), { ...x, attendanceStatus: AttendanceStatus.Present }));
+        this.students$.next(students);
     }
 
     getStudentsById(studentId: number): Promise<StudentModel> {

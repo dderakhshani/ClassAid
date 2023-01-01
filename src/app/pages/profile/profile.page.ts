@@ -1,3 +1,4 @@
+import { StudentsService } from 'src/app/api/students.service';
 import { AssessmentService } from 'src/app/api/assessment.service';
 import { LessonService } from 'src/app/api/lesson.service';
 import { GlobalService } from 'src/app/services/global.service';
@@ -21,6 +22,7 @@ export class ProfilePage implements OnInit {
         private globalService: GlobalService,
         private lessonService: LessonService,
         private assessmentService: AssessmentService,
+        private studentService: StudentsService,
         public alertController: AlertController) {
     }
 
@@ -37,6 +39,7 @@ export class ProfilePage implements OnInit {
         this.globalService.rings = [];
         this.lessonService.reset();
         this.assessmentService.reset();
+        this.studentService.reset();
         this.router.navigateByUrl("/signin");
     }
 

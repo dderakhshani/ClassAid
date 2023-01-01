@@ -5,26 +5,6 @@ ion-header {
     min-height: 120px;
 }
 
-.avatar {
-    margin: 10px auto;
-
-    ion-card {
-        width: 90px;
-        height: 90px;
-        position: absolute;
-        top: 35px;
-        z-index: 300;
-
-        ion-avatar {
-            width: 80px;
-            height: 80px;
-        }
-    }
-}
-
-.round-content:before {
-    top: -39px
-}
 
 .widget-chart {
     height: 280px;

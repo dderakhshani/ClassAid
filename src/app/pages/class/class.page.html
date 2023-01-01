@@ -15,13 +15,49 @@
             </ion-button>
         </ion-buttons>
     </ion-toolbar>
-    <img alt="Avatar" [src]="book?.getImageUrl()" onerror="this.src='/assets/img/book_cover.png'" />
+    <img alt="تصویر کتاب" [src]="book?.getImageUrl()" onerror="this.src='/assets/img/book_cover.png'" />
+    <div class="timer">
+        <div id="countdown-number" *ngIf="percentTimer1>0">{{mintues}}:{{seconds}}</div>
+        <div id="countdown-number" *ngIf="percentTimer1==0">پایان</div>
+        <circle-progress [percent]="percentTimer1" [radius]="35" [outerStrokeWidth]="6" [innerStrokeWidth]="0" [outerStrokeColor]="'#78C000'"></circle-progress>
+    </div>
 
+    <div class="timer timer-secondary" *ngIf="timer2Subscribtion">
+        <div id="countdown-number">{{mintues2}}:{{seconds2}}</div>
+        <circle-progress [percent]="percentTimer2" [radius]="25" [outerStrokeWidth]="4" [innerStrokeWidth]="0" [outerStrokeColor]="'#4e7df1'"></circle-progress>
+
+    </div>
 </ion-header>
 
-<ion-content class="round-content flex-fill p-2 ">
+<ion-content class="round-content flex-fill ">
+    <!-- Tools -->
+    <ion-fab class="timer-fab" slot="fixed" vertical="top" horizontal="start" [edge]="true">
+        <ion-fab-button color="secondary">
+            <ion-icon name="construct-outline"></ion-icon>
+        </ion-fab-button>
+        <ion-fab-list side="end">
+            <ng-container *ngIf="timer2Subscribtion;else stopTimerTemp">
+                <ion-fab-button (click)="stopTimer()">
+                    <ion-icon name="stop-circle-outline" color="danger"></ion-icon>
+                </ion-fab-button>
 
-    <ion-item>
+            </ng-container>
+            <ng-template #stopTimerTemp>
+                <ion-fab-button id="create-timer">
+                    <ion-icon name="stopwatch-outline"></ion-icon>
+                </ion-fab-button>
+            </ng-template>
+
+            <ion-fab-button>
+                <ion-icon name="shuffle-outline" (click)="createRandomStudent()"></ion-icon>
+            </ion-fab-button>
+            <ion-fab-button>
+                <ion-icon name="color-filter-outline"></ion-icon>
+            </ion-fab-button>
+        </ion-fab-list>
+    </ion-fab>
+
+    <ion-item class="mt-2">
         <ion-avatar slot="start">
             <img alt="Avatar" [src]="book?.getImageUrl()" onerror="this.src='/assets/img/book.png'" />
         </ion-avatar>
@@ -37,8 +73,12 @@
         </ion-button>
     </ion-item>
 
+    <!-- ToolBar -->
     <div class="d-flex justify-content-around p-2 pb-4">
-
+        <!-- <ion-button shape="circle" (click)="onReminder()" color="medium" [class.has-reminder]="remindersCount()" [attr.data-count]="remindersCount()">
+            <ion-icon slot="icon-only" name="people-outline"></ion-icon>
+            <ion-label>حضورغیاب</ion-label>
+        </ion-button> -->
         <ion-button shape="circle" (click)="onReminder()" color="secondary" [class.has-reminder]="remindersCount()" [attr.data-count]="remindersCount()">
             <ion-icon slot="icon-only" name="alarm-outline"></ion-icon>
             <ion-label>یادآور</ion-label>
@@ -57,8 +97,36 @@
         </ion-button>
 
     </div>
-    <hr>
+
+    <!-- List ToolBar -->
+    <div class="d-flex align-items-center list-tools mt-2">
+        <ion-segment mode="ios" class="mx-2" [(ngModel)]="listMode">
+            <ion-segment-button value="single">
+                <ion-icon name="person-outline"></ion-icon>
+            </ion-segment-button>
+            <ion-segment-button value="group">
+                <ion-icon name="people-outline"></ion-icon>
+            </ion-segment-button>
+        </ion-segment>
+        <hr class="flex-fill">
+        <ion-button fill="clear" class="m-0" *ngIf="listMode=='single'" (click)="showSearch=!showSearch" color="medium">
+            <ion-icon slot="icon-only" name="search-outline"></ion-icon>
+        </ion-button>
+        <ion-button fill="clear" class="m-0" color="medium" id="sort" *ngIf="listMode=='single'">
+            <ion-icon slot="icon-only" name="swap-vertical-outline" *ngIf="sortType==''"></ion-icon>
+            <ion-icon slot="icon-only" name="swap-vertical-outline" *ngIf="sortType!=''" color="success"></ion-icon>
+        </ion-button>
+
+        <ion-button fill="clear" *ngIf="viewMode=='grid'" (click)="setViewMode('list')" color="medium">
+            <ion-icon name="grid-outline"></ion-icon>
+        </ion-button>
+        <ion-button fill="clear" class="ms-2" *ngIf="viewMode=='list'" (click)="setViewMode('grid')" color="medium">
+            <ion-icon name="reorder-four-outline"></ion-icon>
+        </ion-button>
+    </div>
+    <ion-searchbar placeholder="جستجو دانش آموز" mode="ios" *ngIf="showSearch"></ion-searchbar>
     <div>
+        <!-- HomwWork Remind -->
         <div class="px-2">
             <ion-card color="success" *ngIf="homeWork">
                 <ion-item lines="none" color="success">
@@ -78,61 +146,119 @@
             </ion-card>
         </div>
 
-        <ion-grid fixed>
+        <!-- Students List -->
+        <ion-grid fixed class="pb-4 students" *ngIf="listMode=='single'">
             <ion-row>
-                <ion-col size="4" *ngFor="let student of students " class="d-flex  align-items-stretch">
-                    <ion-card class="student-card flex-fill" (click)="onStudentAction(student)" [color]="getColor(student)">
-                        <!-- If Present Icon -->
-                        <ion-icon *ngIf="student.attendanceStatus== AttendanceStatus.Present" name="checkmark-circle" class="present" color="success"></ion-icon>
-                        <!-- Has Reminder Icon -->
-                        <ion-badge *ngIf="student.reminders.length>0" class="reminder  me-1" color="secondary" mode="ios">
-                            <ion-icon name="alarm-outline" size="small"></ion-icon>
-                        </ion-badge>
-                        <!-- Has Assessment Icon -->
-                        <ion-badge *ngIf="student.hasAssessment" class="assessment  me-1" color="danger" mode="ios">
-                            <ion-icon name="bar-chart-outline" size="small"></ion-icon>
-                        </ion-badge>
+                <ng-container *ngIf="viewMode=='grid'">
+                    <ion-col size="4" *ngFor="let student of students " class="d-flex  align-items-stretch">
+                        <ion-card class="student-card flex-fill" (click)="onStudentAction(student)" [color]="getColor(student)">
+                            <!-- If Present Icon -->
+                            <!-- <ion-icon *ngIf="student.attendanceStatus== AttendanceStatus.Present" name="checkmark-circle" class="present" color="success"></ion-icon> -->
+                            <!-- Has Reminder Icon -->
+                            <ion-badge *ngIf="student.reminders.length>0" class="reminder  me-1" color="secondary" mode="ios">
+                                <ion-icon name="alarm-outline" size="small"></ion-icon>
+                            </ion-badge>
+                            <!-- Has Assessment Icon -->
+                            <ion-badge *ngIf="student.hasAssessment" class="assessment  me-1" color="danger" mode="ios">
+                                <ion-icon name="stats-chart-outline" size="small"></ion-icon>
+                            </ion-badge>
 
-                        <!-- Avatar -->
-                        <div class="d-flex justify-content-center pt-2">
-                            <ion-avatar slot="start">
-                                <img alt="Avatar-Student" [src]="student.getImageUrl()" onerror="this.src='/assets/img/avatar.webp'" />
-                            </ion-avatar>
-                        </div>
+                            <!-- Avatar -->
+                            <div class="d-flex justify-content-center pt-2">
+                                <ion-avatar slot="start">
+                                    <img alt="Avatar-Student" [src]="student.getImageUrl()" onerror="this.src='/assets/img/avatar.webp'" />
+                                </ion-avatar>
+                            </div>
 
-                        <ion-card-header class="p-1">
-                            <ion-card-subtitle class="text-center">
-                                {{student.fullName}}
-                            </ion-card-subtitle>
-                        </ion-card-header>
-                        <ion-card-content class="p-2 pt-0 pb-0">
-                            <ng-container *ngIf="student.attendanceStatus!=AttendanceStatus.Absent">
-                                <!-- Homework Issue -->
-                                <ion-badge *ngIf="student.homeWorkIssue" class=" me-1" color="danger" mode="ios">
-                                    <ion-icon name="book-outline" size="small"></ion-icon>
-                                </ion-badge>
-                                <!-- Has Note Icon -->
-                                <ion-badge *ngIf="student.notes.length>0" class=" me-1" color="warning" mode="ios">
-                                    <ion-icon name="document-text-outline" size="small"></ion-icon>
-                                </ion-badge>
-                            </ng-container>
-                            <!-- Scores  -->
-                            <ng-container *ngFor="let score of student.scores">
-                                <ion-badge *ngIf="score.progerssFlag>0" color="success" class=" me-1" mode="ios">
-                                    <ion-icon name="add-circle-outline" size="small"></ion-icon>
-                                    {{score.progerssStep}}
-                                </ion-badge>
-                                <ion-badge *ngIf="score.progerssFlag<0" color="danger" class=" me-1" mode="ios">
-                                    <ion-icon name="remove-circle-outline" size="small"></ion-icon>
-                                    {{score.progerssStep}}
-                                </ion-badge>
-                            </ng-container>
+                            <ion-card-header class="p-1">
+                                <ion-card-subtitle class="text-center">
+                                    {{student.fullName}}
+                                </ion-card-subtitle>
+                            </ion-card-header>
+                            <ion-card-content class="p-2 pt-0 pb-0">
+                                <ng-container *ngIf="student.attendanceStatus!=AttendanceStatus.Absent">
+                                    <!-- Homework Issue -->
+                                    <ion-badge *ngIf="student.homeWorkIssue" class=" me-1" color="danger" mode="ios">
+                                        <ion-icon name="book-outline" size="small"></ion-icon>
+                                    </ion-badge>
+                                    <!-- Has Note Icon -->
+                                    <ion-badge *ngIf="student.notes.length>0" class=" me-1" color="warning" mode="ios">
+                                        <ion-icon name="document-text-outline" size="small"></ion-icon>
+                                    </ion-badge>
+                                </ng-container>
+                                <!-- Scores  -->
+                                <ng-container *ngFor="let score of student.scores">
+                                    <ion-badge *ngIf="score.progerssFlag>0" color="success" class=" me-1" mode="ios">
+                                        <ion-icon name="add-circle-outline" size="small"></ion-icon>
+                                        {{score.progerssStep}}
+                                    </ion-badge>
+                                    <ion-badge *ngIf="score.progerssFlag<0" color="danger" class=" me-1" mode="ios">
+                                        <ion-icon name="remove-circle-outline" size="small"></ion-icon>
+                                        {{score.progerssStep}}
+                                    </ion-badge>
+                                </ng-container>
 
-                            <ion-badge color="danger" *ngIf="student.attendanceStatus==AttendanceStatus.Absent">غایب</ion-badge>
+                                <ion-badge color="danger" *ngIf="student.attendanceStatus==AttendanceStatus.Absent">غایب</ion-badge>
 
-                        </ion-card-content>
-                    </ion-card>
-                </ion-col>
+                            </ion-card-content>
+                        </ion-card>
+                    </ion-col>
+                </ng-container>
+                <ng-container *ngIf="viewMode=='list'">
+                    <ion-col size="12" *ngFor="let student of students " class="d-flex  align-items-stretch">
+                        <ion-card class="student-card flex-fill" (click)="onStudentAction(student)" [color]="getColor(student)">
+
+                            <!-- Has Reminder Icon -->
+                            <ion-badge *ngIf="student.reminders.length>0" class="reminder  me-1" color="secondary" mode="ios">
+                                <ion-icon name="alarm-outline" size="small"></ion-icon>
+                            </ion-badge>
+                            <!-- Has Assessment Icon -->
+                            <ion-badge *ngIf="student.hasAssessment" class="assessment  me-1" color="danger" mode="ios">
+                                <ion-icon name="stats-chart-outline" size="small"></ion-icon>
+                            </ion-badge>
+
+                            <ion-card-content class="p-2 pt-0 pb-0">
+                                <ion-item>
+                                    <!-- Avatar -->
+                                    <ion-avatar slot="start">
+                                        <img alt="Avatar-Student" [src]="student.getImageUrl()" onerror="this.src='/assets/img/avatar.webp'" />
+                                    </ion-avatar>
+                                    <ion-label>
+                                        <h3> {{student.fullName}}</h3>
+                                        &nbsp;
+                                        <ng-container *ngIf="student.attendanceStatus!=AttendanceStatus.Absent">
+                                            <!-- Homework Issue -->
+                                            <ion-badge *ngIf="student.homeWorkIssue" class=" me-1" color="danger" mode="ios">
+                                                <ion-icon name="book-outline" size="small"></ion-icon>
+                                            </ion-badge>
+                                            <!-- Has Note Icon -->
+                                            <ion-badge *ngIf="student.notes.length>0" class=" me-1" color="warning" mode="ios">
+                                                <ion-icon name="document-text-outline" size="small"></ion-icon>
+                                            </ion-badge>
+                                        </ng-container>
+                                        <!-- Scores  -->
+                                        <ng-container *ngFor="let score of student.scores">
+                                            <ion-badge *ngIf="score.progerssFlag>0" color="success" class=" me-1" mode="ios">
+                                                <ion-icon name="add-circle-outline" size="small"></ion-icon>
+                                                {{score.progerssStep}}
+                                            </ion-badge>
+                                            <ion-badge *ngIf="score.progerssFlag<0" color="danger" class=" me-1" mode="ios">
+                                                <ion-icon name="remove-circle-outline" size="small"></ion-icon>
+                                                {{score.progerssStep}}
+                                            </ion-badge>
+                                        </ng-container>
+
+                                        <ion-badge color="danger" *ngIf="student.attendanceStatus==AttendanceStatus.Absent">غایب</ion-badge>
+
+                                    </ion-label>
+                                </ion-item>
+
+
+                            </ion-card-content>
+                        </ion-card>
+                    </ion-col>
+                </ng-container>
+
 
             </ion-row>
         </ion-grid>
@@ -162,8 +288,163 @@
         </ng-template>
     </ion-modal>
 
+    <ion-modal class="compact-modal" #sortModel trigger="sort">
+        <ng-template>
+            <div class="wrapper">
+                <div class="header">
+                    <h1> مرتب سازی </h1>
+                </div>
+                <ion-list class="mx-2">
+                    <ion-item button (click)="onSort('name');sortModel.dismiss()">
+                        <ion-icon name="checkmark-circle-outline" slot="start" *ngIf="sortType!='name'"></ion-icon>
+                        <ion-icon name="arrow-down-circle" slot="start" color="success" *ngIf="sortType=='name' && sortOrder==1"></ion-icon>
+                        <ion-icon name="arrow-up-circle" slot="start" color="success" *ngIf="sortType=='name' && sortOrder==-1"></ion-icon>
+                        <ion-label>
+                            براساس نام
+                        </ion-label>
+                    </ion-item>
+                    <ion-item button (click)="onSort('lastname');sortModel.dismiss()">
+                        <ion-icon name="checkmark-circle-outline" slot="start" *ngIf="sortType!='lastname'"></ion-icon>
+                        <ion-icon name="arrow-down-circle" slot="start" color="success" *ngIf="sortType=='lastname' && sortOrder==1"></ion-icon>
+                        <ion-icon name="arrow-up-circle" slot="start" color="success" *ngIf="sortType=='lastname' && sortOrder==-1"></ion-icon>
+                        <ion-label>
+                            براساس نام خانوادگی
+                        </ion-label>
+                    </ion-item>
+                    <ion-item button (click)="onSort('attendance');sortModel.dismiss()">
+                        <ion-icon name="checkmark-circle-outline" slot="start" *ngIf="sortType!='attendance'"></ion-icon>
+                        <ion-icon name="arrow-down-circle" slot="start" color="success" *ngIf="sortType=='attendance' && sortOrder==1"></ion-icon>
+                        <ion-icon name="arrow-up-circle" slot="start" color="success" *ngIf="sortType=='attendance' && sortOrder==-1"></ion-icon>
+                        <ion-label>
+                            براساس وضعیت حضور
+                        </ion-label>
+                    </ion-item>
+                    <ion-item button (click)="onSort('score');sortModel.dismiss()">
+                        <ion-icon name="checkmark-circle-outline" slot="start" *ngIf="sortType!='score'"></ion-icon>
+                        <ion-icon name="arrow-down-circle" slot="start" color="success" *ngIf="sortType=='score' && sortOrder==1"></ion-icon>
+                        <ion-icon name="arrow-up-circle" slot="start" color="success" *ngIf="sortType=='score' && sortOrder==-1"></ion-icon>
+                        <ion-label>
+                            براساس وضعیت امتیاز
+                        </ion-label>
+                    </ion-item>
+                </ion-list>
+                <div class="p-2">
+                    <ion-grid fixed>
+                        <ion-row>
+                            <ion-col size="6">
+                                <ion-button (click)="sortModel.dismiss()" color="success" expand="block" shape="round">
+                                    بستن
+                                </ion-button>
+                            </ion-col>
+                            <ion-col size="6">
+
+                                <ion-button (click)="sortType='';sortModel.dismiss()" [disabled]="sortType==''" color="danger" fill="outline" expand="block" shape="round">
+                                    حذف مرتب سازی
+                                </ion-button>
+                            </ion-col>
+                        </ion-row>
+                    </ion-grid>
+                </div>
+            </div>
+        </ng-template>
+    </ion-modal>
+
+    <ion-modal class="compact-modal" #createTimerModel trigger="create-timer">
+        <ng-template>
+            <div class="wrapper">
+                <div class="header">
+                    <ion-icon name="time-outline" size="large"></ion-icon>
+                    <h1>ایجاد زمان سنج </h1>
+                </div>
+
+                <ion-grid fixed>
+                    <ion-row>
+                        <ion-col size="4">
+                            <ion-button (click)="createTimer(5);createTimerModel.dismiss()" expand="block" shape="round" size="large" color="secondary">
+                                05:00
+                            </ion-button>
+                        </ion-col>
+                        <ion-col size="4">
+                            <ion-button (click)="createTimer(10);createTimerModel.dismiss()" expand="block" shape="round" size="large" color="secondary">
+                                10:00
+                            </ion-button>
+                        </ion-col>
+                        <ion-col size="4">
+                            <ion-button (click)="createTimer(15);createTimerModel.dismiss()" expand="block" shape="round" size="large" color="secondary">
+                                15:00
+                            </ion-button>
+                        </ion-col>
+                    </ion-row>
+                    <ion-row>
+                        <ion-col size="4">
+                            <ion-button (click)="createTimer(15);createTimerModel.dismiss()" expand="block" shape="round" size="large" color="secondary">
+                                20:00
+                            </ion-button>
+                        </ion-col>
+                        <ion-col size="4">
+                            <ion-button (click)="createTimer(15);createTimerModel.dismiss()" expand="block" shape="round" size="large" color="secondary">
+                                25:00
+                            </ion-button>
+                        </ion-col>
+                        <ion-col size="4">
+                            <ion-button (click)="createTimer(20);createTimerModel.dismiss()" expand="block" shape="round" size="large" color="secondary">
+                                30:00
+                            </ion-button>
+                        </ion-col>
+                    </ion-row>
+                </ion-grid>
+                <div class="p-2">
+                    <div class="d-flex justify-content-center align-items-center px-5 py-2">
+                        <ion-item>
+                            <ion-input type="number" placeholder="00" [(ngModel)]="seconds2"></ion-input>
+                        </ion-item>
+
+                        :
+                        <ion-item>
+                            <ion-input type="number" placeholder="00" [(ngModel)]="mintues2"></ion-input>
+                        </ion-item>
+                    </div>
+                    <ion-button (click)="createTimer(mintues2);createTimerModel.dismiss()" expand="block" shape="round">
+                        ایجاد زمان سنج سفارشی
+                    </ion-button>
+                </div>
+            </div>
+        </ng-template>
+    </ion-modal>
+
+    <ion-modal class="compact-modal" #randomStudentModal [isOpen]="isRandomModalOpen" (didDismiss)="isRandomModalOpen=false">
+        <ng-template>
+            <div class="wrapper">
+                <div class="header">
+                    <ion-icon name="shuffle-outline" size="large"></ion-icon>
+                    <h1>انتخاب تصادفی دانش آموز </h1>
+                </div>
+                <div class="p-4">
+                    <ion-card class="student-card flex-fill">
+
+                        <!-- Avatar -->
+                        <div class="d-flex justify-content-center pt-2">
+                            <ion-avatar slot="start">
+                                <img alt="Avatar-Student" [src]="randomStudent.getImageUrl()" onerror="this.src='/assets/img/avatar.webp'" />
+                            </ion-avatar>
+                        </div>
+
+                        <ion-card-header class="p-1">
+                            <ion-card-subtitle class="text-center">
+                                {{randomStudent.fullName}}
+                            </ion-card-subtitle>
+                        </ion-card-header>
+                    </ion-card>
+                </div>
+                <ion-button (click)="randomStudentModal.dismiss()" class="mx-2" expand="block" shape="round">
+                    تایید
+                </ion-button>
+            </div>
+        </ng-template>
+    </ion-modal>
+
     <!-- Action Sheet Menu -->
-    <ion-modal class="auto-height" #modal [isOpen]="isStudentActionsModalOpen" (didDismiss)="isStudentActionsModalOpen=false" [initialBreakpoint]="0.35" [breakpoints]="[0, 0.35]">
+    <ion-modal #modal [isOpen]="isStudentActionsModalOpen" (didDismiss)="isStudentActionsModalOpen=false" [initialBreakpoint]="0.35" [breakpoints]="[0, 0.35]">
         <ng-template>
 
             <ion-grid fixed>
@@ -179,7 +460,7 @@
                     <ion-col size="6" class="p-3 ion-text-center">
                         <ion-button shape="circle" (click)="onAssess()" color="danger" size="large" class="action-button">
                             <div class="d-flex flex-column p-2">
-                                <ion-icon slot="icon-only" name="bar-chart-outline" size="large"></ion-icon>
+                                <ion-icon slot="icon-only" name="stats-chart-outline" size="large"></ion-icon>
                                 <ion-label class="mt-2"> ارزشیابی</ion-label>
                             </div>
                         </ion-button>

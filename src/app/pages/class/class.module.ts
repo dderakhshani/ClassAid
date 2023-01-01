@@ -14,6 +14,8 @@ import { ClassPageRoutingModule } from './class-routing.module';
 import { ClassPage } from './class.page';
 import { CreateHomeWorkComponent } from './create-home-work/create-home-work.component';
 import { ComponentsModule } from 'src/app/components/components.module';
+import { NgxEchartsModule } from 'ngx-echarts';
+import { NgCircleProgressModule } from 'ng-circle-progress';
 
 @NgModule({
     imports: [
@@ -23,7 +25,20 @@ import { ComponentsModule } from 'src/app/components/components.module';
         IonicModule,
         ClassPageRoutingModule,
         CoresModule,
-        ComponentsModule
+        ComponentsModule,
+        NgCircleProgressModule.forRoot({
+            // set defaults here
+            radius: 100,
+            outerStrokeWidth: 16,
+            innerStrokeWidth: 8,
+            outerStrokeColor: "#78C000",
+            innerStrokeColor: "#C7E596",
+            animationDuration: 0,
+            animation: false,
+            showTitle: false,
+            showSubtitle: false,
+            showUnits: false
+        })
     ],
     declarations: [ClassPage, NoteComponent, ReminderComponent, ScoreComponent, CreateHomeWorkComponent]
 })
