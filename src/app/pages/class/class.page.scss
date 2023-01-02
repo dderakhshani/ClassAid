@@ -131,7 +131,18 @@ ion-grid.students {
     ion-icon {
         font-size: 24px;
     }
+
+    .group {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(10px, max-content));
+        padding-right: 15px;
+
+        ion-avatar {
+            box-shadow: 2px 4px 5px #00000033;
+        }
+    }
 }
+
 
 .list-tools {
     ion-button {
@@ -152,6 +163,16 @@ ion-button[size=large].action-button {
     height: 70px;
     width: 70px;
 }
+
+
+.modal-open {
+    pointer-events: all !important;
+}
+
+ion-backdrop {
+    pointer-events: all !important;
+}
+
 
 ion-modal#score-modal {
     --width: fit-content;

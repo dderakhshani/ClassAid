@@ -15,6 +15,7 @@ import { ReminderType } from 'src/app/models/remider';
 import { AttendanceStatus } from 'src/app/models/attendance-model';
 import { combineLatest, interval, Observable, Subject, Subscription } from 'rxjs';
 import { ChartService } from 'src/app/services/chart.service';
+import { GroupStudentModel } from 'src/app/models/student-group';
 
 @Component({
     selector: 'app-class',
@@ -28,6 +29,8 @@ export class ClassPage implements OnInit {
     lesson: Lesson;
     book: Lesson;
     students: StudentModel[];
+    groupStudent: GroupStudentModel[] = [];
+
     selectedStudent?: StudentModel;
     lessonId: number;
     scheduleId?: number;
@@ -118,6 +121,14 @@ export class ClassPage implements OnInit {
         //If students state changed by attendance
         this.studentsService.students$.subscribe(students => {
             this.students = [...students];
+            this.groupStudent.push(<GroupStudentModel>{
+                title: 'قدرت',
+                students: [this.students[0], this.students[2], this.students[4]]
+            });
+            this.groupStudent.push(<GroupStudentModel>{
+                title: 'شهامت',
+                students: [this.students[1], this.students[3], this.students[5]]
+            });
             //Must set all reminders at once for student and display it by type
             this.initStudents();
             this.sort();

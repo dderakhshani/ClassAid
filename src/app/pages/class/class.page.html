@@ -19,7 +19,7 @@
     <div class="timer">
         <div id="countdown-number" *ngIf="percentTimer1>0">{{mintues}}:{{seconds}}</div>
         <div id="countdown-number" *ngIf="percentTimer1==0">پایان</div>
-        <circle-progress [percent]="percentTimer1" [radius]="35" [outerStrokeWidth]="6" [innerStrokeWidth]="0" [outerStrokeColor]="'#78C000'"></circle-progress>
+        <circle-progress [percent]="percentTimer1" [radius]="35" [outerStrokeWidth]="7" [innerStrokeWidth]="0" [outerStrokeColor]="'#78C000'"></circle-progress>
     </div>
 
     <div class="timer timer-secondary" *ngIf="timer2Subscribtion">
@@ -262,6 +262,62 @@
 
             </ion-row>
         </ion-grid>
+
+        <!-- Group View Mode -->
+        <ng-container *ngIf="listMode=='group'">
+
+            <ion-item>
+                <ion-select placeholder="انتخاب گروه موجود" okText="انتخاب" cancelText="بستن ">
+                    <ion-select-option value="apples">گروه شناخت گیاهان فصل اول</ion-select-option>
+                    <ion-select-option value="oranges">گروه فصل اول ریاضی</ion-select-option>
+                    <ion-select-option value="bananas">Bananas</ion-select-option>
+                </ion-select>
+                <ion-button slot="end" expand="block" fill="outline" shape="round">
+                    <ion-icon slot="start" name="add"></ion-icon>
+                    ایجاد گروه جدید
+                </ion-button>
+            </ion-item>
+
+            <!-- Group List -->
+            <ion-grid fixed class="pb-4 students">
+                <ion-row>
+                    <ng-container *ngIf="viewMode=='grid'">
+                        <ion-col size="6" *ngFor="let group of groupStudent" class="d-flex  align-items-stretch">
+                            <ion-card class="student-card flex-fill">
+                                <ion-card-header>
+                                    <ion-card-title>
+                                        <ion-icon name="people-outline"></ion-icon>
+                                        {{group.title}}</ion-card-title>
+                                </ion-card-header>
+                                <ion-card-content class="group">
+                                    <ion-avatar slot="start" *ngFor="let s of group.students">
+                                        <img alt="Avatar-Student" [src]="s.getImageUrl()" onerror="this.src='/assets/img/avatar.webp'" />
+                                    </ion-avatar>
+                                </ion-card-content>
+                            </ion-card>
+                        </ion-col>
+                    </ng-container>
+                    <ng-container *ngIf="viewMode=='list'">
+                        <ion-col size="12" *ngFor="let group of groupStudent " class="d-flex  align-items-stretch">
+                            <ion-card class="student-card flex-fill">
+                                <ion-card-header>
+                                    <ion-card-title>
+                                        <ion-icon name="people-outline"></ion-icon>
+                                        {{group.title}}</ion-card-title>
+                                </ion-card-header>
+                                <ion-card-content class="group">
+                                    <ion-avatar slot="start" *ngFor="let s of group.students">
+                                        <img alt="Avatar-Student" [src]="s.getImageUrl()" onerror="this.src='/assets/img/avatar.webp'" />
+                                    </ion-avatar>
+                                </ion-card-content>
+                            </ion-card>
+                        </ion-col>
+                    </ng-container>
+
+
+                </ion-row>
+            </ion-grid>
+        </ng-container>
     </div>
 
     <ion-modal #modal_reminder [isOpen]="isReminderModalOpen" (didDismiss)="isReminderModalOpen=false" [presentingElement]="presentingElement">
