@@ -248,3 +248,8 @@ ion-item {
 .text-secondary {
     color: rgb(98, 102, 109);
 }
+
+.modal-open .modal,
+.modal-open .modal-backdrop {
+    pointer-events: auto !important;
+}

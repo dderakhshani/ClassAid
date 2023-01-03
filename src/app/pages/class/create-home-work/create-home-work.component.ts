@@ -1,3 +1,4 @@
+import { StudentModel } from './../../../models/student';
 import { environment } from './../../../../environments/environment';
 import { ClassService } from 'src/app/api/class.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -9,6 +10,7 @@ import { Lesson } from 'src/app/models/lessons';
 import { IFormGroup, IFormBuilder } from '@rxweb/types';
 import { v4 as uuidv4 } from 'uuid';
 import { LoadingController, ModalController, ToastController } from '@ionic/angular';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-create-home-work',
@@ -34,6 +36,7 @@ export class CreateHomeWorkComponent implements OnInit {
     @Input()
     book: Lesson;
 
+    isAssigneeModalOpen = false;
 
     form: IFormGroup<IHomeWorkModel>;
     formBuilder: IFormBuilder;
@@ -45,9 +48,11 @@ export class CreateHomeWorkComponent implements OnInit {
     uploadFiles: string[];
     colors = ["primary", "success", "danger", "secondary", "warning", "tertiary", "medium"];
     fileFilters = "*.*";
+    selectedStudents: StudentModel[] = [];
 
     constructor(formBuilder: FormBuilder,
         private classService: ClassService,
+        private router: Router,
         private loadingCtrl: LoadingController,
 
         public toastController: ToastController) {
@@ -88,6 +93,14 @@ export class CreateHomeWorkComponent implements OnInit {
             return 1;
         else
             return 1 - ((this.prevItems.length - 1) - index) * 0.05;
+    }
+
+    selectAssignees() {
+        this.isAssigneeModalOpen = true;
+    }
+
+    removeStudent(index: number) {
+        this.selectedStudents.splice(index, 1);
     }
 
 

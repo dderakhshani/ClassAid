@@ -59,7 +59,11 @@ const routes: Routes = [
     {
         path: 'home-work',
         loadChildren: () => import('./pages/assessment/home-work/home-work.module').then(m => m.HomeWorkPageModule)
-    }
+    },  {
+    path: 'select-students',
+    loadChildren: () => import('./pages/select-students/select-students.module').then( m => m.SelectStudentsPageModule)
+  }
+
 
 ];
 @NgModule({

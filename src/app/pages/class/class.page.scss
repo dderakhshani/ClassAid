@@ -134,7 +134,7 @@ ion-grid.students {
 
     .group {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(10px, max-content));
+        grid-template-columns: repeat(auto-fit, minmax(min(100%/3, max(64px, 100%/5)), 1fr));
         padding-right: 15px;
 
         ion-avatar {
@@ -165,13 +165,6 @@ ion-button[size=large].action-button {
 }
 
 
-.modal-open {
-    pointer-events: all !important;
-}
-
-ion-backdrop {
-    pointer-events: all !important;
-}
 
 
 ion-modal#score-modal {
@@ -214,5 +207,15 @@ ion-modal.compact-modal {
 
     ion-input {
         font-size: 24px;
+    }
+}
+
+.random-student {
+    ion-avatar {
+
+        width: 85px;
+        height: 85px;
+        border: 5px solid #fff;
+        box-shadow: 0 3px 5px rgba(0, 0, 0, 0.186);
     }
 }

@@ -1,9 +1,8 @@
-<div class="avatar d-flex flex-column align-items-center">
-    <ion-card class="d-flex align-items-center justify-content-center">
-        <ion-avatar>
-            <img alt="Avatar-Student" [src]="student?.getImageUrl()" onerror="this.src='/assets/img/avatar.webp'" />
-        </ion-avatar>
-    </ion-card>
+<div class="avatar-header d-flex flex-column align-items-center">
+
+    <ion-avatar>
+        <img alt="Avatar-Student" [src]="student?.getImageUrl()" onerror="this.src='/assets/img/avatar.webp'" />
+    </ion-avatar>
 </div>
 <ion-header class="content-header ion-no-border" collapse="fade">
     <ion-toolbar>
@@ -17,7 +16,7 @@
 </ion-header>
 
 <ion-content class="round-content">
-    <div class="d-flex flex-column align-items-center pt-3">
+    <div class="d-flex flex-column align-items-center pt-4">
 
         <b> {{student?.fullName}}</b>
 

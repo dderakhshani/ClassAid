@@ -37,3 +37,29 @@ ion-grid {
         font-size: 24px;
     }
 }
+
+
+ion-segment-button.selected {
+
+    ion-label,
+    ion-icon {
+        color: #fff;
+    }
+}
+
+ion-segment-button.text-danger {
+    --indicator-color: var(--ion-color-danger);
+}
+
+ion-segment-button.text-warning {
+    --indicator-color: var(--ion-color-warning);
+}
+
+ion-segment-button.text-primary {
+    --indicator-color: var(--ion-color-secondary);
+}
+
+ion-segment-button.text-success {
+
+    --indicator-color: var(--ion-color-primary);
+}

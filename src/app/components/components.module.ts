@@ -1,3 +1,4 @@
+import { SelectStudentComponent } from './select-student/select-student.component';
 import { CoresModule } from './../core/core.module';
 import { HomeWorkItemComponent } from './home-work-item/home-work-item.component';
 import { ScheduleItemComponent } from './schedule-item/schedule-item.component';
@@ -20,7 +21,11 @@ import { NgxEchartsModule } from 'ngx-echarts';
             echarts: () => import('echarts')
         }),
     ],
-    declarations: [TimelineComponent, ScheduleItemComponent, HomeWorkItemComponent],
-    exports: [TimelineComponent, ScheduleItemComponent, HomeWorkItemComponent]
+    declarations: [TimelineComponent,
+        ScheduleItemComponent,
+        HomeWorkItemComponent,
+        SelectStudentComponent
+    ],
+    exports: [TimelineComponent, ScheduleItemComponent, HomeWorkItemComponent, SelectStudentComponent]
 })
 export class ComponentsModule { }

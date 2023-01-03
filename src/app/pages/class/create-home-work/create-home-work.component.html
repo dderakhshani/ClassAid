@@ -51,6 +51,31 @@
             <ion-textarea placeholder="متن خود را وارد نمایید" [autoGrow]="true" formControlName="description"></ion-textarea>
         </ion-item>
 
+        <div>
+            <ion-item class="pt-2">
+                <ion-label>اختصاص به:
+
+                </ion-label>
+                <ion-button slot="end" (click)="selectAssignees()" size="default">
+                    <ion-icon name="checkmark-circle-outline" slot="start"></ion-icon>
+                    انتخاب دانش آموزان
+
+                </ion-button>
+            </ion-item>
+            <ion-chip *ngIf="selectedStudents.length==0" color="secondary">
+                همه
+            </ion-chip>
+
+            <ion-chip *ngFor="let s of selectedStudents;let index=index">
+                <ion-avatar>
+                    <img alt="avatar-Student" [src]="s.getImageUrl()" onerror="this.src='/assets/img/avatar.webp'" />
+                </ion-avatar>
+                <ion-label>{{s.fullName}}</ion-label>
+                <ion-icon name="close" (click)="removeStudent(index)"></ion-icon>
+            </ion-chip>
+
+        </div>
+
         <ion-item lines="none">
             <ion-icon slot="start" name="alarm-outline"></ion-icon>
             <ion-label>مدت زمان انجام:</ion-label>
@@ -104,6 +129,14 @@
         </div>
 
     </form>
+
+
+    <ion-modal #modal_select_student [isOpen]="isAssigneeModalOpen" (didDismiss)="isAssigneeModalOpen=false" [initialBreakpoint]="0.75" [breakpoints]="[0, 0.75,0.9]">
+        <ng-template>
+            <app-select-student [modal]="modal_select_student" viewMode="list" [selectedStudents]="selectedStudents" (selectedChange)="selectedStudents=$event"></app-select-student>
+        </ng-template>
+    </ion-modal>
+
 </ion-content>
 <ion-footer class="p-2">
     <ion-button expand="block" (click)="save()">

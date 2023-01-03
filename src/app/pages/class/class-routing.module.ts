@@ -14,6 +14,10 @@ const routes: Routes = [
         loadChildren: () => import('../assessment/assessment.module').then(m => m.AssessmentPageModule)
     },
     {
+        path: 'select-students',
+        loadChildren: () => import('../select-students/select-students.module').then(m => m.SelectStudentsPageModule)
+    },
+    {
         path: ':lessonId/:scheduleId',
         component: ClassPage
     }

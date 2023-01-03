@@ -31,6 +31,7 @@ export class StudentModel {
     homeWorkIssue: boolean;
     hasAssessment: boolean;
 
+    isSelected: boolean;
 
     getImageUrl() {
         return `${environment.imageUrl}/students/student_${this.id}.jpg`;
@@ -50,6 +51,7 @@ export class StudentProfileModel extends StudentModel {
     accAssessments: StatReportModel[];
 
     avgAssessmentLevel: AssessMeasureLevel;
+
 }
 
 export class StudentAttendanceReportModel extends StudentModel {

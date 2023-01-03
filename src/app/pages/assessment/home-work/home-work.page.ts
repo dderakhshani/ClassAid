@@ -30,6 +30,7 @@ export class HomeWorkPage implements OnInit {
 
     expanded = false;
     isModalOpen = false;
+    viewMode: 'grid' | 'list' = 'list';
 
     selectedStudent: HomeWorkAssessmentModel;
     assess: HomeWorkAssessmentModel;

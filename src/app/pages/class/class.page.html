@@ -17,13 +17,13 @@
     </ion-toolbar>
     <img alt="تصویر کتاب" [src]="book?.getImageUrl()" onerror="this.src='/assets/img/book_cover.png'" />
     <div class="timer">
-        <div id="countdown-number" *ngIf="percentTimer1>0">{{mintues}}:{{seconds}}</div>
-        <div id="countdown-number" *ngIf="percentTimer1==0">پایان</div>
+        <div id="countdown-number" *ngIf="percentTimer1>0">{{mintues | number:'2.0'}}:{{seconds | number:'2.0'}}</div>
+        <div id="countdown-number" *ngIf="percentTimer1==0">00:00 </div>
         <circle-progress [percent]="percentTimer1" [radius]="35" [outerStrokeWidth]="7" [innerStrokeWidth]="0" [outerStrokeColor]="'#78C000'"></circle-progress>
     </div>
 
     <div class="timer timer-secondary" *ngIf="timer2Subscribtion">
-        <div id="countdown-number">{{mintues2}}:{{seconds2}}</div>
+        <div id="countdown-number">{{mintues2 | number:'2.0'}}:{{seconds2 | number:'2.0'}}</div>
         <circle-progress [percent]="percentTimer2" [radius]="25" [outerStrokeWidth]="4" [innerStrokeWidth]="0" [outerStrokeColor]="'#4e7df1'"></circle-progress>
 
     </div>
@@ -43,7 +43,7 @@
 
             </ng-container>
             <ng-template #stopTimerTemp>
-                <ion-fab-button id="create-timer">
+                <ion-fab-button (click)="isCreateTimerModalOpen=true">
                     <ion-icon name="stopwatch-outline"></ion-icon>
                 </ion-fab-button>
             </ng-template>
@@ -109,10 +109,13 @@
             </ion-segment-button>
         </ion-segment>
         <hr class="flex-fill">
-        <ion-button fill="clear" class="m-0" *ngIf="listMode=='single'" (click)="showSearch=!showSearch" color="medium">
-            <ion-icon slot="icon-only" name="search-outline"></ion-icon>
+        <!-- Open Search -->
+        <ion-button fill="clear" class="m-0" *ngIf="listMode=='single'" (click)="showSearch=!showSearch;searchTerm='';search(null)" color="medium">
+            <ion-icon slot="icon-only" name="search-outline" *ngIf="!showSearch"></ion-icon>
+            <ion-icon slot="icon-only" name="search-outline" color="secondary" *ngIf="showSearch"></ion-icon>
         </ion-button>
-        <ion-button fill="clear" class="m-0" color="medium" id="sort" *ngIf="listMode=='single'">
+        <!-- Open Sort -->
+        <ion-button fill="clear" class="m-0" color="medium" (click)="isSortModalOpen=true" *ngIf="listMode=='single'">
             <ion-icon slot="icon-only" name="swap-vertical-outline" *ngIf="sortType==''"></ion-icon>
             <ion-icon slot="icon-only" name="swap-vertical-outline" *ngIf="sortType!=''" color="success"></ion-icon>
         </ion-button>
@@ -124,7 +127,7 @@
             <ion-icon name="reorder-four-outline"></ion-icon>
         </ion-button>
     </div>
-    <ion-searchbar placeholder="جستجو دانش آموز" mode="ios" *ngIf="showSearch"></ion-searchbar>
+    <ion-searchbar [debounce]="400" (ionChange)="search($event)" [(ngModel)]="searchTerm" placeholder="جستجو دانش آموز" mode="ios" *ngIf="showSearch && listMode=='single'"></ion-searchbar>
     <div>
         <!-- HomwWork Remind -->
         <div class="px-2">
@@ -344,7 +347,7 @@
         </ng-template>
     </ion-modal>
 
-    <ion-modal class="compact-modal" #sortModel trigger="sort">
+    <ion-modal class="compact-modal" #sortModel [isOpen]="isSortModalOpen" (didDismiss)="isSortModalOpen=false">
         <ng-template>
             <div class="wrapper">
                 <div class="header">
@@ -405,7 +408,7 @@
         </ng-template>
     </ion-modal>
 
-    <ion-modal class="compact-modal" #createTimerModel trigger="create-timer">
+    <ion-modal class="compact-modal" #createTimerModel [isOpen]="isCreateTimerModalOpen" (didDismiss)="isCreateTimerModalOpen=false">
         <ng-template>
             <div class="wrapper">
                 <div class="header">
@@ -475,22 +478,15 @@
                     <ion-icon name="shuffle-outline" size="large"></ion-icon>
                     <h1>انتخاب تصادفی دانش آموز </h1>
                 </div>
-                <div class="p-4">
-                    <ion-card class="student-card flex-fill">
+                <div class="p-4 random-student">
+                    <!-- Avatar -->
+                    <div class="d-flex flex-column align-items-center pt-2">
+                        <ion-avatar slot="start">
+                            <img alt="Avatar-Student" [src]="randomStudent.getImageUrl()" onerror="this.src='/assets/img/avatar.webp'" />
+                        </ion-avatar>
+                        <span class="pt-2"> {{randomStudent.fullName}}</span>
+                    </div>
 
-                        <!-- Avatar -->
-                        <div class="d-flex justify-content-center pt-2">
-                            <ion-avatar slot="start">
-                                <img alt="Avatar-Student" [src]="randomStudent.getImageUrl()" onerror="this.src='/assets/img/avatar.webp'" />
-                            </ion-avatar>
-                        </div>
-
-                        <ion-card-header class="p-1">
-                            <ion-card-subtitle class="text-center">
-                                {{randomStudent.fullName}}
-                            </ion-card-subtitle>
-                        </ion-card-header>
-                    </ion-card>
                 </div>
                 <ion-button (click)="randomStudentModal.dismiss()" class="mx-2" expand="block" shape="round">
                     تایید

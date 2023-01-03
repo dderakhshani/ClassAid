@@ -16,6 +16,7 @@ import { CreateHomeWorkComponent } from './create-home-work/create-home-work.com
 import { ComponentsModule } from 'src/app/components/components.module';
 import { NgxEchartsModule } from 'ngx-echarts';
 import { NgCircleProgressModule } from 'ng-circle-progress';
+import { LocalNotifications } from '@awesome-cordova-plugins/local-notifications/ngx';
 
 @NgModule({
     imports: [
@@ -40,6 +41,7 @@ import { NgCircleProgressModule } from 'ng-circle-progress';
             showUnits: false
         })
     ],
-    declarations: [ClassPage, NoteComponent, ReminderComponent, ScoreComponent, CreateHomeWorkComponent]
+    declarations: [ClassPage, NoteComponent, ReminderComponent, ScoreComponent, CreateHomeWorkComponent],
+    providers: [LocalNotifications]
 })
 export class ClassPageModule { }

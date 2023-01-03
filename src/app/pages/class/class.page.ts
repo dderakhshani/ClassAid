@@ -16,6 +16,7 @@ import { AttendanceStatus } from 'src/app/models/attendance-model';
 import { combineLatest, interval, Observable, Subject, Subscription } from 'rxjs';
 import { ChartService } from 'src/app/services/chart.service';
 import { GroupStudentModel } from 'src/app/models/student-group';
+import { ELocalNotificationTriggerUnit, LocalNotifications } from '@awesome-cordova-plugins/local-notifications/ngx';
 
 @Component({
     selector: 'app-class',
@@ -28,8 +29,11 @@ export class ClassPage implements OnInit {
 
     lesson: Lesson;
     book: Lesson;
+    all_students: StudentModel[];
     students: StudentModel[];
     groupStudent: GroupStudentModel[] = [];
+
+    searchTerm = "";
 
     selectedStudent?: StudentModel;
     lessonId: number;
@@ -44,7 +48,8 @@ export class ClassPage implements OnInit {
     isReminderModalOpen = false;
     isNotesModalOpen = false;
     isHomeWorkModalOpen = false;
-
+    isSortModalOpen = false;
+    isCreateTimerModalOpen = false;
     seconds = 60;
     mintues = 45;
 
@@ -74,6 +79,7 @@ export class ClassPage implements OnInit {
         private alertController: AlertController,
         private actionSheetCtrl: ActionSheetController,
         private chartService: ChartService,
+        private localNotifications: LocalNotifications,
         private router: Router) {
 
         this.lessonId = Number(this.route.snapshot.paramMap.get('lessonId'));
@@ -113,6 +119,7 @@ export class ClassPage implements OnInit {
                 //     this.initStudents();
                 // });
                 this.initTimer();
+                this.initTimer2();
             }
             else if (ready)
                 this.router.navigateByUrl('tabs/home', { replaceUrl: true })
@@ -120,10 +127,11 @@ export class ClassPage implements OnInit {
         })
         //If students state changed by attendance
         this.studentsService.students$.subscribe(students => {
-            this.students = [...students];
+            this.all_students = [...students];
+            this.students = this.all_students;
             this.groupStudent.push(<GroupStudentModel>{
                 title: 'قدرت',
-                students: [this.students[0], this.students[2], this.students[4]]
+                students: [this.students[0], this.students[2], this.students[4], this.students[6]]
             });
             this.groupStudent.push(<GroupStudentModel>{
                 title: 'شهامت',
@@ -144,7 +152,7 @@ export class ClassPage implements OnInit {
             const notes = this.globalService.currentSession.reminders?.filter(x => x.type == ReminderType.StudentNotes).map(x => x as StudentNotes);
             const assesments = this.globalService.currentSession.assessments;
 
-            this.students.forEach(s => {
+            this.all_students.forEach(s => {
                 const s_s = scores?.filter(x => x.studentId == s.id);
                 if (s_s) {
                     s.scores = [];
@@ -180,9 +188,10 @@ export class ClassPage implements OnInit {
     }
 
     initTimer() {
+        const durationMinute = 45;
         let duration = new Date().getTime() - this.globalService.currentSession.startTime.getTime();
         duration = Math.floor(duration / 1000);
-        duration = 45 * 60 - duration;
+        duration = durationMinute * 60 - duration;
         if (duration > 0) {
 
             this.mintues = Math.floor(duration / 60);
@@ -201,33 +210,68 @@ export class ClassPage implements OnInit {
     }
 
     createTimer(minutes: number) {
+        const startTime = new Date().getTime();
+        localStorage.setItem("CLASSAID_TIMER", `${startTime},${minutes}`);
 
-        this.mintues2 = minutes;
-        this.seconds2 = 0;
-        this.timer2Subscribtion = interval(1000)
-            .subscribe(x => {
-                this.seconds2 -= 1;
-                if (this.seconds2 < 0) {
-                    this.seconds2 = 59;
-                    this.mintues2 -= 1;
-                }
-                if (this.mintues2 < 0)
-                    this.stopTimer();
-                this.percentTimer2 = (this.mintues2 + (this.seconds2 / 60)) / minutes * 100;
+        this.initTimer2();
 
+
+    }
+
+    initTimer2() {
+        const data = localStorage.getItem("CLASSAID_TIMER");
+        if (data) {
+            this.localNotifications.cancel(200);
+            const dataParts = data.split(",");
+            let startTime = parseInt(dataParts[0]);
+            const durationMinute = parseInt(dataParts[1]);
+            let duration = new Date().getTime() - startTime;
+            duration = Math.floor(duration / 1000);
+            duration = durationMinute * 60 - duration;
+
+            this.mintues2 = Math.floor(duration / 60);
+            this.seconds2 = duration - this.mintues2 * 60;
+            this.timer2Subscribtion = interval(1000)
+                .subscribe(x => {
+                    this.seconds2 -= 1;
+                    if (this.seconds2 < 0) {
+                        this.seconds2 = 59;
+                        this.mintues2 -= 1;
+                    }
+                    if (this.mintues2 < 0)
+                        this.stopTimer();
+                    this.percentTimer2 = (this.mintues2 + (this.seconds2 / 60)) / durationMinute * 100;
+
+                });
+
+            this.localNotifications.schedule({
+                id: 200,
+                text: 'پایان زمان سنج',
+                trigger: { in: this.mintues, unit: ELocalNotificationTriggerUnit.MINUTE },
+                led: 'FF0000',
+                sound: null
             });
+        }
+
     }
 
     stopTimer() {
         this.timer2Subscribtion.unsubscribe();
         this.timer2Subscribtion = undefined;
+        this.localNotifications.cancel(200);
     }
 
     createRandomStudent() {
-        const students = this.students.filter(x => x.attendanceStatus != AttendanceStatus.Absent);
-        const rnd = Math.floor(Math.random() * students.length);
-        this.randomStudent = students[rnd];
         this.isRandomModalOpen = true;
+        let counter = 0;
+        let looper = setInterval(x => {
+            if (counter > 8)
+                clearInterval(looper);
+            counter++;
+            const students = this.all_students.filter(x => x.attendanceStatus != AttendanceStatus.Absent);
+            const rnd = Math.floor(Math.random() * students.length);
+            this.randomStudent = students[rnd];
+        }, 150);
     }
 
     setViewMode(value) {
@@ -247,21 +291,29 @@ export class ClassPage implements OnInit {
     }
 
     sort() {
+        this.searchTerm = "";
         switch (this.sortType) {
             case 'name':
                 if (this.sortOrder)
-                    this.students = this.students.sort((a, b) => a.name > b.name ? this.sortOrder * -1 : (a.name < b.name ? this.sortOrder : 0))
+                    this.all_students = this.all_students.sort((a, b) => a.name > b.name ? this.sortOrder : (a.name < b.name ? this.sortOrder * -1 : 0))
 
                 break;
             case 'lastname':
-                this.students = this.students.sort((a, b) => a.family > b.family ? this.sortOrder * -1 : (a.family < b.family ? this.sortOrder : 0))
+                this.all_students = this.all_students.sort((a, b) => a.family > b.family ? this.sortOrder : (a.family < b.family ? this.sortOrder * -1 : 0))
                 break;
             case 'attendance':
-                this.students = this.students.sort((a, b) => a.attendanceStatus > b.attendanceStatus ? this.sortOrder * -1 : (a.attendanceStatus < b.attendanceStatus ? this.sortOrder : 0))
+                this.all_students = this.all_students.sort((a, b) => a.attendanceStatus > b.attendanceStatus ? this.sortOrder : (a.attendanceStatus < b.attendanceStatus ? this.sortOrder * -1 : 0))
                 break;
             default:
                 break;
         }
+    }
+
+    search(event) {
+        if (this.searchTerm)
+            this.students = this.all_students.filter(x => x.fullName.toLowerCase().includes(this.searchTerm.toLowerCase()));
+        else
+            this.students = this.all_students;
     }
 
     attendance() {
