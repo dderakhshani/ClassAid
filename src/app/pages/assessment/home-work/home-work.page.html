@@ -75,12 +75,12 @@
                         </ion-segment-button>
                     </ion-segment>
                     <div class="mt-2">
-                        <app-score-rating [maxScore]="10" [(score)]="assess.progerssStep"></app-score-rating>
+                        <app-score-rating [maxScore]="10" [(score)]="assess.progerssStep" [(notes)]="assess.note"></app-score-rating>
                     </div>
-                    <ion-item class="pt-2">
+                    <!-- <ion-item class="pt-2">
                         <ion-label position="stacked"> یادداشت</ion-label>
                         <ion-textarea placeholder="متن خود را وارد نمایید" [(ngModel)]="assess.note"></ion-textarea>
-                    </ion-item>
+                    </ion-item> -->
 
                     <div class="mt-2">
                         <ion-button expand="block" (click)="addAssess()" color="secondary">
@@ -115,7 +115,7 @@
                                     </ion-label>
                                 </ion-segment-button>
                             </ion-segment>
-                            <app-score-rating [maxScore]="10" [(score)]="student.progerssStep"></app-score-rating>
+                            <app-score-rating [maxScore]="10" [(score)]="student.progerssStep" [(notes)]="student.note"></app-score-rating>
                         </div>
                     </ion-card-content>
                 </ion-card>

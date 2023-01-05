@@ -30,6 +30,12 @@
 </ion-header>
 
 <ion-content class="round-content flex-fill ">
+    <ion-fab class="timer-fab" *ngIf="globalService.currentSession?.homeWorkLater" slot="fixed" vertical="top" horizontal="end" [edge]="true">
+        <ion-fab-button color="success" size="small" (click)="assessHomeWork()">
+            <ion-icon name="library-outline"></ion-icon>
+        </ion-fab-button>
+    </ion-fab>
+
     <!-- Tools -->
     <ion-fab class="timer-fab" slot="fixed" vertical="top" horizontal="start" [edge]="true">
         <ion-fab-button color="secondary">
@@ -131,7 +137,7 @@
     <div>
         <!-- HomwWork Remind -->
         <div class="px-2">
-            <ion-card color="success" *ngIf="homeWork">
+            <ion-card color="success" *ngIf="homeWork && !globalService.currentSession?.homeWorkLater">
                 <ion-item lines="none" color="success">
                     <ion-avatar slot="start">
                         <ion-icon name="library-outline" size="large"></ion-icon>
@@ -143,7 +149,7 @@
                     </ion-label>
                 </ion-item>
                 <div class="d-flex flex-row-reverse px-2">
-                    <ion-button fill="outline" color="light" (click)="homeWork=undefined">بعدا</ion-button>
+                    <ion-button fill="outline" color="light" (click)="globalService.currentSession.homeWorkLater=true">بعدا</ion-button>
                     <ion-button fill="outline" color="light" (click)="assessHomeWork()">ارزیابی</ion-button>
                 </div>
             </ion-card>

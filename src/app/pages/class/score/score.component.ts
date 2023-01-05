@@ -40,7 +40,7 @@ export class ScoreComponent implements OnInit {
     prevScores: ScoreAssessmentModel[];
 
 
-    posNeg: string;
+    posNeg: 'positive' | 'negative' = 'positive';
     notes: string;
     rate: number;
     selectedeParameter: AssessParamterModel;
@@ -69,7 +69,7 @@ export class ScoreComponent implements OnInit {
                 taskId: this.session.id,
                 note: this.notes,
                 level: 0,//this is only mark,Server will always set this to 0 for Score, 
-                progerssFlag: this.posNeg == "postive" ? 1 : -1,
+                progerssFlag: this.posNeg == "positive" ? 1 : -1,
                 progerssStep: this.rate
             }
             this.assessmentService.addScore(score).then(x => {

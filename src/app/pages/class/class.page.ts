@@ -26,7 +26,6 @@ import { ELocalNotificationTriggerUnit, LocalNotifications } from '@awesome-cord
 export class ClassPage implements OnInit {
     AttendanceStatus = AttendanceStatus;
 
-
     lesson: Lesson;
     book: Lesson;
     all_students: StudentModel[];
@@ -42,6 +41,7 @@ export class ClassPage implements OnInit {
     modalNotes: Note[];
     modalHomeWorks: HomeWorkModel[];
     homeWork: HomeWorkModel;
+
 
     isStudentActionsModalOpen = false;
     isScoreModalOpen = false;
@@ -256,6 +256,7 @@ export class ClassPage implements OnInit {
     }
 
     stopTimer() {
+        localStorage.removeItem("CLASSAID_TIMER");
         this.timer2Subscribtion.unsubscribe();
         this.timer2Subscribtion = undefined;
         this.localNotifications.cancel(200);

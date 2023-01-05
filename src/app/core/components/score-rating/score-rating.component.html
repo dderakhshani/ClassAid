@@ -2,10 +2,13 @@
     <ion-icon src="../../../../assets/coins.svg" [color]="color" size="large">
     </ion-icon>
 
-    <span class="me-1">امتیاز: </span>
-
+    <div class="me-1 flex-fill">امتیاز: </div>
+    <ion-button slot="end" fill="outline" shape="round" (click)="addNote=!addNote">
+        <ion-icon slot="start" name="add"></ion-icon>
+        یادداشت
+    </ion-button>
 </div>
-<div class="d-flex">
+<div class="d-flex ">
     <ng-container *ngFor="let item of scores">
         <!-- <ion-icon name="star-outline" color="warning" size="large">
         </ion-icon> -->
@@ -16,3 +19,7 @@
     </ng-container>
 
 </div>
+<ion-item class="pt-2" *ngIf="addNote">
+    <ion-label position="stacked"> یادداشت</ion-label>
+    <ion-textarea placeholder="متن خود را وارد نمایید" [autoGrow]="true" [ngModel]="notes" (ngModelChange)="onNotesChanged($event)"></ion-textarea>
+</ion-item>

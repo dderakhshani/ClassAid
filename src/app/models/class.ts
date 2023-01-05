@@ -35,4 +35,6 @@ export class ClassSessionModel {
     assessments: AssessmentModel[];
     scores: ScoreAssessmentModel[]
     homeWorks: HomeWorkModel[];
+
+    homeWorkLater = false;
 }

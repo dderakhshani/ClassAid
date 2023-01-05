@@ -18,8 +18,14 @@ export class ScoreRatingComponent implements OnInit {
     @Input()
     color = 'warning';
 
-    scores: number[] = [];
+    @Input()
+    notes: string;
 
+    @Output()
+    notesChange = new EventEmitter<string>();
+
+    scores: number[] = [];
+    addNote = false;
     constructor() {
 
     }
@@ -33,6 +39,10 @@ export class ScoreRatingComponent implements OnInit {
     select(item: number) {
         this.score = item;
         this.scoreChange.emit(this.score);
+    }
+
+    onNotesChanged(value: string) {
+        this.notesChange.emit(value);
     }
 
 }

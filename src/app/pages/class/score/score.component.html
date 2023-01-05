@@ -1,9 +1,8 @@
-<div class="avatar d-flex flex-column align-items-center">
-    <ion-card class="d-flex align-items-center justify-content-center">
-        <ion-avatar>
-            <img alt="avatar-Student" [src]="student?.getImageUrl()" onerror="this.src='/assets/img/avatar.webp'" />
-        </ion-avatar>
-    </ion-card>
+<div class="avatar-header d-flex flex-column align-items-center">
+
+    <ion-avatar>
+        <img alt="avatar-Student" [src]="student?.getImageUrl()" onerror="this.src='/assets/img/avatar.webp'" />
+    </ion-avatar>
 </div>
 <ion-header class="content-header ion-no-border" collapse="fade">
     <ion-toolbar>
@@ -22,10 +21,15 @@
 
 </ion-header>
 <ion-content class="round-content">
-    <div class="p-3 mt-4">
+    <div class="d-flex flex-column align-items-center pt-4">
+
+        <b> {{student?.fullName}}</b>
+
+    </div>
+    <div class="p-3">
         <app-expandable-section [(expanded)]="expanded" *ngIf="prevScores && prevScores.length>0">
 
-            <div class="old_items">
+            <div class="old_items ">
                 <div>
                     <h4>مشاهدات قبلی کلاس:</h4>
                 </div>
@@ -67,8 +71,8 @@
             </div>
         </app-expandable-section>
 
-        <ion-segment [(ngModel)]="posNeg" mode="ios" class="mt-4">
-            <ion-segment-button value="postive" [class.selected]="posNeg=='postive'" class="text-success">
+        <ion-segment [(ngModel)]="posNeg" mode="ios">
+            <ion-segment-button value="positive" [class.selected]="posNeg=='positive'" class="text-success">
                 <ion-icon name="add-circle-outline"></ion-icon>
                 <ion-label>مثبت</ion-label>
             </ion-segment-button>
@@ -78,14 +82,19 @@
             </ion-segment-button>
         </ion-segment>
 
+        <div class="d-flex justify-content-center">
+            <app-score-rating [(score)]="rate" [(notes)]="notes" [color]="posNeg!='negative'?'warning':'danger'"></app-score-rating>
+        </div>
+
+
         <div class="border-bottom mt-3">
             <span>پارامتر ارزیابی</span>
 
 
             <div class="parameters">
-                <ion-row no-padding class="horizontal-row">
+                <ion-row no-padding>
 
-                    <ion-col size="4" class="p-2" *ngFor="let item of assesmentParamters">
+                    <ion-col size="4" class="ion-no-padding" *ngFor="let item of assesmentParamters">
                         <ion-card class="d-flex flex-column justify-content-center align-items-center" (click)="selectedeParameter=item" [class.selected]="selectedeParameter==item">
                             <ion-icon [src]="imageUrl+'/parameters/param_'+item.id+'.svg'" size="large"></ion-icon>
                             <span> {{item.title}}</span>
@@ -100,20 +109,11 @@
             </ion-select> -->
         </div>
 
-        <div class="d-flex justify-content-center">
-            <app-score-rating [(score)]="rate" [color]="posNeg!='negative'?'warning':'danger'"></app-score-rating>
-        </div>
-
-        <ion-item class="pt-2">
-            <ion-label position="stacked"> یادداشت</ion-label>
-            <ion-textarea placeholder="متن خود را وارد نمایید" [autoGrow]="true" [(ngModel)]="notes"></ion-textarea>
-        </ion-item>
-
     </div>
 </ion-content>
 
 <ion-footer class="p-2">
-    <ion-button expand="block" (click)="saveScore()" [disabled]="posNeg==undefined">
+    <ion-button expand="block" (click)="saveScore()" [disabled]="selectedeParameter==undefined">
         <ion-icon name="save-outline" size="large"></ion-icon>
         <ion-label class="me-2"> ذخیره</ion-label>
     </ion-button>
