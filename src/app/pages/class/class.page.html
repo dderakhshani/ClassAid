@@ -43,7 +43,7 @@
         </ion-fab-button>
         <ion-fab-list side="end">
             <ng-container *ngIf="timer2Subscribtion;else stopTimerTemp">
-                <ion-fab-button (click)="stopTimer()">
+                <ion-fab-button (click)="stopTimer(true)">
                     <ion-icon name="stop-circle-outline" color="danger"></ion-icon>
                 </ion-fab-button>
 
@@ -57,7 +57,7 @@
             <ion-fab-button>
                 <ion-icon name="shuffle-outline" (click)="createRandomStudent()"></ion-icon>
             </ion-fab-button>
-            <ion-fab-button>
+            <ion-fab-button (click)="isCreateGroupModalOpen=true">
                 <ion-icon name="color-filter-outline"></ion-icon>
             </ion-fab-button>
         </ion-fab-list>
@@ -162,7 +162,7 @@
                     <ion-col size="4" *ngFor="let student of students " class="d-flex  align-items-stretch">
                         <ion-card class="student-card flex-fill" (click)="onStudentAction(student)" [color]="getColor(student)">
                             <!-- If Present Icon -->
-                            <!-- <ion-icon *ngIf="student.attendanceStatus== AttendanceStatus.Present" name="checkmark-circle" class="present" color="success"></ion-icon> -->
+                            <ion-icon *ngIf="student.attendanceStatus== AttendanceStatus.Remote" name="laptop-outline" class="present" color="secondary"></ion-icon>
                             <!-- Has Reminder Icon -->
                             <ion-badge *ngIf="student.reminders.length>0" class="reminder  me-1" color="secondary" mode="ios">
                                 <ion-icon name="alarm-outline" size="small"></ion-icon>
@@ -276,12 +276,10 @@
         <ng-container *ngIf="listMode=='group'">
 
             <ion-item>
-                <ion-select placeholder="انتخاب گروه موجود" okText="انتخاب" cancelText="بستن ">
-                    <ion-select-option value="apples">گروه شناخت گیاهان فصل اول</ion-select-option>
-                    <ion-select-option value="oranges">گروه فصل اول ریاضی</ion-select-option>
-                    <ion-select-option value="bananas">Bananas</ion-select-option>
+                <ion-select placeholder="انتخاب گروه موجود" okText="انتخاب" cancelText="بستن " [(ngModel)]="selectedGroup">
+                    <ion-select-option [value]="g" *ngFor="let g of groups">{{g.name}}</ion-select-option>
                 </ion-select>
-                <ion-button slot="end" expand="block" fill="outline" shape="round">
+                <ion-button slot="end" expand="block" fill="outline" shape="round" (click)="isCreateGroupModalOpen=true">
                     <ion-icon slot="start" name="add"></ion-icon>
                     ایجاد گروه جدید
                 </ion-button>
@@ -291,12 +289,12 @@
             <ion-grid fixed class="pb-4 students">
                 <ion-row>
                     <ng-container *ngIf="viewMode=='grid'">
-                        <ion-col size="6" *ngFor="let group of groupStudent" class="d-flex  align-items-stretch">
+                        <ion-col size="6" *ngFor="let group of selectedGroup.subGroups" class="d-flex  align-items-stretch">
                             <ion-card class="student-card flex-fill">
                                 <ion-card-header>
                                     <ion-card-title>
                                         <ion-icon name="people-outline"></ion-icon>
-                                        {{group.title}}</ion-card-title>
+                                        {{group.name}}</ion-card-title>
                                 </ion-card-header>
                                 <ion-card-content class="group">
                                     <ion-avatar slot="start" *ngFor="let s of group.students">
@@ -312,7 +310,7 @@
                                 <ion-card-header>
                                     <ion-card-title>
                                         <ion-icon name="people-outline"></ion-icon>
-                                        {{group.title}}</ion-card-title>
+                                        {{group.name}}</ion-card-title>
                                 </ion-card-header>
                                 <ion-card-content class="group">
                                     <ion-avatar slot="start" *ngFor="let s of group.students">
@@ -328,6 +326,12 @@
             </ion-grid>
         </ng-container>
     </div>
+
+    <ion-modal #modal_create_groyp [isOpen]="isCreateGroupModalOpen" (didDismiss)="isCreateGroupModalOpen=false" [presentingElement]="presentingElement">
+        <ng-template>
+            <app-create-group [modal]="modal_create_groyp" [book]="book" [lesson]="lesson"></app-create-group>
+        </ng-template>
+    </ion-modal>
 
     <ion-modal #modal_reminder [isOpen]="isReminderModalOpen" (didDismiss)="isReminderModalOpen=false" [presentingElement]="presentingElement">
         <ng-template>
@@ -425,7 +429,7 @@
                 <ion-grid fixed>
                     <ion-row>
                         <ion-col size="4">
-                            <ion-button (click)="createTimer(5);createTimerModel.dismiss()" expand="block" shape="round" size="large" color="secondary">
+                            <ion-button (click)="createTimer(1);createTimerModel.dismiss()" expand="block" shape="round" size="large" color="secondary">
                                 05:00
                             </ion-button>
                         </ion-col>

@@ -1,3 +1,4 @@
+import { GroupModel } from './../models/student-group';
 import { HomeWorkModel } from './../models/home-work';
 import { Subject } from 'rxjs';
 import { Injectable } from '@angular/core';
@@ -59,6 +60,11 @@ export class ClassService {
         return this.httpService.http.postJsonData<boolean>(homeWork, "class/AddHomeWork");
     }
 
+    addGroup(group: GroupModel): Promise<boolean> {
+
+        return this.httpService.http.postJsonData<boolean>(group, "class/addGroup");
+    }
+
     getLessonHomeWorks(lessonId: number): Promise<HomeWorkModel[]> {
         return this.httpService.http.getDataByParam<HomeWorkModel[]>({ lessonId: lessonId }, "class/GetLessonHomeWorks");
     }
@@ -81,6 +87,10 @@ export class ClassService {
 
     getHomeWorkById(homeWorkId: string): Promise<HomeWorkModel> {
         return this.httpService.http.getDataByParam<HomeWorkModel>({ homeWorkId: homeWorkId }, "class/GetHomeWorkById");
+    }
+
+    getGroups(classId: number, lessonId: number, subLessonId: number): Promise<GroupModel[]> {
+        return this.httpService.http.getDataByParam<GroupModel[]>({ classId: classId, lessonId: lessonId, subLessonId: subLessonId }, "class/GetGroups");
     }
 
 }

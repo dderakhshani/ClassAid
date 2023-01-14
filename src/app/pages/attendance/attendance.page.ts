@@ -70,7 +70,8 @@ export class AttendancePage implements OnInit {
         this.classService.addCallRolls(attendances, this.globalService.selectedClass.id).then(x => {
             loading.dismiss();
             this.studentsService.students$.next(this.students);
-            this.navCtrl.navigateRoot('tabs/home');
+            this.globalService.currentSession.didAttendance = true;
+            this.navCtrl.back();
         },
             err => {
                 loading.dismiss();

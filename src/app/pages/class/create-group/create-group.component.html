@@ -1,3 +1,89 @@
-<p>
-  create-group works!
-</p>
+<div class="avatar d-flex flex-column align-items-center">
+    <div class="d-flex align-items-center justify-content-center">
+        <ion-avatar class="d-flex align-items-center justify-content-center">
+            <ion-icon color="success" name="color-filter-outline" size="large"></ion-icon>
+        </ion-avatar>
+    </div>
+</div>
+<ion-header class="content-header ion-no-border">
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-button (click)="modal.dismiss()">
+                <ion-icon slot="icon-only" name="close"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+        <ion-title>ایجاد گروه بندی</ion-title>
+        <ion-buttons slot="end">
+            <ion-button (click)="save()">
+                <ion-icon slot="icon-only" name="save-outline"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content class="round-content">
+    <form class="p-2" [formGroup]="form">
+        <ion-item class="pt-2">
+            <ion-label position="stacked"> عنوان گروه بندی :</ion-label>
+            <ion-input placeholder="مثال: گروه بندی علوم فصل اول" formControlName="name"></ion-input>
+        </ion-item>
+
+        <ion-item lines="none">
+            <ion-label>نوع نمایش :</ion-label>
+        </ion-item>
+        <ion-segment mode="ios">
+            <ion-segment-button value="private">
+                <ion-label> صرفا همین درس</ion-label>
+            </ion-segment-button>
+            <ion-segment-button value="public">
+                <ion-label>همه درس ها</ion-label>
+            </ion-segment-button>
+        </ion-segment>
+
+        <ion-grid fixed class="pb-4 students">
+            <ion-row>
+                <ng-container>
+                    <ion-col size="12" *ngFor="let group of subGroups " class="d-flex  align-items-stretch">
+                        <ion-card class="student-card flex-fill">
+                            <ion-card-header>
+                                <ion-item>
+                                    <ion-label position="stacked"> نام گروه :</ion-label>
+                                    <ion-input placeholder=" نام را وارد نمایید" formControlName="title"></ion-input>
+                                </ion-item>
+                            </ion-card-header>
+                            <ion-card-content class="group">
+                                <ion-avatar slot="start" *ngFor="let s of group.students">
+                                    <img alt="Avatar-Student" [src]="s.getImageUrl()" onerror="this.src='/assets/img/avatar.webp'" />
+                                </ion-avatar>
+                            </ion-card-content>
+                            <ion-button fill="clear" (click)="editGroup(group)">
+                                <ion-icon slot="start" name="create-outline"></ion-icon>
+                                ویرایش دانش آموزان
+                            </ion-button>
+                        </ion-card>
+                    </ion-col>
+                    <ion-col size="12">
+                        <ion-button (click)="addGroup()" expand="full" shape="round">
+                            <ion-icon slot="start" name="add"></ion-icon>
+                            ثبت گروه دانش آموزی
+                        </ion-button>
+                    </ion-col>
+                </ng-container>
+            </ion-row>
+        </ion-grid>
+    </form>
+
+    <ion-modal #modal_select_student [isOpen]="isModalOpen" (didDismiss)="isModalOpen=false" [initialBreakpoint]="0.75" [breakpoints]="[0, 0.75,1]">
+        <ng-template>
+            <app-select-student [modal]="modal_select_student" viewMode="list" [selectedStudents]="selectedStudents" [disabledStudentIds]="disabledStudentIds" (selectedChange)="onSelectStudents(selectedStudents=$event)"></app-select-student>
+        </ng-template>
+    </ion-modal>
+
+</ion-content>
+
+<ion-footer class="p-2">
+    <ion-button expand="block" (click)="save()">
+        <ion-icon name="save-outline" size="large"></ion-icon>
+        <ion-label class="me-2"> ذخیره</ion-label>
+    </ion-button>
+</ion-footer>

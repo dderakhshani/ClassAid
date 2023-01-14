@@ -54,7 +54,6 @@ export class CreateHomeWorkComponent implements OnInit {
         private classService: ClassService,
         private router: Router,
         private loadingCtrl: LoadingController,
-
         public toastController: ToastController) {
 
         const d = new Date();

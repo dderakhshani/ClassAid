@@ -16,7 +16,7 @@
             <app-home-work-item [item]="homeWork" [expanded]="expanded" [readonly]="true"></app-home-work-item>
         </app-expandable-section>
 
-        <div class="px-2 pt-3">
+        <div class="d-flex align-items-center list-tools px-2 pt-3">
             <ion-segment mode="ios" [(ngModel)]="viewMode" style="width: 140px;">
                 <ion-segment-button value="list" layout="icon-start">
                     <ion-icon name="reorder-four-outline" class="ms-2"></ion-icon>
@@ -25,6 +25,13 @@
                     <ion-icon name="grid-outline" class="ms-2"></ion-icon>
                 </ion-segment-button>
             </ion-segment>
+
+            <hr class="flex-fill">
+
+            <!-- Open Sort -->
+            <ion-button fill="clear" class="m-0" color="medium" (click)="  isSortModalOpen = true;">
+                <ion-icon slot="icon-only" name="swap-vertical-outline"></ion-icon>
+            </ion-button>
         </div>
         <ion-grid fixed class="mt-3" *ngIf="viewMode=='grid'">
             <ion-row>
@@ -62,6 +69,34 @@
 
             </ion-row>
         </ion-grid>
+        <ng-container *ngIf="viewMode=='list'">
+            <div *ngFor="let student of studentHomeWorkAssess ">
+                <ion-card class="student-card flex-fill">
+                    <ion-card-content>
+                        <ion-item lines="none">
+                            <ion-avatar slot="start">
+                                <img alt="Avatar-Student" [src]="student.student.getImageUrl()" onerror="this.src='/assets/img/avatar.webp'" />
+                            </ion-avatar>
+                            <ion-label> {{student.student.fullName}}</ion-label>
+                        </ion-item>
+                        <div class="d-flex flex-column ion-align-items-center">
+
+
+                            <ion-segment [scrollable]="true" mode="ios" [(ngModel)]="student.level">
+                                <ion-segment-button value="{{am.value}}" class="{{am.bdColor}}" [class.selected]="student.level==am.value" *ngFor="let am of assessLevels">
+                                    <ion-icon [name]="am.ionIcon"></ion-icon>
+                                    <ion-label>
+                                        {{am.title}}
+                                    </ion-label>
+                                </ion-segment-button>
+                            </ion-segment>
+                            <app-score-rating [maxScore]="10" [(score)]="student.progerssStep" [(notes)]="student.note"></app-score-rating>
+                        </div>
+                    </ion-card-content>
+                </ion-card>
+            </div>
+        </ng-container>
+
 
         <ion-modal [isOpen]="isModalOpen" (didDismiss)="isModalOpen=false" [initialBreakpoint]="0.4" [breakpoints]="[0, 0.4]">
             <ng-template>
@@ -94,33 +129,67 @@
             </ng-template>
         </ion-modal>
 
-        <ng-container *ngIf="viewMode=='list'">
-            <div *ngFor="let student of studentHomeWorkAssess ">
-                <ion-card class="student-card flex-fill">
-                    <ion-card-content>
-                        <ion-item lines="none">
-                            <ion-avatar slot="start">
-                                <img alt="Avatar-Student" [src]="student.student.getImageUrl()" onerror="this.src='/assets/img/avatar.webp'" />
-                            </ion-avatar>
-                            <ion-label> {{student.student.fullName}}</ion-label>
+        <ion-modal class="compact-modal" #sortModel [isOpen]="isSortModalOpen" (didDismiss)="isSortModalOpen=false">
+            <ng-template>
+                <div class="wrapper">
+                    <div class="header">
+                        <h1> مرتب سازی </h1>
+                    </div>
+                    <ion-list class="mx-2">
+                        <ion-item button (click)="onSort('name');sortModel.dismiss()">
+                            <ion-icon name="checkmark-circle-outline" slot="start" *ngIf="sortType!='name'"></ion-icon>
+                            <ion-icon name="arrow-down-circle" slot="start" color="success" *ngIf="sortType=='name' && sortOrder==1"></ion-icon>
+                            <ion-icon name="arrow-up-circle" slot="start" color="success" *ngIf="sortType=='name' && sortOrder==-1"></ion-icon>
+                            <ion-label>
+                                براساس نام
+                            </ion-label>
                         </ion-item>
-                        <div class="d-flex flex-column ion-align-items-center">
+                        <ion-item button (click)="onSort('lastname');sortModel.dismiss()">
+                            <ion-icon name="checkmark-circle-outline" slot="start" *ngIf="sortType!='lastname'"></ion-icon>
+                            <ion-icon name="arrow-down-circle" slot="start" color="success" *ngIf="sortType=='lastname' && sortOrder==1"></ion-icon>
+                            <ion-icon name="arrow-up-circle" slot="start" color="success" *ngIf="sortType=='lastname' && sortOrder==-1"></ion-icon>
+                            <ion-label>
+                                براساس نام خانوادگی
+                            </ion-label>
+                        </ion-item>
+                        <ion-item button (click)="onSort('attendance');sortModel.dismiss()">
+                            <ion-icon name="checkmark-circle-outline" slot="start" *ngIf="sortType!='attendance'"></ion-icon>
+                            <ion-icon name="arrow-down-circle" slot="start" color="success" *ngIf="sortType=='attendance' && sortOrder==1"></ion-icon>
+                            <ion-icon name="arrow-up-circle" slot="start" color="success" *ngIf="sortType=='attendance' && sortOrder==-1"></ion-icon>
+                            <ion-label>
+                                براساس وضعیت حضور
+                            </ion-label>
+                        </ion-item>
+                        <ion-item button (click)="onSort('score');sortModel.dismiss()">
+                            <ion-icon name="checkmark-circle-outline" slot="start" *ngIf="sortType!='score'"></ion-icon>
+                            <ion-icon name="arrow-down-circle" slot="start" color="success" *ngIf="sortType=='score' && sortOrder==1"></ion-icon>
+                            <ion-icon name="arrow-up-circle" slot="start" color="success" *ngIf="sortType=='score' && sortOrder==-1"></ion-icon>
+                            <ion-label>
+                                براساس وضعیت امتیاز
+                            </ion-label>
+                        </ion-item>
+                    </ion-list>
+                    <div class="p-2">
+                        <ion-grid fixed>
+                            <ion-row>
+                                <ion-col size="6">
+                                    <ion-button (click)="sortModel.dismiss()" color="success" expand="block" shape="round">
+                                        بستن
+                                    </ion-button>
+                                </ion-col>
+                                <ion-col size="6">
 
+                                    <ion-button (click)="sortType='';sortModel.dismiss()" [disabled]="sortType==''" color="danger" fill="outline" expand="block" shape="round">
+                                        حذف مرتب سازی
+                                    </ion-button>
+                                </ion-col>
+                            </ion-row>
+                        </ion-grid>
+                    </div>
+                </div>
+            </ng-template>
+        </ion-modal>
 
-                            <ion-segment [scrollable]="true" mode="ios" [(ngModel)]="student.level">
-                                <ion-segment-button value="{{am.value}}" class="{{am.bdColor}}" [class.selected]="student.level==am.value" *ngFor="let am of assessLevels">
-                                    <ion-icon [name]="am.ionIcon"></ion-icon>
-                                    <ion-label>
-                                        {{am.title}}
-                                    </ion-label>
-                                </ion-segment-button>
-                            </ion-segment>
-                            <app-score-rating [maxScore]="10" [(score)]="student.progerssStep" [(notes)]="student.note"></app-score-rating>
-                        </div>
-                    </ion-card-content>
-                </ion-card>
-            </div>
-        </ng-container>
     </div>
 </ion-content>
 

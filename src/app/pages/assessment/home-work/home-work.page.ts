@@ -16,7 +16,7 @@ import { HomeWorkAssessmentModel, HomeWorkModel } from 'src/app/models/home-work
 import { environment } from 'src/environments/environment';
 import { v4 as uuidv4 } from 'uuid';
 import { AssessmentService } from 'src/app/api/assessment.service';
-import { LoadingController, ModalController } from '@ionic/angular';
+import { AlertController, LoadingController, ModalController } from '@ionic/angular';
 import { ViewerModalComponent } from 'ngx-ionic-image-viewer';
 
 @Component({
@@ -31,6 +31,9 @@ export class HomeWorkPage implements OnInit {
     expanded = false;
     isModalOpen = false;
     viewMode: 'grid' | 'list' = 'list';
+    sortType: '' | 'name' | 'lastname' | 'attendance' | 'score' = ''
+    sortOrder: number = 1;
+    isSortModalOpen = false;
 
     selectedStudent: HomeWorkAssessmentModel;
     assess: HomeWorkAssessmentModel;
@@ -49,6 +52,7 @@ export class HomeWorkPage implements OnInit {
         private location: Location,
         public modalController: ModalController,
         private loadingCtrl: LoadingController,
+        private alertController: AlertController,
         private router: Router) {
         this.homeWorkIdParam = this.route.snapshot.paramMap.get('homeWorkId');
     }
@@ -57,7 +61,7 @@ export class HomeWorkPage implements OnInit {
     }
 
     ionViewWillEnter() {
-
+        this.sortType = this.globalService.settings.studentSortType;
         combineLatest(this.globalService.classSessions$, this.globalService.ready$).subscribe(([sessions, ready]) => {
             if (sessions && ready) {
                 this.classService.getHomeWorkById(this.homeWorkIdParam).then(h => {
@@ -74,6 +78,7 @@ export class HomeWorkPage implements OnInit {
                                 s.note = oldAssess.note;
                             }
                         })
+                        this.sort();
                     });
                 })
 
@@ -81,6 +86,37 @@ export class HomeWorkPage implements OnInit {
 
         })
 
+    }
+
+    onSort(value) {
+        if (value == this.sortType && value != '')
+            this.sortOrder = this.sortOrder * -1;
+        this.sortType = value;
+        this.globalService.settings.studentSortType = this.sortType;
+        this.globalService.settings.studentSortOrder = this.sortOrder;
+        this.globalService.saveSetting();
+        this.sort();
+    }
+
+    sort() {
+        switch (this.sortType) {
+            case 'name':
+                if (this.sortOrder)
+                    this.studentHomeWorkAssess = this.studentHomeWorkAssess.sort((a, b) => a.student.name > b.student.name ? this.sortOrder : (a.student.name < b.student.name ? this.sortOrder * -1 : 0))
+
+                break;
+            case 'lastname':
+                this.studentHomeWorkAssess = this.studentHomeWorkAssess.sort((a, b) => a.student.family > b.student.family ? this.sortOrder : (a.student.family < b.student.family ? this.sortOrder * -1 : 0))
+                break;
+            case 'attendance':
+                this.studentHomeWorkAssess = this.studentHomeWorkAssess.sort((a, b) => a.student.attendanceStatus > b.student.attendanceStatus ? this.sortOrder : (a.student.attendanceStatus < b.student.attendanceStatus ? this.sortOrder * -1 : 0))
+                break;
+            case 'score':
+                this.studentHomeWorkAssess = this.studentHomeWorkAssess.sort((a, b) => a.level < b.level ? this.sortOrder : (a.level > b.level ? this.sortOrder * -1 : 0))
+                break;
+            default:
+                break;
+        }
     }
 
     back() {
@@ -116,6 +152,28 @@ export class HomeWorkPage implements OnInit {
     }
 
     async save(close: boolean) {
+        if (close) {
+            const alert = await this.alertController.create({
+                header: 'اتمام ارزیابی تکلیف',
+                message: 'آیا از اتمام ارزیابی اطمینان دارید؟ برنامه دیگر ارزیابی تکلیف را به شما یادآوری نخواهد کرد',
+                buttons: [
+                    {
+                        text: 'بله',
+                        role: 'confirm',
+
+                    },
+                    {
+                        text: 'خیر',
+                        role: 'cancel',
+                    },
+                ],
+            });
+
+            await alert.present();
+            const { role } = await alert.onDidDismiss();
+            if (role == 'cancel')
+                return;
+        }
         let assessments = [];
         this.studentHomeWorkAssess.forEach(s => {
             if (s.level > 0) {
@@ -146,6 +204,8 @@ export class HomeWorkPage implements OnInit {
         if (close) {
             this.homeWork.assessments = assessments;
             this.assessmentService.closeHomeWorkAssessment(this.homeWork).then(result => {
+                const index = this.globalService.currentSession.homeWorks?.findIndex(x => x.id == this.homeWorkIdParam);
+                this.globalService.currentSession.homeWorks.splice(index, 1);
                 loading.dismiss();
                 this.location.back();
             },

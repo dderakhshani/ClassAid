@@ -253,3 +253,32 @@ ion-item {
 .modal-open .modal-backdrop {
     pointer-events: auto !important;
 }
+
+
+ion-modal.compact-modal {
+    --width: fit-content;
+    --min-width: 280px;
+    --height: fit-content;
+    --border-radius: 6px;
+    --box-shadow: 0 28px 48px rgba(0, 0, 0, 0.4);
+    padding: 1rem;
+
+    .header {
+        padding: 1.25rem;
+        text-align: center;
+        background: #4e7df1;
+        color: #fff;
+
+        h1 {
+            margin: 0;
+        }
+    }
+
+    .wrapper {
+        margin-bottom: 10px;
+    }
+
+    ion-input {
+        font-size: 24px;
+    }
+}

@@ -15,8 +15,9 @@ import { ReminderType } from 'src/app/models/remider';
 import { AttendanceStatus } from 'src/app/models/attendance-model';
 import { combineLatest, interval, Observable, Subject, Subscription } from 'rxjs';
 import { ChartService } from 'src/app/services/chart.service';
-import { GroupStudentModel } from 'src/app/models/student-group';
-import { ELocalNotificationTriggerUnit, LocalNotifications } from '@awesome-cordova-plugins/local-notifications/ngx';
+import { GroupModel, SubGroupModel } from 'src/app/models/student-group';
+import { CancelOptions, LocalNotificationDescriptor, LocalNotificationPendingList, LocalNotifications } from '@capacitor/local-notifications';
+import { ClassService } from 'src/app/api/class.service';
 
 @Component({
     selector: 'app-class',
@@ -30,7 +31,8 @@ export class ClassPage implements OnInit {
     book: Lesson;
     all_students: StudentModel[];
     students: StudentModel[];
-    groupStudent: GroupStudentModel[] = [];
+    groups: GroupModel[] = [];
+    selectedGroup: GroupModel;
 
     searchTerm = "";
 
@@ -50,6 +52,7 @@ export class ClassPage implements OnInit {
     isHomeWorkModalOpen = false;
     isSortModalOpen = false;
     isCreateTimerModalOpen = false;
+    isCreateGroupModalOpen = false;
     seconds = 60;
     mintues = 45;
 
@@ -78,8 +81,7 @@ export class ClassPage implements OnInit {
         private route: ActivatedRoute,
         private alertController: AlertController,
         private actionSheetCtrl: ActionSheetController,
-        private chartService: ChartService,
-        private localNotifications: LocalNotifications,
+        private classService: ClassService,
         private router: Router) {
 
         this.lessonId = Number(this.route.snapshot.paramMap.get('lessonId'));
@@ -88,8 +90,38 @@ export class ClassPage implements OnInit {
 
     }
 
-    ngOnInit() {
+    async ngOnInit() {
         this.presentingElement = document.querySelector('.ion-page');
+        combineLatest(this.globalService.classSessions$, this.globalService.ready$).subscribe(async ([sessions, ready]) => {
+            if (this.globalService.currentSession && ready) {
+                if (ready) {
+                    if (!this.globalService.currentSession.didAttendance) {
+                        const alert = await this.alertController.create({
+                            header: 'حضور غیاب',
+                            message: 'آیا ابتدا حضور غیاب میکنید؟ اگه همه حاضر هستن نیازی به حضور غیاب نیست',
+                            buttons: [
+                                {
+                                    text: 'بله',
+                                    role: 'confirm',
+                                    handler: () => {
+                                        this.router.navigateByUrl(`/tabs/home/attendance/${this.globalService.currentSession.id}`);
+                                    },
+                                },
+                                {
+                                    text: 'خیر',
+                                    role: 'cancel',
+                                },
+                            ],
+                        });
+
+                        await alert.present();
+                    }
+
+                }
+
+            }
+        });
+
     }
 
     ionViewWillEnter() {
@@ -109,6 +141,18 @@ export class ClassPage implements OnInit {
                         this.lesson = l;
                         this.lessonService.getLessonById(this.lesson.parentId).then(b => {
                             this.book = b;
+                            this.classService.getGroups(this.globalService.selectedClass.id, this.book.id, this.lesson.id).then(data => {
+                                this.groups = data;
+                                this.groups.forEach(g => {
+                                    g.subGroups.forEach(sg => {
+                                        const students = sg.students.map(x => Object.assign(new StudentModel(), x));
+                                        sg.students = students;
+                                    })
+                                })
+                                if (this.groups.length > 0) {
+                                    this.selectedGroup = this.groups[this.groups.length - 1];//select latest group
+                                }
+                            })
                         });
                     });
                 }
@@ -120,6 +164,7 @@ export class ClassPage implements OnInit {
                 // });
                 this.initTimer();
                 this.initTimer2();
+
             }
             else if (ready)
                 this.router.navigateByUrl('tabs/home', { replaceUrl: true })
@@ -129,14 +174,7 @@ export class ClassPage implements OnInit {
         this.studentsService.students$.subscribe(students => {
             this.all_students = [...students];
             this.students = this.all_students;
-            this.groupStudent.push(<GroupStudentModel>{
-                title: 'قدرت',
-                students: [this.students[0], this.students[2], this.students[4], this.students[6]]
-            });
-            this.groupStudent.push(<GroupStudentModel>{
-                title: 'شهامت',
-                students: [this.students[1], this.students[3], this.students[5]]
-            });
+
             //Must set all reminders at once for student and display it by type
             this.initStudents();
             this.sort();
@@ -213,53 +251,77 @@ export class ClassPage implements OnInit {
         const startTime = new Date().getTime();
         localStorage.setItem("CLASSAID_TIMER", `${startTime},${minutes}`);
 
-        this.initTimer2();
+        this.initTimer2(startTime, minutes);
 
 
     }
 
-    initTimer2() {
-        const data = localStorage.getItem("CLASSAID_TIMER");
-        if (data) {
-            this.localNotifications.cancel(200);
-            const dataParts = data.split(",");
-            let startTime = parseInt(dataParts[0]);
-            const durationMinute = parseInt(dataParts[1]);
-            let duration = new Date().getTime() - startTime;
-            duration = Math.floor(duration / 1000);
-            duration = durationMinute * 60 - duration;
+    initTimer2(startTime?: number, durationMinute?: number) {
 
-            this.mintues2 = Math.floor(duration / 60);
-            this.seconds2 = duration - this.mintues2 * 60;
-            this.timer2Subscribtion = interval(1000)
-                .subscribe(x => {
-                    this.seconds2 -= 1;
-                    if (this.seconds2 < 0) {
-                        this.seconds2 = 59;
-                        this.mintues2 -= 1;
+        if (startTime) {
+            this.mintues2 = durationMinute;
+            this.seconds2 = 0;
+            LocalNotifications.schedule({
+                notifications: [
+                    {
+                        title: "زمان سنج همیار معلام",
+                        body: "پایان زمان سنج",
+                        id: 200,
+                        schedule: {
+                            at: new Date(Date.now() + 1000 * 60 * this.mintues2)
+                        }
                     }
-                    if (this.mintues2 < 0)
-                        this.stopTimer();
-                    this.percentTimer2 = (this.mintues2 + (this.seconds2 / 60)) / durationMinute * 100;
-
-                });
-
-            this.localNotifications.schedule({
-                id: 200,
-                text: 'پایان زمان سنج',
-                trigger: { in: this.mintues, unit: ELocalNotificationTriggerUnit.MINUTE },
-                led: 'FF0000',
-                sound: null
+                ]
             });
         }
+        else {
+            const data = localStorage.getItem("CLASSAID_TIMER");
+            if (data) {
+                const dataParts = data.split(",");
+                startTime = parseInt(dataParts[0]);
+                durationMinute = parseInt(dataParts[1]);
+                let duration = new Date().getTime() - startTime;
+                duration = Math.floor(duration / 1000);
+                duration = durationMinute * 60 - duration;
+
+                this.mintues2 = Math.floor(duration / 60);
+                this.seconds2 = duration - this.mintues2 * 60;
+            }
+            else
+                return;
+        }
+
+
+        this.timer2Subscribtion = interval(1000)
+            .subscribe(x => {
+                this.seconds2 -= 1;
+                if (this.seconds2 < 0) {
+                    this.seconds2 = 59;
+                    this.mintues2 -= 1;
+                }
+                if (this.mintues2 < 0)
+                    this.stopTimer(false);
+                this.percentTimer2 = (this.mintues2 + (this.seconds2 / 60)) / durationMinute * 100;
+
+            });
 
     }
 
-    stopTimer() {
+    stopTimer(cancel: boolean) {
         localStorage.removeItem("CLASSAID_TIMER");
         this.timer2Subscribtion.unsubscribe();
         this.timer2Subscribtion = undefined;
-        this.localNotifications.cancel(200);
+        if (cancel)
+            this.cancelNotification();
+
+    }
+
+    cancelNotification() {
+        LocalNotifications.cancel(<CancelOptions>{
+            notifications: [
+                <LocalNotificationDescriptor>{ id: 200 }
+            ]
+        });
     }
 
     createRandomStudent() {
@@ -304,6 +366,9 @@ export class ClassPage implements OnInit {
                 break;
             case 'attendance':
                 this.all_students = this.all_students.sort((a, b) => a.attendanceStatus > b.attendanceStatus ? this.sortOrder : (a.attendanceStatus < b.attendanceStatus ? this.sortOrder * -1 : 0))
+                break;
+            case 'score':
+                this.all_students = this.all_students.sort((a, b) => a.scores.length < b.scores.length ? this.sortOrder : (a.scores.length > b.scores.length ? this.sortOrder * -1 : 0))
                 break;
             default:
                 break;

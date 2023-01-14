@@ -1,7 +1,7 @@
 .timer {
     position: absolute;
     font-size: 20px;
-    top: 75px;
+    top: 60px;
     margin: 0 auto;
     left: 1rem;
     font-weight: bold;
@@ -33,7 +33,7 @@
 .timer-secondary {
     left: auto;
     right: 1.75rem;
-    top: 95px;
+    top: 65px;
 
     width: 55px;
     height: 55px;
@@ -182,33 +182,6 @@ ion-badge {
     --padding-end: 4px;
 }
 
-ion-modal.compact-modal {
-    --width: fit-content;
-    --min-width: 280px;
-    --height: fit-content;
-    --border-radius: 6px;
-    --box-shadow: 0 28px 48px rgba(0, 0, 0, 0.4);
-    padding: 1rem;
-
-    .header {
-        padding: 1.25rem;
-        text-align: center;
-        background: #4e7df1;
-        color: #fff;
-
-        h1 {
-            margin: 0;
-        }
-    }
-
-    .wrapper {
-        margin-bottom: 10px;
-    }
-
-    ion-input {
-        font-size: 24px;
-    }
-}
 
 .random-student {
     ion-avatar {

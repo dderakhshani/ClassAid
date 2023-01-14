@@ -3,8 +3,9 @@
     </ion-icon>
 
     <div class="me-1 flex-fill">امتیاز: </div>
-    <ion-button slot="end" fill="outline" shape="round" (click)="addNote=!addNote">
-        <ion-icon slot="start" name="add"></ion-icon>
+    <ion-button slot="end" fill="outline" shape="round" (click)="addNote=!addNote" [color]="addNote?'danger':'success'">
+        <ion-icon slot="start" name="add" *ngIf="!addNote"></ion-icon>
+        <ion-icon slot="start" name="remove-outline" *ngIf="addNote"></ion-icon>
         یادداشت
     </ion-button>
 </div>

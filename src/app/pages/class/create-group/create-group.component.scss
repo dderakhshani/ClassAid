@@ -1,0 +1,52 @@
+ion-header {
+    overflow: visible;
+    min-height: 120px;
+}
+
+.avatar {
+
+    div {
+        width: 65px;
+        height: 65px;
+        position: absolute;
+        top: 60px;
+        z-index: 300;
+
+        ion-avatar {
+            width: 60px;
+            height: 60px;
+            background: #fff;
+            box-shadow: 0 0 8px #0000006e;
+
+            ion-icon {
+                margin: 0 auto;
+            }
+        }
+    }
+}
+
+.student-card {
+    ion-card-header {
+        padding: 0.25rem;
+
+    }
+
+
+    .group {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(min(100%/3, max(64px, 100%/5)), 1fr));
+        padding-right: 15px;
+
+        ion-avatar {
+            box-shadow: 2px 4px 5px #00000033;
+        }
+
+    }
+
+}
+
+
+ion-footer {
+    margin-top: -180px;
+    background: #fff;
+}

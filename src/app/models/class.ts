@@ -37,4 +37,5 @@ export class ClassSessionModel {
     homeWorks: HomeWorkModel[];
 
     homeWorkLater = false;
+    didAttendance = false;
 }

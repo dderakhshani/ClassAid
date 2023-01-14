@@ -1,62 +1,64 @@
-<div class="d-flex flex-column">
+<ion-content>
+    <div class="d-flex flex-column">
 
-    <div class="px-2 pt-3" *ngIf="source=='both'">
-        <ion-segment mode="ios" [(ngModel)]="sourceSelected">
-            <ion-segment-button value="single" layout="icon-start">
-                <ion-icon name="person-outline" class="ms-2"></ion-icon>
-                دانش آموز
-            </ion-segment-button>
-            <ion-segment-button value="group" layout="icon-start">
-                <ion-icon name="people-outline" class="ms-2"></ion-icon>
-                گروه
-            </ion-segment-button>
-        </ion-segment>
-    </div>
-    <div class="p-2 py-3 flex-fill">
-        <ng-container *ngIf="source=='single' || source=='both'">
-            <ion-grid fixed *ngIf="viewMode=='grid'">
-                <ion-row>
-                    <ion-col size="4" *ngFor="let student of students" class="d-flex  align-items-stretch">
-                        <ion-card class="student-card flex-fill" (click)="onStudentAction(student)">
-                            <ion-icon *ngIf="student.isSelected" name="checkmark-circle" size="large" class="selected-status" color="secondary"></ion-icon>
+        <div class="px-2 pt-3" *ngIf="source=='both'">
+            <ion-segment mode="ios" [(ngModel)]="sourceSelected">
+                <ion-segment-button value="single" layout="icon-start">
+                    <ion-icon name="person-outline" class="ms-2"></ion-icon>
+                    دانش آموز
+                </ion-segment-button>
+                <ion-segment-button value="group" layout="icon-start">
+                    <ion-icon name="people-outline" class="ms-2"></ion-icon>
+                    گروه
+                </ion-segment-button>
+            </ion-segment>
+        </div>
+        <div class="p-2 py-3 flex-fill">
+            <ng-container *ngIf="source=='single' || source=='both'">
+                <ion-grid fixed *ngIf="viewMode=='grid'">
+                    <ion-row>
+                        <ion-col size="4" *ngFor="let student of students" class="d-flex  align-items-stretch">
+                            <ion-card class="student-card flex-fill" (click)="onStudentAction(student)">
+                                <ion-icon *ngIf="student.isSelected" name="checkmark-circle" size="large" class="selected-status" color="secondary"></ion-icon>
 
-                            <div class="d-flex justify-content-center pt-2">
-                                <ion-avatar slot="start">
-                                    <img alt="avatar-Student" [src]="student.getImageUrl()" onerror="this.src='/assets/img/avatar.webp'" />
-                                </ion-avatar>
-                            </div>
+                                <div class="d-flex justify-content-center pt-2">
+                                    <ion-avatar slot="start">
+                                        <img alt="avatar-Student" [src]="student.getImageUrl()" onerror="this.src='/assets/img/avatar.webp'" />
+                                    </ion-avatar>
+                                </div>
 
-                            <ion-card-header class="p-2">
-                                <ion-card-subtitle class="text-center">
-                                    {{student.fullName}}
-                                </ion-card-subtitle>
-                            </ion-card-header>
-                            <ion-card-content class="p-2 pt-0 d-flex justify-content-center">
-                                <ion-badge color="danger" *ngIf="student.attendanceStatus== AttendanceStatus.Absent">غایب</ion-badge>
-                            </ion-card-content>
-                        </ion-card>
-                    </ion-col>
+                                <ion-card-header class="p-2">
+                                    <ion-card-subtitle class="text-center">
+                                        {{student.fullName}}
+                                    </ion-card-subtitle>
+                                </ion-card-header>
+                                <ion-card-content class="p-2 pt-0 d-flex justify-content-center">
+                                    <ion-badge color="danger" *ngIf="student.attendanceStatus== AttendanceStatus.Absent">غایب</ion-badge>
+                                </ion-card-content>
+                            </ion-card>
+                        </ion-col>
 
-                </ion-row>
-            </ion-grid>
+                    </ion-row>
+                </ion-grid>
 
-            <ion-list *ngIf="viewMode=='list'">
-                <ion-item *ngFor="let student of students">
-                    <ion-avatar slot="start">
-                        <img alt="avatar-Student" [src]="student.getImageUrl()" onerror="this.src='/assets/img/avatar.webp'" />
-                    </ion-avatar>
-                    <ion-label> {{student.fullName}}</ion-label>
-                    <ion-checkbox slot="end" mode="ios" [(ngModel)]="student.isSelected"></ion-checkbox>
-                </ion-item>
+                <ion-list *ngIf="viewMode=='list'">
+                    <ion-item *ngFor="let student of students" [disabled]="disabledStudentIds.includes(student.id)">
+                        <ion-avatar slot="start">
+                            <img alt="avatar-Student" [src]="student.getImageUrl()" onerror="this.src='/assets/img/avatar.webp'" />
+                        </ion-avatar>
+                        <ion-label> {{student.fullName}}</ion-label>
+                        <ion-checkbox slot="end" mode="ios" [(ngModel)]="student.isSelected"></ion-checkbox>
+                    </ion-item>
 
-            </ion-list>
+                </ion-list>
+            </ng-container>
+
+        </div>
+        <ng-container *ngIf="showConfirmButton">
+            <ion-button expand="block" (click)="select()">
+                <ion-icon name="checkmark-circle-outline"></ion-icon>
+                <ion-label class="me-2"> تایید انتخاب</ion-label>
+            </ion-button>
         </ng-container>
-
     </div>
-    <ng-container *ngIf="showConfirmButton">
-        <ion-button expand="block" (click)="select()">
-            <ion-icon name="checkmark-circle-outline"></ion-icon>
-            <ion-label class="me-2"> تایید انتخاب</ion-label>
-        </ion-button>
-    </ng-container>
-</div>
+</ion-content>

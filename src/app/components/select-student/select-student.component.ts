@@ -32,6 +32,9 @@ export class SelectStudentComponent implements OnInit {
     @Input()
     selectedStudents: StudentModel[];
 
+    @Input()
+    disabledStudentIds: number[] = [];
+
     students: StudentModel[];
 
     constructor(private studentsService: StudentsService,
