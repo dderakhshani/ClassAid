@@ -83,7 +83,8 @@ export class CreateHomeWorkComponent implements OnInit {
             files: [[]],
             creatorTaskId: [this.classTask.id],
             lessonId: [this.book.id],
-            subLessonId: [this.lesson.id]
+            subLessonId: [this.lesson.id],
+            assignees: [[]]
         });
     }
 
@@ -128,6 +129,7 @@ export class CreateHomeWorkComponent implements OnInit {
         const homeWork = this.form.getRawValue() as HomeWorkModel;
         homeWork.files = this.uploadFiles;
         homeWork.dueTime = this.getReminderTime();
+        homeWork.assignees = this.selectedStudents;
         const loading = await this.loadingCtrl.create();
         loading.present();
 

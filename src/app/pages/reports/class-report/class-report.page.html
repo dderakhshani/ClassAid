@@ -313,6 +313,15 @@
                         <p> {{homeWork.description}}</p>
                     </ion-label>
                 </ion-item>
+                <div>
+                    <ion-chip *ngFor="let s of homeWork.assignees;let index=index">
+                        <ion-avatar>
+                            <img alt="avatar-Student" [src]="s.getImageUrl()" onerror="this.src='/assets/img/avatar.webp'" />
+                        </ion-avatar>
+                        <ion-label>{{s.fullName}}</ion-label>
+
+                    </ion-chip>
+                </div>
                 <!-- <div class="d-flex flex-row-reverse px-2">
                 <ion-button fill="outline" color="light" (click)="homeWork=undefined">بعدا</ion-button>
                 <ion-button fill="outline" color="light" (click)="assessHomeWork()">ارزیابی</ion-button>

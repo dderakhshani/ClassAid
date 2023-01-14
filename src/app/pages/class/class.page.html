@@ -287,7 +287,7 @@
 
             <!-- Group List -->
             <ion-grid fixed class="pb-4 students">
-                <ion-row>
+                <ion-row *ngIf="selectedGroup">
                     <ng-container *ngIf="viewMode=='grid'">
                         <ion-col size="6" *ngFor="let group of selectedGroup.subGroups" class="d-flex  align-items-stretch">
                             <ion-card class="student-card flex-fill">

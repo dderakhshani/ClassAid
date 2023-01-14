@@ -9,6 +9,8 @@ export interface IHomeWorkModel {
     tags: string[];
     files: string[];
 
+    assignees: StudentModel[];
+
     lessonId: number;
     subLessonId: number;
     creatorTaskId: string;
@@ -28,6 +30,9 @@ export class HomeWorkModel implements IHomeWorkModel {
     subLessonId: number;
     creatorTaskId: string;
     assessments: ScoreAssessmentModel[];
+
+
+    assignees: StudentModel[];
 
     static getExtension(url: string) {
         return url.split(".")[1].toUpperCase();

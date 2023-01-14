@@ -132,27 +132,18 @@ export class ClassPage implements OnInit {
         //tobe sure students will load from server if not already loaded
         combineLatest(this.globalService.classSessions$, this.globalService.ready$).subscribe(([sessions, ready]) => {
             if (this.globalService.currentSession && ready) {
+                //What does it mean (this.lessonId == 0)? loaded by refresh?
                 if (this.lessonId == 0) {
                     this.lesson = this.globalService.currentSession.lesson;
                     this.book = this.globalService.currentSession.book;
+                    this.loadGroups();
                 }
                 else {
                     this.lessonService.getLessonById(this.lessonId).then(l => {
                         this.lesson = l;
                         this.lessonService.getLessonById(this.lesson.parentId).then(b => {
                             this.book = b;
-                            this.classService.getGroups(this.globalService.selectedClass.id, this.book.id, this.lesson.id).then(data => {
-                                this.groups = data;
-                                this.groups.forEach(g => {
-                                    g.subGroups.forEach(sg => {
-                                        const students = sg.students.map(x => Object.assign(new StudentModel(), x));
-                                        sg.students = students;
-                                    })
-                                })
-                                if (this.groups.length > 0) {
-                                    this.selectedGroup = this.groups[this.groups.length - 1];//select latest group
-                                }
-                            })
+                            this.loadGroups();
                         });
                     });
                 }
@@ -181,6 +172,15 @@ export class ClassPage implements OnInit {
         })
     }
 
+    loadGroups() {
+        this.classService.getGroups(this.globalService.selectedClass.id, this.book.id, this.lesson.id).then(data => {
+            this.groups = data;
+
+            if (this.groups.length > 0) {
+                this.selectedGroup = this.groups[this.groups.length - 1];//select latest group
+            }
+        })
+    }
 
     initStudents() {
         //TODO: can move this.studentsService.students$.subscribe and not check this.globalService.currentSession

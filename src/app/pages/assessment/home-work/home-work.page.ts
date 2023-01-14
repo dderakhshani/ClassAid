@@ -66,26 +66,33 @@ export class HomeWorkPage implements OnInit {
             if (sessions && ready) {
                 this.classService.getHomeWorkById(this.homeWorkIdParam).then(h => {
                     this.homeWork = h;
-                    this.studentsService.getStudentsOfClass(this.globalService.selectedClass.id).then(students => {
-                        this.studentHomeWorkAssess = students.map(s => Object.assign(new HomeWorkAssessmentModel(), { student: s }));
-                        this.studentHomeWorkAssess.forEach(s => {
-                            const oldAssess = this.homeWork.assessments.find(x => x.studentId == s.student.id);
-                            if (oldAssess) {
-                                s.id = oldAssess.id;//Very critical
-                                s.level = oldAssess.level;
-                                s.progerssStep = oldAssess.progerssStep;
-                                s.progerssFlag = 1;
-                                s.note = oldAssess.note;
-                            }
-                        })
-                        this.sort();
-                    });
+                    //If there are specific assignees
+                    if (this.homeWork.assignees && this.homeWork.assignees?.length > 0) {
+                        this.initStudents(this.homeWork.assignees);
+                    }
+                    else//assigned to all
+                        this.studentsService.getStudentsOfClass(this.globalService.selectedClass.id).then(students => {
+                            this.initStudents(students);
+                        });
                 })
-
             }
-
         })
 
+    }
+
+    initStudents(students: StudentModel[]) {
+        this.studentHomeWorkAssess = students.map(s => Object.assign(new HomeWorkAssessmentModel(), { student: s }));
+        this.studentHomeWorkAssess.forEach(s => {
+            const oldAssess = this.homeWork.assessments.find(x => x.studentId == s.student.id);
+            if (oldAssess) {
+                s.id = oldAssess.id;//Very critical
+                s.level = oldAssess.level;
+                s.progerssStep = oldAssess.progerssStep;
+                s.progerssFlag = 1;
+                s.note = oldAssess.note;
+            }
+        })
+        this.sort();
     }
 
     onSort(value) {

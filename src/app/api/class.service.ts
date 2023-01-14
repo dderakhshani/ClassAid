@@ -8,6 +8,7 @@ import { ClassModel, ClassSessionModel } from '../models/class';
 import { DaySession } from '../models/day-session';
 import { GlobalService } from '../services/global.service';
 import { Reminder } from '../models/remider';
+import { StudentModel } from '../models/student';
 
 @Injectable({
     providedIn: 'root'
@@ -66,11 +67,46 @@ export class ClassService {
     }
 
     getLessonHomeWorks(lessonId: number): Promise<HomeWorkModel[]> {
-        return this.httpService.http.getDataByParam<HomeWorkModel[]>({ lessonId: lessonId }, "class/GetLessonHomeWorks");
+        return new Promise((resolve, reject) => {
+            this.httpService.http.getDataByParam<HomeWorkModel[]>({ lessonId: lessonId }, "class/GetLessonHomeWorks").then(data => {
+                data.forEach(hw => {
+                    const students = hw.assignees.map(x => Object.assign(new StudentModel(), x));
+                    hw.assignees = students;
+                })
+                return resolve(data);
+            }, err => {
+                reject(err)
+            });
+        });
     }
 
     getHomeWorkBySession(sessionId: string): Promise<HomeWorkModel[]> {
-        return this.httpService.http.getDataByParam<HomeWorkModel[]>({ sessionId: sessionId }, "class/GetHomeWorkBySession");
+        return new Promise((resolve, reject) => {
+            this.httpService.http.getDataByParam<HomeWorkModel[]>({ sessionId: sessionId }, "session/GetHomeWorkBySession").then(data => {
+                data.forEach(hw => {
+                    const students = hw.assignees.map(x => Object.assign(new StudentModel(), x));
+                    hw.assignees = students;
+                })
+                return resolve(data);
+            }, err => {
+                reject(err)
+            });
+        });
+    }
+
+    getHomeWorkById(homeWorkId: string): Promise<HomeWorkModel> {
+        return new Promise((resolve, reject) => {
+            this.httpService.http.getDataByParam<HomeWorkModel>({ homeWorkId: homeWorkId }, "class/GetHomeWorkById").then(data => {
+
+                const students = data.assignees.map(x => Object.assign(new StudentModel(), x));
+                data.assignees = students;
+
+                return resolve(data);
+            }, err => {
+                reject(err)
+            });
+        });
+
     }
 
     getTodaySessionsByClass(classId: number): Promise<ClassSessionModel[]> {
@@ -85,12 +121,23 @@ export class ClassService {
         return this.httpService.http.getDataByParam<ClassSessionModel>({ sessionId: sessionId }, "session/getSession");
     }
 
-    getHomeWorkById(homeWorkId: string): Promise<HomeWorkModel> {
-        return this.httpService.http.getDataByParam<HomeWorkModel>({ homeWorkId: homeWorkId }, "class/GetHomeWorkById");
-    }
-
     getGroups(classId: number, lessonId: number, subLessonId: number): Promise<GroupModel[]> {
-        return this.httpService.http.getDataByParam<GroupModel[]>({ classId: classId, lessonId: lessonId, subLessonId: subLessonId }, "class/GetGroups");
+        return new Promise((resolve, reject) => {
+            this.httpService.http.getDataByParam<GroupModel[]>({ classId: classId, lessonId: lessonId, subLessonId: subLessonId }, "class/GetGroups").then(data => {
+                data.forEach(g => {
+                    g.subGroups.forEach(sg => {
+                        const students = sg.students.map(x => Object.assign(new StudentModel(), x));
+                        sg.students = students;
+                    })
+                })
+                return resolve(data);
+            }, err => {
+                reject(err)
+            });
+        });
+        return;
+
+
     }
 
 }
