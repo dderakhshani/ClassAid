@@ -86,15 +86,18 @@ export class CreateGroupComponent implements OnInit {
     }
 
     onSelectStudents(selectedStudents: StudentModel[]) {
-        if (this.selectedGroup)
-            this.selectedGroup.students = selectedStudents;
-        else {
-            const group = <SubGroupModel>{
-                name: "",
-                students: selectedStudents
+        this.isModalOpen = false;
+        setTimeout(() => {
+            if (this.selectedGroup)
+                this.selectedGroup.students = selectedStudents;
+            else {
+                const group = <SubGroupModel>{
+                    name: "",
+                    students: selectedStudents
+                }
+                this.subGroups.push(group)
             }
-            this.subGroups.push(group)
-        }
+        }, 400);
     }
 
 
