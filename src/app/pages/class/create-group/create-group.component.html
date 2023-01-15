@@ -40,10 +40,59 @@
             </ion-segment-button>
         </ion-segment>
 
-        <div class="pb-4 students">
+        <div class="pb-4 pt-2 students">
+            <ion-button (click)="mode='create-auto'" expand="full" shape="round" *ngIf="mode!='create-auto'">
+                <ion-icon slot="start" name="duplicate-outline"></ion-icon>
+                ایجاد گروه بندی خودکار
+            </ion-button>
+            <div *ngIf="mode=='create-auto'">
 
-            <div *ngFor="let group of subGroups;let index=index">
-                <ion-card class="student-card flex-fill">
+                <ion-grid fixed class="counter">
+                    <ion-row>
+                        <ion-col size="12">
+                            <b>چه تعداد دانش آموز در هر گروه باشند؟</b>
+                        </ion-col>
+                    </ion-row>
+                    <ion-row>
+                        <ion-col size="4">
+                            <ion-button expand="block" fill="outline" (click)="createAutoGroup(2)">
+                                2
+                            </ion-button>
+                        </ion-col>
+                        <ion-col size="4">
+                            <ion-button expand="block" fill="outline" (click)="createAutoGroup(3)">
+                                3
+                            </ion-button>
+                        </ion-col>
+                        <ion-col size="4">
+                            <ion-button expand="block" fill="outline" (click)="createAutoGroup(4)">
+                                4
+                            </ion-button>
+                        </ion-col>
+                    </ion-row>
+                    <ion-row>
+                        <ion-col size="4">
+                            <ion-button expand="block" fill="outline" (click)="createAutoGroup(5)">
+                                5
+                            </ion-button></ion-col>
+                        <ion-col size="4">
+                            <ion-button expand="block" fill="outline" (click)="createAutoGroup(6)">
+                                6
+                            </ion-button>
+                        </ion-col>
+                        <ion-col size="4"> <ion-button expand="block" fill="outline" (click)="createAutoGroup(7)">
+                                7
+                            </ion-button></ion-col>
+                    </ion-row>
+                </ion-grid>
+                <ion-button (click)="mode='manual'" expand="full" shape="round" fill="outline" color="secondary">
+                    <ion-icon slot="start" name="checkbox-outline"></ion-icon>
+                    ایجاد گروه بندی انتخابی
+                </ion-button>
+            </div>
+
+            <div *ngIf="mode!='create-auto'">
+                <ion-card class="student-card flex-fill" *ngFor="let group of subGroups;let index=index">
                     <ion-card-header>
                         <ion-item>
                             <ion-label position="stacked"> نام گروه :</ion-label>
@@ -64,21 +113,19 @@
                     </ion-button>
                 </ion-card>
             </div>
-            <ion-col size="12" class="d-flex  align-items-stretch">
 
-            </ion-col>
-            <div>
-                <ion-button (click)="addGroup()" expand="full" shape="round">
-                    <ion-icon slot="start" name="add"></ion-icon>
-                    ثبت گروه دانش آموزی
-                </ion-button>
-            </div>
+
+            <ion-button *ngIf="mode!='create-auto'" (click)="mode='manual';addGroup()" expand="full" shape="round" fill="outline">
+                <ion-icon slot="start" name="add"></ion-icon>
+                ثبت گروه دانش آموزی انتخابی
+            </ion-button>
+
         </div>
     </form>
 
-    <ion-modal #modal_select_student [isOpen]="isModalOpen" (didDismiss)="isModalOpen=false" [initialBreakpoint]="0.75" [breakpoints]="[0, 0.75,1]">
+    <ion-modal #modal_select_student [isOpen]="isModalOpen" (didDismiss)="isModalOpen=false" (ionBreakpointDidChange)="modalChanged($event)" [initialBreakpoint]="0.75" [breakpoints]="[0, 0.75,1]">
         <ng-template>
-            <app-select-student [modal]="modal_select_student" viewMode="list" [selectedStudents]="selectedStudents" [disabledStudentIds]="disabledStudentIds" (selectedChange)="onSelectStudents(selectedStudents=$event)"></app-select-student>
+            <app-select-student [modal]="modal_select_student" viewMode="list" source="single" [selectedStudents]="selectedStudents" [disabledStudentIds]="disabledStudentIds" (selectedChange)="onSelectStudents(selectedStudents=$event)"></app-select-student>
         </ng-template>
     </ion-modal>
 

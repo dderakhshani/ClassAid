@@ -25,12 +25,19 @@ ion-header {
     }
 }
 
+.counter {
+    ion-button {
+        height: 90px;
+        font-size: 30px;
+        font-weight: bold;
+    }
+}
+
 .student-card {
     ion-card-header {
         padding: 0.25rem;
 
     }
-
 
     .group {
         display: grid;
@@ -40,9 +47,7 @@ ion-header {
         ion-avatar {
             box-shadow: 2px 4px 5px #00000033;
         }
-
     }
-
 }
 
 

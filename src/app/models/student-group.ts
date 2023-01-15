@@ -16,5 +16,6 @@ export interface SubGroupModel {
     name: string;
     groupId: number;
     students: StudentModel[];
+    isSelected: boolean;
 }
 

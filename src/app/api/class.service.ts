@@ -16,6 +16,7 @@ import { StudentModel } from '../models/student';
 export class ClassService {
     CLASSES_STORAGE = "CLASSAID_CLASSES";
     classes: ClassModel[];
+    classGroups: GroupModel[];
     // reminders$ = new Subject<Reminder[]>();
 
     constructor(private httpService: HttpService) {
@@ -24,6 +25,12 @@ export class ClassService {
             this.classes = JSON.parse(classesJson);
         }
     }
+
+
+    reset() {
+        localStorage.removeItem(this.CLASSES_STORAGE);
+    }
+
 
     getClassesByTeacherId(teacherId: number): Promise<ClassModel[]> {
         return new Promise((resolve, reject) => {
@@ -138,17 +145,21 @@ export class ClassService {
 
     getGroups(classId: number, lessonId: number, subLessonId: number): Promise<GroupModel[]> {
         return new Promise((resolve, reject) => {
-            this.httpService.http.getDataByParam<GroupModel[]>({ classId: classId, lessonId: lessonId, subLessonId: subLessonId }, "class/GetGroups").then(data => {
-                data.forEach(g => {
-                    g.subGroups.forEach(sg => {
-                        const students = sg.students.map(x => Object.assign(new StudentModel(), x));
-                        sg.students = students;
-                    })
-                })
-                return resolve(data);
-            }, err => {
-                reject(err)
-            });
+            if (this.classGroups)
+                return resolve(this.classGroups);
+            else
+                this.httpService.http.getDataByParam<GroupModel[]>({ classId: classId, lessonId: lessonId, subLessonId: subLessonId }, "class/GetGroups").then(data => {
+                    data.forEach(g => {
+                        g.subGroups.forEach(sg => {
+                            const students = sg.students.map(x => Object.assign(new StudentModel(), x));
+                            sg.students = students;
+                        })
+                    });
+                    this.classGroups = data;
+                    return resolve(data);
+                }, err => {
+                    reject(err)
+                });
         });
         return;
 

@@ -173,6 +173,7 @@ export class ClassPage implements OnInit {
     }
 
     loadGroups() {
+        this.classService.classGroups = undefined;//reset to reload class specific groups
         this.classService.getGroups(this.globalService.selectedClass.id, this.book.id, this.lesson.id).then(data => {
             this.groups = data;
 
@@ -254,9 +255,6 @@ export class ClassPage implements OnInit {
 
             this.initTimer2(startTime, minutes);
         }
-
-
-
     }
 
     initTimer2(startTime?: number, durationMinute?: number) {
@@ -331,13 +329,13 @@ export class ClassPage implements OnInit {
         this.isRandomModalOpen = true;
         let counter = 0;
         let looper = setInterval(x => {
-            if (counter > 8)
+            if (counter > 5)
                 clearInterval(looper);
             counter++;
             const students = this.all_students.filter(x => x.attendanceStatus != AttendanceStatus.Absent);
             const rnd = Math.floor(Math.random() * students.length);
             this.randomStudent = students[rnd];
-        }, 150);
+        }, 200);
     }
 
     setViewMode(value) {

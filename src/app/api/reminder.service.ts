@@ -15,6 +15,11 @@ export class ReminderService {
 
     }
 
+    reset() {
+        this.student_reminders$.next([]);
+        this.lesson_reminders$.next([]);
+    }
+
     addReminder(reminder: Reminder): Promise<boolean> {
         return this.httpService.http.postJsonData<boolean>(reminder, "session/AddReminder");
     }

@@ -7,6 +7,8 @@ import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import { UserModel } from 'src/app/core/models/user';
 import { AuthService } from 'src/app/core/services/auth.service';
+import { ClassService } from 'src/app/api/class.service';
+import { ReminderService } from 'src/app/api/reminder.service';
 
 @Component({
     selector: 'app-profile',
@@ -23,6 +25,8 @@ export class ProfilePage implements OnInit {
         private lessonService: LessonService,
         private assessmentService: AssessmentService,
         private studentService: StudentsService,
+        private classService: ClassService,
+        private reminderService: ReminderService,
         public alertController: AlertController) {
     }
 
@@ -40,6 +44,8 @@ export class ProfilePage implements OnInit {
         this.lessonService.reset();
         this.assessmentService.reset();
         this.studentService.reset();
+        this.classService.reset();
+        this.reminderService.reset();
         this.router.navigateByUrl("/signin");
     }
 
@@ -60,7 +66,7 @@ export class ProfilePage implements OnInit {
         const alert = await this.alertController.create({
             cssClass: 'my-custom-class',
             header: 'گزارش خطا ',
-            message: 'به صفحه گزارش خطا بعد از تکمیل پروژه منتقل خواهی شد',
+            message: 'فعلا تا آماده سازی این صفحه با مدیر سیستم تماس حاصل فرمایید',
             buttons: ['تایید']
         });
 
@@ -73,7 +79,7 @@ export class ProfilePage implements OnInit {
         const alert = await this.alertController.create({
             cssClass: 'my-custom-class',
             header: 'راهنمای سیستم ',
-            message: 'به صفحه راهنمای سیستم بعد از تکمیل پروژه منتقل خواهی شد',
+            message: 'فعلا تا آماده سازی این صفحه با پشتیبان نرم افزار تماس حاصل فرمایید',
             buttons: ['تایید']
         });
 
@@ -86,7 +92,7 @@ export class ProfilePage implements OnInit {
         const alert = await this.alertController.create({
             cssClass: 'my-custom-class',
             header: ' پشتیبانی ',
-            message: 'به صفحه پشتیبانی سیستم بعد از تکمیل پروژه منتقل خواهی شد',
+            message: 'فعلا تا آماده سازی این صفحه با پشتیبان نرم افزار تماس حاصل فرمایید',
             buttons: ['تایید']
         });
 

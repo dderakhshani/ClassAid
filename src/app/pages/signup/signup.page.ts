@@ -1,3 +1,4 @@
+import { GlobalService } from './../../services/global.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { IFormGroup, IFormBuilder } from "@rxweb/types";
@@ -20,6 +21,7 @@ export class SignupPage implements OnInit {
 
     constructor(private router: Router,
         private authService: AuthService,
+        private globalService: GlobalService,
         public toastController: ToastController,
         formBuilder: FormBuilder
     ) {
@@ -54,6 +56,7 @@ export class SignupPage implements OnInit {
         this.user = this.form.getRawValue();
 
         this.authService.signIn(this.user).then(result => {
+            this.globalService.teacherId = result.id;
             this.router.navigateByUrl("/tabs/home", { replaceUrl: true });
         });
 

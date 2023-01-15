@@ -1,3 +1,18 @@
 .root-container {
     overflow-y: scroll;
 }
+
+.group {
+    .avatars {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(min(100%/3, max(64px, 100%/5)), 1fr));
+
+        ion-avatar {
+            box-shadow: 2px 4px 5px #00000033;
+        }
+    }
+
+    ion-label {
+        padding-right: 1rem;
+    }
+}

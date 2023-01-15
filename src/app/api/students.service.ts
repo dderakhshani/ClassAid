@@ -22,6 +22,7 @@ export class StudentsService {
 
     reset() {
         localStorage.removeItem(this.STUDENT_STORAGE);
+        this.students$.next([]);
     }
 
     getStudentsOfClass(classId: number): Promise<StudentModel[]> {

@@ -1,7 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ClassService } from 'src/app/api/class.service';
 import { StudentsService } from 'src/app/api/students.service';
 import { AttendanceStatus } from 'src/app/models/attendance-model';
 import { StudentModel } from 'src/app/models/student';
+import { GroupModel } from 'src/app/models/student-group';
 import { GlobalService } from 'src/app/services/global.service';
 
 @Component({
@@ -36,8 +38,11 @@ export class SelectStudentComponent implements OnInit {
     disabledStudentIds: number[] = [];
 
     students: StudentModel[];
+    groups: GroupModel[] = [];
+    selectedGroup: GroupModel;
 
     constructor(private studentsService: StudentsService,
+        private classService: ClassService,
         public globalService: GlobalService,) { }
 
     ngOnInit() {
@@ -52,6 +57,13 @@ export class SelectStudentComponent implements OnInit {
                             s.isSelected = true;
                         })
                 });
+                this.classService.getGroups(this.globalService.selectedClass.id, undefined, undefined).then(data => {
+                    this.groups = data;
+
+                    if (this.groups.length > 0) {
+                        this.selectedGroup = this.groups[this.groups.length - 1];//select latest group
+                    }
+                })
             }
 
         })
@@ -62,8 +74,17 @@ export class SelectStudentComponent implements OnInit {
     }
 
     select() {
-        const selected = this.students.filter(x => x.isSelected);
-        this.selectedChange.emit(selected);
+        if (this.sourceSelected == 'single') {
+            const selected = this.students.filter(x => x.isSelected);
+            this.selectedChange.emit(selected);
+        }
+        else {
+            const selected = this.selectedGroup.subGroups
+                .filter(x => x.isSelected)
+                .map(x => x.students)
+                .reduce((old, current) => [...old, ...current], []);
+            this.selectedChange.emit(selected);
+        }
         if (this.modal)
             this.modal.dismiss();
     }

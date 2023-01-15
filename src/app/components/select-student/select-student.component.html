@@ -13,8 +13,9 @@
                 </ion-segment-button>
             </ion-segment>
         </div>
+
         <div class="p-2 py-3 flex-fill">
-            <ng-container *ngIf="source=='single' || source=='both'">
+            <ng-container *ngIf="sourceSelected=='single'">
                 <ion-grid fixed *ngIf="viewMode=='grid'">
                     <ion-row>
                         <ion-col size="4" *ngFor="let student of students" class="d-flex  align-items-stretch">
@@ -53,6 +54,24 @@
                 </ion-list>
             </ng-container>
 
+            <ng-container *ngIf="sourceSelected=='group'">
+                <ion-select placeholder="انتخاب گروه موجود" interface="action-sheet" [(ngModel)]="selectedGroup">
+                    <ion-select-option [value]="g" *ngFor="let g of groups">{{g.name}}</ion-select-option>
+                </ion-select>
+
+                <ion-list *ngIf="selectedGroup" class="pb-4 groups">
+                    <ion-item *ngFor="let group of selectedGroup.subGroups" class="group">
+                        <div slot="start" class="avatars">
+                            <ion-avatar slot="start" *ngFor="let s of group.students">
+                                <img alt="Avatar-Student" [src]="s.getImageUrl()" onerror="this.src='/assets/img/avatar.webp'" />
+                            </ion-avatar>
+                        </div>
+                        <ion-label> {{group.name}}</ion-label>
+                        <ion-checkbox slot="end" mode="ios" [(ngModel)]="group.isSelected"></ion-checkbox>
+                    </ion-item>
+                </ion-list>
+
+            </ng-container>
         </div>
         <ng-container *ngIf="showConfirmButton">
             <ion-button expand="block" (click)="select()">

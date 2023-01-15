@@ -65,5 +65,6 @@ export class AssessmentService {
 
     reset() {
         localStorage.removeItem(this.PARAMETERS_STORAGE);
+        this.assesmentParamters = [];
     }
 }

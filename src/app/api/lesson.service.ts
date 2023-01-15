@@ -25,6 +25,8 @@ export class LessonService {
 
     reset() {
         localStorage.removeItem(this.LESSON_STORAGE);
+        this.allLessons$.next([]);
+        this.books$.next([]);
     }
     //TODO: Get Lessons by SchoolId not load all lessons
     getBooks(schoolId: number, gradeId: number): Promise<Lesson[]> {

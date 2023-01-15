@@ -7,6 +7,7 @@ import { LoadingController, ToastController } from '@ionic/angular';
 import { IFormGroup, IFormBuilder } from '@rxweb/types';
 import { ClassService } from 'src/app/api/class.service';
 import { GlobalService } from 'src/app/services/global.service';
+import { StudentsService } from 'src/app/api/students.service';
 
 @Component({
     selector: 'app-create-group',
@@ -28,9 +29,11 @@ export class CreateGroupComponent implements OnInit {
     selectedGroup: SubGroupModel;
     selectedStudents: StudentModel[];
     disabledStudentIds: number[] = [];
+    students: StudentModel[];
 
     isModalOpen = false;
 
+    mode: 'create-auto' | 'manual' | '' = '';
     groupMode: 'private' | 'public' = 'public'
     form: IFormGroup<GroupModel>;
     formBuilder: IFormBuilder;
@@ -39,6 +42,7 @@ export class CreateGroupComponent implements OnInit {
         private classService: ClassService,
         private loadingCtrl: LoadingController,
         public globalService: GlobalService,
+        private studentsService: StudentsService,
         public toastController: ToastController) {
         this.formBuilder = formBuilder;
     }
@@ -54,6 +58,36 @@ export class CreateGroupComponent implements OnInit {
             isPublic: [true],
             subGroups: [[]]
         });
+
+        this.studentsService.getStudentsOfClass(this.globalService.selectedClass.id).then(data => {
+            //Disconnecting student from originals
+            this.students = data.map(x => Object.assign(new StudentModel(), x));
+        });
+    }
+
+    modalChanged(event) {
+        console.log(event)
+    }
+
+    createAutoGroup(count: number) {
+        this.subGroups = [];
+        let students = [...this.students];
+        const numberOfGroups = Math.ceil(this.students.length / count);
+        for (let i = 0; i < numberOfGroups; i++) {
+
+            let randStudents = [];
+            for (let i = 0; i < count && students.length > 0; i++) {
+                const rndIndex = Math.floor(Math.random() * students.length);
+                randStudents.push(students[rndIndex]);
+                students.splice(rndIndex, 1);
+            }
+            const group = <SubGroupModel>{
+                name: "",
+                students: randStudents
+            }
+            this.subGroups.push(group)
+        }
+        this.mode = '';
     }
 
     addGroup() {

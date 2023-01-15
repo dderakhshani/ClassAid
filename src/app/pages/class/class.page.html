@@ -305,7 +305,7 @@
                         </ion-col>
                     </ng-container>
                     <ng-container *ngIf="viewMode=='list'">
-                        <ion-col size="12" *ngFor="let group of groupStudent " class="d-flex  align-items-stretch">
+                        <ion-col size="12" *ngFor="let group of selectedGroup.subGroups " class="d-flex  align-items-stretch">
                             <ion-card class="student-card flex-fill">
                                 <ion-card-header>
                                     <ion-card-title>
