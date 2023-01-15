@@ -430,6 +430,21 @@
                     <ion-row>
                         <ion-col size="4">
                             <ion-button (click)="createTimer(1);createTimerModel.dismiss()" expand="block" shape="round" size="large" color="secondary">
+                                01:00
+                            </ion-button>
+                        </ion-col>
+                        <ion-col size="4">
+                            <ion-button (click)="createTimer(2);createTimerModel.dismiss()" expand="block" shape="round" size="large" color="secondary">
+                                02:00
+                            </ion-button>
+                        </ion-col>
+                        <ion-col size="4">
+                            <ion-button (click)="createTimer(3);createTimerModel.dismiss()" expand="block" shape="round" size="large" color="secondary">
+                                03:00
+                            </ion-button>
+                        </ion-col>
+                        <ion-col size="4">
+                            <ion-button (click)="createTimer(5);createTimerModel.dismiss()" expand="block" shape="round" size="large" color="secondary">
                                 05:00
                             </ion-button>
                         </ion-col>
@@ -464,7 +479,7 @@
                 </ion-grid>
                 <div class="p-2">
                     <div class="d-flex justify-content-center align-items-center px-5 py-2">
-                        <ion-item>
+                        <ion-item disabled>
                             <ion-input type="number" placeholder="00" [(ngModel)]="seconds2"></ion-input>
                         </ion-item>
 

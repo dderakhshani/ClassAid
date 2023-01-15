@@ -14,16 +14,31 @@ import { StudentModel } from '../models/student';
     providedIn: 'root'
 })
 export class ClassService {
-
+    CLASSES_STORAGE = "CLASSAID_CLASSES";
+    classes: ClassModel[];
     // reminders$ = new Subject<Reminder[]>();
 
     constructor(private httpService: HttpService) {
-        // this.gradeId = globalService.selectedGradeId;
-        // this.schoolId = globalService.selectedSchoolId;
+        const classesJson = localStorage.getItem(this.CLASSES_STORAGE);
+        if (classesJson) {
+            this.classes = JSON.parse(classesJson);
+        }
     }
 
     getClassesByTeacherId(teacherId: number): Promise<ClassModel[]> {
-        return this.httpService.http.getDataByParam<ClassModel[]>({ teacherId: teacherId }, "class/getByTeacherId");
+        return new Promise((resolve, reject) => {
+            if (this.classes)
+                return resolve(this.classes);
+            else
+                this.httpService.http.getDataByParam<ClassModel[]>({ teacherId: teacherId }, "class/getByTeacherId").then(data => {
+                    localStorage.setItem(this.CLASSES_STORAGE, JSON.stringify(data));
+                    this.classes = data;
+                    return resolve(this.classes);
+                }, err => {
+                    reject(err)
+                });
+        });
+
     }
 
     getDaySession(classId: number): Promise<DaySession> {

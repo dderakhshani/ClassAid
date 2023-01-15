@@ -248,10 +248,13 @@ export class ClassPage implements OnInit {
     }
 
     createTimer(minutes: number) {
-        const startTime = new Date().getTime();
-        localStorage.setItem("CLASSAID_TIMER", `${startTime},${minutes}`);
+        if (minutes > 0) {
+            const startTime = new Date().getTime();
+            localStorage.setItem("CLASSAID_TIMER", `${startTime},${minutes}`);
 
-        this.initTimer2(startTime, minutes);
+            this.initTimer2(startTime, minutes);
+        }
+
 
 
     }

@@ -22,16 +22,16 @@
 </ion-header>
 
 <ion-content class="round-content">
-    <form class="p-2" [formGroup]="form">
+    <form class="p-2" [formGroup]="form" style="margin-bottom: 180px;">
         <ion-item class="pt-2">
             <ion-label position="stacked"> عنوان گروه بندی :</ion-label>
             <ion-input placeholder="مثال: گروه بندی علوم فصل اول" formControlName="name"></ion-input>
         </ion-item>
 
         <ion-item lines="none">
-            <ion-label>نوع نمایش :</ion-label>
+            <ion-label>قابل استفاده در :</ion-label>
         </ion-item>
-        <ion-segment mode="ios">
+        <ion-segment mode="ios" [(ngModel)]="groupMode" [ngModelOptions]="{standalone: true}">
             <ion-segment-button value="private">
                 <ion-label> صرفا همین درس</ion-label>
             </ion-segment-button>
@@ -40,37 +40,40 @@
             </ion-segment-button>
         </ion-segment>
 
-        <ion-grid fixed class="pb-4 students">
-            <ion-row>
-                <ng-container>
-                    <ion-col size="12" *ngFor="let group of subGroups " class="d-flex  align-items-stretch">
-                        <ion-card class="student-card flex-fill">
-                            <ion-card-header>
-                                <ion-item>
-                                    <ion-label position="stacked"> نام گروه :</ion-label>
-                                    <ion-input placeholder=" نام را وارد نمایید" formControlName="title"></ion-input>
-                                </ion-item>
-                            </ion-card-header>
-                            <ion-card-content class="group">
-                                <ion-avatar slot="start" *ngFor="let s of group.students">
-                                    <img alt="Avatar-Student" [src]="s.getImageUrl()" onerror="this.src='/assets/img/avatar.webp'" />
-                                </ion-avatar>
-                            </ion-card-content>
-                            <ion-button fill="clear" (click)="editGroup(group)">
-                                <ion-icon slot="start" name="create-outline"></ion-icon>
-                                ویرایش دانش آموزان
+        <div class="pb-4 students">
+
+            <div *ngFor="let group of subGroups;let index=index">
+                <ion-card class="student-card flex-fill">
+                    <ion-card-header>
+                        <ion-item>
+                            <ion-label position="stacked"> نام گروه :</ion-label>
+                            <ion-input [(ngModel)]="group.name" [ngModelOptions]="{standalone: true}" placeholder=" نام را وارد نمایید"></ion-input>
+                            <ion-button slot="end" fill="clear" (click)="removeGroup(index)" color="danger">
+                                <ion-icon slot="icon-only" name="trash"></ion-icon>
                             </ion-button>
-                        </ion-card>
-                    </ion-col>
-                    <ion-col size="12">
-                        <ion-button (click)="addGroup()" expand="full" shape="round">
-                            <ion-icon slot="start" name="add"></ion-icon>
-                            ثبت گروه دانش آموزی
-                        </ion-button>
-                    </ion-col>
-                </ng-container>
-            </ion-row>
-        </ion-grid>
+                        </ion-item>
+                    </ion-card-header>
+                    <ion-card-content class="group">
+                        <ion-avatar slot="start" *ngFor="let s of group.students">
+                            <img alt="Avatar-Student" [src]="s.getImageUrl()" onerror="this.src='/assets/img/avatar.webp'" />
+                        </ion-avatar>
+                    </ion-card-content>
+                    <ion-button fill="clear" (click)="editGroup(group)">
+                        <ion-icon slot="start" name="create-outline"></ion-icon>
+                        ویرایش دانش آموزان
+                    </ion-button>
+                </ion-card>
+            </div>
+            <ion-col size="12" class="d-flex  align-items-stretch">
+
+            </ion-col>
+            <div>
+                <ion-button (click)="addGroup()" expand="full" shape="round">
+                    <ion-icon slot="start" name="add"></ion-icon>
+                    ثبت گروه دانش آموزی
+                </ion-button>
+            </div>
+        </div>
     </form>
 
     <ion-modal #modal_select_student [isOpen]="isModalOpen" (didDismiss)="isModalOpen=false" [initialBreakpoint]="0.75" [breakpoints]="[0, 0.75,1]">

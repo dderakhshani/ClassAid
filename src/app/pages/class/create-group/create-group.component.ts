@@ -63,6 +63,11 @@ export class CreateGroupComponent implements OnInit {
         this.isModalOpen = true;
     }
 
+    removeGroup(index: number) {
+        this.subGroups.splice(index, 1);
+    }
+
+
     editGroup(group: SubGroupModel) {
         this.filldisabledStudentIds(group);
         this.selectedGroup = group;
@@ -96,9 +101,16 @@ export class CreateGroupComponent implements OnInit {
     async save() {
         if (!this.form.valid) {
             const toast = await this.toastController.create({
-                message: 'لطفا تمام فیلد ها را پر نمایید',
+                message: 'لطفا عنوان گروه را پر نمایید',
                 duration: 3000,
-
+            });
+            toast.present();
+            return;
+        }
+        else if (this.subGroups.length < 2) {
+            const toast = await this.toastController.create({
+                message: 'حداقل دو گروه دانش آموزی ایجاد شود',
+                duration: 5000,
             });
             toast.present();
             return;
