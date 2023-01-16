@@ -129,25 +129,10 @@ export class GlobalService {
 
                     this.rings = rings;
                     //4. Loading Schedules
-                    this.scheduleService.get(vClass.id).then(schdule => {
-                        if (schdule) {
-                            schdule.scheduleTimes.forEach(st => {
-                                st.ring = this.rings.find(x => x.id == st.ringId);
-                                //lessonService.books$ filled when getBooks called
-                                st.lesson = this.lessonService.books$.value.find(x => x.id == st.lessonId);
-                            });
+                    await this.loadSchedules(vClass.id, today_sessions);
 
-                            //4.2 Clone the schedules to make it non-changable
-                            this.todayShedules = [...schdule.scheduleTimes.filter(x => x.dayNo == this.todayDay)];
-                            this.todayShedules.forEach(sch => {
-                                //4.3 
-                                sch.session = today_sessions.find(x => x.scheduleTimeId == sch.id);
-                            })
-                        }
-
-                        this.selectedClass$.next(vClass);
-                        this.ready$.next(true)
-                    });
+                    this.selectedClass$.next(vClass);
+                    this.ready$.next(true);
                 });
         });
 
@@ -158,6 +143,27 @@ export class GlobalService {
 
     public get sessions() {
         return this.classSessions$.value;
+    }
+
+    async loadSchedules(classId: number, today_sessions) {
+        return this.scheduleService.get(classId).then(schdule => {
+            if (schdule) {
+                schdule.scheduleTimes.forEach(st => {
+                    st.ring = this.rings.find(x => x.id == st.ringId);
+                    //lessonService.books$ filled when getBooks called
+                    st.lesson = this.lessonService.books$.value.find(x => x.id == st.lessonId);
+                });
+
+                //4.2 Clone the schedules to make it non-changable
+                this.todayShedules = [...schdule.scheduleTimes.filter(x => x.dayNo == this.todayDay)];
+                if (today_sessions)
+                    this.todayShedules.forEach(sch => {
+                        //4.3 
+                        sch.session = today_sessions.find(x => x.scheduleTimeId == sch.id);
+                    })
+            }
+        });
+
     }
 
     async initSessionsAsync(today_sessions: ClassSessionModel[], sessions2: ClassSessionModel[], books: Lesson[]): Promise<boolean> {

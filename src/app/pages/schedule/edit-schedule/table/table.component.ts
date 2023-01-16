@@ -102,10 +102,10 @@ export class TableComponent implements OnInit {
         await actionSheet.present();
 
         const result = await actionSheet.onDidDismiss();
-        if (result.data.action == "delete") {
+        if (result.data?.action == "delete") {
             this.schedules.splice(this.schedules.indexOf(schedule), 1);
         }
-        else if (result.data.action == "edit") {
+        else if (result.data?.action == "edit") {
             this.schedules.splice(this.schedules.indexOf(schedule), 1);
             this.openLessonPicker(schedule.ring, schedule.dayNo);
         }

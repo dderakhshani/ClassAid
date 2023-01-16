@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { LoadingController } from '@ionic/angular';
+import { LoadingController, NavController } from '@ionic/angular';
 import { LessonService } from 'src/app/api/lesson.service';
 import { ScheduleService } from 'src/app/api/schedule.service';
 import { DateDay, Days, Ring } from 'src/app/models/day';
@@ -37,6 +37,7 @@ export class EditSchedulePage implements OnInit {
     constructor(private globalService: GlobalService,
         private loadingCtrl: LoadingController,
         public lessonService: LessonService,
+        private navCtrl: NavController,
         private scheduleService: ScheduleService,
         public location: Location) { }
 
@@ -76,8 +77,10 @@ export class EditSchedulePage implements OnInit {
         const loading = await this.loadingCtrl.create();
         loading.present();
 
-        this.scheduleService.saveSchedule(this.schedule).then(x => {
+        this.scheduleService.saveSchedule(this.schedule).then(async x => {
+            await this.globalService.loadSchedules(this.globalService.selectedClass.id, undefined);
             loading.dismiss();
+            this.navCtrl.navigateBack('tabs/schedule');
         },
             err => {
                 loading.dismiss();

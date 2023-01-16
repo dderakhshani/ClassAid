@@ -28,6 +28,11 @@ export class SchedulePage implements OnInit {
 
     ngOnInit() {
 
+
+
+    }
+
+    ionViewWillEnter() {
         combineLatest(this.globalService.classSessions$, this.globalService.ready$).subscribe(([sessions, ready]) => {
             if (ready) {
                 this.todayShedules = this.globalService.todayShedules;
@@ -36,7 +41,6 @@ export class SchedulePage implements OnInit {
                     this.router.navigateByUrl('edit')
             }
         });
-
     }
 
 

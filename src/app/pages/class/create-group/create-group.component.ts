@@ -162,7 +162,7 @@ export class CreateGroupComponent implements OnInit {
 
         this.classService.addGroup(group).then(x => {
             loading.dismiss();
-
+            this.classService.classGroups = [...this.classService.classGroups, group];
             this.modal.dismiss();
         }, err => {
             loading.dismiss();
