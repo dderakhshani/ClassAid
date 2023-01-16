@@ -178,18 +178,21 @@ export class ClassReportPage implements OnInit {
     }
 
     async showScore(score: ScoreAssessmentModel) {
-        const alert = await this.alertController.create({
-            header: 'یادداشت ',
-            message: score.note,
-            buttons: [
-                {
-                    text: 'بستن',
-                    role: 'confirm'
-                }
-            ],
-        });
+        if (score.note) {
+            const alert = await this.alertController.create({
+                header: 'یادداشت ',
+                message: score.note,
+                buttons: [
+                    {
+                        text: 'بستن',
+                        role: 'confirm'
+                    }
+                ],
+            });
 
-        await alert.present();
+            await alert.present();
+        }
+
     }
 
     assessHomeWork(homeWork: HomeWorkModel) {

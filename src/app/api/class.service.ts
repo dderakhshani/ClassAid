@@ -88,9 +88,9 @@ export class ClassService {
         return this.httpService.http.postJsonData<boolean>(group, "class/addGroup");
     }
 
-    getLessonHomeWorks(lessonId: number): Promise<HomeWorkModel[]> {
+    getLessonHomeWorks(lessonId: number, classId: number): Promise<HomeWorkModel[]> {
         return new Promise((resolve, reject) => {
-            this.httpService.http.getDataByParam<HomeWorkModel[]>({ lessonId: lessonId }, "class/GetLessonHomeWorks").then(data => {
+            this.httpService.http.getDataByParam<HomeWorkModel[]>({ lessonId: lessonId, classId: classId }, "class/GetLessonHomeWorks").then(data => {
                 data.forEach(hw => {
                     const students = hw.assignees.map(x => Object.assign(new StudentModel(), x));
                     hw.assignees = students;

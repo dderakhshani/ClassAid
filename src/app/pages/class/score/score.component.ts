@@ -44,6 +44,7 @@ export class ScoreComponent implements OnInit {
     notes: string;
     rate: number;
     selectedeParameter: AssessParamterModel;
+    isSaving = false;
     // param: AssessParamModel;
 
     assesmentParamters: AssessParamterModel[];
@@ -58,33 +59,32 @@ export class ScoreComponent implements OnInit {
     }
 
     saveScore() {
-        if (this.posNeg) {
-            const score = <ScoreAssessmentModel>{
-                id: uuidv4(),
-                studentId: this.student.id,
-                lessonId: this.book.id,
-                subLessonId: this.lesson.id,
-                eduParameterId: this.selectedeParameter.id,
-                eduParameterTitle: this.selectedeParameter.title,
-                taskId: this.session.id,
-                note: this.notes,
-                level: 0,//this is only mark,Server will always set this to 0 for Score, 
-                progerssFlag: this.posNeg == "positive" ? 1 : -1,
-                progerssStep: this.rate
-            }
-            this.assessmentService.addScore(score).then(x => {
-                //TODO: check prev assessment
-                this.session.scores = this.session.scores ?? [];
-                this.session.scores.push(score);
-
-                this.student.scores.push(score);
-                this.modal.dismiss();
-            })
-
+        this.isSaving = true;
+        const score = <ScoreAssessmentModel>{
+            id: uuidv4(),
+            studentId: this.student.id,
+            lessonId: this.book.id,
+            subLessonId: this.lesson.id,
+            eduParameterId: this.selectedeParameter.id,
+            eduParameterTitle: this.selectedeParameter.title,
+            taskId: this.session.id,
+            note: this.notes,
+            level: 0,//this is only mark,Server will always set this to 0 for Score, 
+            progerssFlag: this.posNeg == "positive" ? 1 : -1,
+            progerssStep: this.rate
         }
-        else {
+        this.assessmentService.addScore(score).then(x => {
+            //TODO: check prev assessment
+            this.session.scores = this.session.scores ?? [];
+            this.session.scores.push(score);
 
-        }
+            this.student.scores.push(score);
+            this.isSaving = false;
+            this.modal.dismiss();
+        }, err => {
+            // loading.dismiss();
+            this.isSaving = false;
+        });
 
     }
 

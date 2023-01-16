@@ -1,3 +1,4 @@
+import { ComponentsModule } from 'src/app/components/components.module';
 import { CoresModule } from './../../../core/core.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -15,7 +16,8 @@ import { TodayStoriesPage } from './today-stories.page';
         FormsModule,
         IonicModule,
         CoresModule,
-        TodayStoriesPageRoutingModule
+        TodayStoriesPageRoutingModule,
+        ComponentsModule
     ],
     declarations: [TodayStoriesPage]
 })

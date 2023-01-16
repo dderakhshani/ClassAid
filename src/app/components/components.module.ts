@@ -1,3 +1,4 @@
+import { StoryItemComponent } from './story-item/story-item.component';
 import { SelectStudentComponent } from './select-student/select-student.component';
 import { CoresModule } from './../core/core.module';
 import { HomeWorkItemComponent } from './home-work-item/home-work-item.component';
@@ -24,8 +25,9 @@ import { NgxEchartsModule } from 'ngx-echarts';
     declarations: [TimelineComponent,
         ScheduleItemComponent,
         HomeWorkItemComponent,
-        SelectStudentComponent
+        SelectStudentComponent,
+        StoryItemComponent
     ],
-    exports: [TimelineComponent, ScheduleItemComponent, HomeWorkItemComponent, SelectStudentComponent]
+    exports: [TimelineComponent, ScheduleItemComponent, HomeWorkItemComponent, SelectStudentComponent, StoryItemComponent]
 })
 export class ComponentsModule { }

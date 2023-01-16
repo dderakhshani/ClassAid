@@ -1,4 +1,4 @@
-import { Reminder } from './../../models/remider';
+import { LessonNotes, Reminder } from './../../models/remider';
 import { environment } from 'src/environments/environment';
 import { Lesson } from 'src/app/models/lessons';
 import { ReminderService } from './../../api/reminder.service';
@@ -25,6 +25,7 @@ import { combineLatest } from 'rxjs';
 export class HomePage implements OnInit {
     studentModel = StudentModel;
     lesson = Lesson;
+
     slideOpts = {
         initialSlide: 0,
         speed: 350,
@@ -40,6 +41,8 @@ export class HomePage implements OnInit {
     dateName: string;
     todayDay: number;
     todayShedules: ScheduleTimeModel[] = [];
+    lesson_notes: LessonNotes[];
+
 
     constructor(private router: Router,
         private studentsService: StudentsService,
@@ -65,6 +68,14 @@ export class HomePage implements OnInit {
     ionViewWillEnter() {
         combineLatest(this.globalService.classSessions$, this.globalService.ready$).subscribe(([sessions, ready]) => {
             if (ready) {
+                this.reminderService.getTodayNotes(this.globalService.selectedClass.id).then(data => {
+                    this.lesson_notes = data;
+                    this.lesson_notes.forEach(item => {
+                        item.book = this.lessonService.getLessonByIdSynce(item.lessonId);
+                        item.lesson = this.lessonService.getLessonByIdSynce(item.subLessonId);
+                    })
+                });
+
                 this.todayShedules = this.globalService.todayShedules;
                 this.setNextCurrentSchedule();
 

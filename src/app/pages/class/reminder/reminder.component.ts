@@ -34,6 +34,8 @@ export class ReminderComponent implements OnInit {
     @Input()
     student?: StudentModel;
 
+    isSaving = false;
+
     dateType: "next" | 'tommorow' | "exact-date" = "next";
     nextDays: { dayNo: number, dayName: string, date: Date }[] = [];
     selectedDay: any;
@@ -71,6 +73,7 @@ export class ReminderComponent implements OnInit {
 
 
     save() {
+        this.isSaving = true;
         if (this.student) {
 
             const reminder = <StudentReminder>{
@@ -89,6 +92,10 @@ export class ReminderComponent implements OnInit {
                 this.student.reminders = this.student.reminders ?? [];
                 this.student.reminders.push(reminder);
                 this.reminderService.student_reminders$.next([...this.reminderService.student_reminders$.value, reminder]);
+                this.isSaving = false;
+            }, err => {
+                // loading.dismiss();
+                this.isSaving = false;
             });
 
         }
@@ -108,6 +115,10 @@ export class ReminderComponent implements OnInit {
                 this.classTask.reminders = this.classTask.reminders ?? [];
                 this.classTask.reminders.push(reminder);
                 this.reminderService.lesson_reminders$.next([...this.reminderService.lesson_reminders$.value, reminder]);
+                this.isSaving = false;
+            }, err => {
+                // loading.dismiss();
+                this.isSaving = false;
             });
 
         }

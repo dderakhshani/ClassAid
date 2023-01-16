@@ -22,6 +22,7 @@ export class ClassSessionModel {
     startTime: Date;
     endTime?: Date;
     averageAssessment: number;
+    spentTime: number;
     avgAssessMeasure: AssessMeasureLevel;
 
     book?: Lesson;

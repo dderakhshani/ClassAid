@@ -34,6 +34,8 @@ export class NoteComponent implements OnInit {
     @Input()
     student?: StudentModel;
 
+    isSaving = false;
+
     notes: string;
     tags: string[] = [];
     tag = "";
@@ -74,6 +76,7 @@ export class NoteComponent implements OnInit {
 
     save() {
         if (this.student) {
+            this.isSaving = true;
             const reminder = <StudentNotes>{
                 id: uuidv4(),
                 studentId: this.student.id,
@@ -91,6 +94,10 @@ export class NoteComponent implements OnInit {
                 this.student.notes = this.student.notes ?? [];
                 this.student.notes.push(reminder);
                 this.classTask.reminders.push(reminder);
+                this.isSaving = false;
+            }, err => {
+                // loading.dismiss();
+                this.isSaving = false;
             });
 
         }
@@ -109,6 +116,10 @@ export class NoteComponent implements OnInit {
             this.reminderService.addReminder(reminder).then(x => {
                 this.classTask.reminders = this.classTask.reminders ?? [];
                 this.classTask.reminders.push(reminder);
+                this.isSaving = false;
+            }, err => {
+                // loading.dismiss();
+                this.isSaving = false;
             });
         }
         this.modal.dismiss();

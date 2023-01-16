@@ -13,11 +13,8 @@ import { LessonService } from 'src/app/api/lesson.service';
     styleUrls: ['./today-stories.page.scss'],
 })
 export class TodayStoriesPage implements OnInit {
-    imageUrl = environment.imageUrl + '/';
 
     sessionIdParam: string;
-    colors = ["primary", "danger", "success", "secondary", "warning", "tertiary", "medium"];
-
 
     lesson_notes: LessonNotes[];
 
@@ -38,17 +35,7 @@ export class TodayStoriesPage implements OnInit {
         })
     }
 
-    async share_notes(note: LessonNotes) {
-        let title = note.isReport ? 'گزارش ' : 'یادداشت ';
-        title += note.book.name;
 
-        if (note.images) {
-            this.globalService.shareData(title, note.note, environment.imageUrl + '/' + note.images[0]);
-        }
-        else
-            this.globalService.shareData(title, note.note);
-
-    }
 
 
 }

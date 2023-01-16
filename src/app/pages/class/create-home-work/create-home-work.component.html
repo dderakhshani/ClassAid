@@ -139,8 +139,9 @@
 
 </ion-content>
 <ion-footer class="p-2">
-    <ion-button expand="block" (click)="save()">
-        <ion-icon name="save-outline" size="large"></ion-icon>
+    <ion-button expand="block" (click)="save()" [disabled]="isSaving">
+        <ion-icon *ngIf="!isSaving" name="save-outline" size="large"></ion-icon>
+        <ion-spinner *ngIf="isSaving"></ion-spinner>
         <ion-label class="me-2"> ذخیره</ion-label>
     </ion-button>
 </ion-footer>

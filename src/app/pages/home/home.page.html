@@ -110,7 +110,7 @@
                             <ion-icon name="alarm-outline" size="small"></ion-icon>
                         </ion-badge>
                     </ion-avatar>
-                    <span class="mt-2">{{lr.lesson.name}}</span>
+                    <span class="mt-2">{{lr.lesson?.name}}</span>
                 </div>
 
             </ng-container>
@@ -137,6 +137,12 @@
                 <h1>فعالیت های امروز:</h1>
             </ion-label>
         </ion-item>
+
+        <div *ngIf="lesson_notes  && lesson_notes.length>0" class="old_items p-2 ">
+            <ng-container *ngFor="let n of lesson_notes;let index=index">
+                <app-story-item [note]="n"></app-story-item>
+            </ng-container>
+        </div>
 
     </div>
 

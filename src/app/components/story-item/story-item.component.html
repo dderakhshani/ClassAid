@@ -1,0 +1,43 @@
+<ion-card class="reminder-item-expanded">
+    <ion-item>
+        <ion-avatar slot="start">
+            <img alt="Avatar" [src]="note.book?.getImageUrl()" />
+        </ion-avatar>
+        <ion-label>
+            <h3>{{note.book?.name}} </h3>
+            <p>
+                {{note.lesson?.name}} </p>
+        </ion-label>
+        <div class="d-flex flex-column actions">
+            <!-- <ion-button fill="clear" slot="end" color="medium">
+                <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+            </ion-button> -->
+            <ion-button fill="clear" slot="end" (click)="share_notes(note)" color="medium">
+                <ion-icon slot="icon-only" name="share-social"></ion-icon>
+            </ion-button>
+        </div>
+    </ion-item>
+    <!-- Preload images before being expanded -->
+    <img hidden *ngFor="let img of note.images;" [src]="imageUrl+img" />
+    <ion-slides [pager]="true">
+        <ion-slide *ngFor="let img of note.images">
+            <img [src]="imageUrl+img" (click)="globalService.openImageViewer(imageUrl+img)" />
+        </ion-slide>
+    </ion-slides>
+
+    <ion-item lines="none">
+
+        <ion-label>
+            <p> {{note.note}}</p>
+        </ion-label>
+
+
+
+    </ion-item>
+    <div class="px-3 pb-2">
+        <ion-chip [color]="colors[index%colors.length]" *ngFor="let tag of note.tags;let index=index">
+            <ion-icon name="pricetag-outline"></ion-icon>
+            <ion-label>{{tag}} </ion-label>
+        </ion-chip>
+    </div>
+</ion-card>

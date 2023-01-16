@@ -11,6 +11,7 @@ export class Ring {
     title: string;
     startTime: string;
     endTime: string;
+    durationMinute: number;
 }
 
 export const Days = [

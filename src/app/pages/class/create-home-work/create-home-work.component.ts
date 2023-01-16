@@ -41,6 +41,8 @@ export class CreateHomeWorkComponent implements OnInit {
     form: IFormGroup<IHomeWorkModel>;
     formBuilder: IFormBuilder;
 
+    isSaving = false;
+
     dateType: "next" | 'tommorow' | "exact-date" = "next";
     nextDays: { dayNo: number, dayName: string, date: Date }[] = [];
     selectedDay: any;
@@ -126,20 +128,24 @@ export class CreateHomeWorkComponent implements OnInit {
             toast.present();
             return;
         }
+        this.isSaving = true;
+
         const homeWork = this.form.getRawValue() as HomeWorkModel;
         homeWork.files = this.uploadFiles;
         homeWork.dueTime = this.getReminderTime();
         homeWork.assignees = this.selectedStudents;
-        const loading = await this.loadingCtrl.create();
-        loading.present();
+        // const loading = await this.loadingCtrl.create();
+        // loading.present();
 
         this.classService.addHomeWork(homeWork).then(x => {
-            loading.dismiss();
+            // loading.dismiss();
             this.classTask.homeWorks = this.classTask.homeWorks ?? [];
             this.classTask.homeWorks.push(homeWork);
             this.modal.dismiss();
+            this.isSaving = false;
         }, err => {
-            loading.dismiss();
+            // loading.dismiss();
+            this.isSaving = false;
         });
 
     }

@@ -122,7 +122,7 @@ export class UploaderComponent implements OnInit {
             ],
         });
 
-        actionSheet.present();
+        await actionSheet.present();
 
         const { role } = await actionSheet.onWillDismiss();
 

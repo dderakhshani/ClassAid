@@ -104,12 +104,14 @@ export class ClassPage implements OnInit {
                                     text: 'بله',
                                     role: 'confirm',
                                     handler: () => {
+                                        this.globalService.currentSession.didAttendance = true;
                                         this.router.navigateByUrl(`/tabs/home/attendance/${this.globalService.currentSession.id}`);
                                     },
                                 },
                                 {
                                     text: 'خیر',
                                     role: 'cancel',
+                                    handler: () => { this.globalService.currentSession.didAttendance = true; }
                                 },
                             ],
                         });

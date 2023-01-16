@@ -125,7 +125,7 @@ export class GlobalService {
                 this.scheduleService.getRings(vClass.schoolId, vClass.gradeId)])
                 .then(async ([today_sessions, sessions, rings]) => {
                     //2.Step: 
-                    await this.initSessionsAsync(today_sessions, sessions, books);
+                    await this.initSessionsAsync(vClass.id, today_sessions, sessions, books);
 
                     this.rings = rings;
                     //4. Loading Schedules
@@ -166,7 +166,7 @@ export class GlobalService {
 
     }
 
-    async initSessionsAsync(today_sessions: ClassSessionModel[], sessions2: ClassSessionModel[], books: Lesson[]): Promise<boolean> {
+    async initSessionsAsync(classId, today_sessions: ClassSessionModel[], sessions2: ClassSessionModel[], books: Lesson[]): Promise<boolean> {
         return new Promise(async resolve => {
             sessions2.forEach(s => {
                 s.startTime = new Date(s.startTime);
@@ -185,7 +185,7 @@ export class GlobalService {
             this.currentSession = sessions2.find(x => x.endTime == null);
 
             if (this.currentSession) {
-                await this.initCurrentSessionAsync(sessions2);
+                await this.initCurrentSessionAsync(sessions2, classId);
             }
             else
 
@@ -209,11 +209,11 @@ export class GlobalService {
         });
     }
 
-    async initCurrentSessionAsync(sessions) {
+    async initCurrentSessionAsync(sessions: ClassSessionModel[], classId) {
         return Promise.all(
             [this.reminderService.getSessionReminders(this.currentSession.id),
             this.assessmentService.getSessionAssessments(this.currentSession.id),
-            this.classService.getLessonHomeWorks(this.currentSession.lessonId)])
+            this.classService.getLessonHomeWorks(this.currentSession.lessonId, classId)])
             .then(([reminders, assessments, homeWorks]) => {
                 this.currentSession.reminders = reminders;
                 this.currentSession.assessments = assessments.filter(x => x.level > 0);
@@ -253,7 +253,7 @@ export class GlobalService {
 
                 this.storageService.saveStorage(CLASS_STORAGE, JSON.stringify(raw_session));
 
-                this.classService.getLessonHomeWorks(this.currentSession.lessonId)
+                this.classService.getLessonHomeWorks(this.currentSession.lessonId, this.selectedClass.id)
                     .then(homeWorks => {
                         this.currentSession.homeWorks = homeWorks;
                     });

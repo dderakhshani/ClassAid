@@ -76,7 +76,7 @@
                             <ion-icon name="document-text-outline" color="warning" size="large" *ngIf="n.isReport"></ion-icon>
                         </ion-avatar>
                         <ion-label>
-                            <ion-note> {{n.remindTime | jalali}}</ion-note>
+
                             <p> {{n.note}}</p>
                         </ion-label>
 
@@ -134,6 +134,9 @@
                                     </ion-icon>
                                     <span> {{s.progerssStep}}</span>
                                 </ion-badge>
+                                <ion-badge *ngIf="s.note" class=" me-1" color="warning" mode="ios">
+                                    <ion-icon name="document-text-outline" size="small"></ion-icon>
+                                </ion-badge>
                             </ion-label>
 
                             <div class="d-flex flex-column align-items-center border-end pe-2 actions">
@@ -175,7 +178,6 @@
                             </ion-avatar>
 
                             <ion-label>
-                                <ion-note> {{n.remindTime | jalali}}</ion-note>
                                 <h3>{{n.studentFullName}}</h3>
                                 <p> {{n.note}}</p>
                             </ion-label>
