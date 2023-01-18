@@ -17,6 +17,7 @@ import { ComponentsModule } from 'src/app/components/components.module';
 import { NgxEchartsModule } from 'ngx-echarts';
 import { NgCircleProgressModule } from 'ng-circle-progress';
 import { CreateGroupComponent } from './create-group/create-group.component';
+import { RandomStudentComponent } from './random-student/random-student.component';
 
 @NgModule({
     imports: [
@@ -46,7 +47,8 @@ import { CreateGroupComponent } from './create-group/create-group.component';
         ReminderComponent,
         ScoreComponent,
         CreateHomeWorkComponent,
-        CreateGroupComponent],
+        CreateGroupComponent,
+        RandomStudentComponent],
     providers: []
 })
 export class ClassPageModule { }

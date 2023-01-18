@@ -1,0 +1,39 @@
+<div class="wrapper">
+    <div class="header">
+        <ion-icon name="shuffle-outline" size="large"></ion-icon>
+        <h1>انتخاب تصادفی دانش آموز </h1>
+    </div>
+    <ion-item>
+        <ion-checkbox slot="start" [(ngModel)]="selectAbsent"></ion-checkbox>
+        <ion-label>عدم انتخاب دانش آموز غایب</ion-label>
+    </ion-item>
+    <ion-item>
+        <ion-checkbox slot="start" [(ngModel)]="selectOnlyNew"></ion-checkbox>
+        <ion-label>عدم انتخاب دانش آموز انتخاب شده</ion-label>
+    </ion-item>
+    <div class="p-4 random-student">
+        <!-- Avatar -->
+        <div class="d-flex flex-column align-items-center pt-2">
+            <ion-avatar slot="start">
+                <img alt="Avatar-Student" [src]="randomStudent?.getImageUrl()" onerror="this.src='/assets/img/avatar.webp'" />
+            </ion-avatar>
+            <span class="pt-2" *ngIf="counter>5"> {{randomStudent?.fullName}}</span>
+        </div>
+
+    </div>
+    <ion-grid fixed>
+        <ion-row>
+            <ion-col size="6">
+                <ion-button (click)="selectRandom()" color="success" expand="block" shape="round" [disabled]="counter<=5">
+                    انتخاب مجدد
+                </ion-button>
+            </ion-col>
+            <ion-col size="6">
+
+                <ion-button (click)="modal.dismiss()" color="danger" fill="outline" expand="block" shape="round">
+                    بستن
+                </ion-button>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+</div>

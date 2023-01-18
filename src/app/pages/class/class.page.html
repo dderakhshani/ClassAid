@@ -505,25 +505,7 @@
 
     <ion-modal class="compact-modal" #randomStudentModal [isOpen]="isRandomModalOpen" (didDismiss)="isRandomModalOpen=false">
         <ng-template>
-            <div class="wrapper">
-                <div class="header">
-                    <ion-icon name="shuffle-outline" size="large"></ion-icon>
-                    <h1>انتخاب تصادفی دانش آموز </h1>
-                </div>
-                <div class="p-4 random-student">
-                    <!-- Avatar -->
-                    <div class="d-flex flex-column align-items-center pt-2">
-                        <ion-avatar slot="start">
-                            <img alt="Avatar-Student" [src]="randomStudent.getImageUrl()" onerror="this.src='/assets/img/avatar.webp'" />
-                        </ion-avatar>
-                        <span class="pt-2"> {{randomStudent.fullName}}</span>
-                    </div>
-
-                </div>
-                <ion-button (click)="randomStudentModal.dismiss()" class="mx-2" expand="block" shape="round">
-                    تایید
-                </ion-button>
-            </div>
+            <app-random-student [modal]="randomStudentModal" [students]="all_students"></app-random-student>
         </ng-template>
     </ion-modal>
 

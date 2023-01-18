@@ -64,7 +64,6 @@ export class ClassPage implements OnInit {
     timer1Subscribtion: Subscription;
     timer2Subscribtion: Subscription;
 
-    randomStudent: StudentModel;
     isRandomModalOpen = false;
     showSearch = false;
 
@@ -334,15 +333,6 @@ export class ClassPage implements OnInit {
 
     createRandomStudent() {
         this.isRandomModalOpen = true;
-        let counter = 0;
-        let looper = setInterval(x => {
-            if (counter > 5)
-                clearInterval(looper);
-            counter++;
-            const students = this.all_students.filter(x => x.attendanceStatus != AttendanceStatus.Absent);
-            const rnd = Math.floor(Math.random() * students.length);
-            this.randomStudent = students[rnd];
-        }, 200);
     }
 
     setViewMode(value) {
