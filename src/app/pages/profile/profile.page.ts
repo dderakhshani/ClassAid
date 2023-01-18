@@ -22,11 +22,6 @@ export class ProfilePage implements OnInit {
     constructor(private router: Router,
         private authService: AuthService,
         private globalService: GlobalService,
-        private lessonService: LessonService,
-        private assessmentService: AssessmentService,
-        private studentService: StudentsService,
-        private classService: ClassService,
-        private reminderService: ReminderService,
         public alertController: AlertController) {
     }
 
@@ -36,16 +31,7 @@ export class ProfilePage implements OnInit {
 
     onSingOut() {
         this.authService.signOut();
-        this.globalService.classSessions$.next([]);
-        this.globalService.callRolling = [];
-        this.globalService.currentSession = undefined;
-        this.globalService.selectedClass$.next(undefined);
-        this.globalService.rings = [];
-        this.lessonService.reset();
-        this.assessmentService.reset();
-        this.studentService.reset();
-        this.classService.reset();
-        this.reminderService.reset();
+        this.globalService.resetData();
         this.router.navigateByUrl("/signin");
     }
 

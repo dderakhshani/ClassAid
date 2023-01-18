@@ -103,9 +103,12 @@
                         </ion-item>
                     </ion-card-header>
                     <ion-card-content class="group">
-                        <ion-avatar slot="start" *ngFor="let s of group.students">
-                            <img alt="Avatar-Student" [src]="s.getImageUrl()" onerror="this.src='/assets/img/avatar.webp'" />
-                        </ion-avatar>
+                        <div class="d-flex flex-column" *ngFor="let s of group.students">
+                            <ion-avatar slot="start">
+                                <img alt="Avatar-Student" [src]="s.getImageUrl()" onerror="this.src='/assets/img/avatar.webp'" />
+                            </ion-avatar>
+                            <span>{{s.fullName}}</span>
+                        </div>
                     </ion-card-content>
                     <ion-button fill="clear" (click)="editGroup(group)">
                         <ion-icon slot="start" name="create-outline"></ion-icon>

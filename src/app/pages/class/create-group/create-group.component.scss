@@ -41,7 +41,7 @@ ion-header {
 
     .group {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(min(100%/3, max(64px, 100%/5)), 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(min(100%/3, max(64px, 100%/4)), 1fr));
         padding-right: 15px;
 
         ion-avatar {

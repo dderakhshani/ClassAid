@@ -131,7 +131,7 @@ export class CreateGroupComponent implements OnInit {
                 }
                 this.subGroups.push(group)
             }
-        }, 400);
+        }, 600);
     }
 
 

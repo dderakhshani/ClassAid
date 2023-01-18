@@ -2,13 +2,19 @@
     <thead>
         <tr class="bg-light">
             <th class="fs-5 text-center">
-                <ion-icon name="alarm-outline"></ion-icon>
+                <ion-icon name="alarm-outline" *ngIf="ringMode=='time'" (click)="ringMode='title'"></ion-icon>
+                <ion-icon name="time-outline" *ngIf="ringMode=='title'" (click)="ringMode='time'"></ion-icon>
             </th>
             <th *ngFor="let r of rings" class="text-center">
-                {{r.startTime}}
-                <br />
-                <span class="text-secondary"> {{r.endTime}}</span>
+                <ng-container *ngIf="ringMode=='time'">
+                    {{r.startTime}}
+                    <br />
+                    <span class="text-secondary"> {{r.endTime}}</span>
+                </ng-container>
 
+                <ng-container *ngIf="ringMode=='title'">
+                    {{r.title}}
+                </ng-container>
             </th>
         </tr>
     </thead>

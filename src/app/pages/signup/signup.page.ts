@@ -56,7 +56,7 @@ export class SignupPage implements OnInit {
         this.user = this.form.getRawValue();
 
         this.authService.signIn(this.user).then(result => {
-            this.globalService.teacherId = result.id;
+
             this.router.navigateByUrl("/tabs/home", { replaceUrl: true });
         });
 

@@ -96,6 +96,7 @@ export class ClassPage implements OnInit {
             if (this.globalService.currentSession && ready) {
                 if (ready) {
                     if (!this.globalService.currentSession.didAttendance) {
+                        this.globalService.currentSession.didAttendance = true;
                         const alert = await this.alertController.create({
                             header: 'حضور غیاب',
                             message: 'آیا ابتدا حضور غیاب میکنید؟ اگه همه حاضر هستن نیازی به حضور غیاب نیست',
@@ -104,7 +105,7 @@ export class ClassPage implements OnInit {
                                     text: 'بله',
                                     role: 'confirm',
                                     handler: () => {
-                                        this.globalService.currentSession.didAttendance = true;
+
                                         this.router.navigateByUrl(`/tabs/home/attendance/${this.globalService.currentSession.id}`);
                                     },
                                 },
@@ -237,13 +238,16 @@ export class ClassPage implements OnInit {
 
             this.mintues = Math.floor(duration / 60);
             this.seconds = duration - this.mintues * 60;
+
             this.timer1Subscribtion = interval(1000).subscribe(x => {
-                this.seconds -= 1;
-                if (this.seconds < 0) {
-                    this.seconds = 59;
-                    this.mintues -= 1;
-                }
-                this.percentTimer1 = (this.mintues + (this.seconds / 60)) / 45 * 100;
+                //recalculate time passed on each second becuase interval is not percise
+                let duration = new Date().getTime() - this.globalService.currentSession.startTime.getTime();
+                duration = Math.floor(duration / 1000);
+                duration = durationMinute * 60 - duration;
+                this.mintues = Math.floor(duration / 60);
+                this.seconds = duration - this.mintues * 60;
+
+                this.percentTimer1 = (this.mintues + (this.seconds / 60)) / durationMinute * 100;
             });
         }
         else
@@ -270,6 +274,7 @@ export class ClassPage implements OnInit {
                         title: "زمان سنج همیار معلام",
                         body: "پایان زمان سنج",
                         id: 200,
+                        sound: "beep.wav",
                         schedule: {
                             at: new Date(Date.now() + 1000 * 60 * this.mintues2)
                         }

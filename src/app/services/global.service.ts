@@ -54,6 +54,7 @@ export class GlobalService {
         private assessmentService: AssessmentService,
         private classService: ClassService,
         private reminderService: ReminderService,
+        private studentService: StudentsService,
         public lessonService: LessonService,
         public modalController: ModalController,
         private scheduleService: ScheduleService) {
@@ -267,7 +268,10 @@ export class GlobalService {
     endClass() {
         this.classService.endTask(this.currentSession.id).then(result => {
             this.currentSession.endTime = new Date();
-            this.todayShedules.find(x => x.id == this.currentSession.scheduleTimeId).session.endTime = new Date();
+            const ts = this.todayShedules.find(x => x.id == this.currentSession.scheduleTimeId);
+            if (ts)
+                if (ts.session)
+                    ts.session.endTime = new Date();
             this.currentSession = undefined;
 
             this.storageService.removeStorage(CLASS_STORAGE);
@@ -374,5 +378,19 @@ export class GlobalService {
         const fileReader = new FileReader();
         const zoneOriginalInstance = (fileReader as any)["__zone_symbol__originalInstance"];
         return zoneOriginalInstance || fileReader;
+    }
+
+    resetData() {
+        this.storageService.removeStorage(CLASS_STORAGE);
+        this.classSessions$.next([]);
+        this.callRolling = [];
+        this.currentSession = undefined;
+        this.selectedClass$.next(undefined);
+        this.rings = [];
+        this.lessonService.reset();
+        this.assessmentService.reset();
+        this.studentService.reset();
+        this.classService.reset();
+        this.reminderService.reset();
     }
 }

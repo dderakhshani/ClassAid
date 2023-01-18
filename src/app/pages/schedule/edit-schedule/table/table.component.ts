@@ -32,6 +32,8 @@ export class TableComponent implements OnInit {
     @Input()
     days: DateDay[];
 
+    ringMode: 'time' | 'title' = 'time';
+
     constructor(private pickerCtrl: PickerController,
         private actionSheetCtrl: ActionSheetController,
         public lessonService: LessonService) {

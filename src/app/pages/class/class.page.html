@@ -288,6 +288,7 @@
             <!-- Group List -->
             <ion-grid fixed class="pb-4 students">
                 <ion-row *ngIf="selectedGroup">
+                    <!-- Group Grid View Mode -->
                     <ng-container *ngIf="viewMode=='grid'">
                         <ion-col size="6" *ngFor="let group of selectedGroup.subGroups" class="d-flex  align-items-stretch">
                             <ion-card class="student-card flex-fill">
@@ -304,18 +305,24 @@
                             </ion-card>
                         </ion-col>
                     </ng-container>
+                    <!-- Group List View Mode -->
                     <ng-container *ngIf="viewMode=='list'">
                         <ion-col size="12" *ngFor="let group of selectedGroup.subGroups " class="d-flex  align-items-stretch">
-                            <ion-card class="student-card flex-fill">
-                                <ion-card-header>
+                            <ion-card class=" flex-fill">
+                                <ion-card-header class="border-bottom">
                                     <ion-card-title>
                                         <ion-icon name="people-outline"></ion-icon>
-                                        {{group.name}}</ion-card-title>
+                                        {{group.name}}
+                                    </ion-card-title>
                                 </ion-card-header>
-                                <ion-card-content class="group">
-                                    <ion-avatar slot="start" *ngFor="let s of group.students">
-                                        <img alt="Avatar-Student" [src]="s.getImageUrl()" onerror="this.src='/assets/img/avatar.webp'" />
-                                    </ion-avatar>
+                                <ion-card-content>
+                                    <ion-item *ngFor="let s of group.students;let gi=index" [lines]="(gi==group.students.length-1)?'none':'inset'">
+                                        <ion-avatar slot="start">
+                                            <img alt="Avatar-Student" [src]="s.getImageUrl()" onerror="this.src='/assets/img/avatar.webp'" />
+                                        </ion-avatar>
+                                        <ion-label>{{s.fullName}}</ion-label>
+                                    </ion-item>
+
                                 </ion-card-content>
                             </ion-card>
                         </ion-col>

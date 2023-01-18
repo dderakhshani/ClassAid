@@ -29,6 +29,8 @@ export class ClassService {
 
     reset() {
         localStorage.removeItem(this.CLASSES_STORAGE);
+        this.classes = undefined;
+        this.classGroups = undefined;
     }
 
 
