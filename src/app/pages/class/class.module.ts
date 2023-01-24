@@ -49,6 +49,9 @@ import { RandomStudentComponent } from './random-student/random-student.componen
         CreateHomeWorkComponent,
         CreateGroupComponent,
         RandomStudentComponent],
-    providers: []
+    providers: [],
+    exports: [NoteComponent, ReminderComponent,
+        ScoreComponent,
+        CreateHomeWorkComponent,]
 })
 export class ClassPageModule { }

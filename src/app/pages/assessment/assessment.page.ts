@@ -66,8 +66,6 @@ export class AssessmentPage implements OnInit {
                     this.student = x;
                 });
 
-
-
                 //Can read book and lesson from CurrentSession but there are some assessment without class session
                 this.lessonService.getLessonById(this.lessonIdParam).then(l => {
                     this.lesson = l;

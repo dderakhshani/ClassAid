@@ -22,6 +22,7 @@ import { ModalController } from '@ionic/angular';
 import { Share } from '@capacitor/share';
 import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
 import { Settings } from '../models/settings';
+import { CancelOptions, LocalNotificationDescriptor, LocalNotifications } from '@capacitor/local-notifications';
 const CLASS_STORAGE = "CLASSAID_CLASS";
 
 @Injectable({
@@ -258,6 +259,23 @@ export class GlobalService {
                     .then(homeWorks => {
                         this.currentSession.homeWorks = homeWorks;
                     });
+
+                LocalNotifications.schedule({
+                    notifications: [
+                        {
+                            title: "پایان کلاس",
+                            body: "کلاس درس " + session.book.name + " به پایان رسید، لطفا در انتهای کلاس دکمه اتمام را بفشارید",
+                            id: 300,
+                            sound: "beep.wav",
+                            schedule: {
+                                repeats: true,
+                                every: 'minute',
+                                count: 3,//every 3 mintues after schedule at
+                                at: new Date(Date.now() + 1000 * 60 * 5)//find 45 from schedule time or manual session time
+                            }
+                        }
+                    ]
+                });
                 resolve(true);
             })
         })
@@ -277,6 +295,12 @@ export class GlobalService {
             this.storageService.removeStorage(CLASS_STORAGE);
 
             this.classSessions$.next(this.sessions);
+
+            LocalNotifications.cancel(<CancelOptions>{
+                notifications: [
+                    <LocalNotificationDescriptor>{ id: 300 }
+                ]
+            });
         });
     }
 
@@ -302,7 +326,7 @@ export class GlobalService {
         return await modal.present();
     }
 
-    async shareData(title: string, text: string, imageUrl?: string) {
+    async shareData(title: string, text: string, fileUrl?: string) {
 
         let permission = await Filesystem.checkPermissions();
         if (permission.publicStorage !== "granted") {
@@ -315,14 +339,14 @@ export class GlobalService {
         }
 
 
-        if (imageUrl) {
-            console.log("Has Image");
+        if (fileUrl) {
+            console.log("Has File");
             let blob = undefined;
-            const fileName = imageUrl;
+            const fileName = fileUrl;
             //Download file
 
             var xhr = new XMLHttpRequest();
-            xhr.open('GET', imageUrl, true);
+            xhr.open('GET', fileUrl, true);
             xhr.responseType = 'blob';
             const me = this;
             xhr.onload = function (e) {

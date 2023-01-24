@@ -8,6 +8,8 @@ import { IonicModule } from '@ionic/angular';
 import { ClassReportPageRoutingModule } from './class-report-routing.module';
 
 import { ClassReportPage } from './class-report.page';
+import { ClassPageModule } from '../../class/class.module';
+import { ComponentsModule } from 'src/app/components/components.module';
 
 @NgModule({
     imports: [
@@ -15,7 +17,9 @@ import { ClassReportPage } from './class-report.page';
         FormsModule,
         IonicModule,
         ClassReportPageRoutingModule,
-        CoresModule
+        CoresModule,
+        ComponentsModule,
+        ClassPageModule
     ],
     declarations: [ClassReportPage]
 })

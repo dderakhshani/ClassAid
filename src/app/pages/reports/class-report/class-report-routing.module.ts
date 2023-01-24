@@ -7,7 +7,11 @@ const routes: Routes = [
     {
         path: ':sessionId',
         component: ClassReportPage
-    }
+    },
+    {
+        path: 'home-work',
+        loadChildren: () => import('../../assessment/home-work/home-work.module').then(m => m.HomeWorkPageModule)
+    },
 ];
 
 @NgModule({

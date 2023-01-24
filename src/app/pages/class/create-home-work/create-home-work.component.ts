@@ -2,7 +2,7 @@ import { StudentModel } from './../../../models/student';
 import { environment } from './../../../../environments/environment';
 import { ClassService } from 'src/app/api/class.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ClassSessionModel } from 'src/app/models/class';
 import { Days } from 'src/app/models/day';
 import { HomeWorkModel, IHomeWorkModel } from 'src/app/models/home-work';
@@ -35,6 +35,9 @@ export class CreateHomeWorkComponent implements OnInit {
 
     @Input()
     book: Lesson;
+
+    @Output()
+    saveResult = new EventEmitter<HomeWorkModel>();
 
     isAssigneeModalOpen = false;
 
@@ -134,6 +137,7 @@ export class CreateHomeWorkComponent implements OnInit {
         homeWork.files = this.uploadFiles;
         homeWork.dueTime = this.getReminderTime();
         homeWork.assignees = this.selectedStudents;
+        homeWork.status = 0;
         // const loading = await this.loadingCtrl.create();
         // loading.present();
 
@@ -143,6 +147,8 @@ export class CreateHomeWorkComponent implements OnInit {
             this.classTask.homeWorks.push(homeWork);
             this.modal.dismiss();
             this.isSaving = false;
+            this.saveResult.emit(homeWork);
+
         }, err => {
             // loading.dismiss();
             this.isSaving = false;

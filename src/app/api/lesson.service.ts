@@ -32,13 +32,12 @@ export class LessonService {
     getBooks(schoolId: number, gradeId: number): Promise<Lesson[]> {
         return new Promise((resolve, reject) => {
             if (this.books$.value.length > 0)
-                return resolve(this.books$.value.filter(x => x.gradeId == gradeId
-                    || (x.schoolId && x.schoolId == schoolId)));
+                return resolve(this.books$.value.filter(x => x.gradeId == gradeId && (x.schoolId == schoolId || x.schoolId == null)));
             else
                 this.httpService.http.getDataByParam<Lesson[]>({ gradeId: gradeId }, "lesson/GetByGrade").then(r => {
                     localStorage.setItem(this.LESSON_STORAGE, JSON.stringify(r));
                     this.initBooks(r);
-                    return resolve(this.books$.value.filter(x => x.gradeId == gradeId && x.schoolId == schoolId));
+                    return resolve(this.books$.value.filter(x => x.gradeId == gradeId && (x.schoolId == schoolId || x.schoolId == null)));
                 }, err => {
                     reject(err);
                 });
@@ -48,7 +47,7 @@ export class LessonService {
 
     initBooks(rawData: Lesson[]) {
         const allLessons = rawData.map(x => Object.assign(new Lesson(), x));
-        const books = allLessons.filter(x => x.parentId == null && x.schoolId);
+        const books = allLessons.filter(x => x.parentId == null);
         this.allLessons$.next(allLessons);
         books.forEach(b => {
             b.subLessonCount = allLessons.filter(x => x.parentId == b.id).length;

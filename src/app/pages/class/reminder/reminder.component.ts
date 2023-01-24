@@ -4,7 +4,7 @@ import { ClassSessionModel } from './../../../models/class';
 import { Lesson } from './../../../models/lessons';
 import { StudentReminder, LessonReminder, ReminderType, Reminder } from './../../../models/remider';
 import { StudentModel } from 'src/app/models/student';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { DateDay } from 'src/app/models/day';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -33,6 +33,9 @@ export class ReminderComponent implements OnInit {
 
     @Input()
     student?: StudentModel;
+
+    @Output()
+    saveResult = new EventEmitter<Reminder>();
 
     isSaving = false;
 
@@ -93,6 +96,7 @@ export class ReminderComponent implements OnInit {
                 this.student.reminders.push(reminder);
                 this.reminderService.student_reminders$.next([...this.reminderService.student_reminders$.value, reminder]);
                 this.isSaving = false;
+                this.saveResult.emit(reminder);
             }, err => {
                 // loading.dismiss();
                 this.isSaving = false;
@@ -116,6 +120,7 @@ export class ReminderComponent implements OnInit {
                 this.classTask.reminders.push(reminder);
                 this.reminderService.lesson_reminders$.next([...this.reminderService.lesson_reminders$.value, reminder]);
                 this.isSaving = false;
+                this.saveResult.emit(reminder);
             }, err => {
                 // loading.dismiss();
                 this.isSaving = false;

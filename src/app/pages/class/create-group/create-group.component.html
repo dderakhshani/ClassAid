@@ -128,7 +128,7 @@
 
     <ion-modal #modal_select_student [isOpen]="isModalOpen" (didDismiss)="isModalOpen=false" (ionBreakpointDidChange)="modalChanged($event)" [initialBreakpoint]="0.75" [breakpoints]="[0, 0.75,1]">
         <ng-template>
-            <app-select-student [modal]="modal_select_student" viewMode="list" source="single" [selectedStudents]="selectedStudents" [disabledStudentIds]="disabledStudentIds" (selectedChange)="onSelectStudents(selectedStudents=$event)"></app-select-student>
+            <app-select-student [modal]="modal_select_student" viewMode="list" source="student" [selectedStudents]="selectedStudents" [disabledStudentIds]="disabledStudentIds" (selectedChange)="onSelectStudents(selectedStudents=$event)"></app-select-student>
         </ng-template>
     </ion-modal>
 

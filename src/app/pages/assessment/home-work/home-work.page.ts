@@ -126,10 +126,6 @@ export class HomeWorkPage implements OnInit {
         }
     }
 
-    back() {
-        this.location.back();
-    }
-
     async openViewer(imageUrl: string) {
         const modal = await this.modalController.create({
             component: ViewerModalComponent,
@@ -211,8 +207,11 @@ export class HomeWorkPage implements OnInit {
         if (close) {
             this.homeWork.assessments = assessments;
             this.assessmentService.closeHomeWorkAssessment(this.homeWork).then(result => {
-                const index = this.globalService.currentSession.homeWorks?.findIndex(x => x.id == this.homeWorkIdParam);
-                this.globalService.currentSession.homeWorks.splice(index, 1);
+                if (this.globalService.currentSession.homeWorks) {
+                    const index = this.globalService.currentSession.homeWorks?.findIndex(x => x.id == this.homeWorkIdParam);
+                    this.globalService.currentSession.homeWorks.splice(index, 1);
+                }
+
                 loading.dismiss();
                 this.location.back();
             },

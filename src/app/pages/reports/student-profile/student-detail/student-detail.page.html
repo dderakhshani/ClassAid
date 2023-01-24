@@ -94,7 +94,9 @@
                         <ion-badge slot="end" color="danger" *ngIf="score.value<0" class="score-rate" mode="ios"> {{score.value}}</ion-badge>
                     </ion-item>
                 </ng-container>
-
+                <ion-label *ngIf="student.accScores.length==0">
+                    <h3> هیچ داده ای ثبت نشده است</h3>
+                </ion-label>
             </ng-container>
             <ng-container *ngIf="scoreDisplayMode=='chart'">
                 <div echarts [options]="scoreChartOptions" class="widget-chart" theme="roma"></div>
@@ -181,6 +183,9 @@
                 <div echarts [options]="assessChartOptions" class="widget-chart" (chartClick)="onBarCLick($event)" theme="roma"></div>
 
             </ng-container>
+            <ion-label *ngIf="student.accAssessments.length==0">
+                <h3> هیچ داده ای ثبت نشده است</h3>
+            </ion-label>
         </app-expandable-section>
 
         <div class="mt-4">

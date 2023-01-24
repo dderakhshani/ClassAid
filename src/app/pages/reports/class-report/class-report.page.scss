@@ -3,10 +3,13 @@
 .no-items {
     color: #ababab;
     text-align: center;
-    padding-bottom: 10px;
+    padding-bottom: 20px;
 }
 
 
+ion-fab.add-action {
+    margin-top: -25px;
+}
 
 .attendance {
     text-align: center;
@@ -81,7 +84,6 @@
 
 .old_items {
 
-
     ion-card {
         transition: all 0.3s;
 
@@ -101,8 +103,11 @@
         }
 
         ion-item {
-            ion-avatar {
+            ion-avatar.icon {
                 margin-inline-end: 0;
+            }
+
+            ion-avatar {
                 margin-bottom: auto;
                 margin-top: 1rem;
             }

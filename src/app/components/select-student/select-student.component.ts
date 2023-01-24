@@ -18,9 +18,11 @@ export class SelectStudentComponent implements OnInit {
     modal: any;
 
     @Input()
-    source: 'single' | 'group' | 'both' = 'both';
-    sourceSelected: 'single' | 'group' = 'single';
+    source: 'student' | 'group' | 'both' = 'both';
+    sourceSelected: 'student' | 'group' = 'student';
 
+    @Input()
+    selectionMode: 'multi' | 'single' = 'multi';
 
     @Input()
     viewMode: 'list' | 'grid' = 'grid';
@@ -57,13 +59,14 @@ export class SelectStudentComponent implements OnInit {
                             s.isSelected = true;
                         })
                 });
-                this.classService.getGroups(this.globalService.selectedClass.id, undefined, undefined).then(data => {
-                    this.groups = data;
+                if (this.source != 'student')
+                    this.classService.getGroups(this.globalService.selectedClass.id, undefined, undefined).then(data => {
+                        this.groups = data;
 
-                    if (this.groups.length > 0) {
-                        this.selectedGroup = this.groups[this.groups.length - 1];//select latest group
-                    }
-                })
+                        if (this.groups.length > 0) {
+                            this.selectedGroup = this.groups[this.groups.length - 1];//select latest group
+                        }
+                    })
             }
 
         })
@@ -74,7 +77,7 @@ export class SelectStudentComponent implements OnInit {
     }
 
     select() {
-        if (this.sourceSelected == 'single') {
+        if (this.sourceSelected == 'student') {
             const selected = this.students.filter(x => x.isSelected);
             this.selectedChange.emit(selected);
         }
@@ -87,6 +90,14 @@ export class SelectStudentComponent implements OnInit {
         }
         if (this.modal)
             this.modal.dismiss();
+    }
+
+    onSelectStudent(student: StudentModel) {
+        if (this.selectionMode == 'single') {
+            this.selectedChange.emit([student]);
+            if (this.modal)
+                this.modal.dismiss();
+        }
     }
 
 }

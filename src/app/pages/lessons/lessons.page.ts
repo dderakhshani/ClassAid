@@ -12,6 +12,7 @@ import { GlobalService } from 'src/app/services/global.service';
 export class LessonsPage implements OnInit {
 
     lessons: Lesson[];
+    loading = true;
 
     constructor(public lessonService: LessonService,
         private globalService: GlobalService,
@@ -21,7 +22,9 @@ export class LessonsPage implements OnInit {
         this.globalService.ready$.subscribe(ready => {
             if (ready)
                 this.lessonService.getBooks(this.globalService.selectedClass.schoolId, this.globalService.selectedClass.gradeId).then(r => {
+                    this.loading = false;
                     this.lessons = r;
+
                 });
         })
 

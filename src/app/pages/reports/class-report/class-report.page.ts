@@ -1,3 +1,4 @@
+import { ClassSessionModel } from './../../../models/class';
 import { HomeWorkModel } from './../../../models/home-work';
 import { ScoreAssessmentModel } from './../../../models/asses-param';
 import { AttendanceModel, AttendanceStatus } from './../../../models/attendance-model';
@@ -34,6 +35,7 @@ export class ClassReportPage implements OnInit {
     reminderType = ReminderType;
 
     sessionIdParam: string;
+    session: ClassSessionModel;
     colors = ["primary", "danger", "success", "secondary", "warning", "tertiary", "medium"];
 
     lesson: Lesson;
@@ -46,11 +48,25 @@ export class ClassReportPage implements OnInit {
     scores: ScoreAssessmentModel[];
     assessments: AssessmentModel[];
     homeWorks: HomeWorkModel[];
+
+    modalNotes: Note[];
+    modalReminders: Reminder[];
     notes_expanded = false;
-    notes_expandable = true;
     notes_expanded2 = false;
-    notes_expandable2 = true;
     reminder_expanded = false;
+    student_reminder_expanded = false;
+
+    selectedStudent: StudentModel;
+    isScoreModalOpen = false;
+    isReminderModalOpen = false;
+    isNotesModalOpen = false;
+    isHomeWorkModalOpen = false;
+    selectStudentModalOpen = false;
+
+    studentAction: 'score' | 'notes' | 'reminder';
+
+    presentingElement = null;
+    loading = true;
 
     constructor(private alertController: AlertController,
         private route: ActivatedRoute,
@@ -67,6 +83,7 @@ export class ClassReportPage implements OnInit {
     }
 
     ngOnInit() {
+        this.presentingElement = document.querySelector('.ion-page');
         this.globalService.ready$.subscribe(ready => {
             if (ready)
                 this.init();
@@ -75,6 +92,7 @@ export class ClassReportPage implements OnInit {
 
     init() {
         this.classService.getSession(this.sessionIdParam).then(session => {
+            this.session = session;
             this.lessonService.getLessonById(session.subLessonId).then(l => {
                 this.lesson = l;
             });
@@ -104,23 +122,18 @@ export class ClassReportPage implements OnInit {
                     this.lesson_notes = reminders.filter(x => x.type == ReminderType.Notes).map(x => x as LessonNotes);
                     if (this.lesson_notes.length <= 1) {
                         this.notes_expanded = true;
-                        this.notes_expandable = false;
                     }
 
                     this.student_notes = reminders.filter(x => x.type == ReminderType.StudentNotes).map(x => x as StudentNotes);
                     if (this.student_notes.length <= 1) {
                         this.notes_expanded2 = true;
-                        this.notes_expandable2 = false;
                     }
 
                     this.assessments = assessments;
+                    this.loading = false;
                 });
 
         })
-    }
-
-    back() {
-        this.location.back();
     }
 
     remove_notes(reminder: Reminder) {
@@ -153,6 +166,11 @@ export class ClassReportPage implements OnInit {
         title += this.lessonService.getLessonByIdSynce(reminder.lessonId).name;
 
         this.globalService.shareData(title, reminder.note);
+    }
+
+    share_homework(homeWork: HomeWorkModel) {
+
+        this.globalService.shareData(homeWork.title, homeWork.description, environment.imageUrl + '/' + homeWork.files[0]);
     }
 
     getScale(index: number, data: any[], expanded: boolean) {
@@ -195,8 +213,87 @@ export class ClassReportPage implements OnInit {
 
     }
 
+
+
     assessHomeWork(homeWork: HomeWorkModel) {
-        this.router.navigateByUrl(`tabs/home-work/${homeWork.id}`)
+        this.router.navigateByUrl(`home-work/${homeWork.id}`)
+    }
+
+    onHomeWork() {
+        this.selectedStudent = null;
+        // this.modalHomeWorks = this.globalService.currentSession.homeWorks?.filter(x => x.creatorTaskId == this.globalService.currentSession.id);
+        this.isHomeWorkModalOpen = true;
+    }
+
+    onSelectStudent(students: StudentModel[]) {
+        this.selectedStudent = students[0];
+        this.selectStudentModalOpen = false;
+        if (this.studentAction == 'score')
+            this.isScoreModalOpen = true;
+        else if (this.studentAction == 'notes') {
+            this.modalNotes = this.student_notes.filter(x => x.studentId == this.selectedStudent.id);
+            this.isNotesModalOpen = true;
+        }
+
+        else if (this.studentAction == 'reminder') {
+            this.modalReminders = this.student_reminders.filter(x => x.studentId == this.selectedStudent.id);
+            this.isReminderModalOpen = true;
+        }
+
+    }
+
+    onStudentReminder() {
+        this.selectStudentModalOpen = true;
+        this.studentAction = 'reminder';
+
+    }
+
+    onStudentNotes() {
+        this.selectStudentModalOpen = true;
+        this.studentAction = 'notes';
+    }
+
+    onScore() {
+        this.selectStudentModalOpen = true;
+        this.studentAction = 'score';
+    }
+
+    onReminder() {
+        this.selectedStudent = null;
+        this.modalReminders = this.reminders;
+        this.isReminderModalOpen = true;
+    }
+
+    onNotes() {
+        this.selectedStudent = null;
+        this.modalNotes = this.lesson_notes;
+        this.isNotesModalOpen = true;
+    }
+
+    attendance() {
+        this.router.navigateByUrl(`/tabs/home/attendance/${this.sessionIdParam}`);
+    }
+
+    reminderSaved(reminder: Reminder) {
+        if (this.selectedStudent)
+            this.student_reminders.push(reminder as StudentReminder);
+        else
+            this.reminders.push(reminder as LessonReminder);
+    }
+
+    homeWorkSaved(homeWork: HomeWorkModel) {
+        this.homeWorks.push(homeWork);
+    }
+
+    noteSaved(note: Note) {
+        if (this.selectedStudent)
+            this.student_notes.push(note as StudentNotes);
+        else
+            this.lesson_notes.push(note as LessonNotes);
+    }
+
+    scoreSaved(score: ScoreAssessmentModel) {
+        this.scores.push(score);
     }
 
 }

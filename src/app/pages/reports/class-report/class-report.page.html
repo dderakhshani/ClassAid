@@ -1,9 +1,7 @@
 <ion-header class="content-header ion-no-border" collapse="fade">
     <ion-toolbar>
         <ion-buttons slot="start">
-            <ion-button (click)="back()">
-                <ion-icon slot="icon-only" name="arrow-back-outline"></ion-icon>
-            </ion-button>
+            <ion-back-button></ion-back-button>
         </ion-buttons>
 
         <ion-buttons slot="end">
@@ -17,7 +15,6 @@
 </ion-header>
 
 <ion-content class="round-content flex-fill p-2 ">
-
     <ion-item>
         <ion-avatar slot="start">
             <img alt="Avatar" [src]="book?.getImageUrl()" onerror="this.src='/assets/img/book.png'" />
@@ -29,9 +26,14 @@
             </p>
         </ion-label>
     </ion-item>
-    <div class="px-3 pb-5">
+
+    <div *ngIf="loading" class="d-flex align-items-center justify-content-center">
+        <ion-spinner></ion-spinner>
+    </div>
+
+    <div *ngIf="!loading" class="px-3 pb-5">
         <!-- Absent Students -->
-        <div class="p-2  mt-2 mb-3 bg-section" *ngIf="absentStudents">
+        <div class="p-2 pb-3 mt-2 mb-4 bg-section" *ngIf="absentStudents">
             <div>
                 <h4>دانش آموزان غایب :</h4>
             </div>
@@ -52,16 +54,21 @@
                 <div *ngIf="absentStudents.length==0" class="no-items">
                     هیچ دانش آموزی غایب نبوده
                 </div>
-            </div>
 
+            </div>
+            <!-- <ion-fab class="add-action" (click)="attendance()">
+                <ion-fab-button color="success" size="small" horizontal="end">
+                    <ion-icon name="add" size="small"></ion-icon>
+                </ion-fab-button>
+            </ion-fab> -->
         </div>
 
         <!-- Lesson Notes List -->
-        <app-expandable-section [(expanded)]="notes_expanded" [expandable]="notes_expandable">
+        <app-expandable-section [(expanded)]="notes_expanded" [expandable]="lesson_notes.length>1">
             <div>
                 <h4>یادداشت های کلاس :</h4>
             </div>
-            <div *ngIf="lesson_notes  && lesson_notes.length>0" class="old_items">
+            <div *ngIf="lesson_notes  && lesson_notes.length>0" class="old_items pb-3">
                 <ion-card *ngFor="let n of lesson_notes;let index=index" [ngClass]="{'reminder-item': !notes_expanded, 'reminder-item-expanded': notes_expanded}" [style.transform]="'scale(' + getScale(index,lesson_notes,notes_expanded) + ')'">
                     <!-- Preload images before being expanded -->
                     <img hidden *ngFor="let img of n.images;" [src]="imageUrl+img" />
@@ -71,7 +78,7 @@
                         </ion-slide>
                     </ion-slides>
                     <ion-item lines="none">
-                        <ion-avatar slot="start">
+                        <ion-avatar slot="start" class="icon">
                             <ion-icon name="document-text-outline" color="secondary" size="large" *ngIf="!n.isReport"></ion-icon>
                             <ion-icon name="document-text-outline" color="warning" size="large" *ngIf="n.isReport"></ion-icon>
                         </ion-avatar>
@@ -104,6 +111,11 @@
                 <br>
                 هیچ گزارش یا یادداشتی ثبت نشده است
             </div>
+            <ion-fab class="add-action" (click)="onNotes()">
+                <ion-fab-button color="success" size="small">
+                    <ion-icon name="add" size="small"></ion-icon>
+                </ion-fab-button>
+            </ion-fab>
         </app-expandable-section>
 
 
@@ -112,9 +124,7 @@
             <div>
                 <h4> مشاهدات و امتیازات :</h4>
             </div>
-
-            <div>
-
+            <div class="pb-3">
                 <ion-card class="score" [class.green]="s.progerssFlag>0" [class.red]="s.progerssFlag<0" *ngFor="let s of scores" (click)="showScore(s)">
                     <ion-card-content>
                         <ion-item lines="none">
@@ -147,7 +157,6 @@
                     </ion-card-content>
 
                 </ion-card>
-
             </div>
 
             <div *ngIf="scores?.length==0" class="no-items">
@@ -155,15 +164,21 @@
                 <br>
                 هیچ مشاهده ای ثبت نشده است
             </div>
+
+            <ion-fab class="add-action" (click)="onScore()">
+                <ion-fab-button color="success" size="small">
+                    <ion-icon name="add" size="small"></ion-icon>
+                </ion-fab-button>
+            </ion-fab>
         </div>
 
         <!-- Student Notes List -->
         <div class="mt-4">
-            <app-expandable-section [(expanded)]="notes_expanded2" [expandable]="notes_expandable2">
+            <app-expandable-section [(expanded)]="notes_expanded2" [expandable]="student_notes.length>1">
                 <div>
                     <h4>یادداشت های دانش آموزی :</h4>
                 </div>
-                <div *ngIf="student_notes  && student_notes.length>0" class="old_items">
+                <div *ngIf="student_notes  && student_notes.length>0" class="old_items pb-3">
                     <ion-card *ngFor="let n of student_notes;let index=index" [ngClass]="{'reminder-item': !notes_expanded2, 'reminder-item-expanded': notes_expanded2}" [style.transform]="'scale(' + getScale(index,student_notes,notes_expanded2) + ')'">
                         <!-- Preload images before being expanded -->
                         <img hidden *ngFor="let img of n.images;" [src]="imageUrl+img" />
@@ -206,23 +221,83 @@
                     <br>
                     هیچ گزارش یا یادداشتی ثبت نشده است
                 </div>
+
+                <ion-fab class="add-action" (click)="onStudentNotes()">
+                    <ion-fab-button color="success" size="small">
+                        <ion-icon name="add" size="small"></ion-icon>
+                    </ion-fab-button>
+                </ion-fab>
             </app-expandable-section>
         </div>
 
-        <!-- Reminders List -->
-        <div class="p-2 mt-3 bg-section">
-            <ion-item lines="none">
-                <ion-icon name="alarm-outline" slot="start"></ion-icon>
-                <ion-label>
-                    <h1>یادآور ها:</h1>
-                </ion-label>
-            </ion-item>
+        <!-- Lesson Reminders  List -->
+        <div class="mt-4">
+            <app-expandable-section [(expanded)]="reminder_expanded" [expandable]="reminders.length>1">
+                <ion-item lines="none">
+                    <ion-icon name="alarm-outline" slot="start"></ion-icon>
+                    <ion-label>
+                        <h1>یادآور های کلاس:</h1>
+                    </ion-label>
+                </ion-item>
 
-            <!-- Student Reminders -->
-            <div class="old_items" *ngIf="student_reminders && student_reminders.length>0">
-                <ng-container *ngFor="let sr of student_reminders ">
+                <div class="old_items  pb-3" *ngIf="reminders && reminders.length>0">
+                    <ion-card *ngFor="let r of reminders;let index=index" [ngClass]="{'reminder-item': !reminder_expanded, 'reminder-item-expanded': reminder_expanded}" class="score-item" [style.transform]="'scale(' + getScale(index,reminders,reminder_expanded) + ')'">
+                        <ion-item lines="none">
+                            <ion-avatar slot="start" class="icon">
+                                <ion-icon name="alarm-outline" color="secondary" size="large" *ngIf="!r.isReport"></ion-icon>
+                                <ion-icon name="alarm-outline" color="warning" size="large" *ngIf="r.isReport"></ion-icon>
+                                <!-- <ion-icon name="newspaper-outline" color="warning" size="small" *ngIf="r.isReport"></ion-icon> -->
+                            </ion-avatar>
+                            <ion-label>
+                                <ion-note> {{r.remindTime | jalali}}</ion-note>
+                                <p> {{r.note}}</p>
+                            </ion-label>
 
-                    <ion-card class="reminder-item">
+                            <div class="d-flex flex-column actions">
+                                <ion-button fill="clear" slot="end" (click)="remove_reminder(r)" color="medium">
+                                    <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+                                </ion-button>
+                                <ion-button fill="clear" slot="end" (click)="share_reminders(r)" color="medium">
+                                    <ion-icon slot="icon-only" name="share-social"></ion-icon>
+                                </ion-button>
+                            </div>
+
+                        </ion-item>
+                    </ion-card>
+
+                </div>
+
+                <div *ngIf="reminders?.length==0" class="no-items">
+                    <ion-icon slot="start" name="alarm-outline" size="large"></ion-icon>
+                    <br>
+                    <ion-label>
+                        <h3> هیچ یادآوری ثبت نشده است</h3>
+                    </ion-label>
+
+                </div>
+
+                <ion-fab class="add-action" (click)="onReminder()">
+                    <ion-fab-button color="success" size="small">
+                        <ion-icon name="add" size="small"></ion-icon>
+                    </ion-fab-button>
+                </ion-fab>
+            </app-expandable-section>
+        </div>
+
+        <!-- Student Reminders List -->
+        <div class=" mt-4">
+            <app-expandable-section [(expanded)]="student_reminder_expanded" [expandable]="student_reminders.length>1">
+                <ion-item lines="none">
+                    <ion-icon name="alarm-outline" slot="start"></ion-icon>
+                    <ion-label>
+                        <h1>یادآور های دانش آموزی:</h1>
+                    </ion-label>
+                </ion-item>
+
+                <!-- Student Reminders -->
+                <div class="old_items pb-3" *ngIf="student_reminders && student_reminders.length>0">
+
+                    <ion-card *ngFor="let sr of student_reminders ;let index=index" [ngClass]="{'reminder-item': !student_reminder_expanded, 'reminder-item-expanded': student_reminder_expanded}" class="score-item" [style.transform]="'scale(' + getScale(index,student_reminders,student_reminder_expanded) + ')'">
                         <ion-item lines="none">
                             <ion-avatar (click)="showReminder(sr)">
                                 <img alt="avatar-student" [src]="studentModel.getImageUrl(sr.studentId)" onerror="this.src='/assets/img/avatar.webp'" />
@@ -245,92 +320,106 @@
 
                         </ion-item>
                     </ion-card>
-                </ng-container>
 
-
-            </div>
-
-            <!-- Lesson Reminders -->
-            <div class="old_items" *ngIf="reminders && reminders.length>0">
-                <ion-card *ngFor="let r of reminders;let index=index" [ngClass]="{'reminder-item': !reminder_expanded, 'reminder-item-expanded': reminder_expanded}" class="score-item" [style.transform]="'scale(' + getScale(index,reminders,reminder_expanded) + ')'">
-                    <ion-item lines="none">
-                        <ion-avatar slot="start">
-                            <ion-icon name="alarm-outline" color="secondary" size="large" *ngIf="!r.isReport"></ion-icon>
-                            <ion-icon name="alarm-outline" color="warning" size="large" *ngIf="r.isReport"></ion-icon>
-                            <!-- <ion-icon name="newspaper-outline" color="warning" size="small" *ngIf="r.isReport"></ion-icon> -->
-                        </ion-avatar>
-                        <ion-label>
-                            <ion-note> {{r.remindTime | jalali}}</ion-note>
-                            <p> {{r.note}}</p>
-                        </ion-label>
-
-                        <div class="d-flex flex-column actions">
-                            <ion-button fill="clear" slot="end" (click)="remove_reminder(r)" color="medium">
-                                <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
-                            </ion-button>
-                            <ion-button fill="clear" slot="end" (click)="share_reminders(r)" color="medium">
-                                <ion-icon slot="icon-only" name="share-social"></ion-icon>
-                            </ion-button>
-                        </div>
-
-                    </ion-item>
-                </ion-card>
-                <div class="d-flex justify-content-center">
-                    <ion-button fill="clear" size="small" *ngIf="reminders.length>1" (click)="reminder_expanded=!reminder_expanded" style="margin-top: -0.5rem;">
-                        <ng-container *ngIf="!reminder_expanded">
-                            <ion-icon name="chevron-down-outline"></ion-icon>
-                            گسترش موارد
-                        </ng-container>
-                        <ng-container *ngIf="reminder_expanded">
-                            <ion-icon name="chevron-up-outline"></ion-icon>
-                            بستن
-                        </ng-container>
-                    </ion-button>
                 </div>
-            </div>
 
-            <div *ngIf="student_reminders?.length==0 && reminders?.length==0" class="no-items">
-                <ion-icon slot="start" name="alarm-outline" size="large"></ion-icon>
-                <br>
-                هیچ یادآوری ثبت نشده است
-            </div>
+                <div *ngIf="student_reminders?.length==0 " class="no-items">
+                    <ion-icon slot="start" name="alarm-outline" size="large"></ion-icon>
+                    <br>
+                    <ion-label>
+                        <h3> هیچ یادآوری ثبت نشده است</h3>
+                    </ion-label>
+
+                </div>
+
+                <ion-fab class="add-action" (click)="onStudentReminder()">
+                    <ion-fab-button color="success" size="small">
+                        <ion-icon name="add" size="small"></ion-icon>
+                    </ion-fab-button>
+                </ion-fab>
+            </app-expandable-section>
         </div>
 
         <!-- HomeWorks List -->
-        <div class="p-2 mt-3 bg-section">
+        <div class="p-2 mt-4 bg-section">
             <ion-item lines="none">
-                <ion-icon name="alarm-outline" slot="start"></ion-icon>
+                <ion-icon name="library-outline" slot="start"></ion-icon>
                 <ion-label>
                     <h1>تکالیف ها و تمرین ها:</h1>
                 </ion-label>
             </ion-item>
-            <ion-card class="home-work" color="success" *ngFor="let homeWork of homeWorks" (click)="assessHomeWork(homeWork)">
-                <ion-item lines="none" color="success">
-                    <ion-avatar slot="start">
-                        <ion-icon name="library-outline" size="large"></ion-icon>
-                    </ion-avatar>
-                    <ion-label>
-
-                        <h3> {{homeWork.title}}</h3>
-                        <p> {{homeWork.description}}</p>
-                    </ion-label>
-                </ion-item>
-                <div>
-                    <ion-chip *ngFor="let s of homeWork.assignees;let index=index">
-                        <ion-avatar>
-                            <img alt="avatar-Student" [src]="s.getImageUrl()" onerror="this.src='/assets/img/avatar.webp'" />
+            <div class="pb-3">
+                <ion-card class="home-work" [color]="homeWork.status==0?'success':''" *ngFor="let homeWork of homeWorks" (click)="assessHomeWork(homeWork)">
+                    <ion-item lines="none">
+                        <ion-avatar slot="start">
+                            <ion-icon name="library-outline" size="large"></ion-icon>
                         </ion-avatar>
-                        <ion-label>{{s.fullName}}</ion-label>
+                        <ion-label>
+                            <h3> {{homeWork.title}}</h3>
+                            <p> {{homeWork.description}}</p>
+                        </ion-label>
+                        <ion-button fill="clear" slot="end" (click)="$event.stopPropagation();share_homework(homeWork)" color="medium">
+                            <ion-icon slot="icon-only" name="share-social"></ion-icon>
+                        </ion-button>
+                    </ion-item>
+                    <div>
+                        <ion-chip *ngFor="let s of homeWork.assignees;let index=index">
+                            <ion-avatar>
+                                <img alt="avatar-Student" [src]="s.getImageUrl()" onerror="this.src='/assets/img/avatar.webp'" />
+                            </ion-avatar>
+                            <ion-label>{{s.fullName}}</ion-label>
+                        </ion-chip>
+                    </div>
+                </ion-card>
+            </div>
+            <div *ngIf="homeWorks?.length==0" class="no-items">
+                <ion-icon slot="start" name="library-outline" size="large"></ion-icon>
+                <br>
+                <ion-label>
+                    <h3> هیچ تکلیفی ثبت نشده است</h3>
+                </ion-label>
 
-                    </ion-chip>
-                </div>
-                <!-- <div class="d-flex flex-row-reverse px-2">
-                <ion-button fill="outline" color="light" (click)="homeWork=undefined">بعدا</ion-button>
-                <ion-button fill="outline" color="light" (click)="assessHomeWork()">ارزیابی</ion-button>
-            </div> -->
-            </ion-card>
+            </div>
+            <ion-fab class="add-action">
+                <ion-fab-button color="success" size="small" (click)="onHomeWork()">
+                    <ion-icon name="add" size="small"></ion-icon>
+                </ion-fab-button>
+            </ion-fab>
         </div>
 
 
     </div>
+
+    <ion-modal #modal_select_student [isOpen]="selectStudentModalOpen" (didDismiss)="selectStudentModalOpen=false" [initialBreakpoint]="0.75" [breakpoints]="[0, 0.75,1]">
+        <ng-template>
+            <app-select-student [modal]="modal_select_student" viewMode="list" [selectionMode]="'single'" [source]="'student'" (selectedChange)="onSelectStudent($event)"></app-select-student>
+        </ng-template>
+    </ion-modal>
+
+
+    <ion-modal #modal_reminder [isOpen]="isReminderModalOpen" (didDismiss)="isReminderModalOpen=false" [presentingElement]="presentingElement">
+        <ng-template>
+            <app-reminder (saveResult)="reminderSaved($event)" [modal]="modal_reminder" [classTask]="session" [book]="book" [lesson]="lesson" [student]="selectedStudent" [prevReminders]="modalReminders"></app-reminder>
+        </ng-template>
+    </ion-modal>
+
+    <ion-modal #modal_homework [isOpen]="isHomeWorkModalOpen" (didDismiss)="isHomeWorkModalOpen=false" [presentingElement]="presentingElement">
+        <ng-template>
+            <app-create-home-work (saveResult)="homeWorkSaved($event)" [modal]="modal_homework" [classTask]="session" [book]="book" [lesson]="lesson" [prevItems]="homeWorks"></app-create-home-work>
+        </ng-template>
+    </ion-modal>
+
+    <ion-modal #modal_note [isOpen]="isNotesModalOpen" (didDismiss)="isNotesModalOpen=false" [presentingElement]="presentingElement">
+        <ng-template>
+            <app-note (saveResult)="noteSaved($event)" [modal]="modal_note" [classTask]="session" [book]="book" [lesson]="lesson" [student]="selectedStudent" [prevNotes]="modalNotes"></app-note>
+        </ng-template>
+    </ion-modal>
+
+    <ion-modal #score_modal [isOpen]="isScoreModalOpen" (didDismiss)="isScoreModalOpen=false" [presentingElement]="presentingElement">
+        <ng-template>
+            <app-score (saveResult)="scoreSaved($event)" [modal]="score_modal" [session]="session" [book]="book" [lesson]="lesson" [student]="selectedStudent" [prevScores]="selectedStudent?.scores"></app-score>
+        </ng-template>
+    </ion-modal>
+
+
 </ion-content>

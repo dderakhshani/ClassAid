@@ -334,7 +334,7 @@
         </ng-container>
     </div>
 
-    <ion-modal #modal_create_groyp [isOpen]="isCreateGroupModalOpen" (didDismiss)="isCreateGroupModalOpen=false" [presentingElement]="presentingElement">
+    <ion-modal #modal_create_groyp [isOpen]="isCreateGroupModalOpen" (didDismiss)="isCreateGroupModalOpen=false;loadGroups()" [presentingElement]="presentingElement">
         <ng-template>
             <app-create-group [modal]="modal_create_groyp" [book]="book" [lesson]="lesson"></app-create-group>
         </ng-template>

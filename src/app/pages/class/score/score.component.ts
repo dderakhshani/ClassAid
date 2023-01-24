@@ -1,6 +1,6 @@
 import { ScoreAssessmentModel } from './../../../models/asses-param';
 import { ReminderService } from './../../../api/reminder.service';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ClassSessionModel } from 'src/app/models/class';
 import { Lesson } from 'src/app/models/lessons';
 import { ReminderType } from 'src/app/models/remider';
@@ -38,6 +38,9 @@ export class ScoreComponent implements OnInit {
 
     @Input()
     prevScores: ScoreAssessmentModel[];
+
+    @Output()
+    saveResult = new EventEmitter<ScoreAssessmentModel>();
 
 
     posNeg: 'positive' | 'negative' = 'positive';
@@ -81,6 +84,7 @@ export class ScoreComponent implements OnInit {
             this.student.scores.push(score);
             this.isSaving = false;
             this.modal.dismiss();
+            this.saveResult.emit(score);
         }, err => {
             // loading.dismiss();
             this.isSaving = false;

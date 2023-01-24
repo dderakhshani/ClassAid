@@ -25,6 +25,7 @@ export class HomeWorkModel implements IHomeWorkModel {
     dueTime: Date;
     tags: string[];
     files: string[];
+    status: number;//TODO: make it enum
 
     lessonId: number;
     subLessonId: number;

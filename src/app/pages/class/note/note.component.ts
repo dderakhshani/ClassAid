@@ -1,6 +1,6 @@
 import { environment } from './../../../../environments/environment';
 import { LessonNotes, Note, ReminderType, StudentNotes } from './../../../models/remider';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { ClassSessionModel } from 'src/app/models/class';
 import { Lesson } from 'src/app/models/lessons';
 import { StudentModel } from 'src/app/models/student';
@@ -33,6 +33,9 @@ export class NoteComponent implements OnInit {
 
     @Input()
     student?: StudentModel;
+
+    @Output()
+    saveResult = new EventEmitter<Note>();
 
     isSaving = false;
 
@@ -77,7 +80,7 @@ export class NoteComponent implements OnInit {
     save() {
         if (this.student) {
             this.isSaving = true;
-            const reminder = <StudentNotes>{
+            const note = <StudentNotes>{
                 id: uuidv4(),
                 studentId: this.student.id,
                 taskId: this.classTask.id,
@@ -89,12 +92,13 @@ export class NoteComponent implements OnInit {
                 images: this.uploadFiles,
                 type: ReminderType.StudentNotes
             }
-            this.reminderService.addReminder(reminder).then(x => {
+            this.reminderService.addReminder(note).then(x => {
                 this.classTask.reminders = this.classTask.reminders ?? [];
                 this.student.notes = this.student.notes ?? [];
-                this.student.notes.push(reminder);
-                this.classTask.reminders.push(reminder);
+                this.student.notes.push(note);
+                this.classTask.reminders.push(note);
                 this.isSaving = false;
+                this.saveResult.emit(note);
             }, err => {
                 // loading.dismiss();
                 this.isSaving = false;
@@ -102,7 +106,7 @@ export class NoteComponent implements OnInit {
 
         }
         else {
-            const reminder = <LessonNotes>{
+            const note = <LessonNotes>{
                 id: uuidv4(),
                 taskId: this.classTask.id,
                 lessonId: this.book.id,
@@ -113,10 +117,11 @@ export class NoteComponent implements OnInit {
                 isReport: this.isReport == "true",
                 images: this.uploadFiles
             }
-            this.reminderService.addReminder(reminder).then(x => {
+            this.reminderService.addReminder(note).then(x => {
                 this.classTask.reminders = this.classTask.reminders ?? [];
-                this.classTask.reminders.push(reminder);
+                this.classTask.reminders.push(note);
                 this.isSaving = false;
+                this.saveResult.emit(note);
             }, err => {
                 // loading.dismiss();
                 this.isSaving = false;

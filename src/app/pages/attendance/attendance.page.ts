@@ -8,6 +8,7 @@ import { StudentModel } from 'src/app/models/student';
 import { GlobalService } from 'src/app/services/global.service';
 import { Lesson } from 'src/app/models/lessons';
 import { Location } from '@angular/common'
+import { LessonService } from 'src/app/api/lesson.service';
 
 @Component({
     selector: 'app-attendance',
@@ -27,6 +28,7 @@ export class AttendancePage implements OnInit {
     constructor(
         public location: Location,
         private studentsService: StudentsService,
+        public lessonService: LessonService,
         public globalService: GlobalService,
         private classService: ClassService,
         private route: ActivatedRoute,
@@ -43,8 +45,17 @@ export class AttendancePage implements OnInit {
                 this.studentsService.getStudentsOfClass(this.globalService.selectedClass.id).then(data => {
                     this.students = data.map(x => Object.assign(new StudentModel(), x));
                 });
-                this.book = this.globalService.currentSession.book;
-                this.lesson = this.globalService.currentSession.lesson;
+                const session = this.globalService.sessions.find(x => x.id == this.sessionIdParam);
+                this.lessonService.getLessonById(session.lessonId).then(b => {
+                    this.book = b;
+                });
+                this.lessonService.getLessonById(session.subLessonId).then(l => {
+                    this.lesson = l;
+
+                });
+
+                // this.book = this.globalService.currentSession.book;
+                // this.lesson = this.globalService.currentSession.lesson;
             }
 
         })
@@ -70,7 +81,8 @@ export class AttendancePage implements OnInit {
         this.classService.addCallRolls(attendances, this.globalService.selectedClass.id).then(x => {
             loading.dismiss();
             this.studentsService.students$.next(this.students);
-            this.globalService.currentSession.didAttendance = true;
+            if (this.globalService.currentSession)
+                this.globalService.currentSession.didAttendance = true;
             this.navCtrl.back();
         },
             err => {

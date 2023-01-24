@@ -15,7 +15,7 @@
         </div>
 
         <div class="p-2 py-3 flex-fill">
-            <ng-container *ngIf="sourceSelected=='single'">
+            <ng-container *ngIf="sourceSelected=='student'">
                 <ion-grid fixed *ngIf="viewMode=='grid'">
                     <ion-row>
                         <ion-col size="4" *ngFor="let student of students" class="d-flex  align-items-stretch">
@@ -43,14 +43,13 @@
                 </ion-grid>
 
                 <ion-list *ngIf="viewMode=='list'">
-                    <ion-item *ngFor="let student of students" [disabled]="disabledStudentIds.includes(student.id)">
+                    <ion-item *ngFor="let student of students" [disabled]="disabledStudentIds.includes(student.id)" (click)="onSelectStudent(student)">
                         <ion-avatar slot="start">
                             <img alt="avatar-Student" [src]="student.getImageUrl()" onerror="this.src='/assets/img/avatar.webp'" />
                         </ion-avatar>
                         <ion-label> {{student.fullName}}</ion-label>
                         <ion-checkbox slot="end" mode="ios" [(ngModel)]="student.isSelected"></ion-checkbox>
                     </ion-item>
-
                 </ion-list>
             </ng-container>
 
@@ -73,7 +72,7 @@
 
             </ng-container>
         </div>
-        <ng-container *ngIf="showConfirmButton">
+        <ng-container *ngIf="showConfirmButton && selectionMode=='multi'">
             <ion-button expand="block" (click)="select()">
                 <ion-icon name="checkmark-circle-outline"></ion-icon>
                 <ion-label class="me-2"> تایید انتخاب</ion-label>
