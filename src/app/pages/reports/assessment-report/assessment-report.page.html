@@ -1,9 +1,16 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>assessment-report</ion-title>
-  </ion-toolbar>
+    <ion-toolbar>
+        <ion-title>گزارش ارزشیابی</ion-title>
+    </ion-toolbar>
 </ion-header>
 
 <ion-content>
-
+    <ion-segment value="dashboard" (ionChange)="segmentChanged($event)">
+        <ion-segment-button value="dashboard">
+            <ion-label>داشبورد</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="history">
+            <ion-label>تاریخچه</ion-label>
+        </ion-segment-button>
+    </ion-segment>
 </ion-content>

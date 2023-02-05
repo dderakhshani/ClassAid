@@ -17,7 +17,7 @@ const routes: Routes = [
         loadChildren: () => import('./student-profile/student-profile.module').then(m => m.StudentProfilePageModule)
     },
     {
-        path: 'assessment-report',
+        path: 'assessments',
         loadChildren: () => import('./assessment-report/assessment-report.module').then(m => m.AssessmentReportPageModule)
     },
     {
