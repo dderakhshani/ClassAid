@@ -67,6 +67,7 @@
             </ion-grid>
         </ion-card>
 
+        <!-- Scores -->
         <app-expandable-section [(expanded)]="scoreExpanded">
             <div class="d-flex align-items-center">
                 <h4 class=" flex-fill">بهترین توانمندی ها</h4>
@@ -103,6 +104,8 @@
             </ng-container>
         </app-expandable-section>
         <br>
+
+        <!-- Assessments -->
         <app-expandable-section>
             <div class="d-flex align-items-center">
                 <ion-button (click)="backAssessment()" fill="clear" *ngIf="subParamterAssessments">
@@ -181,6 +184,7 @@
             <ng-container *ngIf="assessDisplayMode=='chart'">
 
                 <div echarts [options]="assessChartOptions" class="widget-chart" (chartClick)="onBarCLick($event)" theme="roma"></div>
+                <div *ngIf="subParamterAssessments" echarts [options]="historyChartOptions" class="widget-chart" (chartClick)="onBarCLick($event)" theme="roma"></div>
 
             </ng-container>
             <ion-label *ngIf="student.accAssessments.length==0">
@@ -188,6 +192,58 @@
             </ion-label>
         </app-expandable-section>
 
+        <!-- Health -->
+        <div class="mt-4 p-2 bg-section">
+            <ion-item lines="full">
+                <ion-icon name="fitness" slot="start"></ion-icon>
+                <ion-label>
+                    <h1 class=" flex-fill">وضعیت جسمانی </h1>
+                </ion-label>
+            </ion-item>
+
+            <ion-item>
+                <ion-icon name="scale-outline" slot="start"></ion-icon>
+                <ion-label>
+                    <h2 class=" flex-fill"> نمودار رشد قد و وزن </h2>
+                </ion-label>
+                <ion-button slot="end" fill="clear">
+                    <ion-icon slot="icon-only" name="create-outline"></ion-icon>
+                </ion-button>
+            </ion-item>
+
+
+            <div echarts [options]="healthChartOptions" class="widget-chart" theme="roma"></div>
+
+            <ion-item>
+                <ion-icon name="pulse-outline" slot="start"></ion-icon>
+                <ion-label>
+                    <h2 class=" flex-fill"> مشکلات جسمانی سلامتی </h2>
+                </ion-label>
+                <ion-button slot="end" fill="clear" (click)="selectHealthIssue()">
+                    <ion-icon slot="icon-only" name="create-outline"></ion-icon>
+                </ion-button>
+            </ion-item>
+
+            <div>
+                <ion-grid fixed>
+                    <ion-row>
+                        <ion-col size="4" class="ion-no-padding" *ngFor="let item of healthIssues">
+                            <div class="d-flex flex-column  align-items-center">
+                                <ion-icon color="danger" [name]="item.icon" size="large"></ion-icon>
+                                <span> {{item.title}}</span>
+                            </div>
+                        </ion-col>
+                    </ion-row>
+
+                </ion-grid>
+            </div>
+
+            <a href="{{resourcesUrl}}eyes-diagnost.gif" target="_blank">دانلود بینایی سنجی</a>
+            &nbsp;
+            <a href="{{resourcesUrl}}ruler.jpg" target="_blank">دانلود خط کش</a>
+        </div>
+
+        <!-- Notes -->
         <div class="mt-4">
             <app-expandable-section [(expanded)]="notes_expanded">
                 <div>

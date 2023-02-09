@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { EChartsOption } from 'echarts';
 import { StatsSerie } from '../models/stats-serie';
 
 @Injectable({
@@ -9,7 +10,7 @@ export class ChartService {
     constructor() { }
 
 
-    createDoubleSeriesChart(dataSerie1: StatsSerie[], dataSerie2: StatsSerie[], serie1: any, serie2: any) {
+    createDoubleSeriesChart(dataSerie1: StatsSerie[], dataSerie2: StatsSerie[], serie1: any, serie2: any, markline1, markline2) {
         let xAxisData: string[] = [];
         let data1 = [];
         let data2 = [];
@@ -47,7 +48,7 @@ export class ChartService {
                 data2.push(0);
         }
 
-        return {
+        return <EChartsOption>{
             legend: {
                 data: [serie1.name, serie2.name],
                 align: 'left',
@@ -71,22 +72,37 @@ export class ChartService {
             xAxis: {
                 data: xAxisData,
                 silent: false,
+                axisLabel: {
+                    show: true,
+                    rotate: 45,
+                },
                 splitLine: {
                     show: false,
                 },
             },
-            yAxis: {},
+            yAxis: {
+            },
             series: [
                 {
                     name: serie1.name,
                     type: serie1.type,
                     data: data1,
+                    label: {
+                        show: true,
+                        position: 'top'
+                    },
+                    markLine: markline1,
                     animationDelay: (idx: number) => idx * 10,
                 },
                 {
                     name: serie2.name,
                     type: serie2.type,
                     data: data2,
+                    label: {
+                        show: true,
+                        position: 'top'
+                    },
+                    markLine: markline2,
                     animationDelay: (idx: number) => idx * 10 + 100,
                 },
             ],
@@ -102,7 +118,7 @@ export class ChartService {
             xAxisData.push(dataSerie[i].name);
         }
 
-        return {
+        return <EChartsOption>{
             legend: {
                 data: [serie.name],
                 align: 'left',
@@ -477,12 +493,13 @@ export class ChartService {
         };
     }
 
-    createGaugeChart(value: number, min: number, max: number, unit: string) {
-        return {
+    createGaugeChart(value: number, min: number, max: number, unit: string): EChartsOption {
+        return <EChartsOption>{
             series: [{
                 type: 'gauge',
                 min: min,
                 max: max,
+                radius: '100%',
                 splitNumber: 4,
                 axisLine: {
                     lineStyle: {

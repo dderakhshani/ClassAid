@@ -63,6 +63,14 @@ export class AssessmentService {
         return this.httpService.http.getDataByParam<StatReportModel[]>({ classId: classId, studentId: studentId, lessonId: lessonId }, "assessment/GetParamterAssessment");
     }
 
+    getAssessmentHistory(classId: number, studentId?: number, lessonId?: number): Promise<StatReportModel[]> {
+        return this.httpService.http.getDataByParam<StatReportModel[]>({ classId: classId, studentId: studentId, lessonId: lessonId }, "assessment/GetAssessmentHistory");
+    }
+
+    assessmentReport(classId: number, lessonId?: number): Promise<StatReportModel[]> {
+        return this.httpService.http.getDataByParam<StatReportModel[]>({ classId: classId, lessonId: lessonId }, "assessment/AssessmentReport");
+    }
+
     reset() {
         localStorage.removeItem(this.PARAMETERS_STORAGE);
         this.assesmentParamters = [];

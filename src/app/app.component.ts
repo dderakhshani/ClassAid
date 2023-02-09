@@ -6,6 +6,7 @@ import { IonRouterOutlet, LoadingController, Platform } from '@ionic/angular';
 import { AuthService } from './core/services/auth.service';
 import { async, combineLatest } from 'rxjs';
 import { Location } from '@angular/common'
+import { use } from 'echarts';
 @Component({
     selector: 'app-root',
     templateUrl: 'app.component.html',
@@ -25,16 +26,18 @@ export class AppComponent implements OnInit {
 
     async ngOnInit() {
         const loading = await this.loadingCtrl.create({ message: 'در حال بارگزاری داده', });
-        loading.present();
         const user = this.authService.getProfile();
+        if (user) {
 
+            loading.present();
+        }
         combineLatest(this.globalService.classSessions$, this.globalService.ready$).subscribe(([sessions, ready]) => {
             if (ready)
                 loading.dismiss();
         });
         this.authService.user$.subscribe(async u => {
             if (u) {
-
+                loading.present();
                 this.globalService.teacherId = u.id;
                 this.classService.getClassesByTeacherId(this.globalService.teacherId).then(data => {
                     this.globalService.selectedClass = data[0];//will load students and rings automatically

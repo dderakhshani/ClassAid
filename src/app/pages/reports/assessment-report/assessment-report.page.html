@@ -5,12 +5,125 @@
 </ion-header>
 
 <ion-content>
-    <ion-segment value="dashboard" (ionChange)="segmentChanged($event)">
-        <ion-segment-button value="dashboard">
+    <ion-segment value="dashboard" (ionChange)="slides.slideTo(segment)" [(ngModel)]="segment">
+        <ion-segment-button value="0">
             <ion-label>داشبورد</ion-label>
         </ion-segment-button>
-        <ion-segment-button value="history">
+        <ion-segment-button value="1">
             <ion-label>تاریخچه</ion-label>
         </ion-segment-button>
     </ion-segment>
+    <div class="p-2">
+        <div class="d-flex align-items-center">
+            <ion-button (click)="backAssessment()" fill="clear" *ngIf="subParamterAssessments">
+                <ion-icon name="arrow-back-outline"></ion-icon>
+            </ion-button>
+            <h4 class=" flex-fill pe-2" *ngIf="!subParamterAssessments"> دروس</h4>
+            <h4 class=" flex-fill" *ngIf="subParamterAssessments"> درس {{bookName}}</h4>
+
+            <div>
+                <ion-segment [(ngModel)]="assessDisplayMode" mode="ios">
+                    <ion-segment-button value="default">
+                        <ion-icon name="list-outline"></ion-icon>
+                    </ion-segment-button>
+                    <ion-segment-button value="chart">
+                        <ion-icon name="pie-chart-outline"></ion-icon>
+                    </ion-segment-button>
+                </ion-segment>
+            </div>
+        </div>
+        <ng-container *ngIf="assessDisplayMode=='default'">
+
+            <ion-grid fixed *ngIf="subParamterAssessments;else LessonAssess">
+                <ion-row *ngFor="let ass of subParamterAssessments">
+                    <ion-col size="12" class="border-bottom">
+                        <div class="label">
+                            {{ass.title}}
+                        </div>
+                        <div class="assess-item d-flex align-items-center ">
+                            <div class="flex-fill ms-2">
+
+                                <div class="progress" [class]="getProgressClass(ass.value)">
+                                    <div class="progress-value" [style.width]="(ass.value/4*100) +'%'"></div>
+                                </div>
+                            </div>
+
+                            <ion-badge [color]="getAccessLevel(ass.value).ionColor" class="px-3 py-2">
+                                <span class="text-center">{{ass.value|number:'1.1-1'}}</span>
+                                &nbsp;|&nbsp;
+                                {{getAccessLevel(ass.value).shortTitle}}
+
+                            </ion-badge>
+                        </div>
+                    </ion-col>
+                </ion-row>
+
+            </ion-grid>
+            <ng-template #LessonAssess>
+
+                <ion-grid fixed>
+                    <ion-row *ngFor="let ass of assessments" (click)="onAssessClick(ass)">
+                        <ion-col size="12">
+                            <div class="assess-item d-flex align-items-center">
+                                <ion-avatar class="ms-1">
+                                    <img alt="Avatar" [src]="imageUrl+'lessons_org/grade_5/c_'+ass.id+'.jpg'" />
+                                </ion-avatar>
+
+                                <div class="flex-fill ms-2">
+                                    <div class="text-center">
+                                        <span class="label">
+                                            {{ass.title}}
+                                        </span>
+                                        &nbsp;|&nbsp;{{ass.value|number:'1.1-1'}}
+                                    </div>
+                                    <div class="progress" [class]="getProgressClass(ass.value)">
+                                        <div class="progress-value" [style.width]="(ass.value/4*100) +'%'"></div>
+                                    </div>
+                                </div>
+
+                                <ion-badge [color]="getAccessLevel(ass.value).ionColor" class="px-3 py-2">
+                                    {{getAccessLevel(ass.value).shortTitle}}
+
+                                </ion-badge>
+                            </div>
+                        </ion-col>
+                    </ion-row>
+
+                </ion-grid>
+            </ng-template>
+        </ng-container>
+        <ng-container *ngIf="assessDisplayMode=='chart'">
+
+            <div echarts [options]="assessChartOptions" class="widget-chart" (chartClick)="onBarCLick($event)" theme="roma"></div>
+            <div *ngIf="subParamterAssessments" echarts [options]="historyChartOptions" class="widget-chart" (chartClick)="onBarCLick($event)" theme="roma"></div>
+
+            <ion-grid fixed *ngIf="!subParamterAssessments">
+                <ion-row>
+                    <ion-col size="6" *ngFor="let ass of assessments" (click)="onAssessClick(ass)">
+                        <div class="d-flex flex-column justify-content-center" style="height: 180px;">
+
+                            <div echarts [options]="gaugeOptions(ass)" class="widget-chart" theme="roma"></div>
+                            {{ass.title}}
+                        </div>
+                    </ion-col>
+                </ion-row>
+
+            </ion-grid>
+        </ng-container>
+        <ion-label *ngIf="assessments.length==0">
+            <h3> هیچ داده ای ثبت نشده است</h3>
+        </ion-label>
+
+    </div>
+    <ion-slides #slides>
+        <ion-slide>
+
+        </ion-slide>
+        <ion-slide>
+
+
+        </ion-slide>
+
+    </ion-slides>
+
 </ion-content>

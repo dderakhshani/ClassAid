@@ -1,6 +1,6 @@
 {
     "name": "ClassAidApp",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "author": "Ionic Framework",
     "homepage": "https://ionicframework.com/",
     "scripts": {
@@ -37,6 +37,7 @@
         "@ionic/storage": "^3.0.6",
         "@rxweb/types": "^1.0.8",
         "@tailwindcss/typography": "^0.5.0",
+        "@types/echarts": "^4.9.16",
         "@types/hammerjs": "^2.0.41",
         "bootstrap": "^5.2.3",
         "cordova-plugin-advanced-http": "^3.3.1",

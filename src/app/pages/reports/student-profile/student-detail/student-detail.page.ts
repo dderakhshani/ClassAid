@@ -12,6 +12,7 @@ import { GlobalService } from 'src/app/services/global.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Note, Reminder } from 'src/app/models/remider';
 import { Share } from '@capacitor/share';
+import { ActionSheetController } from '@ionic/angular';
 
 @Component({
     selector: 'app-student-detail',
@@ -20,6 +21,7 @@ import { Share } from '@capacitor/share';
 })
 export class StudentDetailPage implements OnInit {
     imageUrl = environment.imageUrl + '/';
+    resourcesUrl = environment.apiUrl + '/resources/';
     studentModel = StudentModel;
     colors = ["primary", "danger", "success", "secondary", "warning", "tertiary", "medium"];
 
@@ -32,7 +34,11 @@ export class StudentDetailPage implements OnInit {
     subParamterAssessments: StatReportModel[];
     assessChartOptions: any;
     scoreChartOptions: any;
+    historyChartOptions: any;
     attendanceChartOptions: any;
+    healthChartOptions: any;
+
+    healthIssues: { title: string, icon: string }[] = [];
 
     scoreExpanded = false;
     notes_expanded = false;
@@ -43,6 +49,7 @@ export class StudentDetailPage implements OnInit {
         private lessonService: LessonService,
         private assessmentService: AssessmentService,
         private route: ActivatedRoute,
+        private actionSheetCtrl: ActionSheetController,
         private router: Router) {
         this.studentIdParam = Number(this.route.snapshot.paramMap.get('studentId'));
 
@@ -59,6 +66,22 @@ export class StudentDetailPage implements OnInit {
                     });
                     this.initAssesstChartOptions();
                     this.initScoreChartOptions();
+
+                    this.healthChartOptions = this.chartService.createDoubleSeriesChart([
+                        <StatsSerie>{ name: '1401/07/25', value: 140 },
+                        <StatsSerie>{ name: '1401/09/20', value: 142 },
+                        <StatsSerie>{ name: '1401/11/27', value: 143 }
+                    ], [
+                        <StatsSerie>{ name: '1401/07/25', value: 40 },
+                        <StatsSerie>{ name: '1401/09/20', value: 42 },
+                        <StatsSerie>{ name: '1401/11/27', value: 42 }
+                    ], { name: 'قد', type: 'line' }, { name: 'وزن', type: 'line' },
+                        {
+                            data: [{ yAxis: 135, name: 'Avg' }]
+                        },
+                        {
+                            data: [{ yAxis: 40, name: 'Avg' }]
+                        })
                 });
             }
         })
@@ -109,6 +132,23 @@ export class StudentDetailPage implements OnInit {
     loadSubParamterAssessment(bookId: number) {
         if (this.subParamterAssessments)
             return;
+
+        this.assessmentService.getAssessmentHistory(this.globalService.selectedClass.id, this.studentIdParam, bookId).then(data => {
+
+            const series = data.map(x => ({
+                name: x.title, value: x.value,
+                itemStyle: {
+                    color: this.globalService.findLevelByValue(x.value).color
+                }
+            }));
+
+            const newOptions = this.chartService.createSingleSerieChart(
+                series,
+                { name: '  ', type: 'line' }
+            );
+            this.historyChartOptions = newOptions;
+        });
+
         this.assessmentService.getParamterAssessment(this.globalService.selectedClass.id, this.studentIdParam, bookId).then(data => {
             this.subParamterAssessments = data;
 
@@ -142,6 +182,59 @@ export class StudentDetailPage implements OnInit {
             return 'red';
     }
 
+    async selectHealthIssue() {
+        const actionSheet = await this.actionSheetCtrl.create({
+            header: 'انتخاب ',
+            buttons: [
+                {
+                    text: 'مشکل بینایی',
+                    role: 'destructive',
+                    icon: 'eye-outline',
+                    data: {
+                        title: 'مشکل بینایی',
+                        icon: 'eye-outline',
+                    },
+                },
+                {
+                    text: 'مشکل شنوایی',
+                    icon: 'ear-outline',
+                    data: {
+                        title: 'مشکل شنوایی',
+                        icon: 'eye-outline',
+                    },
+                },
+                {
+                    text: 'مشکل حرکتی دست راست',
+                    icon: 'hand-left-outline',
+                    data: {
+                        title: 'مشکل حرکتی دست راست',
+                        icon: 'hand-left-outline',
+                    },
+                },
+                {
+                    text: 'مشکل حرکتی دست چپ',
+                    icon: 'hand-right-outline',
+                    data: {
+                        title: 'مشکل حرکتی دست چپ',
+                        icon: 'hand-right-outline',
+                    },
+                },
+                {
+                    text: 'لغو',
+                    role: 'cancel',
+                },
+            ],
+        });
+
+        await actionSheet.present();
+
+        const result = await actionSheet.onDidDismiss();
+        if (result.data) {
+            this.healthIssues.push(result.data);
+        }
+
+
+    }
 
 
     remove_notes(reminder: Reminder) {

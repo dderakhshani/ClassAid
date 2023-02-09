@@ -7,14 +7,18 @@ import { IonicModule } from '@ionic/angular';
 import { AssessmentReportPageRoutingModule } from './assessment-report-routing.module';
 
 import { AssessmentReportPage } from './assessment-report.page';
+import { NgxEchartsModule } from 'ngx-echarts';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    AssessmentReportPageRoutingModule
-  ],
-  declarations: [AssessmentReportPage]
+    imports: [
+        CommonModule,
+        FormsModule,
+        IonicModule,
+        AssessmentReportPageRoutingModule,
+        NgxEchartsModule.forRoot({
+            echarts: () => import('echarts')
+        }),
+    ],
+    declarations: [AssessmentReportPage]
 })
-export class AssessmentReportPageModule {}
+export class AssessmentReportPageModule { }
