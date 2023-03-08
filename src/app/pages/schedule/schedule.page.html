@@ -1,7 +1,7 @@
 <ion-header collapse="fade" class="ion-no-border">
     <ion-toolbar>
         <ion-title>
-            برنامه درسی امروز
+            {{'SCHEDULE.TODAY' | translate}}
         </ion-title>
         <ion-buttons slot="end">
             <ion-button [routerLink]="['edit']" routerLinkActive="router-link-active">
@@ -16,7 +16,7 @@
         <ion-button [routerLink]="['edit']" expand="block" color="secondary" class="my-3">
             <ion-icon name="create-outline"></ion-icon>
             &nbsp;
-            ویرایش برنامه درسی کلاسی
+            {{'SCHEDULE.EDIT' | translate}}
         </ion-button>
 
         <app-timeline [selectedDay]="globalService.todayDay" [rings]="globalService.rings" [schedules]="todayShedules"></app-timeline>

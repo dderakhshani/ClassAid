@@ -8,6 +8,7 @@ import { AssessmentReportPageRoutingModule } from './assessment-report-routing.m
 
 import { AssessmentReportPage } from './assessment-report.page';
 import { NgxEchartsModule } from 'ngx-echarts';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
     imports: [
@@ -15,6 +16,7 @@ import { NgxEchartsModule } from 'ngx-echarts';
         FormsModule,
         IonicModule,
         AssessmentReportPageRoutingModule,
+        TranslateModule,
         NgxEchartsModule.forRoot({
             echarts: () => import('echarts')
         }),

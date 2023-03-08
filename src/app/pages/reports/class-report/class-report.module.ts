@@ -10,6 +10,7 @@ import { ClassReportPageRoutingModule } from './class-report-routing.module';
 import { ClassReportPage } from './class-report.page';
 import { ClassPageModule } from '../../class/class.module';
 import { ComponentsModule } from 'src/app/components/components.module';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
     imports: [
@@ -19,7 +20,8 @@ import { ComponentsModule } from 'src/app/components/components.module';
         ClassReportPageRoutingModule,
         CoresModule,
         ComponentsModule,
-        ClassPageModule
+        ClassPageModule,
+        TranslateModule
     ],
     declarations: [ClassReportPage]
 })

@@ -32,7 +32,7 @@
 }
 
 html {
-    direction: rtl;
+    // direction: rtl;
 }
 
 ion-label {
@@ -52,6 +52,7 @@ ion-header {
     ion-back-button,
     ion-button {
         color: white;
+
     }
 
 }
@@ -122,6 +123,10 @@ ion-header {
     flex-wrap: nowrap;
     overflow-x: scroll;
     overflow-y: hidden;
+}
+
+ion-button {
+    text-transform: none;
 }
 
 ion-button[shape=circle] {

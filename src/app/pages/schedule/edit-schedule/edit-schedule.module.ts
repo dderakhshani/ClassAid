@@ -9,13 +9,15 @@ import { EditSchedulePageRoutingModule } from './edit-schedule-routing.module';
 import { EditSchedulePage } from './edit-schedule.page';
 import { TimelineComponent } from './timeline/timeline.component';
 import { TableComponent } from './table/table.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
     imports: [
         CommonModule,
         FormsModule,
         IonicModule,
-        EditSchedulePageRoutingModule
+        EditSchedulePageRoutingModule,
+        TranslateModule
     ],
     declarations: [EditSchedulePage, TimelineComponent, TableComponent,]
 })

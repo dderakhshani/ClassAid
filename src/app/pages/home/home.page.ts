@@ -16,6 +16,8 @@ import { AlertController, Platform } from '@ionic/angular';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { AttendanceStatus } from 'src/app/models/attendance-model';
 import { combineLatest } from 'rxjs';
+import { TranslateService } from '@ngx-translate/core';
+import { TranslateConfigService } from 'src/app/core/services/translate-config.service';
 
 @Component({
     selector: 'app-home',
@@ -43,6 +45,7 @@ export class HomePage implements OnInit {
     todayShedules: ScheduleTimeModel[] = [];
     lesson_notes: LessonNotes[];
 
+    language: any;
 
     constructor(private router: Router,
         private studentsService: StudentsService,
@@ -54,11 +57,14 @@ export class HomePage implements OnInit {
         public globalService: GlobalService,
         public reminderService: ReminderService,
         public lessonService: LessonService,
+        private translateConfigService: TranslateConfigService,
+        private translate: TranslateService
     ) {
-        const d = new Date();
-        const options: Intl.DateTimeFormatOptions = <Intl.DateTimeFormatOptions>{ dateStyle: 'full' };
-        this.dateName = new Intl.DateTimeFormat('fa-IR', options).format(d);
         //alert(this.platform.is('mobileweb'));
+
+        this.translateConfigService.initLanguage();
+        this.language = this.translateConfigService.getCurrentLang();
+        this.dateName = this.translateConfigService.getDateName();
     }
 
     ngOnInit(): void {

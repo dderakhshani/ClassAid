@@ -10,6 +10,7 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { TimelineComponent } from './timeline/timeline.component';
 import { NgxEchartsModule } from 'ngx-echarts';
+import { TranslateModule } from '@ngx-translate/core';
 
 
 @NgModule({
@@ -18,6 +19,7 @@ import { NgxEchartsModule } from 'ngx-echarts';
         FormsModule,
         IonicModule,
         CoresModule,
+        TranslateModule,
         NgxEchartsModule.forRoot({
             echarts: () => import('echarts')
         }),

@@ -4,6 +4,7 @@ import { PickerColumnOption, PickerController } from '@ionic/angular';
 import { DateDay, Ring } from 'src/app/models/day';
 import { Lesson } from 'src/app/models/lessons';
 import { ScheduleTimeModel } from 'src/app/models/schedule';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-timeline',
@@ -31,7 +32,9 @@ export class TimelineComponent implements OnInit {
     @Input()
     days: DateDay[];
 
-    constructor(private pickerCtrl: PickerController, private globalService: GlobalService) {
+    constructor(private pickerCtrl: PickerController,
+        private translate: TranslateService,
+        private globalService: GlobalService) {
 
     }
 
@@ -69,11 +72,11 @@ export class TimelineComponent implements OnInit {
             mode: 'ios',
             buttons: [
                 {
-                    text: 'لغو',
+                    text: this.translate.instant('CANCEL'),
                     role: 'cancel',
                 },
                 {
-                    text: 'انتخاب',
+                    text: this.translate.instant('SCHEDULE.SELECT'),
                     handler: (value) => {
                         const lesson = this.lessons.find(x => x.id == value.lessons.value);
                         this.schedules.push(<ScheduleTimeModel>{ ringId: ring.id, ring: ring, dayNo: this.selectedDay.no, lessonId: lesson.id, lesson: lesson });

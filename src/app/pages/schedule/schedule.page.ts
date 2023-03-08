@@ -8,6 +8,8 @@ import { ScheduleModel, ScheduleTimeModel } from 'src/app/models/schedule';
 import { LoadingController } from '@ionic/angular';
 import { combineLatest } from 'rxjs';
 import { Router } from '@angular/router';
+import { TranslateConfigService } from 'src/app/core/services/translate-config.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-schedule',
@@ -16,19 +18,16 @@ import { Router } from '@angular/router';
 })
 export class SchedulePage implements OnInit {
 
-
+    language: any;
     todayShedules: ScheduleTimeModel[] = [];
 
     constructor(
         private loadingCtrl: LoadingController,
         private router: Router,
         public globalService: GlobalService) {
-
     }
 
     ngOnInit() {
-
-
 
     }
 

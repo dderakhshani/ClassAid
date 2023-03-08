@@ -9,6 +9,7 @@ import { Lesson } from 'src/app/models/lessons';
 import { GlobalService } from 'src/app/services/global.service';
 import { ScheduleTimeModel } from 'src/app/models/schedule';
 import { LessonService } from 'src/app/api/lesson.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-table',
@@ -36,6 +37,7 @@ export class TableComponent implements OnInit {
 
     constructor(private pickerCtrl: PickerController,
         private actionSheetCtrl: ActionSheetController,
+        private translate: TranslateService,
         public lessonService: LessonService) {
 
     }
@@ -55,11 +57,11 @@ export class TableComponent implements OnInit {
             mode: 'ios',
             buttons: [
                 {
-                    text: 'لغو',
+                    text: this.translate.instant('CANCEL'),
                     role: 'cancel',
                 },
                 {
-                    text: 'انتخاب',
+                    text: this.translate.instant('SCHEDULE.SELECT'),
                     handler: (value) => {
                         const lesson = this.lessons.find(x => x.id == value.lessons.value);
                         this.schedules.push(<ScheduleTimeModel>{ ringId: ring.id, ring: ring, dayNo: dayNo, lessonId: lesson.id, lesson: lesson });
@@ -74,10 +76,10 @@ export class TableComponent implements OnInit {
 
     async openMenu(schedule: ScheduleTimeModel) {
         const actionSheet = await this.actionSheetCtrl.create({
-            header: 'انتخاب عملیات',
+            header: this.translate.instant('OPERATION'),
             buttons: [
                 {
-                    text: 'حذف',
+                    text: this.translate.instant('DELETE'),
                     role: 'destructive',
                     icon: 'trash-outline',
                     data: {
@@ -85,14 +87,14 @@ export class TableComponent implements OnInit {
                     },
                 },
                 {
-                    text: 'ویرایش',
+                    text: this.translate.instant('EDIT'),
                     icon: 'create-outline',
                     data: {
                         action: 'edit',
                     },
                 },
                 {
-                    text: 'لغو',
+                    text: this.translate.instant('CANCEL'),
                     role: 'cancel',
                     data: {
                         action: 'cancel',

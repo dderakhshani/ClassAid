@@ -3,7 +3,8 @@
         <ion-buttons slot="start">
             <ion-button (click)="attendance()">
                 <ion-icon name="people"></ion-icon>
-                &nbsp; حضورغیاب
+                &nbsp;
+                {{"ATTENDANCE" | translate}}
             </ion-button>
         </ion-buttons>
 
@@ -74,8 +75,8 @@
             </p>
         </ion-label>
         <ion-button slot="end" (click)="endClass()" size="default" color="danger" class="btn-end-class">
-            <ion-icon name="power-outline" class="ms-2"></ion-icon>
-            اتمام
+            <ion-icon name="power-outline" class="me-2"></ion-icon>
+            {{"END" | translate}}
         </ion-button>
     </ion-item>
 
@@ -87,19 +88,19 @@
         </ion-button> -->
         <ion-button shape="circle" (click)="onReminder()" color="secondary" [class.has-reminder]="remindersCount()" [attr.data-count]="remindersCount()">
             <ion-icon slot="icon-only" name="alarm-outline"></ion-icon>
-            <ion-label>یادآور</ion-label>
+            <ion-label>{{"REMINDER" | translate}}</ion-label>
         </ion-button>
         <ion-button shape="circle" color="success" (click)="onHomeWork()" [class.has-notes]="homeWorksCount()>0" [attr.data-count]="homeWorksCount()">
             <ion-icon slot="icon-only" name="library-outline"></ion-icon>
-            <ion-label>تکلیف</ion-label>
+            <ion-label>{{"ASSIGNMENT" | translate}}</ion-label>
         </ion-button>
         <ion-button shape="circle" color="danger" (click)="onTest()">
             <ion-icon slot="icon-only" name="flask-outline"></ion-icon>
-            <ion-label>آزمون</ion-label>
+            <ion-label>{{"TEST" | translate}}</ion-label>
         </ion-button>
         <ion-button shape="circle" color="warning" (click)="onNotes()" [class.has-notes]="notesCount()>0" [attr.data-count]="notesCount()">
             <ion-icon slot="icon-only" name="document-text-outline"></ion-icon>
-            <ion-label>یادداشت</ion-label>
+            <ion-label>{{"NOTE" | translate}}</ion-label>
         </ion-button>
 
     </div>
@@ -133,7 +134,7 @@
             <ion-icon name="reorder-four-outline"></ion-icon>
         </ion-button>
     </div>
-    <ion-searchbar [debounce]="400" (ionChange)="search($event)" [(ngModel)]="searchTerm" placeholder="جستجو دانش آموز" mode="ios" *ngIf="showSearch && listMode=='single'"></ion-searchbar>
+    <ion-searchbar [debounce]="400" (ionChange)="search($event)" [(ngModel)]="searchTerm" placeholder="{{'CLASSSESSION.SEARCH_PLACEHOLDER' | translate}}" mode="ios" *ngIf="showSearch && listMode=='single'"></ion-searchbar>
     <div>
         <!-- HomwWork Remind -->
         <div class="px-2">
@@ -149,8 +150,8 @@
                     </ion-label>
                 </ion-item>
                 <div class="d-flex flex-row-reverse px-2">
-                    <ion-button fill="outline" color="light" (click)="globalService.currentSession.homeWorkLater=true">بعدا</ion-button>
-                    <ion-button fill="outline" color="light" (click)="assessHomeWork()">ارزیابی</ion-button>
+                    <ion-button fill="outline" color="light" (click)="globalService.currentSession.homeWorkLater=true">{{"LATER" | translate}}</ion-button>
+                    <ion-button fill="outline" color="light" (click)="assessHomeWork()">{{"EVALUAT" | translate}}</ion-button>
                 </div>
             </ion-card>
         </div>
@@ -207,7 +208,7 @@
                                     </ion-badge>
                                 </ng-container>
 
-                                <ion-badge color="danger" *ngIf="student.attendanceStatus==AttendanceStatus.Absent">غایب</ion-badge>
+                                <ion-badge color="danger" *ngIf="student.attendanceStatus==AttendanceStatus.Absent">{{"ABSENT" | translate}}</ion-badge>
 
                             </ion-card-content>
                         </ion-card>
@@ -276,12 +277,12 @@
         <ng-container *ngIf="listMode=='group'">
 
             <ion-item>
-                <ion-select placeholder="انتخاب گروه موجود" okText="انتخاب" cancelText="بستن " [(ngModel)]="selectedGroup">
+                <ion-select placeholder="{{'CLASSSESSION.SELECT_GROUP' | translate}}" okText="{{'SELECT' | translate}}" cancelText="{{'CLOSE' | translate}}" [(ngModel)]="selectedGroup">
                     <ion-select-option [value]="g" *ngFor="let g of groups">{{g.name}}</ion-select-option>
                 </ion-select>
                 <ion-button slot="end" expand="block" fill="outline" shape="round" (click)="isCreateGroupModalOpen=true">
                     <ion-icon slot="start" name="add"></ion-icon>
-                    ایجاد گروه جدید
+                    {{"CLASSSESSION.CREATE_GROUP" | translate}}
                 </ion-button>
             </ion-item>
 
@@ -368,7 +369,7 @@
         <ng-template>
             <div class="wrapper">
                 <div class="header">
-                    <h1> مرتب سازی </h1>
+                    <h1> {{"CLASSSESSION.SORT_TITLE" | translate}} </h1>
                 </div>
                 <ion-list class="mx-2">
                     <ion-item button (click)="onSort('name');sortModel.dismiss()">
@@ -376,7 +377,7 @@
                         <ion-icon name="arrow-down-circle" slot="start" color="success" *ngIf="sortType=='name' && sortOrder==1"></ion-icon>
                         <ion-icon name="arrow-up-circle" slot="start" color="success" *ngIf="sortType=='name' && sortOrder==-1"></ion-icon>
                         <ion-label>
-                            براساس نام
+                            {{"CLASSSESSION.SORT_BY_NAME" | translate}}
                         </ion-label>
                     </ion-item>
                     <ion-item button (click)="onSort('lastname');sortModel.dismiss()">
@@ -384,7 +385,7 @@
                         <ion-icon name="arrow-down-circle" slot="start" color="success" *ngIf="sortType=='lastname' && sortOrder==1"></ion-icon>
                         <ion-icon name="arrow-up-circle" slot="start" color="success" *ngIf="sortType=='lastname' && sortOrder==-1"></ion-icon>
                         <ion-label>
-                            براساس نام خانوادگی
+                            {{"CLASSSESSION.SORT_BY_LASTNAME" | translate}}
                         </ion-label>
                     </ion-item>
                     <ion-item button (click)="onSort('attendance');sortModel.dismiss()">
@@ -392,7 +393,7 @@
                         <ion-icon name="arrow-down-circle" slot="start" color="success" *ngIf="sortType=='attendance' && sortOrder==1"></ion-icon>
                         <ion-icon name="arrow-up-circle" slot="start" color="success" *ngIf="sortType=='attendance' && sortOrder==-1"></ion-icon>
                         <ion-label>
-                            براساس وضعیت حضور
+                            {{"CLASSSESSION.SORT_BY_ATTENDANCE" | translate}}
                         </ion-label>
                     </ion-item>
                     <ion-item button (click)="onSort('score');sortModel.dismiss()">
@@ -400,7 +401,7 @@
                         <ion-icon name="arrow-down-circle" slot="start" color="success" *ngIf="sortType=='score' && sortOrder==1"></ion-icon>
                         <ion-icon name="arrow-up-circle" slot="start" color="success" *ngIf="sortType=='score' && sortOrder==-1"></ion-icon>
                         <ion-label>
-                            براساس وضعیت امتیاز
+                            {{"CLASSSESSION.SORT_BY_SCORE" | translate}}
                         </ion-label>
                     </ion-item>
                 </ion-list>
@@ -409,13 +410,12 @@
                         <ion-row>
                             <ion-col size="6">
                                 <ion-button (click)="sortModel.dismiss()" color="success" expand="block" shape="round">
-                                    بستن
+                                    {{"CLOSE" | translate}}
                                 </ion-button>
                             </ion-col>
                             <ion-col size="6">
-
                                 <ion-button (click)="sortType='';sortModel.dismiss()" [disabled]="sortType==''" color="danger" fill="outline" expand="block" shape="round">
-                                    حذف مرتب سازی
+                                    {{"CLASSSESSION.REMOVE_SORT" | translate}}
                                 </ion-button>
                             </ion-col>
                         </ion-row>
@@ -430,7 +430,7 @@
             <div class="wrapper">
                 <div class="header">
                     <ion-icon name="time-outline" size="large"></ion-icon>
-                    <h1>ایجاد زمان سنج </h1>
+                    <h1> {{"CLASSSESSION.TIMER_MODAL_TITLE" | translate}} </h1>
                 </div>
 
                 <ion-grid fixed>
@@ -496,7 +496,7 @@
                         </ion-item>
                     </div>
                     <ion-button (click)="createTimer(mintues2);createTimerModel.dismiss()" expand="block" shape="round">
-                        ایجاد زمان سنج سفارشی
+                        {{"CLASSSESSION.CREATE_TIMER" | translate}}
                     </ion-button>
                 </div>
             </div>
@@ -519,7 +519,7 @@
                         <ion-button shape="circle" (click)="onScore()" color="primary" size="large" class="action-button">
                             <div class="d-flex flex-column p-2">
                                 <ion-icon slot="icon-only" name="star-half" size="large"></ion-icon>
-                                <ion-label class="mt-2"> مشاهده</ion-label>
+                                <ion-label class="mt-2"> {{"VIEW" | translate}} </ion-label>
                             </div>
                         </ion-button>
                     </ion-col>
@@ -527,7 +527,7 @@
                         <ion-button shape="circle" (click)="onAssess()" color="danger" size="large" class="action-button">
                             <div class="d-flex flex-column p-2">
                                 <ion-icon slot="icon-only" name="stats-chart-outline" size="large"></ion-icon>
-                                <ion-label class="mt-2"> ارزشیابی</ion-label>
+                                <ion-label class="mt-2"> {{"ASSESSMENT" | translate}}</ion-label>
                             </div>
                         </ion-button>
                     </ion-col>
@@ -537,7 +537,7 @@
                         <ion-button shape="circle" color="secondary" class="action-button" size="large" (click)="onStudentReminder()">
                             <div class="d-flex flex-column p-2">
                                 <ion-icon slot="icon-only" name="alarm-outline" size="large"></ion-icon>
-                                <ion-label class="mt-2"> یادآور</ion-label>
+                                <ion-label class="mt-2"> {{"REMINDER" | translate}}</ion-label>
                             </div>
                         </ion-button>
                     </ion-col>
@@ -545,7 +545,7 @@
                         <ion-button shape="circle" color="tertiary" size="large" (click)="onStudentNotes()" class="action-button">
                             <div class="d-flex flex-column p-2">
                                 <ion-icon slot="icon-only" name="reader-outline" size="large"></ion-icon>
-                                <ion-label class="mt-2"> یادداشت</ion-label>
+                                <ion-label class="mt-2"> {{"NOTE" | translate}}</ion-label>
                             </div>
                         </ion-button>
                     </ion-col>

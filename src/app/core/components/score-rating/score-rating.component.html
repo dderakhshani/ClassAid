@@ -2,11 +2,11 @@
     <ion-icon src="../../../../assets/coins.svg" [color]="color" size="large">
     </ion-icon>
 
-    <div class="me-1 flex-fill">امتیاز: </div>
+    <div class="ms-1 flex-fill"> {{'SCORE' | translate}}: </div>
     <ion-button slot="end" fill="outline" shape="round" (click)="addNote=!addNote" [color]="addNote?'danger':'success'">
         <ion-icon slot="start" name="add" *ngIf="!addNote"></ion-icon>
         <ion-icon slot="start" name="remove-outline" *ngIf="addNote"></ion-icon>
-        یادداشت
+        {{'NOTE' | translate}}
     </ion-button>
 </div>
 <div class="d-flex ">
@@ -21,6 +21,6 @@
 
 </div>
 <ion-item class="pt-2" *ngIf="addNote">
-    <ion-label position="stacked"> یادداشت</ion-label>
+    <ion-label position="stacked"> {{'NOTE' | translate}}</ion-label>
     <ion-textarea placeholder="متن خود را وارد نمایید" [autoGrow]="true" [ngModel]="notes" (ngModelChange)="onNotesChanged($event)"></ion-textarea>
 </ion-item>

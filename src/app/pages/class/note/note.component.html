@@ -5,7 +5,7 @@
                 <ion-icon slot="icon-only" name="close"></ion-icon>
             </ion-button>
         </ion-buttons>
-        <ion-title>گزارش / یادداشت</ion-title>
+        <ion-title>{{'CLASSSESSION.REPORT_NOTE' | translate}}</ion-title>
         <ion-buttons slot="end">
             <ion-button>
                 <ion-icon slot="icon-only" name="save-outline"></ion-icon>
@@ -25,7 +25,7 @@
     <!-- Notes List -->
     <app-expandable-section [(expanded)]="expanded" *ngIf="prevNotes && prevNotes.length>0">
         <div>
-            <h4>یادداشت های قبلی کلاس:</h4>
+            <h4>{{'CLASSSESSION.NOTE_ITEMS' | translate}}:</h4>
         </div>
         <div class="old_items">
 
@@ -70,34 +70,34 @@
     <!-- Add New Notes -->
     <ion-item lines="none">
         <ion-icon slot="start" name="alarm-outline"></ion-icon>
-        <ion-label>نوع :</ion-label>
+        <ion-label>{{'TYPE' | translate}} :</ion-label>
 
     </ion-item>
 
     <div class="px-3">
         <ion-segment mode="ios" [(ngModel)]="isReport" color="warning">
             <ion-segment-button value="true">
-                <ion-label> گزارش</ion-label>
+                <ion-label> {{'REPORT' | translate}}</ion-label>
             </ion-segment-button>
             <ion-segment-button value="false">
-                <ion-label>یادداشت شخصی </ion-label>
+                <ion-label>{{'CLASSSESSION.PRIVATE_NOTE' | translate}} </ion-label>
             </ion-segment-button>
         </ion-segment>
     </div>
 
 
     <ion-item class="pt-2">
-        <ion-label position="stacked">متن یادداشت</ion-label>
-        <ion-textarea placeholder="متن خود را وارد نمایید" [autoGrow]="true" [(ngModel)]="notes"></ion-textarea>
+        <ion-label position="stacked"> {{'CLASSSESSION.NOTE_TEXT' | translate}}</ion-label>
+        <ion-textarea placeholder="{{'CLASSSESSION.PLACEHOLDER' | translate}}" [autoGrow]="true" [(ngModel)]="notes"></ion-textarea>
     </ion-item>
 
     <ion-item class="pt-2">
 
-        <ion-label>برچسب: </ion-label>
-        <ion-input placeholder="متنی  را وارد نمایید" [(ngModel)]="tag"></ion-input>
+        <ion-label>{{'LABELS' | translate}}: </ion-label>
+        <ion-input placeholder="{{'CLASSSESSION.PLACEHOLDER' | translate}}" [(ngModel)]="tag"></ion-input>
         <ion-button slot="end" (click)="addTag()" size="default">
             <ion-icon name="add-outline" slot="start"></ion-icon>
-            افزودن
+            {{'ADD' | translate}}
 
         </ion-button>
 
@@ -120,6 +120,6 @@
     <ion-button expand="block" (click)="save()" [disabled]="isSaving">
         <ion-icon *ngIf="!isSaving" name="save-outline" size="large"></ion-icon>
         <ion-spinner *ngIf="isSaving"></ion-spinner>
-        <ion-label class="mt-2"> ذخیره</ion-label>
+        <ion-label class="mt-2 ms-2"> {{'SAVE' | translate}}</ion-label>
     </ion-button>
 </ion-footer>

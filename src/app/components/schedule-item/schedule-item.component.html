@@ -15,19 +15,19 @@
                             </ion-label>
                             <ion-button slot="end" (click)="start(schedule)" color="success" *ngIf="schedule.session==null">
                                 <ion-icon slot="start" name="play"></ion-icon>
-                                شروع
+                                {{'START' | translate}}
                             </ion-button>
 
                             <ng-container *ngIf="schedule.session?.endTime;else view">
                                 <ion-button slot="end" color="warning" (click)="openClass(schedule)">
                                     <ion-icon slot="start" name="book"></ion-icon>
-                                    گزارش
+                                    {{'REPORT' | translate}}
                                 </ion-button>
                             </ng-container>
                             <ng-template #view>
                                 <ion-button slot="end" color="secondary" (click)="openClass(schedule)" *ngIf="schedule.session">
                                     <ion-icon slot="start" name="book"></ion-icon>
-                                    مشاهده
+                                    {{'VIEW' | translate}}
                                 </ion-button>
                             </ng-template>
                         </ion-item>
@@ -43,7 +43,7 @@
                                 <ion-col size="6" class="ion-no-padding">
                                     <ion-item lines="none">
                                         <ion-icon name="book-outline" slot="start" size="small"></ion-icon>
-                                        <ion-label> جلسه:
+                                        <ion-label> {{'SESSION' | translate}}:
                                             {{schedule.lesson.sessionsCount}}
                                         </ion-label>
                                     </ion-item>
@@ -51,7 +51,7 @@
                                 <ion-col size="6" class="ion-no-padding">
                                     <ion-item lines="none">
                                         <ion-icon name="stopwatch-outline" slot="start" size="small"></ion-icon>
-                                        <ion-label></ion-label>
+                                        <ion-label>45</ion-label>
                                     </ion-item>
                                 </ion-col>
                             </ion-row>
@@ -59,7 +59,8 @@
                                 <ion-col size="6" class="ion-no-padding">
                                     <ion-item lines="none">
                                         <ion-icon [color]="schedule.session?.avgAssessMeasure?.ionColor" name="bar-chart" slot="start" size="small"></ion-icon>
-                                        <ion-label class="{{schedule.session?.avgAssessMeasure?.bdColor}}">میانگین:
+                                        <ion-label class="{{schedule.session?.avgAssessMeasure?.bdColor}}">
+                                            {{'AVERAGE' | translate}}:
                                             {{schedule.session?.avgAssessMeasure?.shortTitle}}
                                         </ion-label>
                                     </ion-item>
@@ -67,7 +68,7 @@
                                 <ion-col size="6" class="ion-no-padding">
                                     <ion-item lines="none">
                                         <ion-icon name="star-half" slot="start" size="small"></ion-icon>
-                                        <ion-label>امتیاز </ion-label>
+                                        <ion-label> {{'SCORE' | translate}} </ion-label>
                                     </ion-item>
                                 </ion-col>
                             </ion-row>
@@ -82,7 +83,7 @@
                     <img src="/assets/img/book.png" onerror="this.src='/assets/img/book.png'">
                 </ion-avatar>
                 <ion-label>
-                    درسی ثبت نشده
+
                 </ion-label>
             </ion-item>
 

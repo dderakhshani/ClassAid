@@ -18,6 +18,8 @@ import { ChartService } from 'src/app/services/chart.service';
 import { GroupModel, SubGroupModel } from 'src/app/models/student-group';
 import { CancelOptions, LocalNotificationDescriptor, LocalNotificationPendingList, LocalNotifications } from '@capacitor/local-notifications';
 import { ClassService } from 'src/app/api/class.service';
+import { TranslateConfigService } from 'src/app/core/services/translate-config.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-class',
@@ -81,8 +83,10 @@ export class ClassPage implements OnInit {
         private alertController: AlertController,
         private actionSheetCtrl: ActionSheetController,
         private classService: ClassService,
+        private translateConfigService: TranslateConfigService,
+        private translate: TranslateService,
         private router: Router) {
-
+        this.translateConfigService.initLanguage();
         this.lessonId = Number(this.route.snapshot.paramMap.get('lessonId'));
         if (this.route.snapshot.paramMap.has('scheduleId'))
             this.scheduleId = Number(this.route.snapshot.paramMap.get('scheduleId'))

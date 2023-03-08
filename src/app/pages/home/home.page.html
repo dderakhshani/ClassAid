@@ -2,7 +2,7 @@
     <ion-toolbar>
         <ion-title>
 
-            همیار معلم
+            {{"AppTitle" | translate}}
         </ion-title>
     </ion-toolbar>
     <div class="py-3">
@@ -12,10 +12,10 @@
             </ion-avatar>
             <ion-label>
                 <h3>
-                    سلام!
+                    {{"Hello" | translate}}
                     {{authService.user.fullName}}
                 </h3>
-                <p>امروز یک روز خوب برای شروع هست</p>
+                <p> {{"HOME.SubTitle" | translate}}</p>
             </ion-label>
 
         </ion-item>
@@ -26,19 +26,20 @@
 <ion-content class="shadow round-content">
 
     <div class="px-2 py-3">
-
+        <!-- Attendance -->
         <ion-card color="secondary" (click)="attendance()">
             <ion-card-header class="pb-1">
-                <ion-card-title>حضور غیاب</ion-card-title>
-                <ion-card-subtitle>
-                    <ion-icon name="today-outline" style="font-size: 24px;"></ion-icon>
+                <ion-card-title> {{"ATTENDANCE" | translate}} </ion-card-title>
+                <ion-card-subtitle class="d-flex align-items-center">
+                    <ion-icon class="me-2" name="today-outline" style="font-size: 24px;"></ion-icon>
                     {{dateName}}
                 </ion-card-subtitle>
             </ion-card-header>
 
             <ion-card-content class="">
+                <!-- Absents -->
                 <div class=" absents">
-                    <span class="ms-3"> غیابین:</span>
+                    <span class="ms-3"> {{"HOME.ABSENTS" | translate}}:</span>
                     <ion-avatar slot="start" *ngFor="let s of absentStudents">
                         <img alt="Avatar-Student" [src]="s.getImageUrl()" onerror="this.src='/assets/img/avatar.webp'" />
                     </ion-avatar>
@@ -50,7 +51,7 @@
                 <ion-icon name="book-outline" slot="start"></ion-icon>
                 <ion-label>
 
-                    <h1>درس جاری:</h1>
+                    <h1>{{"HOME.CURRENT_CLASS" | translate}} :</h1>
                 </ion-label>
             </ion-item>
             <ng-container>
@@ -62,7 +63,7 @@
                 <ion-icon name="book-outline" slot="start"></ion-icon>
                 <ion-label>
 
-                    <h1> درس بعدی:</h1>
+                    <h1> {{"HOME.NEXT_CLASS" | translate}} :</h1>
                 </ion-label>
             </ion-item>
             <ng-container *ngIf="nextCurrentSchedule;else noNextSchedule">
@@ -73,12 +74,12 @@
                 <div class="no-data mx-2 d-flex flex-column align-items-center justify-content-center">
 
                     <ion-label *ngIf="nextScheduleStatus=='none'">
-                        <h3> برنامه کلاسی وجود ندارد</h3>
+                        <h3> {{"HOME.NO_SCHEDULE" | translate}} </h3>
                     </ion-label>
                     <ion-icon *ngIf="nextScheduleStatus=='finish'" name="checkmark-circle-outline" color="success" size="large"></ion-icon>
                     <ion-label *ngIf="nextScheduleStatus=='finish'">
 
-                        <h3> تمامی دروس تمام شده</h3>
+                        <h3> {{"HOME.FINISHED_SCHEDULES" | translate}} </h3>
                     </ion-label>
                 </div>
             </ng-template>
@@ -88,7 +89,7 @@
         <ion-item lines="none" class="mt-3">
             <ion-icon name="alarm-outline" slot="start"></ion-icon>
             <ion-label>
-                <h1>یادآور ها:</h1>
+                <h1>{{"HOME.REMINDERS" | translate}}:</h1>
             </ion-label>
         </ion-item>
 
@@ -96,7 +97,7 @@
             <div class="no-data mx-2 d-flex flex-column align-items-center justify-content-center">
                 <ion-icon name="alarm-outline" size="large"></ion-icon>
                 <ion-label>
-                    <h3>هیچ یادآوری برای امروز وجود ندارد</h3>
+                    <h3>{{"HOME.NO_REMINDER" | translate}} </h3>
                 </ion-label>
             </div>
         </ng-container>
@@ -141,7 +142,7 @@
         <ion-item lines="none" class="mt-3">
             <ion-icon src="../../../assets/story.svg" slot="start" color="secondary"></ion-icon>
             <ion-label>
-                <h1> روایت روز:</h1>
+                <h1> {{"HOME.STORIES" | translate}} :</h1>
             </ion-label>
         </ion-item>
         <div *ngIf="lesson_notes  && lesson_notes.length>0" class="old_items p-2 ">

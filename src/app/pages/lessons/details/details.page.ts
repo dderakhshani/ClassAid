@@ -7,6 +7,8 @@ import { Lesson } from 'src/app/models/lessons';
 import { GlobalService } from 'src/app/services/global.service';
 import { v4 as uuidv4 } from 'uuid';
 import { Location } from '@angular/common'
+import { TranslateConfigService } from 'src/app/core/services/translate-config.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-details',
@@ -19,6 +21,7 @@ export class DetailsPage implements OnInit {
     book: Lesson;
     scheduleId?: number;
     bookIdParam: number;
+
     constructor(public lessonService: LessonService,
         public globalService: GlobalService,
         private route: ActivatedRoute,

@@ -7,6 +7,7 @@ import { Lesson } from 'src/app/models/lessons';
 import { ScheduleModel, ScheduleTimeModel } from 'src/app/models/schedule';
 import { GlobalService } from 'src/app/services/global.service';
 import { Location } from '@angular/common'
+import { TranslateConfigService } from 'src/app/core/services/translate-config.service';
 
 @Component({
     selector: 'app-edit-schedule',
@@ -39,6 +40,7 @@ export class EditSchedulePage implements OnInit {
         public lessonService: LessonService,
         private navCtrl: NavController,
         private scheduleService: ScheduleService,
+        private translateConfigService: TranslateConfigService,
         public location: Location) { }
 
     ngOnInit() {

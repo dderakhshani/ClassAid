@@ -1,7 +1,9 @@
 <div class="days d-flex justify-content-around" *ngIf="!singleDay">
     <div *ngFor="let d of days" class="day px-2  d-flex flex-column justify-content-center align-items-center" [class.selected]="d.no==selectedDay.no" (click)="selectedDay=d">
         <ion-icon name="today-outline"></ion-icon>
-        {{d.symbol}}
+        <span class="title">
+            {{d.symbol}}
+        </span>
     </div>
 </div>
 <div class="timeline mt-3">
@@ -18,17 +20,23 @@
                             {{getSchedule(r).lesson.name}}
                         </ion-label>
                     </ion-item>
-                    <ng-container *ngIf="singleDay">
+                    <div class="d-flex flex-row-reverse">
+                        <ng-container *ngIf="singleDay">
+                            <ion-button color="primary" (click)="edit(getSchedule(r))">
+                                <ion-icon slot="start" name="play"></ion-icon>
+                                {{'START' | translate}}
+                            </ion-button>
+                        </ng-container>
+                        <ng-container *ngIf="!singleDay">
+                            <ion-button color="secondary" (click)="edit(getSchedule(r))">
+                                {{'EDIT' | translate}}
+                            </ion-button>
+                            <ion-button color="danger" fill="outline" (click)="deleteItem(getSchedule(r))">
+                                {{'DELETE' | translate}}
+                            </ion-button>
+                        </ng-container>
+                    </div>
 
-                        <ion-button color="primary" (click)="edit(getSchedule(r))">
-                            <ion-icon slot="start" name="play"></ion-icon>
-                            شروع
-                        </ion-button>
-                    </ng-container>
-                    <ng-container *ngIf="!singleDay">
-                        <ion-button color="secondary" (click)="edit(getSchedule(r))">ویرایش</ion-button>
-                        <ion-button color="danger" fill="outline" (click)="deleteItem(getSchedule(r))">حذف</ion-button>
-                    </ng-container>
                 </ng-container>
 
                 <ng-template #selectLesson>
@@ -37,10 +45,13 @@
                             <img src="/assets/img/book.png">
                         </ion-avatar>
                         <ion-label>
-                            درسی انتخاب نشده
+                            {{'SCHEDULE.NO_LESSON_SELECTED' | translate}}
                         </ion-label>
                     </ion-item>
-                    <ion-button *ngIf="!singleDay" (click)="openPicker(r)">انتخاب</ion-button>
+                    <div class="d-flex flex-row-reverse">
+                        <ion-button *ngIf="!singleDay" (click)="openPicker(r)"> {{'SCHEDULE.SELECT' | translate}}</ion-button>
+                    </div>
+
                 </ng-template>
 
             </ion-card-content>

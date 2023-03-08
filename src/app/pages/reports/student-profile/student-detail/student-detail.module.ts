@@ -10,6 +10,7 @@ import { StudentDetailPageRoutingModule } from './student-detail-routing.module'
 import { StudentDetailPage } from './student-detail.page';
 import { ComponentsModule } from 'src/app/components/components.module';
 import { NgxEchartsModule } from 'ngx-echarts';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
     imports: [
@@ -17,6 +18,7 @@ import { NgxEchartsModule } from 'ngx-echarts';
         FormsModule,
         IonicModule,
         CoresModule,
+        TranslateModule,
         NgxEchartsModule.forRoot({
             echarts: () => import('echarts')
         }),

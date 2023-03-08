@@ -18,7 +18,7 @@ import { ViewerModalComponent } from 'ngx-ionic-image-viewer';
 export class UploaderComponent implements OnInit {
 
     @Input()
-    addTitle = "افزودن تصویر";
+    addTitle = "Add Picture";
 
     @Input()
     autoUpload: boolean = true;

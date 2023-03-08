@@ -7,14 +7,16 @@ import { IonicModule } from '@ionic/angular';
 import { AttendanceReportPageRoutingModule } from './attendance-report-routing.module';
 
 import { AttendanceReportPage } from './attendance-report.page';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    AttendanceReportPageRoutingModule
-  ],
-  declarations: [AttendanceReportPage]
+    imports: [
+        CommonModule,
+        FormsModule,
+        IonicModule,
+        AttendanceReportPageRoutingModule,
+        TranslateModule
+    ],
+    declarations: [AttendanceReportPage]
 })
-export class AttendanceReportPageModule {}
+export class AttendanceReportPageModule { }

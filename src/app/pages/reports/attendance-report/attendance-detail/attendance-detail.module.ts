@@ -8,6 +8,7 @@ import { IonicModule } from '@ionic/angular';
 import { AttendanceDetailPageRoutingModule } from './attendance-detail-routing.module';
 
 import { AttendanceDetailPage } from './attendance-detail.page';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
     imports: [
@@ -15,7 +16,8 @@ import { AttendanceDetailPage } from './attendance-detail.page';
         FormsModule,
         IonicModule,
         CoresModule,
-        AttendanceDetailPageRoutingModule
+        AttendanceDetailPageRoutingModule,
+        TranslateModule
     ],
     declarations: [AttendanceDetailPage]
 })

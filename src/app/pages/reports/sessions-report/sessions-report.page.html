@@ -3,41 +3,43 @@
         <ion-buttons slot="start">
             <ion-back-button></ion-back-button>
         </ion-buttons>
-        <ion-title>کلاس های برگزار شده</ion-title>
+        <ion-title> {{"REPORTS.SESSIONS" | translate}}</ion-title>
     </ion-toolbar>
 </ion-header>
 
 <ion-content>
     <div class="p-3">
         <ion-item button lines="full">
+            <ion-icon slot="start" name="funnel-outline"></ion-icon>
             <ion-label>
-                فیلتر زمان
+                {{"REPORTS.FILTER_BY_TIME" | translate}}
             </ion-label>
-            <ion-select [(ngModel)]="dateType" placeholder="...انتخاب کنید" interface="popover">
+            <ion-select [(ngModel)]="dateType" placeholder="...انتخاب کنید" interface="popover" (ionChange)="loadData()">
                 <ion-select-option value="week">
-                    هفته اخیر
+                    {{"REPORTS.THIS_WEEK" | translate}}
                 </ion-select-option>
                 <ion-select-option value="last-week" (click)="loadData()">
-                    هفته قبل
+                    {{"REPORTS.LAST_WEEK" | translate}}
                 </ion-select-option>
                 <ion-select-option value="month" (click)="loadData()">
-                    ماه جاری
+                    {{"REPORTS.THIS_MONTH" | translate}}
                 </ion-select-option>
                 <ion-select-option value="last-month" (click)="loadData()">
-                    ماه قبل
+                    {{"REPORTS.LAST_MONTH" | translate}}
                 </ion-select-option>
                 <ion-select-option value="custom" (click)="loadData()">
-                    تاریخ انتخابی
+                    {{"REPORTS.CUSTOM_DATE" | translate}}
                 </ion-select-option>
             </ion-select>
         </ion-item>
         <ion-item button lines="full">
+            <ion-icon slot="start" name="funnel-outline"></ion-icon>
             <ion-label>
-                فیلتر درس
+                {{"REPORTS.FILTER_BY_LESSON" | translate}}
             </ion-label>
             <ion-select [(ngModel)]="lessonFilter" placeholder="...انتخاب کنید" interface="popover" (ngModelChange)="loadData()">
                 <ion-select-option value="">
-                    بدون فیلتر
+                    {{"REPORTS.NO_FILTER" | translate}}
                 </ion-select-option>
                 <ion-select-option [value]="item" *ngFor="let item of lessons">
                     {{item.name}}
@@ -61,7 +63,7 @@
                     <div class="d-flex flex-row-reverse">
                         <ion-button slot="end" color="secondary" [routerLink]="['/tabs/reports/class-report/'+item.id]">
                             <ion-icon slot="start" name="book"></ion-icon>
-                            مشاهده
+                            {{"VIEW" | translate}}
                         </ion-button>
                     </div>
                 </ion-card-content>

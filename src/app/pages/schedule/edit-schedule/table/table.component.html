@@ -35,7 +35,9 @@
 
 
                 <ng-template #selectLesson>
-                    <ion-button (click)="openLessonPicker(r,d.no)">انتخاب</ion-button>
+                    <ion-button (click)="openLessonPicker(r,d.no)">
+                        {{'SCHEDULE.SELECT' | translate}}
+                    </ion-button>
                 </ng-template>
 
             </td>

@@ -88,7 +88,7 @@ $font-path: "../assets/fonts";
     font-weight: 300;
     src: local("IRANSansWeb Light"),
     local("IRANSansWeb-Light"),
-    url("#{$font-path}/IRANSansWeb(FaNum)_Light.woff2") format("woff2"),
+    url("#{$font-path}/IRANSansWeb-Light.woff2") format("woff2"),
 }
 
 @font-face {
@@ -97,7 +97,7 @@ $font-path: "../assets/fonts";
     font-weight: 400;
     src: local("IRANSansWeb"),
     local("IRANSansWeb-Regular"),
-    url("#{$font-path}/IRANSansWeb(FaNum)_Light.woff2") format("woff2"),
+    url("#{$font-path}/IRANSansWeb-Light.woff2") format("woff2"),
 }
 
 @font-face {
@@ -106,7 +106,7 @@ $font-path: "../assets/fonts";
     font-weight: 500;
     src: local("IRANSansWeb Medium"),
     local("IRANSansWeb-Medium"),
-    url("#{$font-path}/IRANSansWeb(FaNum)_Medium.woff2") format("woff2"),
+    url("#{$font-path}/IRANSansWeb-Medium.woff2") format("woff2"),
 }
 
 @font-face {
@@ -115,7 +115,7 @@ $font-path: "../assets/fonts";
     font-weight: 700;
     src: local("IRANSansWeb Bold"),
     local("IRANSansWeb-Bold"),
-    url("#{$font-path}/IRANSansWeb(FaNum)_bold.woff2") format("woff2"),
+    url("#{$font-path}/IRANSansWeb-bold.woff2") format("woff2"),
 }
 
 $font-family-base: "IRANSansWeb";

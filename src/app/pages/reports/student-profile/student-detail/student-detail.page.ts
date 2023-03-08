@@ -75,7 +75,7 @@ export class StudentDetailPage implements OnInit {
                         <StatsSerie>{ name: '1401/07/25', value: 40 },
                         <StatsSerie>{ name: '1401/09/20', value: 42 },
                         <StatsSerie>{ name: '1401/11/27', value: 42 }
-                    ], { name: 'قد', type: 'line' }, { name: 'وزن', type: 'line' },
+                    ], { name: 'Height', type: 'line' }, { name: 'Weight', type: 'line' },
                         {
                             data: [{ yAxis: 135, name: 'Avg' }]
                         },

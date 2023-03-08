@@ -6,7 +6,7 @@ import { AttendanceModel, AttendanceStatus } from '../models/attendance-model';
 import { ClassService } from './../api/class.service';
 import { ScheduleTimeModel } from 'src/app/models/schedule';
 import { Subject, BehaviorSubject, ReplaySubject, forkJoin } from 'rxjs';
-import { Ring } from './../models/day';
+import { Ring, Days, DateDay } from './../models/day';
 import { Lesson } from 'src/app/models/lessons';
 import { ClassModel, ClassSessionModel } from './../models/class';
 import { StorageService } from './../core/services/storage.service';
@@ -23,6 +23,8 @@ import { Share } from '@capacitor/share';
 import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
 import { Settings } from '../models/settings';
 import { CancelOptions, LocalNotificationDescriptor, LocalNotifications } from '@capacitor/local-notifications';
+import { TranslateService } from '@ngx-translate/core';
+import { TranslateConfigService } from '../core/services/translate-config.service';
 const CLASS_STORAGE = "CLASSAID_CLASS";
 
 @Injectable({
@@ -58,13 +60,19 @@ export class GlobalService {
         private studentService: StudentsService,
         public lessonService: LessonService,
         public modalController: ModalController,
+        private translate: TranslateService,
+        private translateConfigService: TranslateConfigService,
         private scheduleService: ScheduleService) {
+
         const user = authService.getProfile();
+
         if (user) {
             this.teacherId = authService.getProfile().id;
         }
 
         this.todayDay = (new Date().getDay() + 1) % 7;
+
+
 
         const settingJson = localStorage.getItem(this.Settings_Storage);
         if (settingJson)
@@ -134,6 +142,23 @@ export class GlobalService {
                     await this.loadSchedules(vClass.id, today_sessions);
 
                     this.selectedClass$.next(vClass);
+
+                    ///--------------------------------- Init Days---------------------------
+                    this.translateConfigService.initLanguage();
+                    Days.push(<DateDay>{ no: 0, dayName: this.translate.instant('DAYS.SAT'), symbol: this.translate.instant('DAYS.SAT_SYMBOL') });
+                    Days.push(<DateDay>{ no: 1, dayName: this.translate.instant('DAYS.SUN'), symbol: this.translate.instant('DAYS.SUN_SYMBOL') });
+                    Days.push(<DateDay>{ no: 2, dayName: this.translate.instant('DAYS.MON'), symbol: this.translate.instant('DAYS.MON_SYMBOL') });
+                    Days.push(<DateDay>{ no: 3, dayName: this.translate.instant('DAYS.TUE'), symbol: this.translate.instant('DAYS.TUE_SYMBOL') });
+                    Days.push(<DateDay>{ no: 4, dayName: this.translate.instant('DAYS.WED'), symbol: this.translate.instant('DAYS.WED_SYMBOL') });
+                    Days.push(<DateDay>{ no: 5, dayName: this.translate.instant('DAYS.THU'), symbol: this.translate.instant('DAYS.THU_SYMBOL') });
+                    Days.push(<DateDay>{ no: 6, dayName: this.translate.instant('DAYS.FRI'), symbol: this.translate.instant('DAYS.FRI_SYMBOL') });
+
+
+                    AssessmentLevels.push({ title: this.translate.instant('ASSESSMENT_LEVEL.EMPTY'), shortTitle: this.translate.instant('ASSESSMENT_LEVEL.EMPTY_SHORT'), value: 0, color: "#92949c", bdColor: "text-gray", ionColor: "medium", ionIcon: "" });
+                    AssessmentLevels.push({ title: this.translate.instant('ASSESSMENT_LEVEL.L1'), shortTitle: this.translate.instant('ASSESSMENT_LEVEL.L1_SHORT'), value: 1, color: "#eb445a", bdColor: "text-danger", ionColor: "danger", ionIcon: "close-circle-outline" });
+                    AssessmentLevels.push({ title: this.translate.instant('ASSESSMENT_LEVEL.L2'), shortTitle: this.translate.instant('ASSESSMENT_LEVEL.L2_SHORT'), value: 2, color: "#ffc409", bdColor: "text-warning", ionColor: "warning", ionIcon: "alert-circle-outline" });
+                    AssessmentLevels.push({ title: this.translate.instant('ASSESSMENT_LEVEL.L3'), shortTitle: this.translate.instant('ASSESSMENT_LEVEL.L3_SHORT'), value: 3, color: "#4E7DF1", bdColor: "text-primary", ionColor: "secondary", ionIcon: "checkmark-circle-outline" });
+                    AssessmentLevels.push({ title: this.translate.instant('ASSESSMENT_LEVEL.L4'), shortTitle: this.translate.instant('ASSESSMENT_LEVEL.L4_SHORT'), value: 4, color: "#2dd36f", bdColor: "text-success", ionColor: "success", ionIcon: "checkmark-done-circle-outline" });
                     this.ready$.next(true);
                 });
         });

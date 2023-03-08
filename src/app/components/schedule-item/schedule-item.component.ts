@@ -4,6 +4,8 @@ import { ChartService } from 'src/app/services/chart.service';
 import { GlobalService } from 'src/app/services/global.service';
 import { AlertController } from '@ionic/angular';
 import { Router } from '@angular/router';
+import { TranslateConfigService } from 'src/app/core/services/translate-config.service';
+import { TranslateService } from '@ngx-translate/core';
 
 
 @Component({
@@ -15,11 +17,17 @@ export class ScheduleItemComponent implements OnInit {
 
     @Input()
     schedule: ScheduleTimeModel;
+    language: any;
 
     constructor(private chartService: ChartService,
         private router: Router,
         private alertController: AlertController,
-        public globalService: GlobalService,) { }
+        public globalService: GlobalService,
+        private translateConfigService: TranslateConfigService,
+        private translate: TranslateService) {
+        this.translateConfigService.initLanguage();
+        this.language = this.translateConfigService.getCurrentLang();
+    }
 
     ngOnInit() { }
 

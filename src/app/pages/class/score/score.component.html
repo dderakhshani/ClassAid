@@ -11,7 +11,7 @@
                 <ion-icon slot="icon-only" name="close"></ion-icon>
             </ion-button>
         </ion-buttons>
-        <ion-title>ثبت مشاهده و امتیاز</ion-title>
+        <ion-title>{{'CLASSSESSION.SCORE_MODAL_TITLE' | translate}}</ion-title>
         <ion-buttons slot="end">
             <ion-button (click)="saveScore()">
                 <ion-icon slot="icon-only" name="save-outline"></ion-icon>
@@ -74,11 +74,11 @@
         <ion-segment [(ngModel)]="posNeg" mode="ios">
             <ion-segment-button value="positive" [class.selected]="posNeg=='positive'" class="text-success">
                 <ion-icon name="add-circle-outline"></ion-icon>
-                <ion-label>مثبت</ion-label>
+                <ion-label>{{'POSITIVE' | translate}}</ion-label>
             </ion-segment-button>
             <ion-segment-button value="negative" [class.selected]="posNeg=='negative'" class="text-danger">
                 <ion-icon name="remove-circle-outline" class="text-danger"></ion-icon>
-                <ion-label>نیاز به تلاش</ion-label>
+                <ion-label> {{'NEEDS_WORK' | translate}}</ion-label>
             </ion-segment-button>
         </ion-segment>
 
@@ -88,7 +88,7 @@
 
 
         <div class="border-bottom mt-3">
-            <span>پارامتر ارزیابی</span>
+            <span> {{'ASSESSMENT_PARAMETERS' | translate}}</span>
 
 
             <div class="parameters">
@@ -116,6 +116,6 @@
     <ion-button expand="block" (click)="saveScore()" [disabled]="selectedeParameter==undefined || isSaving">
         <ion-icon *ngIf="!isSaving" name="save-outline" size="large"></ion-icon>
         <ion-spinner *ngIf="isSaving"></ion-spinner>
-        <ion-label class="me-2"> ذخیره</ion-label>
+        <ion-label class="me-2"> {{'SAVE' | translate}}</ion-label>
     </ion-button>
 </ion-footer>

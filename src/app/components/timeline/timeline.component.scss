@@ -26,19 +26,20 @@
     padding-bottom: 10px;
 
     .time-item {
-        padding-right: 65px;
+        padding-left: 65px;
         position: relative;
 
         .duration {
             position: absolute;
-            right: 5px;
+            left: 5px;
             top: 50px;
+            font-size: 13px;
         }
 
         .item_content:before {
             content: attr(data-level);
             position: absolute;
-            right: 38px;
+            left: 38px;
             top: 58px;
             display: flex;
             align-items: center;
@@ -49,7 +50,7 @@
             border: 4px solid #b8bcb8;
             background-color: #a0a4a0;
             color: #fff;
-            font-size: 20px;
+            font-size: 16px;
         }
     }
 
@@ -73,7 +74,7 @@
         content: "";
         position: absolute;
         top: 0px;
-        right: 50px;
+        left: 50px;
         border-right: 4px solid #cbcbcf;
         width: 2px;
         height: 118%;
@@ -88,7 +89,7 @@
         position: absolute;
         border-top: 2px solid #cbcbcf;
         top: 70px;
-        right: 63px;
+        left: 63px;
         width: 13px;
     }
 
@@ -96,4 +97,38 @@
         overflow: visible;
     }
 
+}
+
+.rtl {
+    .timeline {
+
+        .time-item {
+            padding-right: 65px;
+
+            .duration {
+                right: 5px;
+                top: 50px;
+                font-size: 16px;
+            }
+
+            .item_content:before {
+                right: 38px;
+                top: 58px;
+                font-size: 20px;
+            }
+        }
+
+
+
+        .time-item:before {
+            top: 0px;
+            right: 50px;
+        }
+
+        .time-item:after {
+            top: 70px;
+            right: 63px;
+        }
+
+    }
 }

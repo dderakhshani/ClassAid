@@ -1,13 +1,13 @@
 <ion-header>
     <ion-toolbar>
-        <ion-title>ارزیابی و گزارشات</ion-title>
+        <ion-title> {{"REPORTS.TITLE1" | translate}}</ion-title>
     </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true" color="light">
 
     <div class="ion-padding">
-        <ion-text>ارزیابی</ion-text>
+        <ion-text> {{"REPORTS.EVALUATION" | translate}}</ion-text>
     </div>
     <div class="px-2 shadow-sm " style="background: #FFF;">
         <ion-list>
@@ -15,44 +15,44 @@
             <ion-item lines="full" button [routerLink]="['/tabs/reports/attendance-report']">
                 <ion-icon name="people-outline" slot="start"></ion-icon>
                 <ion-label>
-                    حضور و غیاب
+                    {{"REPORTS.ATTENDANCES" | translate}}
                 </ion-label>
             </ion-item>
             <ion-item lines="full" button [routerLink]="['/tabs/reports/student-profile']">
                 <ion-icon name="person-outline" slot="start"></ion-icon>
                 <ion-label>
-                    پوشه دانش آموز
+                    {{"REPORTS.STUDENT_PROFILE" | translate}}
                 </ion-label>
             </ion-item>
             <ion-item lines="full" button [routerLink]="['/tabs/reports/assessments']">
                 <ion-icon name="bar-chart-outline" slot="start" color="danger"></ion-icon>
                 <ion-label>
-                    ارزشیابی
+                    {{"REPORTS.ASSESSMENTS" | translate}}
                 </ion-label>
             </ion-item>
             <ion-item lines="full" button [routerLink]="['/tabs/reports/scores']">
                 <ion-icon src="../../../assets/coins.svg" slot="start" color="warning"></ion-icon>
                 <ion-label>
-                    مشاهدات و امتیازات
+                    {{"REPORTS.SCORES" | translate}}
                 </ion-label>
             </ion-item>
             <ion-item lines="full" button [routerLink]="['/tabs/reports/home-works']">
                 <ion-icon name="library-outline" slot="start" color="success"></ion-icon>
                 <ion-label>
-                    تکلیف و تمرین
+                    {{"REPORTS.ASSIGNMENTS" | translate}}
                 </ion-label>
             </ion-item>
             <ion-item lines="none" button [routerLink]="['/tabs/reports/tests']">
                 <ion-icon name="flask-outline" slot="start" color="danger"></ion-icon>
                 <ion-label>
-                    آزمون ها
+                    {{"REPORTS.TESTS" | translate}}
                 </ion-label>
             </ion-item>
         </ion-list>
     </div>
 
     <div class="ion-padding">
-        <ion-text> گزارشات</ion-text>
+        <ion-text> {{"REPORTS.TITLE" | translate}} </ion-text>
     </div>
 
     <div class="px-2 shadow-sm" style="background: #FFF;">
@@ -61,25 +61,25 @@
             <ion-item button lines="full" [routerLink]="['/tabs/reports/today-stories']">
                 <ion-icon src="../../../assets/story.svg" slot="start" color="secondary"></ion-icon>
                 <ion-label>
-                    روایت روز
+                    {{"REPORTS.TODAY_STORIES" | translate}}
                 </ion-label>
             </ion-item>
             <ion-item lines="full" button [routerLink]="['/tabs/reports/sessions']">
                 <ion-icon name="albums-outline" slot="start" color="primary"></ion-icon>
                 <ion-label>
-                    کلاس های برگزار شده
+                    {{"REPORTS.SESSIONS" | translate}}
                 </ion-label>
             </ion-item>
             <ion-item button lines="full">
                 <ion-icon name="alarm-outline" slot="start" color="secondary"></ion-icon>
                 <ion-label>
-                    یادآور ها
+                    {{"REPORTS.REMINDERS" | translate}}
                 </ion-label>
             </ion-item>
             <ion-item button lines="full">
                 <ion-icon name="document-text-outline" slot="start" color="warning"></ion-icon>
                 <ion-label>
-                    یادداشت های کلاسی
+                    {{"REPORTS.NOTES" | translate}}
                 </ion-label>
             </ion-item>
 

@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { NgxEchartsModule } from 'ngx-echarts';
 import { ComponentsModule } from './components/components.module';
 import { JalaliPipe } from './pipes/jalali-pipe';
+import { TranslateModule } from '@ngx-translate/core';
 
 
 @NgModule({
@@ -14,7 +15,7 @@ import { JalaliPipe } from './pipes/jalali-pipe';
         CommonModule,
         FormsModule,
         IonicModule,
-        ComponentsModule
+        ComponentsModule,
     ],
     declarations: [JalaliPipe],
     exports: [ComponentsModule, JalaliPipe]

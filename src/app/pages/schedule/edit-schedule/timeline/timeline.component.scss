@@ -6,7 +6,7 @@
     padding: 1rem .5rem;
 
     .day {
-        height: 50px;
+        height: 60px;
         width: 45px;
         background: #fff;
         border-radius: 15px;
@@ -14,6 +14,11 @@
 
         ion-icon {
             color: #cacaca !important;
+        }
+
+        .title {
+            font-size: 13px;
+            padding-top: .5rem;
         }
     }
 
@@ -36,19 +41,20 @@
     padding-bottom: 10px;
 
     .time-item {
-        padding-right: 65px;
+        padding-left: 65px;
         position: relative;
 
         .duration {
             position: absolute;
-            right: 5px;
+            left: 5px;
             top: 50px;
+            font-size: 13px;
         }
 
         .item_content:before {
             content: attr(data-level);
             position: absolute;
-            right: -36px;
+            left: -36px;
             top: 58px;
             display: flex;
             align-items: center;
@@ -75,7 +81,7 @@
         content: "";
         position: absolute;
         top: -20px;
-        right: 50px;
+        left: 50px;
         border-right: 4px solid #cbcbcf;
         width: 2px;
         height: 140px;
@@ -91,29 +97,63 @@
         position: absolute;
         border-top: 2px solid #cbcbcf;
         top: 70px;
-        right: 63px;
+        left: 63px;
         width: 13px;
     }
 
     .item_content {
         overflow: visible;
     }
-
-
-
-
 }
 
 .ios :host .timeline {
 
     .time-item:before {
         top: -35px;
-        right: 55px;
+        left: 55px;
         height: 170px;
     }
 
     .time-item:after {
 
-        right: 68px;
+        left: 68px;
+    }
+}
+
+.rtl {
+
+    .timeline {
+
+        .time-item {
+            padding-right: 65px;
+
+            .duration {
+                right: 5px;
+                font-size: 16px;
+            }
+
+            .item_content:before {
+                right: -36px;
+                font-size: 20px;
+            }
+        }
+
+        .time-item:before {
+
+            right: 50px;
+        }
+
+    }
+
+    .ios :host .timeline {
+
+        .time-item:before {
+            right: 55px;
+            height: 170px;
+        }
+
+        .time-item:after {
+            right: 68px;
+        }
     }
 }

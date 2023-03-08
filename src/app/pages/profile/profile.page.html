@@ -13,7 +13,7 @@
     <div class="py-4">
         <div class=" d-flex flex-column align-items-center">
             <ion-button (click)="onSingOut()" expand="block" shape="round" style="position:absolute; left:8px " color="light">
-                خروج
+                {{"MENU.SIGNOUT" | translate}}
             </ion-button>
             <ion-avatar class="avatar">
                 <img src="assets/img/avatar.webp">
@@ -41,38 +41,40 @@
             <ion-item lines="full" button [routerLink]="['/tabs/profile']" (click)="contactAdmin()">
                 <ion-icon name="albums-outline" slot="start" color="success"></ion-icon>
                 <ion-label>
-                    مدیریت کلاس ها
+                    {{"MANAGEMENT.CLASS" | translate}}
                 </ion-label>
             </ion-item>
             <ion-item button lines="full" [routerLink]="['/tabs/profile']" (click)="contactAdmin()">
                 <ion-icon name="notifications-outline" slot="start" color="warning"></ion-icon>
                 <ion-label>
-                    مدیریت زنگ ها
+                    {{"MANAGEMENT.RING" | translate}}
                 </ion-label>
             </ion-item>
             <ion-item button lines="full" [routerLink]="['/tabs/profile']" (click)="contactAdmin()">
                 <ion-icon name="people-outline" slot="start" color="secondary"></ion-icon>
                 <ion-label>
-                    مدیریت دانش آموز ها
+                    {{"MANAGEMENT.STUDENTS" | translate}}
                 </ion-label>
             </ion-item>
             <ion-item button lines="full" [routerLink]="['/tabs/profile']" (click)="contactAdmin()">
                 <ion-icon name="shapes-outline" slot="start" color="danger"></ion-icon>
                 <ion-label>
-                    مدیریت پارامترهای ارزشیابی
+                    {{"MANAGEMENT.PARAMETERS" | translate}}
                 </ion-label>
             </ion-item>
             <ion-item button lines="none" [routerLink]="['/tabs/profile']" (click)="contactAdmin()">
                 <ion-icon name="book-outline" slot="start" color="tertiary"></ion-icon>
                 <ion-label>
-                    مدیریت دروس
+                    {{"MANAGEMENT.LESSONS" | translate}}
                 </ion-label>
             </ion-item>
         </ion-list>
     </div>
 
     <div class="ion-padding">
-        <ion-text>سایر موارد</ion-text>
+        <ion-text>
+
+        </ion-text>
     </div>
 
     <div class="px-2 shadow-sm" style="background: #FFF;">
@@ -86,19 +88,19 @@
             <ion-item button lines="full" (click)="help()">
                 <ion-icon name="help-circle-outline" slot="start" style="color:#F0D03D ;"></ion-icon>
                 <ion-label>
-                    راهنما
+                    {{"MENU.HELP" | translate}}
                 </ion-label>
             </ion-item>
             <ion-item button lines="full" (click)="reportBug()">
                 <ion-icon name="bug-outline" slot="start" style="color:rgb(212, 54, 48) ;"></ion-icon>
                 <ion-label>
-                    گزارش خطا
+                    {{"MENU.REPORTBUG" | translate}}
                 </ion-label>
             </ion-item>
             <ion-item button lines="none" [routerLink]="['/tabs/profile/about']">
                 <ion-icon name="information-circle-outline" slot="start" style="color:#796CD3 ;"></ion-icon>
                 <ion-label>
-                    درباره همیار معلم
+                    {{"MENU.ABOUT" | translate}}
                 </ion-label>
             </ion-item>
 
@@ -106,6 +108,8 @@
     </div>
 
     <div class="ion-padding ion-text-center">
-        <ion-text class="text-secondary text-small"> تمامی حقوق محفوظ است</ion-text>
+        <ion-text class="text-secondary text-small">
+            {{"MENU.COPYRIGHT" | translate}}
+        </ion-text>
     </div>
 </ion-content>

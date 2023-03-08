@@ -35,7 +35,7 @@
         <!-- Absent Students -->
         <div class="p-2 pb-3 mt-2 mb-4 bg-section" *ngIf="absentStudents">
             <div>
-                <h4>دانش آموزان غایب :</h4>
+                <h4> {{"CLASS_REPORT.ABSENT_STUDENTS" | translate}} :</h4>
             </div>
             <div style="overflow-x: auto;width: 100%;">
                 <div class="d-inline-flex">
@@ -52,7 +52,8 @@
 
                 </div>
                 <div *ngIf="absentStudents.length==0" class="no-items">
-                    هیچ دانش آموزی غایب نبوده
+                    {{"CLASS_REPORT.NO_STUDENT_ABSENT" | translate}}
+
                 </div>
 
             </div>
@@ -66,7 +67,9 @@
         <!-- Lesson Notes List -->
         <app-expandable-section [(expanded)]="notes_expanded" [expandable]="lesson_notes.length>1">
             <div>
-                <h4>یادداشت های کلاس :</h4>
+                <h4>
+                    {{"CLASS_REPORT.NOTES" | translate}}
+                    :</h4>
             </div>
             <div *ngIf="lesson_notes  && lesson_notes.length>0" class="old_items pb-3">
                 <ion-card *ngFor="let n of lesson_notes;let index=index" [ngClass]="{'reminder-item': !notes_expanded, 'reminder-item-expanded': notes_expanded}" [style.transform]="'scale(' + getScale(index,lesson_notes,notes_expanded) + ')'">
@@ -109,7 +112,8 @@
             <div *ngIf="lesson_notes?.length==0" class="no-items">
                 <ion-icon slot="start" name="document-text-outline" size="large"></ion-icon>
                 <br>
-                هیچ گزارش یا یادداشتی ثبت نشده است
+                {{"CLASS_REPORT.NO_NOTES" | translate}}
+
             </div>
             <ion-fab class="add-action" (click)="onNotes()">
                 <ion-fab-button color="success" size="small">
@@ -122,7 +126,7 @@
         <!-- Scores List -->
         <div class="p-2  mt-4 bg-section">
             <div>
-                <h4> مشاهدات و امتیازات :</h4>
+                <h4>{{"CLASS_REPORT.SCORES" | translate}} :</h4>
             </div>
             <div class="pb-3">
                 <ion-card class="score" [class.green]="s.progerssFlag>0" [class.red]="s.progerssFlag<0" *ngFor="let s of scores" (click)="showScore(s)">
@@ -162,7 +166,8 @@
             <div *ngIf="scores?.length==0" class="no-items">
                 <ion-icon slot="start" name="star-outline" size="large"></ion-icon>
                 <br>
-                هیچ مشاهده ای ثبت نشده است
+                {{"CLASS_REPORT.NO_SCORE" | translate}}
+
             </div>
 
             <ion-fab class="add-action" (click)="onScore()">
@@ -176,7 +181,8 @@
         <div class="mt-4">
             <app-expandable-section [(expanded)]="notes_expanded2" [expandable]="student_notes.length>1">
                 <div>
-                    <h4>یادداشت های دانش آموزی :</h4>
+                    <h4>
+                        {{"CLASS_REPORT.STUDENT_NOTES" | translate}} :</h4>
                 </div>
                 <div *ngIf="student_notes  && student_notes.length>0" class="old_items pb-3">
                     <ion-card *ngFor="let n of student_notes;let index=index" [ngClass]="{'reminder-item': !notes_expanded2, 'reminder-item-expanded': notes_expanded2}" [style.transform]="'scale(' + getScale(index,student_notes,notes_expanded2) + ')'">
@@ -219,7 +225,8 @@
                 <div *ngIf="student_notes?.length==0" class="no-items">
                     <ion-icon slot="start" name="document-text-outline" size="large"></ion-icon>
                     <br>
-                    هیچ گزارش یا یادداشتی ثبت نشده است
+                    {{"CLASS_REPORT.NO_STUDENT_NOTE" | translate}}
+
                 </div>
 
                 <ion-fab class="add-action" (click)="onStudentNotes()">
@@ -236,7 +243,8 @@
                 <ion-item lines="none">
                     <ion-icon name="alarm-outline" slot="start"></ion-icon>
                     <ion-label>
-                        <h1>یادآور های کلاس:</h1>
+                        <h1>
+                            {{"CLASS_REPORT.REMINDERS" | translate}}:</h1>
                     </ion-label>
                 </ion-item>
 
@@ -271,7 +279,8 @@
                     <ion-icon slot="start" name="alarm-outline" size="large"></ion-icon>
                     <br>
                     <ion-label>
-                        <h3> هیچ یادآوری ثبت نشده است</h3>
+                        <h3>
+                            {{"CLASS_REPORT.NO_REMINDER" | translate}}</h3>
                     </ion-label>
 
                 </div>
@@ -290,7 +299,8 @@
                 <ion-item lines="none">
                     <ion-icon name="alarm-outline" slot="start"></ion-icon>
                     <ion-label>
-                        <h1>یادآور های دانش آموزی:</h1>
+                        <h1>
+                            {{"CLASS_REPORT.STUDENT_REMINDERS" | translate}}:</h1>
                     </ion-label>
                 </ion-item>
 
@@ -327,7 +337,7 @@
                     <ion-icon slot="start" name="alarm-outline" size="large"></ion-icon>
                     <br>
                     <ion-label>
-                        <h3> هیچ یادآوری ثبت نشده است</h3>
+                        <h3> {{"CLASS_REPORT.NO_STUDENT_REMINDER" | translate}}</h3>
                     </ion-label>
 
                 </div>
@@ -345,7 +355,7 @@
             <ion-item lines="none">
                 <ion-icon name="library-outline" slot="start"></ion-icon>
                 <ion-label>
-                    <h1>تکالیف ها و تمرین ها:</h1>
+                    <h1> {{"CLASS_REPORT.HOMEWORK" | translate}}:</h1>
                 </ion-label>
             </ion-item>
             <div class="pb-3">
@@ -376,7 +386,7 @@
                 <ion-icon slot="start" name="library-outline" size="large"></ion-icon>
                 <br>
                 <ion-label>
-                    <h3> هیچ تکلیفی ثبت نشده است</h3>
+                    <h3>{{"CLASS_REPORT.NO_HOMEWORK" | translate}} </h3>
                 </ion-label>
 
             </div>

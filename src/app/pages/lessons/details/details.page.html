@@ -4,7 +4,7 @@
         <ion-buttons slot="start">
             <ion-back-button></ion-back-button>
         </ion-buttons>
-        <ion-title>انتخاب درس</ion-title>
+        <ion-title> {{"SELECT_LESSON" | translate}}</ion-title>
     </ion-toolbar>
     <img alt="Avatar" [src]="book?.getImageUrl()" />
 </ion-header>
@@ -18,7 +18,7 @@
             </ion-avatar>
             <ion-label>
                 <h3>{{book?.name}} </h3>
-                <p>آخرین درس:
+                <p> {{"LAST_LESSON" | translate}}:
                     {{book?.lastSessionLesson?.name}} </p>
             </ion-label>
 
@@ -28,7 +28,8 @@
                 <div class="progress-value" [style.width]="getProgressValue()+'%'"></div>
             </div>
             <div class="text-center">
-                {{getHasSessionLesson()}}&nbsp;درس از &nbsp;{{lessons?.length}}&nbsp;تا
+
+                {{getHasSessionLesson()}}&nbsp;Lesson &nbsp;{{lessons?.length}}&nbsp;From
             </div>
         </div>
         <ion-list>

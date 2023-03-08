@@ -44,10 +44,25 @@ export class SessionsReportPage implements OnInit {
             this.sessions = this.globalService.sessions.filter(x => x.startTime > startTime);
 
         }
+        else if (this.dateType == 'last-week') {
+            let startTime = new Date();
+            startTime.setDate(startTime.getDate() - 14);
+            let endTime = new Date();
+            endTime.setDate(startTime.getDate() - 7);
+            this.sessions = this.globalService.sessions.filter(x => startTime <= x.startTime && x.startTime < endTime);
+        }
+
         else if (this.dateType == 'month') {
             let startTime = new Date();
             startTime.setDate(startTime.getDate() - 30);
             this.sessions = this.globalService.sessions.filter(x => x.startTime > startTime);
+        }
+        else if (this.dateType == 'last-month') {
+            let startTime = new Date();
+            startTime.setDate(startTime.getDate() - 60);
+            let endTime = new Date();
+            endTime.setDate(startTime.getDate() - 30);
+            this.sessions = this.globalService.sessions.filter(x => startTime <= x.startTime && x.startTime < endTime);
         }
         if (this.lessonFilter)
             this.sessions = this.sessions.filter(x => x.lessonId == this.lessonFilter.id);

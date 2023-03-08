@@ -9,7 +9,7 @@
         <ion-buttons slot="start">
             <ion-back-button></ion-back-button>
         </ion-buttons>
-        <ion-title>حضور غیاب دانش آموز</ion-title>
+        <ion-title> {{"REPORTS.STUDENT_ATTENDANCES" | translate}}</ion-title>
 
     </ion-toolbar>
 
@@ -35,16 +35,16 @@
                         <p> {{at.session?.book.name}}</p>
                     </ion-label>
                     <ion-badge color="success" slot="end" mode="ios" *ngIf="at.status==1">
-                        حاضر
+                        {{"PRESENT" | translate}}
                     </ion-badge>
                     <ion-badge color="danger" slot="end" mode="ios" *ngIf="at.status==2">
-                        غایب
+                        {{"ABSENT" | translate}}
                     </ion-badge>
                     <ion-badge color="warning" slot="end" mode="ios" *ngIf="at.status==3">
-                        تاخیر
+                        {{"DELAYED" | translate}}
                     </ion-badge>
                     <ion-badge color="secondary" slot="end" mode="ios" *ngIf="at.status==4">
-                        راه دور
+                        {{"REMOTE" | translate}}
                     </ion-badge>
                 </ion-item>
             </ion-card-content>

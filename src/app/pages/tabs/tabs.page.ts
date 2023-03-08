@@ -3,6 +3,8 @@ import { GlobalService } from 'src/app/services/global.service';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { ScheduleTimeModel } from 'src/app/models/schedule';
+import { TranslateConfigService } from 'src/app/core/services/translate-config.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-tabs',
@@ -11,6 +13,7 @@ import { ScheduleTimeModel } from 'src/app/models/schedule';
 })
 export class TabsPage {
     current_tab = "home"; // Set this as you default page name
+    language: any;
 
     setCurrentTab(ev: any) {
         this.current_tab = ev.tab;
@@ -18,7 +21,12 @@ export class TabsPage {
     constructor(private router: Router,
         private navCtl: NavController,
         private alertController: AlertController,
-        public globalService: GlobalService) { }
+        public globalService: GlobalService,
+        private translateConfigService: TranslateConfigService,
+        private translate: TranslateService) {
+        this.translateConfigService.initLanguage();
+        this.language = this.translateConfigService.getCurrentLang();
+    }
 
     startClass() {
         if (this.globalService.currentSession)

@@ -7,14 +7,16 @@ import { IonicModule } from '@ionic/angular';
 import { StudentProfilePageRoutingModule } from './student-profile-routing.module';
 
 import { StudentProfilePage } from './student-profile.page';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    StudentProfilePageRoutingModule
-  ],
-  declarations: [StudentProfilePage]
+    imports: [
+        CommonModule,
+        FormsModule,
+        IonicModule,
+        TranslateModule,
+        StudentProfilePageRoutingModule
+    ],
+    declarations: [StudentProfilePage]
 })
-export class StudentProfilePageModule {}
+export class StudentProfilePageModule { }

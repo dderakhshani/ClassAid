@@ -4,7 +4,8 @@
             <ion-back-button></ion-back-button>
         </ion-buttons>
         <ion-title>
-            تعریف برنامه کلاسی
+            {{'SCHEDULE.CREATE' | translate}}
+
         </ion-title>
         <ion-buttons slot="end">
             <ion-button (click)="save()">
@@ -21,10 +22,14 @@
     <div class="p-2 pb-5" *ngIf="!loading">
         <ion-segment value="table" mode="ios" [(ngModel)]="displayMode">
             <ion-segment-button value="table">
-                <ion-label>نمایش جدولی</ion-label>
+                <ion-label>
+                    {{'SCHEDULE.TIME_TABLE' | translate}}
+                </ion-label>
             </ion-segment-button>
             <ion-segment-button value="timeline">
-                <ion-label>نمایش خطی</ion-label>
+                <ion-label>
+                    {{'SCHEDULE.TIME_LINE' | translate}}
+                </ion-label>
             </ion-segment-button>
         </ion-segment>
         <br>

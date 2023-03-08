@@ -9,13 +9,15 @@ import { SchedulePageRoutingModule } from './schedule-routing.module';
 
 import { SchedulePage } from './schedule.page';
 import { ComponentsModule } from 'src/app/components/components.module';
+import { TranslateModule } from '@ngx-translate/core';
 @NgModule({
     imports: [
         CommonModule,
         FormsModule,
         IonicModule,
         SchedulePageRoutingModule,
-        ComponentsModule
+        ComponentsModule,
+        TranslateModule
     ],
     declarations: [SchedulePage]
 })

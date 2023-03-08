@@ -3,12 +3,12 @@
     <ion-tab-bar slot="bottom">
         <ion-tab-button tab="home">
             <ion-icon [name]="current_tab == 'home' ? 'home' : 'home-outline'"></ion-icon>
-            <ion-label>خانه</ion-label>
+            <ion-label> {{"HOME.TITLE" | translate}}</ion-label>
         </ion-tab-button>
 
         <ion-tab-button tab="schedule">
             <ion-icon [name]="current_tab == 'schedule' ? 'calendar' : 'calendar-outline'"></ion-icon>
-            <ion-label>برنامه کلاسی </ion-label>
+            <ion-label> {{"SCHEDULE.TITLE" | translate}} </ion-label>
         </ion-tab-button>
 
 
@@ -17,12 +17,12 @@
 
         <ion-tab-button tab="reports">
             <ion-icon name="speedometer-outline" [name]="current_tab == 'reports' ? 'speedometer' : 'speedometer-outline'"></ion-icon>
-            <ion-label>ارزیابی </ion-label>
+            <ion-label> {{"EVALUATION" | translate}} </ion-label>
         </ion-tab-button>
 
         <ion-tab-button tab="profile">
             <ion-icon [name]="current_tab == 'profile' ? 'settings' : 'settings-outline'"></ion-icon>
-            <ion-label>تنظیمات</ion-label>
+            <ion-label>{{"SETTINGS" | translate}}</ion-label>
         </ion-tab-button>
 
 
@@ -38,10 +38,10 @@
         </ng-template>
     </ion-fab-button>
     <ion-fab-list side="top" *ngIf="globalService.currentSession==undefined">
-        <ion-fab-button (click)="startNextClass()" color="secondary" data-desc=" درس بعدی">
+        <ion-fab-button (click)="startNextClass()" color="secondary" attr.data-desc="{{'HOME.NEXT_CLASS' | translate}}">
             <ion-icon name="play-skip-forward-outline"></ion-icon>
         </ion-fab-button>
-        <ion-fab-button (click)="startNewClass()" color="secondary" data-desc=" درس انتخابی">
+        <ion-fab-button (click)="startNewClass()" color="secondary" attr.data-desc="{{'SELECTIVE_LESSON' | translate}}">
             <ion-icon name="library-outline"></ion-icon>
         </ion-fab-button>
     </ion-fab-list>

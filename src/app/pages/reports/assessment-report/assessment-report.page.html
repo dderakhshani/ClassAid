@@ -1,16 +1,16 @@
 <ion-header>
     <ion-toolbar>
-        <ion-title>گزارش ارزشیابی</ion-title>
+        <ion-title> {{"REPORTS.ASSESSMENTS" | translate}}</ion-title>
     </ion-toolbar>
 </ion-header>
 
 <ion-content>
     <ion-segment value="dashboard" (ionChange)="slides.slideTo(segment)" [(ngModel)]="segment">
         <ion-segment-button value="0">
-            <ion-label>داشبورد</ion-label>
+            <ion-label> {{"DASHBOARD" | translate}}</ion-label>
         </ion-segment-button>
         <ion-segment-button value="1">
-            <ion-label>تاریخچه</ion-label>
+            <ion-label> {{"HISTORY" | translate}}</ion-label>
         </ion-segment-button>
     </ion-segment>
     <div class="p-2">
@@ -18,8 +18,12 @@
             <ion-button (click)="backAssessment()" fill="clear" *ngIf="subParamterAssessments">
                 <ion-icon name="arrow-back-outline"></ion-icon>
             </ion-button>
-            <h4 class=" flex-fill pe-2" *ngIf="!subParamterAssessments"> دروس</h4>
-            <h4 class=" flex-fill" *ngIf="subParamterAssessments"> درس {{bookName}}</h4>
+            <h4 class=" flex-fill pe-2" *ngIf="!subParamterAssessments">
+                {{"LESSONS" | translate}}
+            </h4>
+            <h4 class=" flex-fill" *ngIf="subParamterAssessments">
+                {{"LESSON" | translate}}
+                {{bookName}}</h4>
 
             <div>
                 <ion-segment [(ngModel)]="assessDisplayMode" mode="ios">
@@ -111,7 +115,9 @@
             </ion-grid>
         </ng-container>
         <ion-label *ngIf="assessments.length==0">
-            <h3> هیچ داده ای ثبت نشده است</h3>
+            <h3>
+                {{"NO_DATA" | translate}}
+            </h3>
         </ion-label>
 
     </div>

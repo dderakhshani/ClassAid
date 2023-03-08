@@ -10,7 +10,7 @@
         <ion-buttons slot="start">
             <ion-back-button></ion-back-button>
         </ion-buttons>
-        <ion-title>پوشه {{student?.fullName}}</ion-title>
+        <ion-title> {{student?.fullName}}</ion-title>
 
     </ion-toolbar>
 
@@ -28,7 +28,7 @@
                 <ion-row>
                     <ion-col size="4">
                         <div class="d-flex flex-column align-items-center  justify-content-around" style="height: 100%;">
-                            امتیاز
+                            {{"SCORE" | translate}}
                             <ion-badge color="warning" class="score-rate" mode="ios">
                                 <ion-icon src="../../../../assets/coins.svg" class="me-2" size="small">
                                 </ion-icon>
@@ -47,7 +47,7 @@
                     </ion-col>
                     <ion-col size="4">
                         <div class="d-flex flex-column align-items-center justify-content-around" style="height: 100%;">
-                            ارزشیابی
+                            {{"ASSESSMENT" | translate}}
                             <ion-badge [color]="student.avgAssessmentLevel.ionColor" class="px-3 py-2">
                                 <span>{{student.avgAssessmentLevel.title}}</span>
                             </ion-badge>
@@ -58,7 +58,7 @@
                     </ion-col>
                     <ion-col size="4">
                         <div class="d-flex flex-column align-items-center justify-content-around">
-                            حضور
+                            {{"ATTENDANCE" | translate}}
                             <div echarts [options]="attendanceChartOptions" class="small-chart" theme="roma"></div>
                         </div>
 
@@ -70,7 +70,7 @@
         <!-- Scores -->
         <app-expandable-section [(expanded)]="scoreExpanded">
             <div class="d-flex align-items-center">
-                <h4 class=" flex-fill">بهترین توانمندی ها</h4>
+                <h4 class=" flex-fill"> {{"BEST_SCORES" | translate}}</h4>
                 <div>
                     <ion-segment [(ngModel)]="scoreDisplayMode" mode="ios">
                         <ion-segment-button value="default">
@@ -111,7 +111,7 @@
                 <ion-button (click)="backAssessment()" fill="clear" *ngIf="subParamterAssessments">
                     <ion-icon name="arrow-back-outline"></ion-icon>
                 </ion-button>
-                <h4 class=" flex-fill">ارزشیابی درسی</h4>
+                <h4 class=" flex-fill">{{"BEST_SCORES" | translate}}</h4>
                 <div>
                     <ion-segment [(ngModel)]="assessDisplayMode" mode="ios">
                         <ion-segment-button value="default">
@@ -132,7 +132,7 @@
                                 {{ass.title}}
                             </div>
                             <div class="assess-item d-flex align-items-center ">
-                                <div class="flex-fill ms-2">
+                                <div class="flex-fill me-2">
 
                                     <div class="progress" [class]="getProgressClass(ass.value)">
                                         <div class="progress-value" [style.width]="(ass.value/4*100) +'%'"></div>
@@ -157,13 +157,13 @@
                         <ion-row *ngFor="let ass of student.accAssessments" (click)="onAssessClick(ass)">
                             <ion-col size="12">
                                 <div class="assess-item d-flex align-items-center">
-                                    <ion-avatar class="ms-1">
+                                    <ion-avatar class="me-1">
                                         <img alt="Avatar" [src]="imageUrl+'lessons_org/grade_5/c_'+ass.id+'.jpg'" />
                                     </ion-avatar>
                                     <span class="label">
                                         {{ass.title}}
                                     </span>
-                                    <div class="flex-fill ms-2">
+                                    <div class="flex-fill me-2">
                                         <div class="text-center">{{ass.value|number:'1.1-1'}}</div>
                                         <div class="progress" [class]="getProgressClass(ass.value)">
                                             <div class="progress-value" [style.width]="(ass.value/4*100) +'%'"></div>
@@ -197,14 +197,14 @@
             <ion-item lines="full">
                 <ion-icon name="fitness" slot="start"></ion-icon>
                 <ion-label>
-                    <h1 class=" flex-fill">وضعیت جسمانی </h1>
+                    <h1 class=" flex-fill"> Health </h1>
                 </ion-label>
             </ion-item>
 
             <ion-item>
                 <ion-icon name="scale-outline" slot="start"></ion-icon>
                 <ion-label>
-                    <h2 class=" flex-fill"> نمودار رشد قد و وزن </h2>
+                    <h2 class=" flex-fill"> Height & Weight Chart</h2>
                 </ion-label>
                 <ion-button slot="end" fill="clear">
                     <ion-icon slot="icon-only" name="create-outline"></ion-icon>
@@ -217,7 +217,7 @@
             <ion-item>
                 <ion-icon name="pulse-outline" slot="start"></ion-icon>
                 <ion-label>
-                    <h2 class=" flex-fill"> مشکلات جسمانی سلامتی </h2>
+                    <h2 class=" flex-fill"> Health & Body Issues </h2>
                 </ion-label>
                 <ion-button slot="end" fill="clear" (click)="selectHealthIssue()">
                     <ion-icon slot="icon-only" name="create-outline"></ion-icon>
@@ -238,16 +238,16 @@
                 </ion-grid>
             </div>
 
-            <a href="{{resourcesUrl}}eyes-diagnost.gif" target="_blank">دانلود بینایی سنجی</a>
+            <!-- <a href="{{resourcesUrl}}eyes-diagnost.gif" target="_blank">دانلود بینایی سنجی</a>
             &nbsp;
-            <a href="{{resourcesUrl}}ruler.jpg" target="_blank">دانلود خط کش</a>
+            <a href="{{resourcesUrl}}ruler.jpg" target="_blank">دانلود خط کش</a> -->
         </div>
 
         <!-- Notes -->
         <div class="mt-4">
             <app-expandable-section [(expanded)]="notes_expanded">
                 <div>
-                    <h4>یادداشت ها :</h4>
+                    <h4> Notes :</h4>
                 </div>
                 <div *ngIf="student.notes  && student.notes.length>0" class="old_items">
                     <ion-card *ngFor="let n of student.notes;let index=index" [ngClass]="{'reminder-item': !notes_expanded, 'reminder-item-expanded': notes_expanded}" [style.transform]="'scale(' + getScale(index,student.notes,notes_expanded) + ')'">

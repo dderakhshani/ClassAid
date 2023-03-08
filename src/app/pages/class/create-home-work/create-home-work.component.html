@@ -12,7 +12,7 @@
                 <ion-icon slot="icon-only" name="close"></ion-icon>
             </ion-button>
         </ion-buttons>
-        <ion-title>ایجاد تکلیف و تمرین</ion-title>
+        <ion-title> {{"CLASSSESSION.HOMEWORK_MODAL_TITLE" | translate}}</ion-title>
         <ion-buttons slot="end">
             <ion-button (click)="save()">
                 <ion-icon slot="icon-only" name="save-outline"></ion-icon>
@@ -27,7 +27,7 @@
     <app-expandable-section [(expanded)]="expanded" *ngIf="prevItems && prevItems.length>0">
         <div class="p-2 old_items">
             <div>
-                <h4> تکالیف ثبت شده:</h4>
+                <h4> {{"CLASSSESSION.HOMEWORK_ITEMS" | translate}} :</h4>
             </div>
             <div>
                 <div *ngFor="let item of prevItems;let index=index" [style.transform]="'scale(' + getScale(index) + ')'">
@@ -42,28 +42,28 @@
     <!-- Add New  Reminder -->
     <form class="p-2" [formGroup]="form" style="margin-bottom: 180px;">
         <ion-item class="pt-2">
-            <ion-label position="stacked"> عنوان :</ion-label>
-            <ion-input placeholder=" عنوان را وارد نمایید" formControlName="title"></ion-input>
+            <ion-label position="stacked"> {{"CLASSSESSION.TITLE" | translate}} :</ion-label>
+            <ion-input placeholder="{{'CLASSSESSION.TITLE_PLACEHOLDER' | translate}}" formControlName="title"></ion-input>
         </ion-item>
 
         <ion-item class="pt-2">
-            <ion-label position="stacked"> شرح تکلیف:</ion-label>
-            <ion-textarea placeholder="متن خود را وارد نمایید" [autoGrow]="true" formControlName="description"></ion-textarea>
+            <ion-label position="stacked">{{'CLASSSESSION.HOMEWORK_DESCRIPTION' | translate}} :</ion-label>
+            <ion-textarea placeholder="{{'CLASSSESSION.HOMEWORK_DESCRIPTION_PLACEHOLDER' | translate}}" [autoGrow]="true" formControlName="description"></ion-textarea>
         </ion-item>
 
         <div>
             <ion-item class="pt-2">
-                <ion-label>اختصاص به:
+                <ion-label>
+                    {{'CLASSSESSION.ASSIGN_TO' | translate}}:
 
                 </ion-label>
                 <ion-button slot="end" (click)="selectAssignees()" size="default">
                     <ion-icon name="checkmark-circle-outline" slot="start"></ion-icon>
-                    انتخاب دانش آموزان
-
+                    {{'CLASSSESSION.SELECT_STUDENT' | translate}}
                 </ion-button>
             </ion-item>
             <ion-chip *ngIf="selectedStudents.length==0" color="secondary">
-                همه
+                {{'CLASSSESSION.ALL' | translate}}
             </ion-chip>
 
             <ion-chip *ngFor="let s of selectedStudents;let index=index">
@@ -78,18 +78,18 @@
 
         <ion-item lines="none">
             <ion-icon slot="start" name="alarm-outline"></ion-icon>
-            <ion-label>مدت زمان انجام:</ion-label>
+            <ion-label> {{'CLASSSESSION.HOMEWORK_DUE' | translate}}: </ion-label>
         </ion-item>
 
         <ion-segment mode="ios" [(ngModel)]="dateType" [ngModelOptions]="{standalone: true}" color="tertiary">
             <ion-segment-button value="next">
-                <ion-label> جلسه بعدی درس</ion-label>
+                <ion-label> {{'CLASSSESSION.NEXT_SESSION' | translate}}</ion-label>
             </ion-segment-button>
             <ion-segment-button value="tommorow">
-                <ion-label> فردا</ion-label>
+                <ion-label> {{'CLASSSESSION.TODAY' | translate}}</ion-label>
             </ion-segment-button>
             <ion-segment-button value="exact-date">
-                <ion-label> تاریخ مشخص</ion-label>
+                <ion-label> {{'CLASSSESSION.CUSTOM_DATE' | translate}} </ion-label>
             </ion-segment-button>
         </ion-segment>
 
@@ -106,11 +106,11 @@
 
         <ion-item class="pt-2 mt-2">
 
-            <ion-label>اهداف: </ion-label>
-            <ion-input placeholder="متنی  را وارد نمایید" [(ngModel)]="tag" [ngModelOptions]="{standalone: true}"></ion-input>
+            <ion-label> {{'CLASSSESSION.PURPOSES' | translate}}: </ion-label>
+            <ion-input placeholder="{{'CLASSSESSION.PLACEHOLDER' | translate}}" [(ngModel)]="tag" [ngModelOptions]="{standalone: true}"></ion-input>
             <ion-button slot="end" (click)="addTag()" size="default">
                 <ion-icon name="add-outline" slot="start"></ion-icon>
-                افزودن
+                {{'ADD' | translate}}
 
             </ion-button>
 
@@ -125,7 +125,7 @@
 
 
         <div class="p-2 mt-2">
-            <app-uploader (filesChange)="uploadFiles=$event" [fileFilters]="fileFilters" [addTitle]="'افزودن فایل'"></app-uploader>
+            <app-uploader (filesChange)="uploadFiles=$event" [fileFilters]="fileFilters" [addTitle]="'Add File'"></app-uploader>
         </div>
 
     </form>
@@ -142,6 +142,6 @@
     <ion-button expand="block" (click)="save()" [disabled]="isSaving">
         <ion-icon *ngIf="!isSaving" name="save-outline" size="large"></ion-icon>
         <ion-spinner *ngIf="isSaving"></ion-spinner>
-        <ion-label class="me-2"> ذخیره</ion-label>
+        <ion-label class="ms-2"> {{'SAVE' | translate}}</ion-label>
     </ion-button>
 </ion-footer>
