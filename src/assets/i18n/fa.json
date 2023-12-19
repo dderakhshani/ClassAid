@@ -156,7 +156,7 @@
         "L4_SHORT": "خ.خ"
     },
     "CLASSSESSION": {
-        "ATTENDANCE_CONFIRM": "",
+        "ATTENDANCE_CONFIRM": "آیا ابتدا حضور غیاب میکنید؟ اگه همه حاضر هستن نیازی به حضور غیاب نیست",
         "SEARCH_PLACEHOLDER": "جستجو...",
         "SORT_TITLE": "مرتب سازی",
         "REMOVE_SORT": "حذف مرتب سازی",

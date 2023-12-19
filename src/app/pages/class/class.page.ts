@@ -101,11 +101,11 @@ export class ClassPage implements OnInit {
                     if (!this.globalService.currentSession.didAttendance) {
                         this.globalService.currentSession.didAttendance = true;
                         const alert = await this.alertController.create({
-                            header: 'حضور غیاب',
-                            message: 'آیا ابتدا حضور غیاب میکنید؟ اگه همه حاضر هستن نیازی به حضور غیاب نیست',
+                            header: this.translate.instant('ATTENDANCE'),
+                            message: this.translate.instant('CLASSSESSION.ATTENDANCE_CONFIRM'),
                             buttons: [
                                 {
-                                    text: 'بله',
+                                    text: this.translate.instant('YES'),
                                     role: 'confirm',
                                     handler: () => {
 
@@ -113,7 +113,7 @@ export class ClassPage implements OnInit {
                                     },
                                 },
                                 {
-                                    text: 'خیر',
+                                    text: this.translate.instant('NO'),
                                     role: 'cancel',
                                     handler: () => { this.globalService.currentSession.didAttendance = true; }
                                 },

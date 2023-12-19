@@ -157,7 +157,7 @@
         "L4_SHORT": "A"
     },
     "CLASSSESSION": {
-        "ATTENDANCE_CONFIRM": "",
+        "ATTENDANCE_CONFIRM": "Would you mind do attendance first?",
         "SEARCH_PLACEHOLDER": "Search...",
         "SORT_TITLE": "SORT",
         "REMOVE_SORT": "Remove Sort",
